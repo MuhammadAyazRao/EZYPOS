@@ -10,7 +10,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -49,7 +49,7 @@
                     <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
 
-                <Label  x:Name="label" Content="EZYPOS" Style="{DynamicResource lblLazeTitle}" Grid.Column="0" HorizontalAlignment="Left" Margin="10,10,0,9.6" Width="139"/>
+                <Label  x:Name="label" Content="EZYPOS" Style="{DynamicResource lblLazeTitle}" Grid.Column="0" HorizontalAlignment="Left" Margin="10,10,0,10" Width="139"/>
                 <Button Width="128" HorizontalAlignment="Right" Name="Logout" Click="Logout_Click" Grid.Column="2" FontSize="12"   Content="{materialDesign:PackIcon Kind=ExitToApp,Size=50}" Style="{DynamicResource Logout}">
                     <!--<Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
@@ -64,12 +64,12 @@
                 </Button>
             </Grid>
         </materialDesign:ColorZone>
-        <Grid HorizontalAlignment="Stretch" Grid.Row="1" Background="{StaticResource PrimaryHueMidBrush}">
+        <Grid HorizontalAlignment="Stretch" Grid.Row="1"  Background="{StaticResource PrimaryHueMidBrush}">
             <Grid.RowDefinitions>
 
-                <RowDefinition Height="326*"/>
+                <!--<RowDefinition Height="326*"/>-->
                 <!--<RowDefinition Height="70"/>-->
-            </Grid.RowDefinitions>
+                  </Grid.RowDefinitions>
             <!--<Grid Grid.Row="0" Background="GhostWhite">
                 <Image Source="Assets/logo.png"/>
             </Grid>-->
@@ -77,6 +77,8 @@
                 <StackPanel  x:Name="Menu" Margin="0"/>
             </ScrollViewer>
         </Grid>
+        
+        
         <ScrollViewer  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"  Grid.Column="1" Grid.Row="1" >
             <StackPanel x:Name="StackPanelMain" />
         </ScrollViewer>
