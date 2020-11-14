@@ -24,11 +24,6 @@ namespace EZYPOS
             // SetupExceptionHandling();
             await Task.Run(() => SetupExceptionHandling());
 
-            //Current.DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
-            //DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(App_DispatcherUnhandledException);
-            //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-            //TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
-
         }
 
         private void SetupExceptionHandling()

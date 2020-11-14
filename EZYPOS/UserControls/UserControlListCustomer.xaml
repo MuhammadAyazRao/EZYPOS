@@ -28,24 +28,25 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="150"/>
-            <RowDefinition Height="500"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <!--<Label Content="Start Date" FontSize="12" Foreground="Gray" FontWeight="Bold" HorizontalAlignment="Left" Margin="5,62,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100"/>-->
-        <!--<TextBox TouchDown="textBoxSearch_TouchDown"  Text="" KeyDown="textBoxSearch_KeyDown" x:Name="textBoxSearch" KeyUp="textBox_KeyUp" HorizontalAlignment="Left" BorderBrush="Gray" BorderThickness="1" Style="{DynamicResource txtInput}" Margin="10,89,0,0" Grid.Row="1" VerticalAlignment="Top" Width="612"/>-->
-        <DatePicker Name="StartDate"  DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"
-   Grid.Row="1"
-  materialDesign:HintAssist.Hint="Start Date"
-                    Margin="10,65,500,10"
-  Style="{StaticResource MaterialDesignDatePicker}" />
-        <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"
-   Grid.Row="1"
-  materialDesign:HintAssist.Hint="End Date"
-                    Margin="310,65,200,10"
-  Style="{StaticResource MaterialDesignDatePicker}" />
-        <!--<Button x:Name="Search" Content="Search"  Margin="655,89,0,11" Click="Search_Click"  Style="{DynamicResource btnSuccess}" Width="100" HorizontalAlignment="Left" Grid.Row="1" />-->
-        <Button
-  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"  Margin="612,92,0,26" Width="100"
-  ToolTip="Search" Grid.Row="1" RenderTransformOrigin="0.5,0.882" />
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <DatePicker Name="StartDate" Grid.Row="1"  DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"   Grid.Column="0"  materialDesign:HintAssist.Hint="Start Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
+            <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="1" Grid.Column="1"  materialDesign:HintAssist.Hint="End Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
+            <!--<Button x:Name="Search" Content="Search"  Margin="655,89,0,11" Click="Search_Click"  Style="{DynamicResource btnSuccess}" Width="100" HorizontalAlignment="Left" Grid.Row="1" />-->
+            <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />
+            <Button x:Name="btnAddCustomer"  Click="btnAddCustomer_Click" Content="Add Customer" Margin="20,20,0,0" Style="{DynamicResource btnInfo}" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="35"/>
+        </Grid>
         <Border x:Name="label" Grid.Row="2">
             <DataGrid Name="customerGrid"                     
                       Margin="5,0,5,0"
@@ -174,10 +175,7 @@
 
             </DataGrid>
         </Border>
-        <Button x:Name="btnAddCustomer"  Click="btnAddCustomer_Click" Content="Add Customer" Margin="0,20,610,0" Style="{DynamicResource btnInfo}" Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Right" Width="150" Height="35"/>
-        <!--<Label Content="Customers" FontSize="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,0,0" Width="176"/>-->
-        
-
+      
         <Border Background="{DynamicResource DarkBlue}"/>
         <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Customers" HorizontalAlignment="Left" Margin="10,5,0,0"/>
         <Button x:Name="btnClose" Click="btnClose_Click" Content="X" Style="{DynamicResource btnDanger}" Margin="0,5,10,0" HorizontalAlignment="Right" Width="50" Height="40" VerticalAlignment="Top"/>
