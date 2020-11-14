@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿
 using EPOSNOW.UserControls;
 
 using EZYPOS.Helper.Session;

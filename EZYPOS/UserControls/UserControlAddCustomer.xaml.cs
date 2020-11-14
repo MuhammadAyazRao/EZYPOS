@@ -1,6 +1,4 @@
 ﻿
-
-using AutoMapper;
 using EZYPOS.Helper.Session;
 using EZYPOS.DTO;
 using System;

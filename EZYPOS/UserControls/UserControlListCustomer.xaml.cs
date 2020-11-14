@@ -1,5 +1,4 @@
 ﻿
-using AutoMapper;
 using EZYPOS.DBModels;
 using EZYPOS.Helper.Session;
 using EZYPOS.DTO;
