@@ -36,6 +36,8 @@ namespace EZYPOS
            
             ActiveSession.NavigateToHomeView += ActiveSession_NavigateToHomeView;                      
             ActiveSession.SwitchScreen += ActiveSession_SwitchScreen;
+            ActiveSession.ShowMenu += ShowMenu;
+            ActiveSession.HideMenu += HideMenu;
 
 
             var item7 = new ItemMenu("Settings", null, PackIconKind.Settings, new UserControlCustomers());
@@ -99,9 +101,26 @@ namespace EZYPOS
         {
             ActiveSession.NavigateToHomeView -= ActiveSession_NavigateToHomeView;
             ActiveSession.SwitchScreen -= ActiveSession_SwitchScreen;
+            ActiveSession.ShowMenu -= ShowMenu;
+            ActiveSession.HideMenu -= HideMenu;
             LoginScreen Login = new LoginScreen();
             Login.Show();
             Close();
+        }
+        private void HideMenu(object sender)
+        {
+            ColMenu.Width = new GridLength(0);
+            ColShowMenu.Width = new GridLength(23);
+            //MasterMenu.Visibility = Visibility.Collapsed;
+            //StackPanelMain.SetValue(Grid.ColumnSpanProperty, 2);
+        }
+
+        private void ShowMenu(object sender)
+        {
+            ColMenu.Width = new GridLength(175);
+            ColShowMenu.Width = new GridLength(0);
+            //MasterMenu.Visibility = Visibility.Visible;
+            //StackPanelMain.SetValue(Grid.ColumnSpanProperty, 1);
         }
 
         #region Active Session Controls
@@ -122,5 +141,16 @@ namespace EZYPOS
             }
         }
         #endregion
+
+        private void HideMenu_Click(object sender, RoutedEventArgs e)
+        {
+            HideMenu("");
+
+        }
+
+        private void ShowMenubtn_Click(object sender, RoutedEventArgs e)
+        {
+            ShowMenu("");
+        }
     }
 }

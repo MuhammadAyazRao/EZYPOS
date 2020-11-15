@@ -47,5 +47,17 @@ namespace EZYPOS.Helper.Session
         {
             RefreshEmployeeList?.Invoke(parameter);
         }
+
+        public static event CommunucationHandler ShowMenu;
+        public static void NavigateToShowMenu(object parameter)
+        {
+            ShowMenu?.Invoke(parameter);
+        }
+
+        public static event CommunucationHandler HideMenu;
+        public static void NavigateToHideMenu(object parameter)
+        {
+            HideMenu?.Invoke(parameter);
+        }
     }
 }

@@ -10,15 +10,17 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <!--<RowDefinition Height="50"/>-->
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="175"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition x:Name="ColMenu" Width="175"/>
+            <ColumnDefinition x:Name="ColShowMenu" Width="0"/>
+            <ColumnDefinition x:Name="ColContent" Width="*"/>
+           
         </Grid.ColumnDefinitions>
 
-        <materialDesign:ColorZone Mode="PrimaryMid" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
+        <!--<materialDesign:ColorZone Mode="PrimaryMid" Grid.ColumnSpan="2" HorizontalAlignment="Stretch">
             <Grid>
                 <Grid.Resources>
                     <Style TargetType="Button" x:Key="Logout">
@@ -51,7 +53,7 @@
 
                 <Label  x:Name="label" Content="EZYPOS" Style="{DynamicResource lblLazeTitle}" Grid.Column="0" HorizontalAlignment="Left" Margin="10,10,0,10" Width="139"/>
                 <Button Width="128" ToolTip="Logout" HorizontalAlignment="Right" Name="Logout" Click="Logout_Click" Grid.Column="2" FontSize="12"   Content="{materialDesign:PackIcon Kind=ExitToApp,Size=50}" Style="{DynamicResource Logout}">
-                    <!--<Button.Template>
+                    --><!--<Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border Background="{StaticResource PrimaryHueMidBrush}">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -60,26 +62,87 @@
                                 </StackPanel>
                             </Border>
                         </ControlTemplate>
-                    </Button.Template>-->
+                    </Button.Template>--><!--
                 </Button>
             </Grid>
-        </materialDesign:ColorZone>
-        <Grid HorizontalAlignment="Stretch" Grid.Row="1"  Background="{StaticResource PrimaryHueMidBrush}">
-            <Grid.RowDefinitions>
-
-                <!--<RowDefinition Height="326*"/>-->
-                <!--<RowDefinition Height="70"/>-->
-                  </Grid.RowDefinitions>
-            <!--<Grid Grid.Row="0" Background="GhostWhite">
-                <Image Source="Assets/logo.png"/>
-            </Grid>-->
-            <ScrollViewer HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="0">
+        </materialDesign:ColorZone>-->
+        <Grid HorizontalAlignment="Stretch" x:Name="MasterMenu" Grid.Column="0" Background="{StaticResource PrimaryHueMidBrush}">
+            <Grid.Resources>
+                <Style TargetType="Button" x:Key="Logout">
+                    <Setter Property="Background" Value="{x:Null}"/>
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#FF035F87"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FF035F87"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+                <Style TargetType="Label" x:Key="lblLazeTitle">
+                    <Setter Property="FontSize" Value="20"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontFamily" Value="Raleway"/>
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>                
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Label  x:Name="label" Content="EZYPOS" Style="{DynamicResource lblLazeTitle}"  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,10,0" />
+                <Button  x:Name="HideMenubtn" Click="HideMenu_Click" Content="{materialDesign:PackIcon Kind=EyeOff,Size=20}" Style="{DynamicResource Logout}"  ToolTip="HideMenu" HorizontalAlignment="Right" VerticalAlignment="Center"  Margin="0,0,10,0" />
+                <!--<Image Source="Assets/logo.png"/>-->
+            </Grid>
+            <ScrollViewer HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="1">
                 <StackPanel  x:Name="Menu" Margin="0"/>
             </ScrollViewer>
+            <Grid Grid.Row="2">
+                <Button ToolTip="Logout" HorizontalAlignment="Center" Name="Logout" Click="Logout_Click"  FontSize="20"   Content="Logout" Style="{DynamicResource Logout}">
+                </Button>
+            </Grid>
         </Grid>
-        
-        
-        <ScrollViewer  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"  Grid.Column="1" Grid.Row="1" >
+        <Grid HorizontalAlignment="Stretch"  Grid.Column="1" Background="{StaticResource PrimaryHueMidBrush}">
+            <Grid.Resources>
+                <Style TargetType="Button" x:Key="Logout">
+                    <Setter Property="Background" Value="{x:Null}"/>
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#FF035F87"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FF035F87"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>                
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+               
+                <Button  x:Name="ShowMenubtn" Click="ShowMenubtn_Click" Content="{materialDesign:PackIcon Kind=Eye,Size=20}" Style="{DynamicResource Logout}"  ToolTip="ShowMenu" HorizontalAlignment="Right" VerticalAlignment="Top"  Margin="0,15,0,0" />
+                <!--<Image Source="Assets/logo.png"/>-->
+            </Grid>
+            <Grid Background="White" Grid.Row="1">
+                
+            </Grid>
+
+        </Grid>
+
+
+        <ScrollViewer  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"  Grid.Column="2">
             <StackPanel x:Name="StackPanelMain" />
         </ScrollViewer>
 
