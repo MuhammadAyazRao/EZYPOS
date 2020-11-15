@@ -116,7 +116,7 @@ namespace EZYPOS
         private void HideMenu(object sender)
         {
             ColMenu.Width = new GridLength(0);
-            ColShowMenu.Width = new GridLength(23);
+            ColShowMenu.Width = new GridLength(50);
             //MasterMenu.Visibility = Visibility.Collapsed;
             //StackPanelMain.SetValue(Grid.ColumnSpanProperty, 2);
         }
