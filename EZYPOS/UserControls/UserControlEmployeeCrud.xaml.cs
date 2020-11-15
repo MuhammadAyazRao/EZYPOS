@@ -253,7 +253,10 @@ namespace EZYPOS.UserControls
                             {
                                 UpdateEmployee.Role = RoleId;
                             }
-
+                            if (!string.IsNullOrEmpty(txtCnic.Text))
+                            {
+                                UpdateEmployee.Cnic = txtCnic.Text;
+                            }
                             if (!string.IsNullOrEmpty(JoiningDate.Text))
                             {
                                 UpdateEmployee.Createdon = Convert.ToDateTime(JoiningDate.Text);
@@ -307,54 +310,56 @@ namespace EZYPOS.UserControls
             if (Isconfirm)
             {
                 if (Validate())
-                {     
-                        using (EPOSDBContext DB = new EPOSDBContext())
-                        {
-                            Emplyee AddEmployee = new Emplyee();
-                            if (AddEmployee != null)
-                            {
-                                if (!string.IsNullOrEmpty(txtFName.Text))
-                                {
-                                    AddEmployee.UserName = txtFName.Text;
-                                }
-                                if (!string.IsNullOrEmpty(txtPhone.Text))
-                                {
-                                    AddEmployee.Phone = txtPhone.Text;
-                                }
-                                if (!string.IsNullOrEmpty(txtSalary.Text))
-                                {
-                                    AddEmployee.Salary = Convert.ToInt32(txtSalary.Text);
-                                }
-                                if (!string.IsNullOrEmpty(txtAddress.Text))
-                                {
-                                    AddEmployee.Adress = txtAddress.Text;
-                                }
-                                int CityId = Convert.ToInt32(ddCity.SelectedValue);
-                                if (CityId != 0)
-                                {
-                                    AddEmployee.City = CityId;
-                                }
-                                int RoleId = Convert.ToInt32(ddRole.SelectedValue);
-                                if (RoleId != 0)
-                                {
-                                    AddEmployee.Role = RoleId;
-                                }
+                {
+                    using (EPOSDBContext DB = new EPOSDBContext())
+                    {
+                        Emplyee AddEmployee = new Emplyee();
 
-                                if (!string.IsNullOrEmpty(JoiningDate.Text))
-                                {
-                                    AddEmployee.Createdon = Convert.ToDateTime(JoiningDate.Text);
-                                }
-                                if (!string.IsNullOrEmpty(UserImage.Source?.ToString()))
-                                {
-                                    AddEmployee.Image = UserImage.Source?.ToString();
-                                }
-                                DB.Emplyees.Add(AddEmployee);
-                                DB.SaveChanges();
-                                EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
-                                RefreshPage();
-                            }
+                        if (!string.IsNullOrEmpty(txtFName.Text))
+                        {
+                            AddEmployee.UserName = txtFName.Text;
                         }
+                        if (!string.IsNullOrEmpty(txtPhone.Text))
+                        {
+                            AddEmployee.Phone = txtPhone.Text;
+                        }
+                        if (!string.IsNullOrEmpty(txtSalary.Text))
+                        {
+                            AddEmployee.Salary = Convert.ToInt32(txtSalary.Text);
+                        }
+                        if (!string.IsNullOrEmpty(txtAddress.Text))
+                        {
+                            AddEmployee.Adress = txtAddress.Text;
+                        }
+                        int CityId = Convert.ToInt32(ddCity.SelectedValue);
+                        if (CityId != 0)
+                        {
+                            AddEmployee.City = CityId;
+                        }
+                        int RoleId = Convert.ToInt32(ddRole.SelectedValue);
+                        if (RoleId != 0)
+                        {
+                            AddEmployee.Role = RoleId;
+                        }
+                        if (!string.IsNullOrEmpty(txtCnic.Text))
+                        {
+                            AddEmployee.Cnic = txtCnic.Text;
+                        }
+                        if (!string.IsNullOrEmpty(JoiningDate.Text))
+                        {
+                            AddEmployee.Createdon = Convert.ToDateTime(JoiningDate.Text);
+                        }
+                        if (!string.IsNullOrEmpty(UserImage.Source?.ToString()))
+                        {
+                            AddEmployee.Image = UserImage.Source?.ToString();
+                        }
+                        DB.Emplyees.Add(AddEmployee);
+                        DB.SaveChanges();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
+                        RefreshPage();
                     
+
+                    }
                 }
             }
         }
