@@ -55,6 +55,8 @@ namespace EZYPOS.DBModels
             modelBuilder.Entity<City>(entity =>
             {
                 entity.ToTable("City");
+
+                entity.Property(e => e.Createdon).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<Customer>(entity =>
@@ -75,7 +77,7 @@ namespace EZYPOS.DBModels
 
                 entity.Property(e => e.Cnic).HasColumnName("CNIC");
 
-                entity.Property(e => e.CreationDate).HasColumnType("datetime");
+                entity.Property(e => e.Createdon).HasColumnType("datetime");
 
                 entity.Property(e => e.UserName).HasMaxLength(100);
 

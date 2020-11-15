@@ -50,7 +50,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Label  x:Name="label" Content="EZYPOS" Style="{DynamicResource lblLazeTitle}" Grid.Column="0" HorizontalAlignment="Left" Margin="10,10,0,10" Width="139"/>
-                <Button Width="128" HorizontalAlignment="Right" Name="Logout" Click="Logout_Click" Grid.Column="2" FontSize="12"   Content="{materialDesign:PackIcon Kind=ExitToApp,Size=50}" Style="{DynamicResource Logout}">
+                <Button Width="128" ToolTip="Logout" HorizontalAlignment="Right" Name="Logout" Click="Logout_Click" Grid.Column="2" FontSize="12"   Content="{materialDesign:PackIcon Kind=ExitToApp,Size=50}" Style="{DynamicResource Logout}">
                     <!--<Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border Background="{StaticResource PrimaryHueMidBrush}">

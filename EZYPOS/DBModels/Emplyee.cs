@@ -20,9 +20,11 @@ namespace EZYPOS.DBModels
         public string Adress { get; set; }
         public string Phone { get; set; }
         public bool? Isdeleted { get; set; }
-        public DateTime? CreationDate { get; set; }
+        public DateTime? Createdon { get; set; }
         public string Password { get; set; }
         public bool? IsLoginAllowed { get; set; }
+        public long? Salary { get; set; }
+        public string Image { get; set; }
 
         public virtual City CityNavigation { get; set; }
         public virtual UserRole RoleNavigation { get; set; }

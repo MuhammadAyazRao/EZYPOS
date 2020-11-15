@@ -44,6 +44,7 @@ namespace EZYPOS
             menuRegister.Add(new SubItem("Customers", new UserControlListCustomer(true)));
             menuRegister.Add(new SubItem("Suppliers", new UserControlListSupplier(true)));
             menuRegister.Add(new SubItem("ExpenceHead", new UserControlExpenceHeadList(true)));
+            menuRegister.Add(new SubItem("Employee", new UserControlListEmployee(true)));
             // menuRegister.Add(new SubItem("Providers", new UserControlProviders()));
             menuRegister.Add(new SubItem("Add Customer", new UserControlCustomerCrud()));
             menuRegister.Add(new SubItem("Employees"));

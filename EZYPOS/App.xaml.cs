@@ -57,6 +57,7 @@ namespace EZYPOS
             }
             finally
             {
+                View.MessageBox.ShowCustom(exception.Message, "Error", "ok");
                 _logger.Error(exception, message);
             }
         }

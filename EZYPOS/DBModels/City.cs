@@ -16,6 +16,7 @@ namespace EZYPOS.DBModels
 
         public int Id { get; set; }
         public string CityName { get; set; }
+        public DateTime? Createdon { get; set; }
 
         public virtual ICollection<Customer> Customers { get; set; }
         public virtual ICollection<Emplyee> Emplyees { get; set; }

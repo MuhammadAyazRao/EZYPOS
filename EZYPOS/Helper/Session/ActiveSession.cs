@@ -41,5 +41,11 @@ namespace EZYPOS.Helper.Session
         {
             RefreshExpenceHead?.Invoke(parameter);
         }
+
+        public static event CommunucationHandler RefreshEmployeeList;
+        public static void NavigateToRefreshEmployeeList(object parameter)
+        {
+            RefreshEmployeeList?.Invoke(parameter);
+        }
     }
 }
