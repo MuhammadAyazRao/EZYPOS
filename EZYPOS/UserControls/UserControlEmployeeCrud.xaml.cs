@@ -62,7 +62,7 @@ namespace EZYPOS.UserControls
             ddRole.SelectedValue = null;
             JoiningDate.Text ="";
             txtId.Text = "";
-            SetImage(Environment.CurrentDirectory + @"\Assets\EmployeeImages\No_Image.jpg", "Employee Image");
+            SetImage(Environment.CurrentDirectory + @"\Assets\EmployeeImages\No_Image.jpg");
             ActiveSession.NavigateToRefreshEmployeeList("");
         }
 
@@ -117,7 +117,7 @@ namespace EZYPOS.UserControls
 
                 if (!string.IsNullOrEmpty(EmployeeData?.Image))
                 {
-                    SetImage(EmployeeData.Image, EmployeeData.UserName);
+                    SetImage(EmployeeData.Image);
                 }
                 txtId.Text = EmployeeData.Id.ToString();
             }

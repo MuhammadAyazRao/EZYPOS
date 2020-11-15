@@ -150,7 +150,7 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Address" Binding="{Binding Adress}" Width="200" IsReadOnly="True">
+                    <DataGridTextColumn Header="Address" Binding="{Binding Adress}" Width="100" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">

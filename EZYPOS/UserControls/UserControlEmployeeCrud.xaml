@@ -84,7 +84,7 @@
                 <TextBox Name="txtSalary" PreviewTextInput="NumberOnly_PreviewTextInput"  GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Salary" Foreground="Gray" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="3" Height="Auto" Style="{Binding txtInput}"  />
                 <TextBox Name="txtCnic" PreviewTextInput="NumberOnly_PreviewTextInput"  GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="CNIC" Foreground="Gray" Grid.Column="1" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="3" Height="Auto" Style="{Binding txtInput}"  />
 
-                <materialDesign:Chip Grid.Column="0" Grid.Row="4" Margin="20,10,0,10" Padding="10" Click="Image_Click" Name="ImageSelector"  Content="Employee Image">
+                <materialDesign:Chip ToolTip="Select Image" Grid.Column="0" Grid.Row="4" Margin="20,10,0,10" Padding="10" Click="Image_Click" Name="ImageSelector"  Content="Employee Image">
                     <materialDesign:Chip.Icon>
                         <Image Name="UserImage" />
                     </materialDesign:Chip.Icon>
