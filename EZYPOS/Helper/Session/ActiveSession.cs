@@ -54,10 +54,20 @@ namespace EZYPOS.Helper.Session
             ShowMenu?.Invoke(parameter);
         }
 
+        public static event CommunucationHandler RefreshMenu;
+        public static void NavigateToRefreshMenu(object parameter)
+        {
+            RefreshMenu?.Invoke(parameter);
+        }
         public static event CommunucationHandler HideMenu;
         public static void NavigateToHideMenu(object parameter)
         {
             HideMenu?.Invoke(parameter);
+        }
+
+        public static void Logout()
+        {
+            RefreshCustomerList = null;
         }
     }
 }

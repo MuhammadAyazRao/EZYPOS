@@ -38,17 +38,23 @@ namespace EZYPOS
             ActiveSession.SwitchScreen += ActiveSession_SwitchScreen;
             ActiveSession.ShowMenu += ShowMenu;
             ActiveSession.HideMenu += HideMenu;
+            ActiveSession.RefreshMenu += RefreshMenu;
+            RefreshMenu();
+            ActiveSession_NavigateToHomeView("");
 
+        }
 
+        private void RefreshMenu(object sender=null)
+        {
+            Menu.Children.Clear();
             var item7 = new ItemMenu("Settings", null, PackIconKind.Settings, new UserControlCustomers());
-
             var menuRegister = new List<SubItem>();
             menuRegister.Add(new SubItem("Customers", new UserControlListCustomer(true)));
             menuRegister.Add(new SubItem("Suppliers", new UserControlListSupplier(true)));
             menuRegister.Add(new SubItem("ExpenceHead", new UserControlExpenceHeadList(true)));
             menuRegister.Add(new SubItem("Employee", new UserControlListEmployee(true)));
             // menuRegister.Add(new SubItem("Providers", new UserControlProviders()));
-            menuRegister.Add(new SubItem("Add Customer", new UserControlCustomerCrud()));
+           
             menuRegister.Add(new SubItem("Employees"));
             menuRegister.Add(new SubItem("Products"));
             var item6 = new ItemMenu("Define", menuRegister, PackIconKind.Register);
@@ -80,8 +86,7 @@ namespace EZYPOS
             Menu.Children.Add(new UserControlMenuItem(item2, this));
             Menu.Children.Add(new UserControlMenuItem(item3, this));
             Menu.Children.Add(new UserControlMenuItem(item4, this));
-
-            Menu.Children.Add(new UserControlMenuItem(item7, this));
+            Menu.Children.Add(new UserControlMenuItem(item7, this));           
         }
 
        
@@ -100,9 +105,10 @@ namespace EZYPOS
         private void Logout_Click(object sender, RoutedEventArgs e)
         {
             ActiveSession.NavigateToHomeView -= ActiveSession_NavigateToHomeView;
-            ActiveSession.SwitchScreen -= ActiveSession_SwitchScreen;
+            ActiveSession.SwitchScreen -= ActiveSession_SwitchScreen;           
             ActiveSession.ShowMenu -= ShowMenu;
             ActiveSession.HideMenu -= HideMenu;
+            ActiveSession.RefreshMenu -= RefreshMenu;
             LoginScreen Login = new LoginScreen();
             Login.Show();
             Close();
@@ -127,6 +133,7 @@ namespace EZYPOS
         private void ActiveSession_NavigateToHomeView(object parameter)
         {
             StackPanelMain.Children.Clear();
+            StackPanelMain.Children.Add(new UserControlHome());
         }
 
         private void ActiveSession_SwitchScreen(object sender)
