@@ -49,18 +49,19 @@ namespace EZYPOS
             Menu.Children.Clear();
             var item7 = new ItemMenu("Settings", null, PackIconKind.Settings, new UserControlCustomers());
             var menuRegister = new List<SubItem>();
-            menuRegister.Add(new SubItem("Customers", new UserControlListCustomer(true)));
+            menuRegister.Add(new SubItem("Customers", new UserControlListCustomer()));
             menuRegister.Add(new SubItem("Suppliers", new UserControlListSupplier(true)));
             menuRegister.Add(new SubItem("ExpenceHead", new UserControlExpenceHeadList(true)));
             menuRegister.Add(new SubItem("Employee", new UserControlListEmployee(true)));
+            menuRegister.Add(new SubItem("Product", new UserControlProductList()));
             // menuRegister.Add(new SubItem("Providers", new UserControlProviders()));
-           
+
             menuRegister.Add(new SubItem("Employees"));
             menuRegister.Add(new SubItem("Products"));
             var item6 = new ItemMenu("Define", menuRegister, PackIconKind.Register);
 
             var menuSchedule = new List<SubItem>();
-            menuSchedule.Add(new SubItem("Services"));
+            menuSchedule.Add(new SubItem("Transaction", new UserControlTransaction()));
             menuSchedule.Add(new SubItem("Meetings"));
             var item1 = new ItemMenu("Appointments", menuSchedule, PackIconKind.Schedule);
 
@@ -81,7 +82,7 @@ namespace EZYPOS
             menuFinancial.Add(new SubItem("Cash flow"));
             var item4 = new ItemMenu("Financial", menuFinancial, PackIconKind.ScaleBalance);
 
-            Menu.Children.Add(new UserControlMenuItem(item6, this));
+            Menu.Children.Add(new UserControlMenuItem(item6, this,true));
             Menu.Children.Add(new UserControlMenuItem(item1, this));
             Menu.Children.Add(new UserControlMenuItem(item2, this));
             Menu.Children.Add(new UserControlMenuItem(item3, this));

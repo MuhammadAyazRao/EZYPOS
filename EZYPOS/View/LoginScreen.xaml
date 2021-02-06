@@ -102,7 +102,7 @@
         <Label x:Name="label" Content="LOGIN" BorderBrush="White" BorderThickness="0 0 0 2" Foreground="{DynamicResource DarkBlue}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25" FontWeight="SemiBold" FontFamily="Raleway" Grid.Row="1" VerticalAlignment="Top" Height="61" Margin="0,69,0,0" Grid.Column="1"/>
         <Button Click="btnExit_Click" x:Name="btnExit" Content="Exit" Margin="0,261,148,0" Grid.Row="1" Width="126" Style="{DynamicResource btnDanger}" HorizontalAlignment="Right" Height="47" VerticalAlignment="Top" Grid.Column="1"/>
         <Grid Height="42" Grid.Row="1" VerticalAlignment="Top" Margin="0,144,0,0" Grid.Column="1">
-            <TextBox  x:Name="txtUser"  materialDesign:HintAssist.Hint="{materialDesign:PackIcon Kind=Account,Size=30}" materialDesign:TextFieldAssist.HasClearButton="True"  />
+            <TextBox   x:Name="txtUser"  materialDesign:HintAssist.Hint="{materialDesign:PackIcon Kind=Account,Size=30}" materialDesign:TextFieldAssist.HasClearButton="True"  />
             <!--<TextBox Name="txtUser" Padding="40 7" FontSize="15" Foreground="Gray"/>
             <Image Source="..\Assets\icons\man-user (1).png" Margin="10,0,0,0" HorizontalAlignment="Left" Width="31"/>-->
         </Grid>

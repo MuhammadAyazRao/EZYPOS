@@ -1,0 +1,188 @@
+﻿<Window x:Class="EZYPOS.View.CartSummary"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EZYPOS.View"
+        mc:Ignorable="d"
+        xmlns:UserControls="clr-namespace:EZYPOS.UserControls"
+     
+     Style="{DynamicResource winDialogue}"
+        Language="en-GB"
+        Title="Summary" Height="605" Width="300">
+    <Window.Resources>
+        <Style TargetType="DataGridRow">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="HeaderStyle" Value="{x:Null}"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Gray}"/>
+            <Setter Property="BorderThickness" Value="0 0 0 1"/>
+        </Style>
+    </Window.Resources>   
+    <Grid>
+        <Grid Width="300" HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+            </Grid.ColumnDefinitions>
+            <Canvas x:Name="canRight">
+
+                <UserControls:UserControlInvoice
+                x:Name="InvoiceUC"                
+                Width="{Binding ActualWidth, ElementName=canRight}"
+                Height="{Binding ActualHeight, ElementName=canRight}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Canvas>
+            <StackPanel Background="White" Grid.Column="0" Grid.Row="1" >
+
+                <Button x:Name="Close" Content="Close" Click="Close_Click" Style="{DynamicResource btnDanger}" Width="Auto" Height="50"  />
+            </StackPanel>
+            <!-- <TabControl x:Name="tab" BorderThickness="0" Background="{x:Null}"  Grid.Column="1" Margin="0,-20,213,24" Grid.RowSpan="2">
+                <TabControl.ItemContainerStyle>
+                    <Style TargetType="{x:Type TabItem}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TabItem}">
+                                    <Border x:Name="bdr"
+                                        Width="{TemplateBinding Width}"
+                                        Height="{TemplateBinding Height}"
+                                        Background="{TemplateBinding Background}">
+                                        <ContentPresenter
+                                        ContentSource="Header"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Width" Value="149"/>
+                                            <Setter Property="Height" Value="70"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                            <Setter Property="Background" Value="{DynamicResource SharpBlue}"/>
+                                            <Setter Property="FontSize" Value="15"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <Setter Property="Width" Value="149"/>
+                                            <Setter Property="Height" Value="70"/>
+                                            <Setter Property="Foreground" Value="Gray"/>
+                                            <Setter Property="Background" Value="{DynamicResource Gray}"/>
+                                            <Setter Property="FontSize" Value="15"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.ItemContainerStyle>
+                <TabItem Header="Online Order" x:Name="Online_Order">
+                    <Grid Background="White" HorizontalAlignment="Left" Width="386">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="37*"/>
+                            <RowDefinition Height="38*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+
+                        </Grid.ColumnDefinitions>
+
+
+                        <DataGrid Name="DataGrid"  Background="White"    VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" HeadersVisibility="None" AutoGenerateColumns="False"    GridLinesVisibility="None" Margin="0,75,0,0.2"  >
+                            <DataGrid.ColumnHeaderStyle>
+                                <Style TargetType="DataGridColumnHeader">
+                                    <Setter Property="Height" Value="50"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </Style>
+                            </DataGrid.ColumnHeaderStyle>
+                            <DataGrid.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="Height" Value="40"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="{x:Null}"/>
+                                            <Setter Property="BorderBrush" Value="{x:Null}"/>
+                                            <Setter Property="Foreground" Value="Black"/>
+                                        </Trigger>
+
+                                        <DataTrigger Binding="{Binding DeliveryType}" Value="Total">
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.CellStyle>
+
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Height" Value="40"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Wheat"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="Wheat"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="50*"  Binding="{Binding Name}"/>
+                                <DataGridTextColumn Width="50*" Binding="{Binding Qty}">
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style>
+                                            <Setter Property="FrameworkElement.HorizontalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Width="50*" Binding="{Binding Price}">
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style>
+                                            <Setter Property="FrameworkElement.HorizontalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+
+                        </DataGrid>
+
+                        <Button x:Name="Acceptorder" Content="Accept" Click="Acceptorder_Click" Style="{DynamicResource btnSuccess}"  Margin="10,131.8,206,83.8"  Width="Auto" Height="50" Grid.Row="1"/>
+                        <Button x:Name="Rejectorder" Content="Reject" Click="Rejectorder_Click" Style="{DynamicResource btnDanger}" Margin="206,131.8,10,83.8" Width="Auto" Height="50" Grid.Row="1" />
+                        <Label Name="lblCustumer_Name" Content="CustumerName" HorizontalAlignment="Left" Margin="12,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.012,-0.232" Height="28" Width="120"/>
+                        <Label Name="lblZipCode" Content="Zip Code" HorizontalAlignment="Left" Margin="256,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.012,-0.232" Height="28" Width="120"/>
+
+                        <Label Name="lblMobileno" Content="03215115527" HorizontalAlignment="Left" Margin="12,42,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.012,-0.232" Width="157" Height="28"/>
+                        -->
+            <!--<Label Content="Service Charges" HorizontalAlignment="Left" Margin="12,19,0,0" VerticalAlignment="Top" Width="157" Grid.Row="1"/>-->
+            <!--<Label Name="lblservicecharges" Content="0.0" HorizontalAlignment="Left" Margin="215,19,0,0" VerticalAlignment="Top" Width="157" Grid.Row="1"/>-->
+
+            <!--<Label Content="Total Discount" Foreground="{DynamicResource Success}" FontWeight="Bold" Grid.Row="1" HorizontalAlignment="Left" Width="92" Margin="12,14.8,0,0" Height="26" VerticalAlignment="Top"/>
+                        <Label x:Name="lblDiscount" Foreground="{DynamicResource Success}" Content="0.00" ContentStringFormat="C" Grid.Row="1" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalAlignment="Top" HorizontalAlignment="Right" Width="Auto" Margin="89,4.8,26,0" Height="26"/>
+                        <Label Content="Deliver Charges" Foreground="{DynamicResource Danger}" FontWeight="Bold" VerticalAlignment="Top" Margin="12,35.8,206,0" Height="30" Grid.Row="1"/>
+                        <Label Name="lblDelivery_Charges" Content="0.00" ContentStringFormat="C" FontWeight="Bold" Foreground="{DynamicResource Danger}"  VerticalAlignment="Center" HorizontalAlignment="Right" Width="Auto" Margin="61,35.8,25,203.8" Height="26" Grid.Row="1"/>
+                        <Label Content="Total" Foreground="{DynamicResource SharpBlue}" FontWeight="Bold" Width="200" VerticalAlignment="Top" Margin="12,70.8,174,0" Height="26" Grid.Row="1"/>
+                        <Label Name="lblTotal" Content="0.00" ContentStringFormat="C" FontWeight="Bold" Foreground="{DynamicResource SharpBlue}" VerticalAlignment="Center" HorizontalAlignment="Right" Width="Auto" Margin="60,70.8,26,168.8" Height="26" Grid.Row="1"/>-->
+            <!--
+
+                        <Label Content="Discount"  Foreground="{DynamicResource Success}" HorizontalAlignment="Left" Margin="12,30,0,0" VerticalAlignment="Top" Width="157" Grid.Row="1"/>
+                        <Label x:Name="lblDiscount"  Foreground="{DynamicResource Success}" Content="0.0" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Margin="0,29.8,25,0" VerticalAlignment="Top" Width="56" Grid.Row="1" Height="25"/>
+                        <Label Content="Delivery Charges" Foreground="{DynamicResource Danger}" HorizontalAlignment="Left" Margin="12,60,0,0" VerticalAlignment="Top" Width="157" Grid.Row="1"/>
+                        <Label x:Name="lblDelivery_Charges" Foreground="{DynamicResource Danger}" HorizontalContentAlignment="Right" Content="0.0" HorizontalAlignment="Right" Margin="0,59.8,25,0" VerticalAlignment="Top" Width="56" Grid.Row="1" Height="25"/>
+                        <Label Content="Total" Foreground="{DynamicResource SharpBlue}" HorizontalAlignment="Left" Margin="12,92,0,0" VerticalAlignment="Top" Width="157" Grid.Row="1"/>
+                        <Label x:Name="lblTotal" Foreground="{DynamicResource SharpBlue}" Content="0.0" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Margin="0,91.8,25,0" VerticalAlignment="Top" Width="56" Grid.Row="1" Height="27"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            -->
+        </Grid>
+    </Grid>
+</Window>

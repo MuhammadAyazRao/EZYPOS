@@ -28,6 +28,9 @@ namespace EZYPOS.DBModels
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<ProductGroup> ProductGroups { get; set; }
         public virtual DbSet<ProductSubcategory> ProductSubcategories { get; set; }
+        public virtual DbSet<SaleOrder> SaleOrders { get; set; }
+        public virtual DbSet<SaleOrderDetail> SaleOrderDetails { get; set; }
+        public virtual DbSet<ShopSetting> ShopSettings { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<UserPage> UserPages { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
@@ -36,7 +39,7 @@ namespace EZYPOS.DBModels
         {
             if (!optionsBuilder.IsConfigured)
             {
-
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=DESKTOP-IIIQBQ7\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=False;User ID=sa;Password=A722713yaz");
             }
         }
@@ -155,6 +158,209 @@ namespace EZYPOS.DBModels
                     .WithMany(p => p.ProductSubcategories)
                     .HasForeignKey(d => d.CategoryId)
                     .HasConstraintName("FK_ProductSubcategory_ProductCategory");
+            });
+
+            modelBuilder.Entity<SaleOrder>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("Sale_Orders");
+
+                entity.Property(e => e.Addby)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("addby");
+
+                entity.Property(e => e.Addon)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("addon");
+
+                entity.Property(e => e.CashAmount).HasColumnName("Cash_Amount");
+
+                entity.Property(e => e.Coupon)
+                    .HasMaxLength(80)
+                    .IsUnicode(false)
+                    .HasColumnName("coupon");
+
+                entity.Property(e => e.CouponAppliesTo)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("coupon_applies_to");
+
+                entity.Property(e => e.CouponCategories)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("coupon_categories");
+
+                entity.Property(e => e.CouponType)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("coupon_type");
+
+                entity.Property(e => e.CouponValue)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("coupon_value");
+
+                entity.Property(e => e.CustomerName)
+                    .HasMaxLength(80)
+                    .IsUnicode(false)
+                    .HasColumnName("customer_name");
+
+                entity.Property(e => e.CustomerPhone)
+                    .HasMaxLength(80)
+                    .IsUnicode(false)
+                    .HasColumnName("customer_phone");
+
+                entity.Property(e => e.Date)
+                    .HasColumnType("datetime")
+                    .HasColumnName("date");
+
+                entity.Property(e => e.Description)
+                    .HasColumnType("text")
+                    .HasColumnName("description");
+
+                entity.Property(e => e.DiscountAmount).HasColumnName("discount_amount");
+
+                entity.Property(e => e.DiscountDesc)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("discount_desc");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.IsDeleted)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("is_deleted")
+                    .HasDefaultValueSql("('no')");
+
+                entity.Property(e => e.IsPrinted).HasColumnName("Is_Printed");
+
+                entity.Property(e => e.IsUpdated)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("is_updated")
+                    .HasDefaultValueSql("('no')");
+
+                entity.Property(e => e.OnlineAmount).HasColumnName("Online_Amount");
+
+                entity.Property(e => e.OrderCount).HasColumnName("order_count");
+
+                entity.Property(e => e.OrderDate)
+                    .HasColumnType("date")
+                    .HasColumnName("order_date");
+
+                entity.Property(e => e.PaymentMode)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("payment_mode")
+                    .HasDefaultValueSql("('cash')");
+
+                entity.Property(e => e.PaymentStatus)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("payment_status")
+                    .HasDefaultValueSql("('cash')");
+
+                entity.Property(e => e.RestaurantId).HasColumnName("restaurant_id");
+
+                entity.Property(e => e.ServiceCharge).HasColumnName("Service_Charge");
+
+                entity.Property(e => e.Total).HasColumnName("total");
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
+            });
+
+            modelBuilder.Entity<SaleOrderDetail>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("Sale_OrderDetail");
+
+                entity.Property(e => e.BillNo).HasColumnName("bill_no");
+
+                entity.Property(e => e.CatName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("cat_name");
+
+                entity.Property(e => e.FixedItemDes)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("fixed_item_des");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.IsDeleted)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("is_deleted")
+                    .HasDefaultValueSql("('no')");
+
+                entity.Property(e => e.IsUpdated)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("is_updated")
+                    .HasDefaultValueSql("('no')");
+
+                entity.Property(e => e.ItemComments)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("item_comments");
+
+                entity.Property(e => e.ItemId).HasColumnName("item_id");
+
+                entity.Property(e => e.ItemIndex).HasColumnName("item_index");
+
+                entity.Property(e => e.ItemName)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("item_name");
+
+                entity.Property(e => e.ItemPrice)
+                    .HasColumnName("item_price")
+                    .HasDefaultValueSql("('0')");
+
+                entity.Property(e => e.ItemQty).HasColumnName("item_qty");
+
+                entity.Property(e => e.KitchenLines)
+                    .HasColumnName("kitchen_lines")
+                    .HasDefaultValueSql("('0')");
+
+                entity.Property(e => e.OrderId).HasColumnName("order_id");
+
+                entity.Property(e => e.PrintSort)
+                    .HasColumnName("print_sort")
+                    .HasDefaultValueSql("('0')");
+
+                entity.Property(e => e.SubCatId).HasColumnName("sub_cat_id");
+
+                entity.Property(e => e.SubCatName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("sub_cat_name");
+            });
+
+            modelBuilder.Entity<ShopSetting>(entity =>
+            {
+                entity.ToTable("ShopSetting");
+
+                entity.Property(e => e.Pin).HasColumnName("PIN");
+
+                entity.Property(e => e.ShopId).HasColumnName("Shop_Id");
+
+                entity.Property(e => e.ShopName).HasColumnName("Shop_Name");
             });
 
             modelBuilder.Entity<Supplier>(entity =>

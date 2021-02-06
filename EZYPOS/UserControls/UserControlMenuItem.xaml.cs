@@ -12,7 +12,7 @@ namespace EZYPOS.UserControls
     public partial class UserControlMenuItem : UserControl
     {
         MainWindow _context;
-        public UserControlMenuItem(ItemMenu itemMenu, MainWindow context)
+        public UserControlMenuItem(ItemMenu itemMenu, MainWindow context, bool Isexpanded=false)
         {
             InitializeComponent();
 
@@ -20,6 +20,7 @@ namespace EZYPOS.UserControls
 
             ExpanderMenu.Visibility = itemMenu.SubItems == null ? Visibility.Collapsed : Visibility.Visible;
             ListViewItemMenu.Visibility = itemMenu.SubItems == null ? Visibility.Visible : Visibility.Collapsed;
+            ExpanderMenu.IsExpanded = Isexpanded;
 
             this.DataContext = itemMenu;
         }

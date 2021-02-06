@@ -1,4 +1,5 @@
 ﻿using EZYPOS;
+using System.Diagnostics;
 using System.Windows;
 
 namespace EZYPOS.View
@@ -38,5 +39,6 @@ namespace EZYPOS.View
         {
 
         }
+               
     }
 }

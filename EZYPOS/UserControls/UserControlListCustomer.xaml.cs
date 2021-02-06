@@ -16,6 +16,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace EZYPOS.UserControls
 {
@@ -24,16 +27,10 @@ namespace EZYPOS.UserControls
     /// </summary>
     public partial class UserControlListCustomer : UserControl
     {
-        public UserControlListCustomer(bool Ismenu=false)
-        {
-            if(Ismenu)
-            {
-                ActiveSession.RefreshCustomerList += Refresh;
-            }
+        public UserControlListCustomer()
+        {            
             InitializeComponent();
             Refresh();
-
-
         }
         private void Refresh(object sender= null)
         {
@@ -46,9 +43,7 @@ namespace EZYPOS.UserControls
         }
 
         private void btnAddCustomer_Click(object sender, RoutedEventArgs e)
-        {
-            //CustomerWindow win = new CustomerWindow();
-            //win.Show();
+        {            
             ActiveSession.NavigateToSwitchScreen(new UserControlCustomerCrud());
         }
 
@@ -172,27 +167,13 @@ namespace EZYPOS.UserControls
         }
 
         private void delete_Click(object sender, RoutedEventArgs e)
-        {
+        {          
             
-            //restCust selectedCust = (restCust)customerGrid.SelectedValue;
-            //UnitOfWork uow = new UnitOfWork(new EPOSEntities());
-            //uow.restCusts.Remove(uow.restCusts.Find(x => x.pkcode == selectedCust.pkcode));
-            //uow.Complete();
         }
-
-        private void textBoxSearch_TouchDown(object sender, TouchEventArgs e)
-        {
-        }
-
-        private void textBoxSearch_KeyDown(object sender, KeyEventArgs e)
-        {
-            //AppHelper.OnScreenKeyboardConfiguration.ShowOnScreenKeyBoard();
-        }
+       
 
         private void Search_Click(object sender, RoutedEventArgs e)
-        {
-                      
-            
+        {                
             using (EPOSDBContext DB = new EPOSDBContext())
             {
                 List<Customer> CustomerData;
@@ -207,8 +188,6 @@ namespace EZYPOS.UserControls
                     CustomerData = DB.Customers.Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
                 }
                 customerGrid.ItemsSource = CustomerData;
-
-
             }
             
         }       
@@ -230,41 +209,29 @@ namespace EZYPOS.UserControls
                         
                         if (t.Name == "GridName")
                         {
-                            return List.Name.ToUpper().StartsWith(filter.ToUpper());
-                               // return (p.bill_name.ToUpper().StartsWith(filter.ToUpper()) || p.bill_surname.ToUpper().StartsWith(filter.ToUpper()));
+                            return List.Name.ToUpper().StartsWith(filter.ToUpper());                               
                         }
                         if (t.Name == "GridContact")
                         {
-                            return List.PhoneNo.ToUpper().StartsWith(filter.ToUpper());
-                            // return (p.bill_name.ToUpper().StartsWith(filter.ToUpper()) || p.bill_surname.ToUpper().StartsWith(filter.ToUpper()));
+                            return List.PhoneNo.ToUpper().StartsWith(filter.ToUpper());                            
                         }
                         if (t.Name == "GridCity")
                         {
-                            return List.City.ToUpper().StartsWith(filter.ToUpper());
-                            // return (p.bill_name.ToUpper().StartsWith(filter.ToUpper()) || p.bill_surname.ToUpper().StartsWith(filter.ToUpper()));
+                            return List.City.ToUpper().StartsWith(filter.ToUpper());                           
                         }
                         if (t.Name == "GridAdress")
                         {
-                            return List.Adress.ToUpper().StartsWith(filter.ToUpper());
-                            // return (p.bill_name.ToUpper().StartsWith(filter.ToUpper()) || p.bill_surname.ToUpper().StartsWith(filter.ToUpper()));
+                            return List.Adress.ToUpper().StartsWith(filter.ToUpper());                            
                         }
                         else
                         {
                             return true;
-                        }
-                        //else if (t.Name == "GridContact")
-                        //{
-                        //   // return (p.bill_phone.ToUpper().StartsWith(filter.ToUpper()));
-                        //}
-                       
-
+                        }                       
                     };
                 }
             }
 
-        }
-
-
+        }   
 
     }
 }

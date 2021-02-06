@@ -1,0 +1,58 @@
+﻿<Window x:Class="EZYPOS.View.Pinverification"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:EZYPOS.View"
+        Style="{DynamicResource winDialogue}"
+        mc:Ignorable="d"
+        Title="AddCommentPopUp" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="50*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150*"/>
+            <RowDefinition Height="440"/>
+            <RowDefinition Height="150*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="1" Grid.Row="1" Background="White">
+            <PasswordBox Name="lblPin" IsEnabled="False"   KeyDown="txtPin_KeyDown"  TabIndex="0" Padding="5,0,0,0"   Foreground="Gray"   VerticalAlignment="Top"  Margin="10,62,10,0"  Height="30"/>
+            <Label Content="Enter PIN" BorderBrush="{DynamicResource Gray}" BorderThickness="0 0 0 1" FontFamily="Arial" FontSize="20" FontWeight="Bold" Padding="20 0 0 0" Height="40" VerticalContentAlignment="Center" VerticalAlignment="Top"/>
+            <Label Content="Invalid PIN"  FontFamily="Arial" Name="lblErrMsg" FontSize="20" HorizontalAlignment="Right" Margin="0,0,10,0" FontWeight="Bold" Foreground="{DynamicResource Danger}" Visibility="Collapsed" Height="40" VerticalContentAlignment="Center"  VerticalAlignment="Top"/>
+
+
+            <Grid Margin="0,60,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="83*"/>
+                    <ColumnDefinition Width="251*"/>
+                    <ColumnDefinition Width="0*"/>
+                </Grid.ColumnDefinitions>
+                <Button Style="{DynamicResource btn}" Content="1" Margin="0,49,0,0" Click="Button_Click" Grid.ColumnSpan="2"/>
+                <Button Style="{DynamicResource btn}" Content="5" Margin="8.794,113,0,0" Click="Button_Click" Grid.Column="1"/>
+                <Button Style="{DynamicResource btn}" Content="6" Margin="97,113,-1,0" Click="Button_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+                <Button Style="{DynamicResource btn}" Content="2" Margin="8.794,49,0,0" Click="Button_Click" Grid.Column="1"/>
+                <Button Style="{DynamicResource btn}" Content="3" Margin="97,49,-1,0" Click="Button_Click" HorizontalAlignment="Left" Width="92" Grid.Column="1" Grid.ColumnSpan="2"/>
+                <Button Style="{DynamicResource btn}" Content="7" Margin="0,177,0,0" Click="Button_Click" Grid.ColumnSpan="2"/>
+                <Button Style="{DynamicResource btn}" Content="4" Margin="0,113,0,0" Click="Button_Click" Grid.ColumnSpan="2"/>
+                <Button Style="{DynamicResource btn}" Margin="0,241,0,-30" Click="Button_Click_1" Grid.ColumnSpan="2" Foreground="White" Content="{materialDesign:PackIcon Kind=Refresh,Size=30}"/>
+
+                <Button Style="{DynamicResource btn}" Content="0" Margin="8.794,241,0,-30" Click="Button_Click" Grid.Column="1"/>
+                <Button Style="{DynamicResource btn}" Foreground="White" Content="{materialDesign:PackIcon Kind=Close,Size=30}" Margin="97,241,-1,0" x:Name="btnBackSpace" Click="btnBackSpace_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+
+                <Button Style="{DynamicResource btn}" Content="8" Margin="8.794,177,0,0" Click="Button_Click" Grid.Column="1"/>
+                <Button Style="{DynamicResource btn}" Content="9" Margin="97,177,-1,0" Click="Button_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+            </Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,0">
+                <Button Margin="0,380,10,0" x:Name="btnverify" Style="{DynamicResource btnPrimery}" Content="Verify" Height="50" Width="100" Click="btnAdd_Click"/>
+                <Button Margin="0 380 20 0" x:Name="btnCancel" Click="btnCancel_Click" Style="{DynamicResource btnDanger}" VerticalContentAlignment="Center"  Content="Cancel" Height="50" Width="100"/>
+
+            </StackPanel>
+        </Grid>
+
+
+    </Grid>
+</Window>

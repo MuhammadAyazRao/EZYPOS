@@ -90,7 +90,7 @@
         </Grid>
 
 
-        <ScrollViewer  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto"  Grid.Column="2">
+        <ScrollViewer  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Grid.Row="1" Grid.Column="2">
             <StackPanel x:Name="StackPanelMain" />
         </ScrollViewer>
 

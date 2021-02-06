@@ -29,9 +29,9 @@ namespace EZYPOS.UserControls
             InitializeComponent();
             RefreshPage();
             if (Customer != null)
-            { InitializePage(Customer); }
-
-
+            { 
+                InitializePage(Customer); 
+            }
         }
 
         private void InitializePage(CustomerDTO Customer)
@@ -82,7 +82,6 @@ namespace EZYPOS.UserControls
             Save.IsEnabled = true;
             using (EPOSDBContext Db = new EPOSDBContext())
             {
-                //var CustomerData = DB.Customers.Select(x => new { Name = x.Name, City = x.CityNavigation==null?null: x.CityNavigation.CityName, Phone = x.PhoneNo, Adress = x.Adress }).ToList();
                 var cities = Db.Cities.ToList();
                 ddCity.ItemsSource = cities;
             }
@@ -94,8 +93,7 @@ namespace EZYPOS.UserControls
             txtAddress.Foreground = Brushes.Gray;
             txtMobile.Text= "Mobile";
             txtMobile.Foreground = Brushes.Gray;
-            txtId.Text = "";
-            ActiveSession.NavigateToRefreshCustomerList("");
+            txtId.Text = "";            
         }
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
@@ -110,9 +108,7 @@ namespace EZYPOS.UserControls
 
         private void txt_GotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tb = sender as TextBox;
-            //tb.Text = string.Empty;
-            //tb.Foreground = Brushes.Black;
+            TextBox tb = sender as TextBox;            
             switch (tb.Text)
             {
                 case "Name":
@@ -131,10 +127,8 @@ namespace EZYPOS.UserControls
                     tb.Text = string.Empty;
                     tb.Foreground = Brushes.Black;
                     break;
-
             }
         }
-
         private void txt_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = sender as TextBox;
@@ -210,6 +204,7 @@ namespace EZYPOS.UserControls
                             DB.SaveChanges();
                             EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
                             RefreshPage();
+                            ActiveSession.NavigateToRefreshMenu("");
                         }
                     }
                 }
@@ -236,6 +231,7 @@ namespace EZYPOS.UserControls
                         DB.SaveChanges();
                         EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
                         RefreshPage();
+                        ActiveSession.NavigateToRefreshMenu("");
                     }
                 }
            }
@@ -268,9 +264,7 @@ namespace EZYPOS.UserControls
                 EZYPOS.View.MessageBox.ShowCustom("Please select City.", "Error", "OK");
                 return false;
             }
-
             return true;
-
         }
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
