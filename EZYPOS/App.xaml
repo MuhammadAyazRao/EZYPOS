@@ -1,15 +1,15 @@
 ﻿<Application x:Class="EZYPOS.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:EZYPOS"
-             StartupUri="MainWindow.xaml">
-    <Application.Resources>
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"             
+             xmlns:local="clr-namespace:EZYPOS"             
+            StartupUri="MainWindowNewMenu.xaml">
+    <Application.Resources>       
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Blue.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.LightBlue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.LightBlue.xaml" />                
             </ResourceDictionary.MergedDictionaries>
             <SolidColorBrush x:Key="Orage" Color="#FFEA4A0B"/>
             <SolidColorBrush x:Key="Gray" Color="#FFF0F0F0"/>
@@ -666,6 +666,7 @@
                     <Run Text=" "/>
                 </Paragraph>
             </FlowDocument>-->
+            <Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />
         </ResourceDictionary>
 
     </Application.Resources>
