@@ -9,6 +9,87 @@
   <ItemGroup>
     <None Remove="Assets\EmployeeImages\No_Image.jpg" />
     <None Remove="Assets\icons\add-button-inside-black-circle.png" />
+    <None Remove="Assets\icons\arrow-circle.png" />
+    <None Remove="Assets\icons\auricular-phone-symbol-in-a-circle.png" />
+    <None Remove="Assets\icons\avatar.png" />
+    <None Remove="Assets\icons\backspace-arrow.png" />
+    <None Remove="Assets\icons\bartill1.jpg" />
+    <None Remove="Assets\icons\cancel-button.png" />
+    <None Remove="Assets\icons\Cash.png" />
+    <None Remove="Assets\icons\chat.png" />
+    <None Remove="Assets\icons\checked.png" />
+    <None Remove="Assets\icons\chronometer.png" />
+    <None Remove="Assets\icons\clerk-with-tie.png" />
+    <None Remove="Assets\icons\cooking.png" />
+    <None Remove="Assets\icons\credit-cards.png" />
+    <None Remove="Assets\icons\cross-mark-on-a-black-circle-background.png" />
+    <None Remove="Assets\icons\desktop-monitor.png" />
+    <None Remove="Assets\icons\dinner-table %281%29.png" />
+    <None Remove="Assets\icons\dinner-table.png" />
+    <None Remove="Assets\icons\dollar-symbol.png" />
+    <None Remove="Assets\icons\done.png" />
+    <None Remove="Assets\icons\eyel.png" />
+    <None Remove="Assets\icons\facebook-placeholder-for-locate-places-on-maps.png" />
+    <None Remove="Assets\icons\grid-world.png" />
+    <None Remove="Assets\icons\hamburger-variant-with-cheese-patty-and-lettuce.png" />
+    <None Remove="Assets\icons\hierarchy.png" />
+    <None Remove="Assets\icons\home.png" />
+    <None Remove="Assets\icons\icon.png" />
+    <None Remove="Assets\icons\icon_backlogs.png" />
+    <None Remove="Assets\icons\icon_bug.png" />
+    <None Remove="Assets\icons\icon_down.png" />
+    <None Remove="Assets\icons\icon_epic.png" />
+    <None Remove="Assets\icons\icon_feature.png" />
+    <None Remove="Assets\icons\icon_issue.png" />
+    <None Remove="Assets\icons\icon_queries.png" />
+    <None Remove="Assets\icons\icon_right.png" />
+    <None Remove="Assets\icons\icon_task.png" />
+    <None Remove="Assets\icons\icon_testcase.png" />
+    <None Remove="Assets\icons\icon_userstory.png" />
+    <None Remove="Assets\icons\left-arrow.png" />
+    <None Remove="Assets\icons\line-chart.png" />
+    <None Remove="Assets\icons\list.png" />
+    <None Remove="Assets\icons\Loader.gif" />
+    <None Remove="Assets\icons\loading.gif" />
+    <None Remove="Assets\icons\lock.png" />
+    <None Remove="Assets\icons\logistics-delivery-truck-in-movement %281%29.png" />
+    <None Remove="Assets\icons\logout.png" />
+    <None Remove="Assets\icons\man-user %281%29.png" />
+    <None Remove="Assets\icons\man-user.png" />
+    <None Remove="Assets\icons\menu.png" />
+    <None Remove="Assets\icons\minimize.png" />
+    <None Remove="Assets\icons\minus.png" />
+    <None Remove="Assets\icons\New.png" />
+    <None Remove="Assets\icons\notification.png" />
+    <None Remove="Assets\icons\order.png" />
+    <None Remove="Assets\icons\pencil-with-stripes.png" />
+    <None Remove="Assets\icons\pencil.png" />
+    <None Remove="Assets\icons\plus.png" />
+    <None Remove="Assets\icons\printer-.png" />
+    <None Remove="Assets\icons\progress-report.png" />
+    <None Remove="Assets\icons\remove-symbol.png" />
+    <None Remove="Assets\icons\restaurant-cutlery-circular-symbol-of-a-spoon-and-a-fork-in-a-circle.png" />
+    <None Remove="Assets\icons\right-chevron.png" />
+    <None Remove="Assets\icons\round-add-button.png" />
+    <None Remove="Assets\icons\sale.png" />
+    <None Remove="Assets\icons\search.png" />
+    <None Remove="Assets\icons\settings-work-tool.png" />
+    <None Remove="Assets\icons\settings.png" />
+    <None Remove="Assets\icons\shopping-cart.png" />
+    <None Remove="Assets\icons\specialist-user.png" />
+    <None Remove="Assets\icons\user-male-black-shape.png" />
+    <None Remove="Cash.png" />
+    <None Remove="icon_backlogs.png" />
+    <None Remove="icon_bug.png" />
+    <None Remove="icon_down.png" />
+    <None Remove="icon_epic.png" />
+    <None Remove="icon_feature.png" />
+    <None Remove="icon_issue.png" />
+    <None Remove="icon_queries.png" />
+    <None Remove="icon_right.png" />
+    <None Remove="icon_task.png" />
+    <None Remove="icon_testcase.png" />
+    <None Remove="icon_userstory.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,20 +102,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dragablz" Version="0.0.3.223" />
     <PackageReference Include="MaterialDesignColors" Version="1.2.7" />
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="NLog" Version="4.7.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DAL\DAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,180 +118,216 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assets\icons\arrow-circle.png">
+    <Resource Include="Assets\icons\arrow-circle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\auricular-phone-symbol-in-a-circle.png">
+    </Resource>
+    <Resource Include="Assets\icons\auricular-phone-symbol-in-a-circle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\avatar.png">
+    </Resource>
+    <Resource Include="Assets\icons\avatar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\backspace-arrow.png">
+    </Resource>
+    <Resource Include="Assets\icons\backspace-arrow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\bartill1.jpg">
+    </Resource>
+    <Resource Include="Assets\icons\bartill1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\cancel-button.png">
+    </Resource>
+    <Resource Include="Assets\icons\cancel-button.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\Cash.png">
+    </Resource>
+    <Resource Include="Assets\icons\Cash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\chat.png">
+    </Resource>
+    <Resource Include="Assets\icons\chat.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\checked.png">
+    </Resource>
+    <Resource Include="Assets\icons\checked.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\chronometer.png">
+    </Resource>
+    <Resource Include="Assets\icons\chronometer.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\clerk-with-tie.png">
+    </Resource>
+    <Resource Include="Assets\icons\clerk-with-tie.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\cooking.png">
+    </Resource>
+    <Resource Include="Assets\icons\cooking.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\credit-cards.png">
+    </Resource>
+    <Resource Include="Assets\icons\credit-cards.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\cross-mark-on-a-black-circle-background.png">
+    </Resource>
+    <Resource Include="Assets\icons\cross-mark-on-a-black-circle-background.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\desktop-monitor.png">
+    </Resource>
+    <Resource Include="Assets\icons\desktop-monitor.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\dinner-table %281%29.png">
+    </Resource>
+    <Resource Include="Assets\icons\dinner-table (1).png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\dinner-table.png">
+    </Resource>
+    <Resource Include="Assets\icons\dinner-table.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\dollar-symbol.png">
+    </Resource>
+    <Resource Include="Assets\icons\dollar-symbol.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\done.png">
+    </Resource>
+    <Resource Include="Assets\icons\done.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\eyel.png">
+    </Resource>
+    <Resource Include="Assets\icons\eyel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\facebook-placeholder-for-locate-places-on-maps.png">
+    </Resource>
+    <Resource Include="Assets\icons\facebook-placeholder-for-locate-places-on-maps.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\grid-world.png">
+    </Resource>
+    <Resource Include="Assets\icons\grid-world.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\hamburger-variant-with-cheese-patty-and-lettuce.png">
+    </Resource>
+    <Resource Include="Assets\icons\hamburger-variant-with-cheese-patty-and-lettuce.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\hierarchy.png">
+    </Resource>
+    <Resource Include="Assets\icons\hierarchy.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\home.png">
+    </Resource>
+    <Resource Include="Assets\icons\home.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\icon.png">
+    </Resource>
+    <Resource Include="Assets\icons\icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\left-arrow.png">
+    </Resource>
+    <Resource Include="Assets\icons\icon_backlogs.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\line-chart.png">
+    </Resource>
+    <Resource Include="Assets\icons\icon_bug.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\list.png">
+    </Resource>
+    <Resource Include="Assets\icons\icon_down.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\Loader.gif">
+    </Resource>
+    <Resource Include="Assets\icons\icon_epic.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\loading.gif">
+    </Resource>
+    <Resource Include="Assets\icons\icon_feature.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\lock.png">
+    </Resource>
+    <Resource Include="Assets\icons\icon_issue.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\logistics-delivery-truck-in-movement %281%29.png">
+    </Resource>
+    <Resource Include="Assets\icons\icon_queries.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\logout.png">
+    </Resource>
+    <Resource Include="Assets\icons\icon_right.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\man-user %281%29.png">
+    </Resource>
+    <Resource Include="Assets\icons\icon_task.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\man-user.png">
+    </Resource>
+    <Resource Include="Assets\icons\icon_testcase.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\menu.png">
+    </Resource>
+    <Resource Include="Assets\icons\icon_userstory.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\minimize.png">
+    </Resource>
+    <Resource Include="Assets\icons\left-arrow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\minus.png">
+    </Resource>
+    <Resource Include="Assets\icons\line-chart.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\New.png">
+    </Resource>
+    <Resource Include="Assets\icons\list.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\notification.png">
+    </Resource>
+    <Resource Include="Assets\icons\Loader.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\order.png">
+    </Resource>
+    <Resource Include="Assets\icons\loading.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\pencil-with-stripes.png">
+    </Resource>
+    <Resource Include="Assets\icons\lock.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\pencil.png">
+    </Resource>
+    <Resource Include="Assets\icons\logistics-delivery-truck-in-movement (1).png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\plus.png">
+    </Resource>
+    <Resource Include="Assets\icons\logout.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\printer-.png">
+    </Resource>
+    <Resource Include="Assets\icons\man-user (1).png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\progress-report.png">
+    </Resource>
+    <Resource Include="Assets\icons\man-user.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\remove-symbol.png">
+    </Resource>
+    <Resource Include="Assets\icons\menu.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\restaurant-cutlery-circular-symbol-of-a-spoon-and-a-fork-in-a-circle.png">
+    </Resource>
+    <Resource Include="Assets\icons\minimize.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\right-chevron.png">
+    </Resource>
+    <Resource Include="Assets\icons\minus.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\round-add-button.png">
+    </Resource>
+    <Resource Include="Assets\icons\New.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\sale.png">
+    </Resource>
+    <Resource Include="Assets\icons\notification.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\search.png">
+    </Resource>
+    <Resource Include="Assets\icons\order.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\settings-work-tool.png">
+    </Resource>
+    <Resource Include="Assets\icons\pencil-with-stripes.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\settings.png">
+    </Resource>
+    <Resource Include="Assets\icons\pencil.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\shopping-cart.png">
+    </Resource>
+    <Resource Include="Assets\icons\plus.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\specialist-user.png">
+    </Resource>
+    <Resource Include="Assets\icons\printer-.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\icons\user-male-black-shape.png">
+    </Resource>
+    <Resource Include="Assets\icons\progress-report.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Resource>
+    <Resource Include="Assets\icons\remove-symbol.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\restaurant-cutlery-circular-symbol-of-a-spoon-and-a-fork-in-a-circle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\right-chevron.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\round-add-button.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\sale.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\search.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\settings-work-tool.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\settings.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\shopping-cart.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\specialist-user.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\user-male-black-shape.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Assets\logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

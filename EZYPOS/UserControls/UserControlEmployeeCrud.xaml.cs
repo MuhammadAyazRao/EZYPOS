@@ -1,4 +1,5 @@
-﻿using EZYPOS.DBModels;
+﻿using DAL.Repository;
+using EZYPOS.DBModels;
 using EZYPOS.DTO;
 using EZYPOS.Helper.Session;
 using Microsoft.Win32;
@@ -40,12 +41,11 @@ namespace EZYPOS.UserControls
             Delete.IsEnabled = false;
             Update.IsEnabled = false;
             Save.IsEnabled = true;
-            using (EPOSDBContext Db = new EPOSDBContext())
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
-                var cities = Db.Cities.ToList();
+                var cities = Db.City.GetAll().ToList();
                 ddCity.ItemsSource = cities;
-
-                var Roles = Db.UserRoles.ToList();
+                var Roles = Db.UserRole.GetAll().ToList();
                 ddRole.ItemsSource = Roles;
             }
             txtFName.Text = "Name";

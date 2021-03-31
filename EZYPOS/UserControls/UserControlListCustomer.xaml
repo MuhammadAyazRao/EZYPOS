@@ -7,7 +7,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"             
              Background="White"
-             d:DesignHeight="1024" d:DesignWidth="768">
+             d:DesignHeight="1024" Name="List_Customers" d:DesignWidth="768">
     <UserControl.Resources>
         <Style TargetType="{x:Type DataGrid}">
             <Setter Property="AlternationCount" Value="2" />
@@ -79,16 +79,17 @@
     </UserControl.Resources>   
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="150"/>
+            <!--<RowDefinition Height="50"/>-->
+            <RowDefinition Height="125"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
+               
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -101,19 +102,17 @@
             <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />
             <Button x:Name="btnAddCustomer"  Click="btnAddCustomer_Click" Content="Add Customer" Margin="20,20,0,0" Style="{DynamicResource btnInfo}" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="35"/>
         </Grid>
-        <Border x:Name="label" Grid.Row="2">
-            <DataGrid Name="customerGrid"                     
-                      Margin="5,50,5,0"
+        <Border x:Name="label" Grid.Row="1">
+            <DataGrid Name="customerGrid" 
                       RowHeaderWidth="0"
                       HorizontalGridLinesBrush="{DynamicResource Gray}"
                       AutoGenerateColumns="False"
                       SelectionMode="Single"                      
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
-                      CanUserReorderColumns="True" BorderBrush="White" Background="White" GridLinesVisibility="Horizontal">               
-                
+                      CanUserReorderColumns="True" BorderBrush="White" Background="White" GridLinesVisibility="Horizontal">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="*" Visibility="Hidden" IsReadOnly="True">
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}"  Visibility="Hidden" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -130,7 +129,7 @@
                             </MultiBinding>                            
                         </DataGridTextColumn.Binding>-->
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" IsReadOnly="True">
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -147,7 +146,7 @@
                             </MultiBinding>                            
                         </DataGridTextColumn.Binding>-->
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Contact" Binding="{Binding PhoneNo}" Width="120" IsReadOnly="True">
+                    <DataGridTextColumn Header="Contact" Binding="{Binding PhoneNo}" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -158,7 +157,7 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="City" Binding="{Binding City}" Width="50" IsReadOnly="True">
+                    <DataGridTextColumn Header="City" Binding="{Binding City}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -169,7 +168,7 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Address" Binding="{Binding Adress}" Width="*" IsReadOnly="True">
+                    <DataGridTextColumn Header="Address" Binding="{Binding Adress}" IsReadOnly="True">
                         <!--<DataGridTextColumn.Binding>
                             <MultiBinding StringFormat="{}{0} - {1} {2} {3}">
                                 <Binding Path="bill_door_num"/>
@@ -188,7 +187,7 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTemplateColumn Width="100" IsReadOnly="True">
+                    <DataGridTemplateColumn  IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -204,11 +203,52 @@
             <!-- all the rest is UI to interact with the pager -->
             
         </Border>
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation='Horizontal'
+                        Margin='6'
+                        HorizontalAlignment='Center'>
+            <Button x:Name='btnBackwards'
+                        Padding='4'
+                        ToolTip="PreviosPage"
+                        Content="{materialDesign:PackIcon Kind=LessThan,Size=25}"
+                        Margin='6'
+                        Click='Backwards_Click'></Button>
+            <Button x:Name='btnFirst'
+                        Padding='4'
+                       ToolTip="FirstPage"
+                        Content="{materialDesign:PackIcon Kind=PageFirst,Size=25}"
+                        Margin='6'
+                        Click='First_Click'></Button>
+            <Grid Margin='6'
+                      VerticalAlignment='Center'
+                      HorizontalAlignment='Center'>
+                <Label x:Name='PageInfo'
+                           Foreground='DarkSlateGray' />
+            </Grid>
+            <!--<Grid VerticalAlignment='Center'
+                      Margin='6'
+                      HorizontalAlignment='Center'>
+                <ComboBox x:Name='NumberOfRecords'
+                              SelectedIndex='0'
+                              SelectionChanged='NumberOfRecords_SelectionChanged' />
+            </Grid>-->
+            <Button x:Name='btnLast'
+                        Padding='4'
+                       ToolTip="LastPage"
+                        Content="{materialDesign:PackIcon Kind=PageLast,Size=25}"
+                        Margin='6'
+                        Click='Last_Click'></Button>
+            <Button x:Name='btnForward'
+                        Padding='4'
+                      ToolTip="NextPage"
+                        Content="{materialDesign:PackIcon Kind=GreaterThan,Size=25}"
+                        Margin='6'
+                        Click='Forward_Click'></Button>
+        </StackPanel>
         <!-- Add Pager here -->       
 
-        <Border Background="{DynamicResource DarkBlue}"/>
+        <!--<Border Background="{DynamicResource DarkBlue}"/>
         <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Customers" HorizontalAlignment="Left" Margin="10,5,0,0"/>
-        <Button x:Name="btnClose" Click="btnClose_Click" Content="X" Style="{DynamicResource btnDanger}" Margin="0,5,10,0" HorizontalAlignment="Right" Width="50" Height="40" VerticalAlignment="Top"/>
+        <Button x:Name="btnClose" Click="btnClose_Click" Content="X" Style="{DynamicResource btnDanger}" Margin="0,5,10,0" HorizontalAlignment="Right" Width="50" Height="40" VerticalAlignment="Top"/>-->
 
     </Grid>
     

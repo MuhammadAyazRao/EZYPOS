@@ -27,13 +27,22 @@ namespace EZYPOS
             MenuItem mnuDeleteInvoice = new MenuItem();
 
             mnuDeleteInvoice.Header = "Test Dynamic";
-
-            mnuDeleteInvoice.Height = 50;
-
-            mnuDeleteInvoice.Click += MenuItem_Click;
-           // mnuDeleteInvoice.Tag = "EZYPOS.UserControls.UserControlAddCustomer";
+          // var data= FindResource("VsMenuSub") ;
+            mnuDeleteInvoice.Template =(ControlTemplate) FindResource("VsMenuSub");
             mnuDeleteInvoice.Tag = "EZYPOS.UserControls.UserControlListCustomer";
+            mnuDeleteInvoice.Click += MenuItem_Click;
+            mnuDeleteInvoice.Height = 50;
+            //mnuDeleteInvoice.Icon = new System.Windows.Controls.Image
+            //{
+            //    Source = new BitmapImage(new Uri("Assets//icons//icon_queries.png", UriKind.Relative))
+            //};
+            //mnuDeleteInvoice.Icon = new MaterialDesignThemes.Wpf.PackIcon { Kind = MaterialDesignThemes.Wpf.PackIconKind.Delete };
+           
+            // mnuDeleteInvoice.Tag = "EZYPOS.UserControls.UserControlAddCustomer";
+           
             VSOnline.Items.Add(mnuDeleteInvoice);
+
+           
         }
 
         private void EditStatusCm_Click(object sender, RoutedEventArgs e)

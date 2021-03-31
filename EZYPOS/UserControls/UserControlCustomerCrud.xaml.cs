@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DAL.Repository;
 
 namespace EZYPOS.UserControls
 {
@@ -80,9 +81,9 @@ namespace EZYPOS.UserControls
             Delete.IsEnabled = false;
             Update.IsEnabled = false;
             Save.IsEnabled = true;
-            using (EPOSDBContext Db = new EPOSDBContext())
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
-                var cities = Db.Cities.ToList();
+                var cities = Db.City.GetAll().ToList();
                 ddCity.ItemsSource = cities;
             }
             txtFName.Text= "Name";

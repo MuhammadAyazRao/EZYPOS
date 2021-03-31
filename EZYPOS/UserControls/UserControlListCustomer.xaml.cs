@@ -19,6 +19,8 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Data;
+using EZYPOS.Helper;
 
 namespace EZYPOS.UserControls
 {
@@ -27,6 +29,8 @@ namespace EZYPOS.UserControls
     /// </summary>
     public partial class UserControlListCustomer : UserControl
     {
+        List<CustomerDTO> myList { get; set; }
+        Pager<CustomerDTO> Pager = new Helper.Pager<CustomerDTO>();
         public UserControlListCustomer()
         {            
             InitializeComponent();
@@ -34,11 +38,13 @@ namespace EZYPOS.UserControls
         }
         private void Refresh(object sender= null)
         {
+           
             using (EPOSDBContext DB = new EPOSDBContext())
             {
-                var CustomerData = DB.Customers.Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
-                // var CustomerData = DB.Customers.ToList();
-                customerGrid.ItemsSource = CustomerData;
+                myList = DB.Customers.Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
+                //customerGrid.ItemsSource = First(myList, numberOfRecPerPage).DefaultView; //Fill a DataTable with the First set based on the numberOfRecPerPage                 
+                customerGrid.ItemsSource = Pager.SetPaging(myList).DefaultView;
+                PageInfo.Content = Pager.PageNumberDisplay(myList);
             }
         }
 
@@ -231,7 +237,124 @@ namespace EZYPOS.UserControls
                 }
             }
 
-        }   
+        }
+
+
+        #region Pagination
+      
+
+        private void Forward_Click(object sender, RoutedEventArgs e)    //For each of these you call the direction you want and pass in the List and ComboBox output
+        {                                                               //and use the above function to output the Record number to the Label
+            customerGrid.ItemsSource =Pager.Next(myList).DefaultView;
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void Backwards_Click(object sender, RoutedEventArgs e)
+        {
+            customerGrid.ItemsSource = Pager.Previous(myList).DefaultView;
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void NumberOfRecords_SelectionChanged(object sender, SelectionChangedEventArgs e)  //I couldn't get this function to update in place (if the grid showed 20 and I selected 100 it would jump to 200)
+        {                                                                                          //So instead I had it call the First function and that does an acceptable job.
+           // numberOfRecPerPage = Convert.ToInt32(NumberOfRecords.SelectedItem);
+            //customerGrid.ItemsSource = First(myList, numberOfRecPerPage).DefaultView;
+            //PageInfo.Content = PageNumberDisplay();            //customerGrid.ItemsSource = First(myList, numberOfRecPerPage).DefaultView;
+            //PageInfo.Content = PageNumberDisplay();            //customerGrid.ItemsSource = First(myList, numberOfRecPerPage).DefaultView;
+            //PageInfo.Content = PageNumberDisplay();            //customerGrid.ItemsSource = First(myList, numberOfRecPerPage).DefaultView;
+            //PageInfo.Content = PageNumberDisplay();
+        }
+
+        private void First_Click(object sender, RoutedEventArgs e)
+        {
+            customerGrid.ItemsSource =Pager.First(myList).DefaultView;
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void Last_Click(object sender, RoutedEventArgs e)
+        {customerGrid.ItemsSource = Pager.Last(myList).DefaultView;
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        //public string PageNumberDisplay()
+        //{
+        //    int PagedNumber = numberOfRecPerPage * (PageIndex + 1);
+        //    if (PagedNumber > myList.Count)
+        //    {
+        //        PagedNumber = myList.Count;
+        //    }
+        //    return "Showing " + PagedNumber + " of " + myList.Count; //This dramatically reduced the number of times I had to write this string statement
+        //}
+
+        //public DataTable Last(IList<CustomerDTO> ListToPage, int RecordsPerPage)
+        //{
+        //    PageIndex = ListToPage.Count / RecordsPerPage;
+        //    PagedList = SetPaging(ListToPage, RecordsPerPage);
+        //    return PagedList;
+        //}
+        //public DataTable First(List<CustomerDTO> ListToPage, int RecordsPerPage)
+        //{
+        //    PageIndex = 0;     
+        //    PagedList = SetPaging(ListToPage, RecordsPerPage);
+        //    return PagedList;
+        //}
+        //public DataTable Previous(IList<CustomerDTO> ListToPage, int RecordsPerPage)
+        //{
+        //    PageIndex--;
+        //    if (PageIndex <= 0)
+        //    {
+        //        PageIndex = 0;
+        //    }
+        //    PagedList = SetPaging(ListToPage, RecordsPerPage);
+        //    return PagedList;
+        //}
+        //public DataTable Next(IList<CustomerDTO> ListToPage, int RecordsPerPage)
+        //{
+        //    PageIndex++;
+        //    if (PageIndex >= ListToPage.Count / RecordsPerPage)
+        //    {
+        //        PageIndex = ListToPage.Count / RecordsPerPage;
+        //    }
+        //    PagedList = SetPaging(ListToPage, RecordsPerPage);
+        //    return PagedList;
+        //}
+
+
+        //public DataTable SetPaging(IList<CustomerDTO> ListToPage, int RecordsPerPage)
+        //{
+        //    int PageGroup = PageIndex * RecordsPerPage;
+
+        //    IList<CustomerDTO> PagedList = new List<CustomerDTO>();
+
+        //    PagedList = ListToPage.Skip(PageGroup).Take(RecordsPerPage).ToList(); //This is where the Magic Happens. If you have a Specific sort or want to return ONLY a specific set of columns, add it to this LINQ Query.
+
+        //    DataTable FinalPaging = PagedTable(PagedList);
+
+        //    return FinalPaging;
+        //}
+
+        //private DataTable PagedTable<T>(IList<T> SourceList)
+        //{
+        //    Type columnType = typeof(T);
+        //    DataTable TableToReturn = new DataTable();
+
+        //    foreach (var Column in columnType.GetProperties())
+        //    {
+        //        TableToReturn.Columns.Add(Column.Name, Column.PropertyType);
+        //    }
+
+        //    foreach (object item in SourceList)
+        //    {
+        //        DataRow ReturnTableRow = TableToReturn.NewRow();
+        //        foreach (var Column in columnType.GetProperties())
+        //        {
+        //            ReturnTableRow[Column.Name] = Column.GetValue(item);
+        //        }
+        //        TableToReturn.Rows.Add(ReturnTableRow);
+        //    }
+        //    return TableToReturn;
+        //}
+        #endregion
 
     }
 }

@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30709.132
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EZYPOS", "EZYPOS\EZYPOS.csproj", "{178D5A0C-F127-4ED0-B3D9-61217695C8F6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{54FC0031-7448-4F95-B2A6-1D4CC06C50E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{178D5A0C-F127-4ED0-B3D9-61217695C8F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{178D5A0C-F127-4ED0-B3D9-61217695C8F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{178D5A0C-F127-4ED0-B3D9-61217695C8F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54FC0031-7448-4F95-B2A6-1D4CC06C50E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54FC0031-7448-4F95-B2A6-1D4CC06C50E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54FC0031-7448-4F95-B2A6-1D4CC06C50E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54FC0031-7448-4F95-B2A6-1D4CC06C50E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

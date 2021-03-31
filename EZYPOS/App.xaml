@@ -666,7 +666,7 @@
                     <Run Text=" "/>
                 </Paragraph>
             </FlowDocument>-->
-            <Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />
+           
         </ResourceDictionary>
 
     </Application.Resources>

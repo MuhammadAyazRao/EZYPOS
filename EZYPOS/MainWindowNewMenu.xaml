@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
         xmlns:my="clr-namespace:ChromeTabs;assembly=ChromeTabs"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:EZYPOS"
         mc:Ignorable="d"
         Title="MainWindowNewMenu" Height="450" Width="800">
@@ -41,9 +41,7 @@
                 <!-- label, icons, etc. -->
                 <Image Source="{Binding Icon, RelativeSource={RelativeSource TemplatedParent}}" Width="20" Margin="5,0" />
                 <Label Content="{TemplateBinding Header}" Foreground="Black" Margin="0,5,5,5" />
-
-                <!-- draw the right arrow only if this menu item has sub items -->
-                <Image Source="menu.png" Visibility="{Binding HasItems, Converter={StaticResource btv}, RelativeSource={RelativeSource TemplatedParent}}" />
+                <Image Source="Assets\icons\icon_right.png" Visibility="{Binding HasItems, Converter={StaticResource btv}, RelativeSource={RelativeSource TemplatedParent}}" />
 
                 <!-- sub items -->
                 <Popup IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False" Placement="Right" >
@@ -65,10 +63,11 @@
         </ControlTemplate>
 
         <!-- style the VSOnline -->
+        <!-- style a top level menu item -->
         <ControlTemplate x:Key="VsOnline" TargetType="MenuItem">
             <StackPanel TextBlock.FontSize="15px" Height="40" Orientation="Horizontal" Background="#005A9E">
                 <Label Content="{TemplateBinding Header}" Margin="5" Foreground="White" />
-                <Image Source="menu.png" Height="20" Margin="0,0,5,0" />
+                <Image Source="Assets\icons\icon_down.png" Height="20" Margin="0,0,5,0" />
 
                 <!-- sub items -->
                 <Popup IsOpen="{TemplateBinding IsSubmenuOpen}" AllowsTransparency="True" Focusable="False">
@@ -88,8 +87,7 @@
     </Window.Resources>
 
     <!-- the real app and real menu -->
-    <Grid>
-        
+    <Grid>        
         <Grid.RowDefinitions>
             <RowDefinition x:Name="ColMenu" Height="50"/>
             <RowDefinition x:Name="ColShowMenu" Height="0"/>
@@ -100,34 +98,34 @@
         </Grid.ColumnDefinitions>
         
         <StackPanel>
-        <Menu IsMainMenu="True">
-            <MenuItem Header="_TestMain" Name="VSOnline" Template="{StaticResource VsOnline}" >
-                <MenuItem Header="_TestStatic" Click="EditStatusCm_Click" CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"  Template="{StaticResource VsMenuSub}" />
-            </MenuItem>
-            <MenuItem Header="_Dashboards" Template="{StaticResource VsMenuTop}">
-                <MenuItem Header="_Overview" Template="{StaticResource VsMenuSub}" />
-            </MenuItem>
-            <MenuItem Header="_Code" Template="{StaticResource VsMenuTop}">
-                <MenuItem Header="_Files" Template="{StaticResource VsMenuSub}" />
-                <MenuItem Header="_Commits" Template="{StaticResource VsMenuSub}" />
-                <MenuItem Header="_Pushes" Template="{StaticResource VsMenuSub}" />
-            </MenuItem>
-            <MenuItem Header="_Work" Template="{StaticResource VsMenuTop}">
-                <MenuItem Header="_Backlogs" Template="{StaticResource VsMenuSub}" Icon="icon_backlogs.png" />
-                <MenuItem Header="_Queries" Template="{StaticResource VsMenuSub}" Icon="icon_queries.png" />
-                <Separator Template="{StaticResource VsMenuSep}" />
-                <MenuItem Header="_New Work Item" Template="{StaticResource VsMenuSub}">
-                    <MenuItem Header="_Epic" Template="{StaticResource VsMenuSub}" Icon="icon_epic.png" />
-                    <MenuItem Header="_Feature" Template="{StaticResource VsMenuSub}" Icon="icon_feature.png" />
-                    <MenuItem Header="_Issue" Template="{StaticResource VsMenuSub}" Icon="icon_issue.png" />
-                    <MenuItem Header="_Task" Template="{StaticResource VsMenuSub}" Icon="icon_task.png" />
-                    <MenuItem Header="_Test Case" Template="{StaticResource VsMenuSub}" Icon="icon_testcase.png" />
-                    <MenuItem Header="_User Story" Template="{StaticResource VsMenuSub}" Icon="icon_userstory.png" />
+            <Menu IsMainMenu="True">
+                <MenuItem Header="_VSOnline" Name="VSOnline" Template="{StaticResource VsOnline}" >
+                    <MenuItem Header="_Whatever" Name="test" Template="{StaticResource VsMenuSub}" />
                 </MenuItem>
-                <MenuItem Header="_Bug" Template="{StaticResource VsMenuSub}" Icon="icon_bug.png" />
-            </MenuItem>
-        </Menu>
-    </StackPanel>
+                <MenuItem Header="_Dashboards" Template="{StaticResource VsMenuTop}">
+                    <MenuItem Header="_Overview" Template="{StaticResource VsMenuSub}" />
+                </MenuItem>
+                <MenuItem Header="_Code" Template="{StaticResource VsMenuTop}">
+                    <MenuItem Header="_Files" Template="{StaticResource VsMenuSub}" />
+                    <MenuItem Header="_Commits" Template="{StaticResource VsMenuSub}" />
+                    <MenuItem Header="_Pushes" Template="{StaticResource VsMenuSub}" />
+                </MenuItem>
+                <MenuItem Header="_Work" Template="{StaticResource VsMenuTop}">
+                    <MenuItem Header="_Backlogs" Template="{StaticResource VsMenuSub}"  />
+                    <MenuItem Header="_Queries" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_queries.png" />
+                    <Separator Template="{StaticResource VsMenuSep}" />
+                    <MenuItem Header="_New Work Item" Template="{StaticResource VsMenuSub}">
+                        <MenuItem Header="_Epic" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
+                        <MenuItem Header="_Feature" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_feature.png" />
+                        <MenuItem Header="_Issue" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_issue.png" />
+                        <MenuItem Header="_Task" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_task.png" />
+                        <MenuItem Header="_Test Case" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_testcase.png" />
+                        <MenuItem Header="_User Story" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_userstory.png" />
+                    </MenuItem>
+                    <MenuItem Header="_Bug" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
+                </MenuItem>
+            </Menu>
+        </StackPanel>
         <ScrollViewer  HorizontalScrollBarVisibility="Auto"  VerticalScrollBarVisibility="Auto" Grid.Row="2">
             <!--<dragablz:TabablzControl Margin="8" ShowDefaultCloseButton="True" ShowDefaultAddButton="True">
                 <dragablz:TabablzControl.InterTabController>
