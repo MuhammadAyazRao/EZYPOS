@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ChromeTabs;
+using EZYPOS.Helper.Session;
+using EZYPOS.UserControls;
 
 namespace EZYPOS
 {
@@ -24,10 +26,11 @@ namespace EZYPOS
         public MainWindowNewMenu()
         {
             InitializeComponent();
+            ActiveSession.DisplayuserControl += DisplayUserControl;
+            ActiveSession.CloseDisplayuserControl += CloseDisplayUserControl;
             MenuItem mnuDeleteInvoice = new MenuItem();
 
-            mnuDeleteInvoice.Header = "Test Dynamic";
-          // var data= FindResource("VsMenuSub") ;
+            mnuDeleteInvoice.Header = "Test Dynamic";        
             mnuDeleteInvoice.Template =(ControlTemplate) FindResource("VsMenuSub");
             mnuDeleteInvoice.Tag = "EZYPOS.UserControls.UserControlListCustomer";
             mnuDeleteInvoice.Click += MenuItem_Click;
@@ -37,9 +40,6 @@ namespace EZYPOS
             //    Source = new BitmapImage(new Uri("Assets//icons//icon_queries.png", UriKind.Relative))
             //};
             //mnuDeleteInvoice.Icon = new MaterialDesignThemes.Wpf.PackIcon { Kind = MaterialDesignThemes.Wpf.PackIconKind.Delete };
-           
-            // mnuDeleteInvoice.Tag = "EZYPOS.UserControls.UserControlAddCustomer";
-           
             VSOnline.Items.Add(mnuDeleteInvoice);
 
            
@@ -88,14 +88,18 @@ namespace EZYPOS
             }
         }
 
-        public void DisplayUserControl(UserControl uc)
+        public void CloseDisplayUserControl(object Usercontrol)
         {
-            // Add new user control to content area
-            // contentArea.Children.Add(uc);
-            this.chrometabs.AddTab(this.GenerateNewItem(uc), true);
+            this.chrometabs.RemoveTab(this.chrometabs.SelectedItem);
+            DisplayUserControl(Usercontrol);
         }
 
-       
+        public void DisplayUserControl(object Usercontrol)        {
+            // Add new user control to content area
+            // contentArea.Children.Add(uc);
+            UserControl uc = (UserControl)Usercontrol;
+            this.chrometabs.AddTab(this.GenerateNewItem(uc), true);
+        }       
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem mnu = (MenuItem)sender;
@@ -147,6 +151,13 @@ namespace EZYPOS
                 };
             }
             return itemToAdd;
+        }
+
+        private void Cutomers_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlListCustomer Customer = new UserControlListCustomer();
+            ActiveSession.DisplayuserControlMethod(Customer);
+               // DisplayUserControl(Customer);
         }
     }
 }

@@ -18,6 +18,17 @@ namespace EZYPOS.Helper.Session
             NavigateToHomeView?.Invoke(parameter);
         }
 
+        public static event CommunucationHandler DisplayuserControl;
+        public static void DisplayuserControlMethod(object parameter)
+        {
+            DisplayuserControl?.Invoke(parameter);
+        }
+
+        public static event CommunucationHandler CloseDisplayuserControl;
+        public static void CloseDisplayuserControlMethod(object parameter)
+        {
+            CloseDisplayuserControl?.Invoke(parameter);
+        }
 
         public static event CommunucationHandler SwitchScreen;
         public static void NavigateToSwitchScreen(object parameter)

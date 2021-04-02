@@ -99,19 +99,11 @@
         
         <StackPanel>
             <Menu IsMainMenu="True">
-                <MenuItem Header="_VSOnline" Name="VSOnline" Template="{StaticResource VsOnline}" >
-                    <MenuItem Header="_Whatever" Name="test" Template="{StaticResource VsMenuSub}" />
-                </MenuItem>
-                <MenuItem Header="_Dashboards" Template="{StaticResource VsMenuTop}">
-                    <MenuItem Header="_Overview" Template="{StaticResource VsMenuSub}" />
-                </MenuItem>
-                <MenuItem Header="_Code" Template="{StaticResource VsMenuTop}">
-                    <MenuItem Header="_Files" Template="{StaticResource VsMenuSub}" />
-                    <MenuItem Header="_Commits" Template="{StaticResource VsMenuSub}" />
-                    <MenuItem Header="_Pushes" Template="{StaticResource VsMenuSub}" />
+                <MenuItem Header="_EZYPOS" Name="VSOnline" Template="{StaticResource VsOnline}" >
+                    <MenuItem Header="_Setting" Name="test" Template="{StaticResource VsMenuSub}" />
                 </MenuItem>
                 <MenuItem Header="_Work" Template="{StaticResource VsMenuTop}">
-                    <MenuItem Header="_Backlogs" Template="{StaticResource VsMenuSub}"  />
+                    <MenuItem Header="_Customers" Name="Cutomers" Click="Cutomers_Click" Template="{StaticResource VsMenuSub}"  />
                     <MenuItem Header="_Queries" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_queries.png" />
                     <Separator Template="{StaticResource VsMenuSep}" />
                     <MenuItem Header="_New Work Item" Template="{StaticResource VsMenuSub}">
@@ -145,7 +137,7 @@
             </dragablz:TabablzControl>-->
             <!--<StackPanel x:Name="contentArea" />-->
             <my:ChromeTabControl Name="chrometabs">
-                <my:ChromeTabItem Header="One" Background="Orange">
+                <!--<my:ChromeTabItem Header="One" Background="Orange">
                     <Button>Uno</Button>
                 </my:ChromeTabItem>
                 <my:ChromeTabItem Header="Two" Background="Green">
@@ -157,7 +149,7 @@
                 <Button>Hello</Button>
                 <my:ChromeTabItem Header="Four" Background="Green">
                     <Label>Quattro</Label>
-                </my:ChromeTabItem>
+                </my:ChromeTabItem>-->
             </my:ChromeTabControl>
         </ScrollViewer>
 
