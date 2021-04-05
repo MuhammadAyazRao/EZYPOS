@@ -8,21 +8,19 @@ using System.Threading.Tasks;
 
 namespace DAL.IRepository
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<TEntity> where TEntity : class
     {
-        T GetById(int id);
 
-        IEnumerable<T> GetAll();
+        IQueryable<TEntity> GetAll();
 
-        IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
+        TEntity Get(int id);
 
-        void Add(T entity);
+        void Add(TEntity entity, bool isSaveChanges = true);
 
-        void AddRange(IEnumerable<T> entities);
+        void Change(TEntity entity, bool isSaveChanges = true);
 
-        void Remove(T entity);
+        void Delete(int id, bool isSaveChanges = true);
 
-        void RemoveRange(IEnumerable<T> entities);
-      
+        void Save();
     }
 }

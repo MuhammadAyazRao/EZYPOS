@@ -159,5 +159,18 @@ namespace EZYPOS
             ActiveSession.DisplayuserControlMethod(Customer);
                // DisplayUserControl(Customer);
         }
+
+        private void Cities_Click(object sender, RoutedEventArgs e)
+        {
+            //UserControlListEmployee Employee = new UserControlListEmployee();
+            //ActiveSession.DisplayuserControlMethod(Employee);
+        }
+
+        private void Employee_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlListEmployee Employee = new UserControlListEmployee();
+            ActiveSession.DisplayuserControlMethod(Employee);
+        }
+
     }
 }

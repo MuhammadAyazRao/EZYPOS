@@ -1,4 +1,5 @@
-﻿using DAL.IRepository;
+﻿using DAL.DBModel;
+using DAL.IRepository;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,49 +10,72 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        private readonly DbSet<T> _entities;
+        private readonly DbContext _dbContext;
 
-        public Repository(DbContext context)
+        public Repository(DbContext dbContext)
         {
-            _entities = context.Set<T>();
+            _dbContext = dbContext;
+            this.ctx = _dbContext;
         }
 
-        public T GetById(int id)
+        public IQueryable<TEntity> GetAll()
         {
-            return _entities.Find(id);
+            return _dbContext.Set<TEntity>();
+        }
+        public TEntity Get(int id)
+        {
+            return _dbContext.Set<TEntity>().Find(id);
         }
 
-        public IEnumerable<T> GetAll()
+        public void Add(TEntity entity, bool isSaveChanges = true)
         {
-            return _entities.ToList();
+            _dbContext.Set<TEntity>().Add(entity);
+            if (isSaveChanges)
+            {
+                Save();
+            }
         }
 
-        public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
+
+        public void Change(TEntity entity, bool isSaveChanges = true)
         {
-            return _entities.Where(predicate);
+            _dbContext.Set<TEntity>().Update(entity);
+            if (isSaveChanges)
+            {
+                Save();
+            }
         }
 
-        public void Add(T entity)
+        public void Delete(int id, bool isSaveChanges = true)
         {
-            _entities.Add(entity);
+            var entity = Get(id);
+            if (entity != null)
+            {
+                _dbContext.Set<TEntity>().Remove(entity);
+                if (isSaveChanges)
+                {
+                    _dbContext.SaveChanges();
+                }
+            }
+
         }
 
-        public void AddRange(IEnumerable<T> entities)
+        public IQueryable<TEntity> GetAll_NoTracking()
         {
-            _entities.AddRange(entities);
+            return _dbContext.Set<TEntity>().AsNoTracking();
+        }
+        public virtual void RemoveRange(IEnumerable<TEntity> entities)
+        {
+            _dbContext.Set<TEntity>().RemoveRange(entities);
+        }
+        public void Save()
+        {
+            _dbContext.SaveChanges();
         }
 
-        public void Remove(T entity)
-        {
-            _entities.Remove(entity);
-        }
-
-        public void RemoveRange(IEnumerable<T> entities)
-        {
-            _entities.RemoveRange(entities);
-        }
+        public DbContext ctx { get; set; }
 
     }
 }

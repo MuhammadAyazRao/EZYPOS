@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:EZYPOS.UserControls"
              mc:Ignorable="d"  
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"            
-             d:DesignHeight="1024" d:DesignWidth="768">
+             d:DesignHeight="1024" Name="AddEmployee"  d:DesignWidth="768">
     <UserControl.Resources>
         <Style TargetType="Label">
             <Setter Property="Foreground" Value="Gray" />
@@ -54,11 +54,11 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <!--<RowDefinition Height="50"/>-->
             <RowDefinition Height="450"/>
             <RowDefinition Height="61"/>
         </Grid.RowDefinitions>
-        <Border ScrollViewer.CanContentScroll="True" ScrollViewer.PanningMode="VerticalFirst" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="LightGray" BorderThickness="2" Margin="50,50,50,50" Grid.Row="1">
+        <Border ScrollViewer.CanContentScroll="True" ScrollViewer.PanningMode="VerticalFirst" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="LightGray" BorderThickness="2" Margin="50,50,50,50" Grid.Row="0">
             <Grid Margin="0,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60"></RowDefinition>
@@ -124,10 +124,10 @@
         <Button  Content="{materialDesign:PackIcon Kind=Pencil,Size=50}" Name="Update" Click="Update_Click" Style="{DynamicResource btnInfo}" HorizontalAlignment="Left" Grid.Row="2" Margin="300,0,0,0" Width="100"   ToolTip="Edit"  />
         <Button  Content="{materialDesign:PackIcon Kind=Delete,Size=50}" Name="Delete" Click="Delete_Click" BorderThickness="0"  Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Grid.Row="2" Margin="175,0,0,0" Width="100"  ToolTip="Delete" />
         <Button  Content="{materialDesign:PackIcon Kind=ContentSave,Size=50}" Name="Save" Click="Save_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left" Grid.Row="2" Margin="430,0,0,0" Width="100"  ToolTip="Save" />
-        <Label x:Name="lblTitleDetails" Content="Employee Details" Foreground="{DynamicResource DarkBlue}" HorizontalAlignment="Left" Margin="18,26,0,0" Grid.Row="1" VerticalAlignment="Top" Width="245" Height="24"/>
-        <Border Background="{DynamicResource DarkBlue}"/>
+        <Label x:Name="label1" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Content="Employee Detail" HorizontalAlignment="Left" Margin="40,10,0,300"/>
+        <!--<Border Background="{DynamicResource DarkBlue}"/>
         <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Employee" HorizontalAlignment="Left" Margin="10,5,0,0"/>
-        <Button x:Name="btnCloseTopBar" Click="btnClose_Click" Content="X" Style="{DynamicResource btnDanger}" Margin="0,5,10,0" HorizontalAlignment="Right" Width="50" Height="40" VerticalAlignment="Top"/>
+        <Button x:Name="btnCloseTopBar" Click="btnClose_Click" Content="X" Style="{DynamicResource btnDanger}" Margin="0,5,10,0" HorizontalAlignment="Right" Width="50" Height="40" VerticalAlignment="Top"/>-->
 
 
     </Grid>

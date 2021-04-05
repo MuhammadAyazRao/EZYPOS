@@ -63,7 +63,7 @@ namespace EZYPOS.UserControls
             JoiningDate.Text ="";
             txtId.Text = "";
             SetImage(Environment.CurrentDirectory + @"\Assets\EmployeeImages\No_Image.jpg");
-            ActiveSession.NavigateToRefreshEmployeeList("");
+            //ActiveSession.NavigateToRefreshEmployeeList("");
         }
 
         private void InitializePage(EmployeeDTO Employee)
@@ -431,12 +431,15 @@ namespace EZYPOS.UserControls
 
         private void SetImage(string ImagePath,string UserName="Employee Image")
         {
-            BitmapImage bitmap = new BitmapImage();
-            bitmap.BeginInit();
-            bitmap.UriSource = new Uri(ImagePath);
-            bitmap.EndInit(); 
-            UserImage.Source = bitmap;
-            ImageSelector.Content = UserName;
+            //if (File.Exists(ImagePath))
+            {
+                BitmapImage bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(ImagePath);
+                bitmap.EndInit();
+                UserImage.Source = bitmap;
+                ImageSelector.Content = UserName;
+            }
         }
     }
 }

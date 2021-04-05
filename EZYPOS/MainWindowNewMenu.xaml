@@ -104,6 +104,8 @@
                 </MenuItem>
                 <MenuItem Header="_Work" Template="{StaticResource VsMenuTop}">
                     <MenuItem Header="_Customers" Name="Cutomers" Click="Cutomers_Click" Template="{StaticResource VsMenuSub}"  />
+                    <MenuItem Header="_Cities" Name="Cities" Click="Cities_Click" Template="{StaticResource VsMenuSub}"  />
+                    <MenuItem Header="_Employee" Name="Employee" Click="Employee_Click" Template="{StaticResource VsMenuSub}"  />
                     <MenuItem Header="_Queries" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_queries.png" />
                     <Separator Template="{StaticResource VsMenuSep}" />
                     <MenuItem Header="_New Work Item" Template="{StaticResource VsMenuSub}">

@@ -13,6 +13,7 @@ namespace DAL.IRepository
         IRepository<City> City { get; }
         IRepository<UserPage> UserPage { get; }
         IRepository<UserRole> UserRole { get; }
+        IRepository<Emplyee> Employee { get; }
 
         int Complete();
     }

@@ -12,21 +12,21 @@ namespace EZYPOS.Helper
         //public int numberOfRecPerPage = 10;
         //List<T> myList { get; set; }
         public int PageIndex = 0;
-        DataTable PagedList = new DataTable();        
+        List<T> PagedList = new List<T>();        
 
-        public DataTable Last(List<T> ListToPage, int RecordsPerPage=10)
+        public List<T> Last(List<T> ListToPage, int RecordsPerPage=10)
         {
             PageIndex = ListToPage.Count / RecordsPerPage;            
             PagedList = SetPaging(ListToPage, RecordsPerPage);
             return PagedList;
         }
-        public DataTable First(List<T> ListToPage, int RecordsPerPage=10)
+        public List<T> First(List<T> ListToPage, int RecordsPerPage=10)
         {
             PageIndex = 0;
             PagedList = SetPaging(ListToPage, RecordsPerPage);
             return PagedList;
         }
-        public DataTable Next(List<T> ListToPage, int RecordsPerPage=10)
+        public List<T> Next(List<T> ListToPage, int RecordsPerPage=10)
         {
             PageIndex++;
             if (PageIndex >= ListToPage.Count / RecordsPerPage)
@@ -36,7 +36,7 @@ namespace EZYPOS.Helper
             PagedList = SetPaging(ListToPage, RecordsPerPage);
             return PagedList;
         }
-        public DataTable Previous(List<T> ListToPage, int RecordsPerPage = 10)
+        public List<T> Previous(List<T> ListToPage, int RecordsPerPage = 10)
         {
             PageIndex--;
             if (PageIndex <= 0)
@@ -47,7 +47,7 @@ namespace EZYPOS.Helper
             return PagedList;
         }
 
-        public DataTable SetPaging(List<T> ListToPage, int RecordsPerPage=10)
+        public List<T> SetPaging(List<T> ListToPage, int RecordsPerPage=10)
         {
             int PageGroup = PageIndex * RecordsPerPage;
 
@@ -55,9 +55,9 @@ namespace EZYPOS.Helper
 
             PagedList = ListToPage.Skip(PageGroup).Take(RecordsPerPage).ToList(); //This is where the Magic Happens. If you have a Specific sort or want to return ONLY a specific set of columns, add it to this LINQ Query.
 
-            DataTable FinalPaging = PagedTable<T>(PagedList);
+            //DataTable FinalPaging = PagedTable<T>(PagedList);
 
-            return FinalPaging;
+            return PagedList;
         }
 
 

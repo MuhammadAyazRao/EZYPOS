@@ -42,17 +42,11 @@ namespace EZYPOS.UserControls
            
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
-                myList = DB.Customers.GetAll().Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
+                myList = DB.Customers.GetAll().Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation.CityName == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
                 //customerGrid.ItemsSource = First(myList, numberOfRecPerPage).DefaultView; //Fill a DataTable with the First set based on the numberOfRecPerPage                 
                 ResetPaging(myList);
             }
-        }
-
-        private void ResetPaging(List<CustomerDTO> ListTopagenate)
-        {
-            customerGrid.ItemsSource = Pager.First(ListTopagenate).DefaultView;
-            PageInfo.Content = Pager.PageNumberDisplay(ListTopagenate);
-        }
+        }        
 
         private void btnAddCustomer_Click(object sender, RoutedEventArgs e)
         {
@@ -180,7 +174,8 @@ namespace EZYPOS.UserControls
         {            
           
             EZYPOS.DTO.CustomerDTO CustomerObj = (EZYPOS.DTO.CustomerDTO)customerGrid.SelectedItem;
-            ActiveSession.NavigateToSwitchScreen(new UserControlCustomerCrud(CustomerObj));
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlCustomerCrud(CustomerObj));
+            //ActiveSession.NavigateToSwitchScreen(new UserControlCustomerCrud(CustomerObj));
            
         }
 
@@ -270,17 +265,21 @@ namespace EZYPOS.UserControls
 
 
         #region Pagination
-      
 
+        private void ResetPaging(List<CustomerDTO> ListTopagenate)
+        {
+            customerGrid.ItemsSource = Pager.First(ListTopagenate);
+            PageInfo.Content = Pager.PageNumberDisplay(ListTopagenate);
+        }
         private void Forward_Click(object sender, RoutedEventArgs e)    //For each of these you call the direction you want and pass in the List and ComboBox output
         {                                                               //and use the above function to output the Record number to the Label
-            customerGrid.ItemsSource =Pager.Next(myList).DefaultView;
+            customerGrid.ItemsSource =Pager.Next(myList);
             PageInfo.Content = Pager.PageNumberDisplay(myList);
         }
 
         private void Backwards_Click(object sender, RoutedEventArgs e)
         {
-            customerGrid.ItemsSource = Pager.Previous(myList).DefaultView;
+            customerGrid.ItemsSource = Pager.Previous(myList);
             PageInfo.Content = Pager.PageNumberDisplay(myList);
         }
 
@@ -296,12 +295,12 @@ namespace EZYPOS.UserControls
 
         private void First_Click(object sender, RoutedEventArgs e)
         {
-            customerGrid.ItemsSource =Pager.First(myList).DefaultView;
+            customerGrid.ItemsSource =Pager.First(myList);
             PageInfo.Content = Pager.PageNumberDisplay(myList);
         }
 
         private void Last_Click(object sender, RoutedEventArgs e)
-        {customerGrid.ItemsSource = Pager.Last(myList).DefaultView;
+        {customerGrid.ItemsSource = Pager.Last(myList);
             PageInfo.Content = Pager.PageNumberDisplay(myList);
         }
 
