@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using DAL.Repository;
+using Microsoft.Extensions.Logging;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -23,8 +24,11 @@ namespace EZYPOS
         {
             // SetupExceptionHandling();
             await Task.Run(() => SetupExceptionHandling());
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            { 
+            }
 
-        }
+            }
 
         private void SetupExceptionHandling()
         {

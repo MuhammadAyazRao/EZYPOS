@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DAL.Repository;
+using DAL.IRepository;
 
 namespace EZYPOS.UserControls
 {
@@ -41,9 +42,9 @@ namespace EZYPOS.UserControls
             Update.IsEnabled = true;
             Save.IsEnabled = false;
 
-            using (EPOSDBContext Db = new EPOSDBContext())
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
-                var Customerdata = Db.Customers.Where(x => x.Id == Customer.Id).FirstOrDefault();
+                var Customerdata = Db.Customers.GetAll().Where(x => x.Id == Customer.Id).FirstOrDefault();
 
                 if (!string.IsNullOrEmpty(Customerdata?.Name))
                 {
@@ -174,9 +175,9 @@ namespace EZYPOS.UserControls
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
                     int Id = Convert.ToInt32(txtId.Text);
-                    using (EPOSDBContext DB = new EPOSDBContext())
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                     {
-                        var UpdateCustomer = DB.Customers.Where(x => x.Id == Id).FirstOrDefault();
+                        var UpdateCustomer = Db.Customers.Get(Id);
                         if (UpdateCustomer != null)
                         {
                             if (!string.IsNullOrEmpty(txtFName.Text))
@@ -202,7 +203,7 @@ namespace EZYPOS.UserControls
                             {
                                 UpdateCustomer.City = CityId;
                             }
-                            DB.SaveChanges();
+                            Db.Complete();
                             EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
                             RefreshPage();
                             ActiveSession.NavigateToRefreshMenu("");

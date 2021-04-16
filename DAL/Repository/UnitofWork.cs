@@ -20,13 +20,14 @@ namespace DAL.Repository
             UserRole= new Repository<UserRole>(_context);
             UserPage = new Repository<UserPage>(_context);
            Employee = new Repository<Emplyee>(_context);
-
+            ExpenceType = new Repository<ExpenceType>(_context);
         }
         public IRepository<City> City { get; }
         public ICustomerRepository Customers { get; }
         public IRepository<UserPage> UserPage { get; }
         public IRepository<UserRole> UserRole { get; }
         public IRepository<Emplyee> Employee { get; }
+        public IRepository<ExpenceType> ExpenceType { get; }
 
         public int Complete()
         {

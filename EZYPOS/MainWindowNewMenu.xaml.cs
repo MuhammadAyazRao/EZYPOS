@@ -172,5 +172,10 @@ namespace EZYPOS
             ActiveSession.DisplayuserControlMethod(Employee);
         }
 
+        private void Expence_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlExpenceHeadList ExpenceHead = new UserControlExpenceHeadList();
+            ActiveSession.DisplayuserControlMethod(ExpenceHead);
+        }
     }
 }

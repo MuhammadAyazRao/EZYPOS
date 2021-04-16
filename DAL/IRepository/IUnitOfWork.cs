@@ -14,6 +14,7 @@ namespace DAL.IRepository
         IRepository<UserPage> UserPage { get; }
         IRepository<UserRole> UserRole { get; }
         IRepository<Emplyee> Employee { get; }
+        IRepository<ExpenceType> ExpenceType { get; }
 
         int Complete();
     }

@@ -1,4 +1,7 @@
-﻿using EZYPOS.DBModels;
+﻿using DAL.DBModel;
+using DAL.Repository;
+using EZYPOS.DBModels;
+using EZYPOS.Helper;
 using EZYPOS.Helper.Session;
 using System;
 using System.Collections.Generic;
@@ -22,27 +25,28 @@ namespace EZYPOS.UserControls
     /// </summary>
     public partial class UserControlExpenceHeadList : UserControl
     {
-        public UserControlExpenceHeadList(bool Ismenu=false)
+        List<DAL.DBModel.ExpenceType> myList { get; set; }
+        Pager<DAL.DBModel.ExpenceType> Pager = new Helper.Pager<DAL.DBModel.ExpenceType>();
+        public UserControlExpenceHeadList()
         {
-            if (Ismenu)
-            {
-                ActiveSession.RefreshExpenceHead += Refresh;
-            }
+            
             InitializeComponent();
             Refresh();
         }
         private void Refresh(object sender = null)
         {
-            using (EPOSDBContext DB = new EPOSDBContext())
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
-                var Expencelist = DB.ExpenceTypes.ToList();
-                ExpenceHeadGrid.ItemsSource = Expencelist;
+                myList = DB.ExpenceType.GetAll().ToList();
+                ExpenceHeadGrid.ItemsSource = myList;
             }
         }
 
         private void AddExpenceHead_Click(object sender, RoutedEventArgs e)
         {
-            ActiveSession.NavigateToSwitchScreen(new UserControlExpenceHeadCrud());
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlExpenceHeadCrud());
+
+           // ActiveSession.NavigateToSwitchScreen(new UserControlExpenceHeadCrud());
         }
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
@@ -51,21 +55,21 @@ namespace EZYPOS.UserControls
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            List<ExpenceType> ExpenceTypes;
-            using (EPOSDBContext DB = new EPOSDBContext())
+
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
                 if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
                 {
-                    ExpenceTypes = DB.ExpenceTypes.ToList();
+                    myList = DB.ExpenceType.GetAll().ToList();
                 }
                 else
                 {
                     DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
                     DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    ExpenceTypes = DB.ExpenceTypes.Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
+                    myList = DB.ExpenceType.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
                 }
 
-                ExpenceHeadGrid.ItemsSource = ExpenceTypes;
+                ExpenceHeadGrid.ItemsSource = myList;
             }
 
         }
@@ -77,33 +81,26 @@ namespace EZYPOS.UserControls
                 TextBox t = (TextBox)sender;
                 string filter = t.Text;
                 var cv = CollectionViewSource.GetDefaultView(ExpenceHeadGrid.ItemsSource);
-                if (filter == "")
-                    cv.Filter = null;
-                else
+
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                 {
-                    cv.Filter = o =>
-                    {
-                        ExpenceType List = o as ExpenceType;
 
                         if (t.Name == "GridName")
                         {
-                            return List.ExpenceName.ToUpper().StartsWith(filter.ToUpper());                            
-                        }                        
-                        else
-                        {
-                            return true;
-                        }                   
+                            myList= DB.ExpenceType.GetAll().Where(x=>x.ExpenceName.ToUpper().StartsWith(filter.ToUpper())).ToList();                            
+                        }
+
+                    ExpenceHeadGrid.ItemsSource = myList;
 
 
-                    };
                 }
             }
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            ExpenceType ExpenceType = (ExpenceType)ExpenceHeadGrid.SelectedItem;
-            ActiveSession.NavigateToSwitchScreen(new UserControlExpenceHeadCrud(ExpenceType));
+            DAL.DBModel.ExpenceType ExpenceType = (DAL.DBModel.ExpenceType)ExpenceHeadGrid.SelectedItem;
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlExpenceHeadCrud(ExpenceType));
         }
     }
 }

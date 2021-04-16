@@ -1,4 +1,5 @@
-﻿using EZYPOS.DBModels;
+﻿using DAL.Repository;
+using EZYPOS.DBModels;
 using EZYPOS.Helper.Session;
 using System;
 using System.Collections.Generic;
@@ -22,29 +23,24 @@ namespace EZYPOS.UserControls
     /// </summary>
     public partial class UserControlExpenceHeadCrud : UserControl
     {
-        public UserControlExpenceHeadCrud(ExpenceType ExpenceType=null)
+        public UserControlExpenceHeadCrud(DAL.DBModel.ExpenceType ExpenceType = null)
         {
             InitializeComponent();
             RefreshPage();
-            
+
             if (ExpenceType != null)
             { InitializePage(ExpenceType); }
         }
-        private void InitializePage(ExpenceType ExpenceType)
+        private void InitializePage(DAL.DBModel.ExpenceType ExpenceType)
         {
-            Delete.IsEnabled = true;
-            Update.IsEnabled = true;
-            Save.IsEnabled = false;
-
-            using (EPOSDBContext Db = new EPOSDBContext())
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
-                var Expencedata = Db.ExpenceTypes.Where(x => x.Id == ExpenceType.Id).FirstOrDefault();
-
+                var Expencedata = Db.ExpenceType.Get(ExpenceType.Id);
                 if (!string.IsNullOrEmpty(Expencedata?.ExpenceName))
                 {
                     txtFName.Text = Expencedata?.ExpenceName;
                     txtFName.Foreground = Brushes.Black;
-                }                
+                }
                 txtId.Text = Expencedata.Id.ToString();
             }
 
@@ -54,11 +50,11 @@ namespace EZYPOS.UserControls
             Delete.IsEnabled = false;
             Update.IsEnabled = false;
             Save.IsEnabled = true;
-            
+
             txtFName.Text = "Name";
-            txtFName.Foreground = Brushes.Gray;           
+            txtFName.Foreground = Brushes.Gray;
             txtId.Text = "";
-            ActiveSession.NavigateToRefreshExpenceHeadList("");
+
         }
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
@@ -81,7 +77,7 @@ namespace EZYPOS.UserControls
                 case "Name":
                     tb.Text = string.Empty;
                     tb.Foreground = Brushes.Black;
-                    break;            
+                    break;
 
             }
         }
@@ -98,7 +94,7 @@ namespace EZYPOS.UserControls
                         tb.Foreground = Brushes.Gray;
                     }
                     break;
-               
+
 
             }
         }
@@ -110,16 +106,16 @@ namespace EZYPOS.UserControls
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
                     int Id = Convert.ToInt32(txtId.Text);
-                    using (EPOSDBContext DB = new EPOSDBContext())
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                     {
-                        var Expence = DB.ExpenceTypes.Where(x => x.Id == Id).FirstOrDefault();
+                        var Expence = Db.ExpenceType.Get(Id);
                         if (Expence != null)
                         {
                             if (!string.IsNullOrEmpty(txtFName.Text))
                             {
                                 Expence.ExpenceName = txtFName.Text;
-                            }                            
-                            DB.SaveChanges();
+                            }
+                            Db.Complete();
                             EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
                             RefreshPage();
                         }
@@ -135,13 +131,13 @@ namespace EZYPOS.UserControls
             {
                 if (Validate())
                 {
-                    using (EPOSDBContext DB = new EPOSDBContext())
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                     {
-                        ExpenceType Expence = new ExpenceType();
+                        DAL.DBModel.ExpenceType Expence = new DAL.DBModel.ExpenceType();
                         Expence.ExpenceName = txtFName.Text;
                         Expence.Createdon = DateTime.Now;
-                        DB.ExpenceTypes.Add(Expence);
-                        DB.SaveChanges();
+                        Db.ExpenceType.Add(Expence);
+                        Db.Complete();
                         EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
                         RefreshPage();
                     }
@@ -155,7 +151,7 @@ namespace EZYPOS.UserControls
             {
                 EZYPOS.View.MessageBox.ShowCustom("Name is Required.", "Error", "OK");
                 return false;
-            }        
+            }
             return true;
         }
         private void Delete_Click(object sender, RoutedEventArgs e)
@@ -167,20 +163,17 @@ namespace EZYPOS.UserControls
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
                     int Id = Convert.ToInt32(txtId.Text);
-                    using (EPOSDBContext DB = new EPOSDBContext())
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                     {
-                        var ExpenceTypes = DB.ExpenceTypes.Where(x => x.Id == Id).FirstOrDefault();
-                        if (ExpenceTypes != null)
-                        {
-                            DB.Remove(ExpenceTypes);
-                            DB.SaveChanges();
-                            EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
-                        }
-                        RefreshPage();
+                        Db.ExpenceType.Delete(Id);
+                        Db.Complete();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
                     }
+                    RefreshPage();
                 }
             }
-
         }
+
     }
 }
+

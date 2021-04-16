@@ -7,14 +7,14 @@
              mc:Ignorable="d" 
             Background="White"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="1024" d:DesignWidth="768">
+             d:DesignHeight="1024" Name="ExpenceHeadList" d:DesignWidth="768">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            
             <RowDefinition Height="150"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -32,7 +32,7 @@
         </Grid>
         <!--<Label Content="Start Date" FontSize="12" Foreground="Gray" FontWeight="Bold" HorizontalAlignment="Left" Margin="5,62,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100"/>-->
         <!--<TextBox TouchDown="textBoxSearch_TouchDown"  Text="" KeyDown="textBoxSearch_KeyDown" x:Name="textBoxSearch" KeyUp="textBox_KeyUp" HorizontalAlignment="Left" BorderBrush="Gray" BorderThickness="1" Style="{DynamicResource txtInput}" Margin="10,89,0,0" Grid.Row="1" VerticalAlignment="Top" Width="612"/>-->
-        <Border x:Name="label" Grid.Row="2">
+        <Border x:Name="label" Grid.Row="1">
             <DataGrid Name="ExpenceHeadGrid"                     
                       Margin="5,0,5,0"
                       RowHeaderWidth="0"
@@ -55,7 +55,6 @@
                         </Style.Triggers>
                     </Style>
                 </DataGrid.CellStyle>
-
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
                         <Setter Property="Height" Value="40"/>
@@ -71,7 +70,7 @@
                     </Style>
                 </DataGrid.RowStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="*" Visibility="Hidden" IsReadOnly="True">
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Visibility="Hidden" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -82,7 +81,7 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>                        
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Name" Binding="{Binding ExpenceName}" Width="*" IsReadOnly="True">
+                    <DataGridTextColumn Header="Name" Binding="{Binding ExpenceName}" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -107,8 +106,8 @@
 
             </DataGrid>
         </Border>        
-        <Border Background="{DynamicResource DarkBlue}"/>
+        <!--<Border Background="{DynamicResource DarkBlue}"/>
         <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Expence Head" HorizontalAlignment="Left" Margin="10,5,0,0"/>
-        <Button x:Name="btnClose" Click="btnClose_Click" Content="X" Style="{DynamicResource btnDanger}" Margin="0,5,10,0" HorizontalAlignment="Right" Width="50" Height="40" VerticalAlignment="Top"/>
+        <Button x:Name="btnClose" Click="btnClose_Click" Content="X" Style="{DynamicResource btnDanger}" Margin="0,5,10,0" HorizontalAlignment="Right" Width="50" Height="40" VerticalAlignment="Top"/>-->
     </Grid>
 </UserControl>
