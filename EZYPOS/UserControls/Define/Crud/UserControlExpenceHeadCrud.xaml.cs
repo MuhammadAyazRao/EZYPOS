@@ -33,6 +33,9 @@ namespace EZYPOS.UserControls
         }
         private void InitializePage(DAL.DBModel.ExpenceType ExpenceType)
         {
+            Delete.IsEnabled = true;
+            Update.IsEnabled = true;
+            Save.IsEnabled = false;
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
                 var Expencedata = Db.ExpenceType.Get(ExpenceType.Id);
