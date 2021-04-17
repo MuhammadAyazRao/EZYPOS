@@ -1,6 +1,4 @@
 ﻿using DAL.Repository;
-using EZYPOS.DBModels;
-using EZYPOS.Helper.Session;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,37 +14,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EZYPOS.UserControls
+namespace EZYPOS.UserControls.Define.Crud
 {
     /// <summary>
-    /// Interaction logic for UserControlExpenceHeadCrud.xaml
+    /// Interaction logic for UserControlCategoryCrud.xaml
     /// </summary>
-    public partial class UserControlExpenceHeadCrud : UserControl
+    public partial class UserControlCategoryCrud : UserControl
     {
-        public UserControlExpenceHeadCrud(DAL.DBModel.ExpenceType ExpenceType = null)
+        public UserControlCategoryCrud(DAL.DBModel.ProductCategory Category = null)
         {
             InitializeComponent();
+
             RefreshPage();
 
-            if (ExpenceType != null)
-            { InitializePage(ExpenceType); }
-        }
-        private void InitializePage(DAL.DBModel.ExpenceType ExpenceType)
-        {
-            Delete.IsEnabled = true;
-            Update.IsEnabled = true;
-            Save.IsEnabled = false;
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
-            {
-                var Expencedata = Db.ExpenceType.Get(ExpenceType.Id);
-                if (!string.IsNullOrEmpty(Expencedata?.ExpenceName))
-                {
-                    txtFName.Text = Expencedata?.ExpenceName;
-                    txtFName.Foreground = Brushes.Black;
-                }
-                txtId.Text = Expencedata.Id.ToString();
-            }
-
+            if (Category != null)
+            { InitializePage(Category); }
         }
         private void RefreshPage()
         {
@@ -59,7 +41,23 @@ namespace EZYPOS.UserControls
             txtId.Text = "";
 
         }
-       
+        private void InitializePage(DAL.DBModel.ProductCategory Category)
+        {
+            Delete.IsEnabled = true;
+            Update.IsEnabled = true;
+            Save.IsEnabled = false;
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            {
+                var ProductCategory = Db.ProductCategory.Get(Category.Id);
+                if (!string.IsNullOrEmpty(ProductCategory?.Name))
+                {
+                    txtFName.Text = ProductCategory?.Name;
+                    txtFName.Foreground = Brushes.Black;
+                }
+                txtId.Text = ProductCategory.Id.ToString();
+            }
+
+        }
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
             bool Isconfirmed = EZYPOS.View.MessageYesNo.ShowCustom("Refresh", "Do you want to refresh page?", "Yes", "No");
@@ -98,7 +96,6 @@ namespace EZYPOS.UserControls
 
             }
         }
-
         private void Update_Click(object sender, RoutedEventArgs e)
         {
             if (Validate())
@@ -108,12 +105,12 @@ namespace EZYPOS.UserControls
                     int Id = Convert.ToInt32(txtId.Text);
                     using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                     {
-                        var Expence = Db.ExpenceType.Get(Id);
-                        if (Expence != null)
+                        var Category = Db.ProductCategory.Get(Id);
+                        if (Category != null)
                         {
                             if (!string.IsNullOrEmpty(txtFName.Text))
                             {
-                                Expence.ExpenceName = txtFName.Text;
+                                Category.Name = txtFName.Text;
                             }
                             Db.Complete();
                             EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
@@ -133,10 +130,9 @@ namespace EZYPOS.UserControls
                 {
                     using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                     {
-                        DAL.DBModel.ExpenceType Expence = new DAL.DBModel.ExpenceType();
-                        Expence.ExpenceName = txtFName.Text;
-                        Expence.Createdon = DateTime.Now;
-                        Db.ExpenceType.Add(Expence);
+                        DAL.DBModel.ProductCategory Category = new DAL.DBModel.ProductCategory();
+                        Category.Name = txtFName.Text;                      
+                        Db.ProductCategory.Add(Category);
                         Db.Complete();
                         EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
                         RefreshPage();
@@ -144,16 +140,7 @@ namespace EZYPOS.UserControls
                 }
             }
         }
-
-        private bool Validate()
-        {
-            if (string.IsNullOrEmpty(txtFName.Text) || txtFName.Text == "Name")
-            {
-                EZYPOS.View.MessageBox.ShowCustom("Name is Required.", "Error", "OK");
-                return false;
-            }
-            return true;
-        }
+        
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
             bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete Record?", "Yes", "No");
@@ -165,7 +152,7 @@ namespace EZYPOS.UserControls
                     int Id = Convert.ToInt32(txtId.Text);
                     using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                     {
-                        Db.ExpenceType.Delete(Id);
+                        Db.ProductCategory.Delete(Id);
                         Db.Complete();
                         EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
                     }
@@ -173,7 +160,15 @@ namespace EZYPOS.UserControls
                 }
             }
         }
+        private bool Validate()
+        {
+            if (string.IsNullOrEmpty(txtFName.Text) || txtFName.Text == "Name")
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Name is Required.", "Error", "OK");
+                return false;
+            }
+            return true;
+        }
 
     }
 }
-

@@ -102,22 +102,24 @@
                 <MenuItem Header="_EZYPOS" Name="VSOnline" Template="{StaticResource VsOnline}" >
                     <MenuItem Header="_Setting" Name="test" Template="{StaticResource VsMenuSub}" />
                 </MenuItem>
-                <MenuItem Header="_Work" Template="{StaticResource VsMenuTop}">
+                <MenuItem Header="_Define" Template="{StaticResource VsMenuTop}">
                     <MenuItem Header="_Customers" Name="Cutomers" Click="Cutomers_Click" Template="{StaticResource VsMenuSub}"  />
                     <MenuItem Header="_Cities" Name="Cities" Click="Cities_Click" Template="{StaticResource VsMenuSub}"  />
                     <MenuItem Header="_Employee" Name="Employee" Click="Employee_Click" Template="{StaticResource VsMenuSub}"  />
                     <MenuItem Header="_ExpenceHead" Name="Expence" Click="Expence_Click" Template="{StaticResource VsMenuSub}"  />
-                    <MenuItem Header="_Queries" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_queries.png" />
+                   
                     <Separator Template="{StaticResource VsMenuSep}" />
-                    <MenuItem Header="_New Work Item" Template="{StaticResource VsMenuSub}">
-                        <MenuItem Header="_Epic" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
-                        <MenuItem Header="_Feature" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_feature.png" />
+                    <MenuItem Header="_Product" Template="{StaticResource VsMenuSub}">
+                        <MenuItem Header="_Category" Name="Category" Click="Category_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
+                        <MenuItem Header="_SubCategory" Name="SubCategory" Click="SubCategory_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
+                        <!--<MenuItem Header="_Feature" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_feature.png" />
                         <MenuItem Header="_Issue" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_issue.png" />
                         <MenuItem Header="_Task" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_task.png" />
                         <MenuItem Header="_Test Case" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_testcase.png" />
-                        <MenuItem Header="_User Story" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_userstory.png" />
+                        <MenuItem Header="_User Story" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_userstory.png" />-->
                     </MenuItem>
                     <MenuItem Header="_Bug" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
+                    <MenuItem Header="_Queries" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_queries.png" />
                 </MenuItem>
             </Menu>
         </StackPanel>

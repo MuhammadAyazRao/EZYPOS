@@ -19,8 +19,9 @@ namespace DAL.Repository
             City = new Repository<City>(_context);
             UserRole= new Repository<UserRole>(_context);
             UserPage = new Repository<UserPage>(_context);
-           Employee = new Repository<Emplyee>(_context);
+            Employee = new Repository<Emplyee>(_context);
             ExpenceType = new Repository<ExpenceType>(_context);
+            ProductCategory= new Repository<ProductCategory>(_context);
         }
         public IRepository<City> City { get; }
         public ICustomerRepository Customers { get; }
@@ -28,6 +29,8 @@ namespace DAL.Repository
         public IRepository<UserRole> UserRole { get; }
         public IRepository<Emplyee> Employee { get; }
         public IRepository<ExpenceType> ExpenceType { get; }
+
+        public IRepository<ProductCategory> ProductCategory { get; }
 
         public int Complete()
         {

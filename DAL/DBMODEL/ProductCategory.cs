@@ -16,6 +16,7 @@ namespace DAL.DBModel
         public int Id { get; set; }
         public string Name { get; set; }
         public bool? Isdeleted { get; set; }
+        public DateTime? Createdon { get; set; }
 
         public virtual ICollection<ProductSubcategory> ProductSubcategories { get; set; }
         public virtual ICollection<Product> Products { get; set; }

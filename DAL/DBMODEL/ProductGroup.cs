@@ -15,6 +15,7 @@ namespace DAL.DBModel
         public int Id { get; set; }
         public string GroupName { get; set; }
         public bool? Isdeleted { get; set; }
+        public DateTime? Createdon { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
     }

@@ -40,8 +40,7 @@ namespace DAL.DBModel
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                //optionsBuilder.UseSqlServer("Data Source=192.168.1.101;Database=EPOS-DB;Trusted_Connection=False;User ID=admin;Password=A722713yaz@");
-                optionsBuilder.UseSqlServer("Server=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer("Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=False;User ID=admin;Password=A722713yaz@");
             }
         }
 
@@ -119,6 +118,8 @@ namespace DAL.DBModel
 
             modelBuilder.Entity<Product>(entity =>
             {
+                entity.Property(e => e.Createdon).HasColumnType("datetime");
+
                 entity.Property(e => e.Lastupdated).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Category)
@@ -140,6 +141,8 @@ namespace DAL.DBModel
             modelBuilder.Entity<ProductCategory>(entity =>
             {
                 entity.ToTable("ProductCategory");
+
+                entity.Property(e => e.Createdon).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<ProductGroup>(entity =>
@@ -149,6 +152,8 @@ namespace DAL.DBModel
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
                     .HasColumnName("id");
+
+                entity.Property(e => e.Createdon).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<ProductSubcategory>(entity =>
@@ -156,6 +161,8 @@ namespace DAL.DBModel
                 entity.ToTable("ProductSubcategory");
 
                 entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Createdon).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.ProductSubcategories)

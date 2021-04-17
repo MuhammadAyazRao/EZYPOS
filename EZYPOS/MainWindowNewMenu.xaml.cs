@@ -46,6 +46,7 @@ namespace EZYPOS
            
         }
 
+        #region Misc
         private void EditStatusCm_Click(object sender, RoutedEventArgs e)
         {
             MenuItem mi = sender as MenuItem;
@@ -62,7 +63,6 @@ namespace EZYPOS
                 }
             }
         }
-
         private void LoadUserControl(string controlName)
         {
             Type ucType = null;
@@ -88,14 +88,13 @@ namespace EZYPOS
                 }
             }
         }
-
         public void CloseDisplayUserControl(object Usercontrol)
         {
             this.chrometabs.RemoveTab(this.chrometabs.SelectedItem);
             DisplayUserControl(Usercontrol);
         }
-
-        public void DisplayUserControl(object Usercontrol)        {
+        public void DisplayUserControl(object Usercontrol)  
+        {
             // Add new user control to content area
             // contentArea.Children.Add(uc);
             UserControl uc = (UserControl)Usercontrol;
@@ -153,7 +152,8 @@ namespace EZYPOS
             }
             return itemToAdd;
         }
-
+        #endregion
+        #region Menu Click Event
         private void Cutomers_Click(object sender, RoutedEventArgs e)
         {
             UserControlListCustomer Customer = new UserControlListCustomer();
@@ -178,5 +178,18 @@ namespace EZYPOS
             UserControlExpenceHeadList ExpenceHead = new UserControlExpenceHeadList();
             ActiveSession.DisplayuserControlMethod(ExpenceHead);
         }
+
+        private void Category_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlListCategory Category = new UserControlListCategory();
+            ActiveSession.DisplayuserControlMethod(Category);
+            
+        }
+
+        private void SubCategory_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
     }
 }

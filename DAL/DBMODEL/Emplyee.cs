@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
@@ -15,9 +14,7 @@ namespace DAL.DBModel
 
         public int Id { get; set; }
         public string UserName { get; set; }
-        [ForeignKey("Role")]
         public int? Role { get; set; }
-        [ForeignKey("City")]
         public int? City { get; set; }
         public string Cnic { get; set; }
         public string Adress { get; set; }

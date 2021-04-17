@@ -19,6 +19,7 @@ namespace DAL.DBModel
         public long? PurchasePrice { get; set; }
         public DateTime? Lastupdated { get; set; }
         public int? Createdby { get; set; }
+        public DateTime? Createdon { get; set; }
 
         public virtual ProductCategory Category { get; set; }
         public virtual ProductGroup Group { get; set; }
