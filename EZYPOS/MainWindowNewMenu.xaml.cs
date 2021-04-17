@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using ChromeTabs;
 using EZYPOS.Helper.Session;
 using EZYPOS.UserControls;
+using EZYPOS.UserControls.Define.List;
 
 namespace EZYPOS
 {
@@ -162,8 +163,8 @@ namespace EZYPOS
 
         private void Cities_Click(object sender, RoutedEventArgs e)
         {
-            //UserControlListEmployee Employee = new UserControlListEmployee();
-            //ActiveSession.DisplayuserControlMethod(Employee);
+            UserControlListCity City = new UserControlListCity();
+            ActiveSession.DisplayuserControlMethod(City);
         }
 
         private void Employee_Click(object sender, RoutedEventArgs e)
