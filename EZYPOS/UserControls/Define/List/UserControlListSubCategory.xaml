@@ -1,22 +1,22 @@
-﻿<UserControl x:Class="EZYPOS.UserControls.UserControlListCustomer"
+﻿<UserControl x:Class="EZYPOS.UserControls.Define.List.UserControlListSubCategory"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:EPOSNOW.UserControls"
+             xmlns:local="clr-namespace:EZYPOS.UserControls.Define.List"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d"             
+             mc:Ignorable="d" 
              Background="White"
-             d:DesignHeight="1024" Name="List_Customers" d:DesignWidth="768">
+             d:DesignHeight="1024" Name="ListSubCategory" d:DesignWidth="768">
     <UserControl.Resources>
         <Style TargetType="{x:Type DataGrid}">
             <Setter Property="AlternationCount" Value="2" />
         </Style>
         <Style TargetType="DataGridRow">
-            
+
             <Setter Property="Height" Value="40"/>
             <Setter Property="FontSize" Value="12"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>            
+            <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HeaderStyle" Value="{x:Null}"/>
             <Style.Triggers>
                 <Trigger Property="ItemsControl.AlternationIndex" Value="0">
@@ -31,7 +31,7 @@
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="#78909c"/>
                 </Trigger>
-               
+
             </Style.Triggers>
         </Style>
         <Style TargetType="{x:Type DataGridCell}">
@@ -70,13 +70,13 @@
         <Style  BasedOn="{StaticResource MaterialDesignTextBox}"  TargetType="{x:Type TextBox}">
             <Setter Property="BorderBrush" Value="White"/>
             <!--<Setter Property="Foreground" Value="Black"/>-->
-            <Style.Triggers>              
+            <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="BorderBrush" Value="White"/>
-                </Trigger>   
+                </Trigger>
             </Style.Triggers>
         </Style>
-    </UserControl.Resources>   
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <!--<RowDefinition Height="50"/>-->
@@ -89,7 +89,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
-               
+
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -100,10 +100,10 @@
             <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="1" Grid.Column="1"  materialDesign:HintAssist.Hint="End Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <!--<Button x:Name="Search" Content="Search"  Margin="655,89,0,11" Click="Search_Click"  Style="{DynamicResource btnSuccess}" Width="100" HorizontalAlignment="Left" Grid.Row="1" />-->
             <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />
-            <Button x:Name="btnAddCustomer"  Click="btnAddCustomer_Click" Content="Add Customer" Margin="20,20,0,0" Style="{DynamicResource btnInfo}" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="35"/>
+            <Button x:Name="btnAddSubcategory"  Click="btnAddSubcategory_Click" Content="Add Subcategory" Margin="20,20,0,0" Style="{DynamicResource btnInfo}" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="35"/>
         </Grid>
         <Border x:Name="label" Grid.Row="1">
-            <DataGrid Name="customerGrid" 
+            <DataGrid Name="SubCategoryGrid" 
                       RowHeaderWidth="0"
                       HorizontalGridLinesBrush="{DynamicResource Gray}"
                       AutoGenerateColumns="False"
@@ -129,7 +129,7 @@
                             </MultiBinding>                            
                         </DataGridTextColumn.Binding>-->
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Name" Binding="{Binding Name}"  IsReadOnly="True">
+                    <DataGridTextColumn Header="Name" Binding="{Binding SubcategoryName}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -146,47 +146,18 @@
                             </MultiBinding>                            
                         </DataGridTextColumn.Binding>-->
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Contact" Binding="{Binding PhoneNo}" IsReadOnly="True">
+                    <DataGridTextColumn Header="Category" Binding="{Binding CategoryName}" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridContact" Width="50"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox x:Name="Category" Width="50"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="City" Binding="{Binding City}"  IsReadOnly="True">
-                        <DataGridTextColumn.HeaderTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Content, RelativeSource=
-                                         {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridCity" Width="100"  KeyDown="GridName_KeyDown"   />
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTextColumn.HeaderTemplate>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Header="Address" Binding="{Binding Adress}" IsReadOnly="True">
-                        <!--<DataGridTextColumn.Binding>
-                            <MultiBinding StringFormat="{}{0} - {1} {2} {3}">
-                                <Binding Path="bill_door_num"/>
-                                <Binding Path="bill_street"/>
-                                <Binding Path="bill_town"/>
-                                <Binding Path="bill_zipcode"/>
-                            </MultiBinding>
-                        </DataGridTextColumn.Binding>-->
-                        <DataGridTextColumn.HeaderTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Content, RelativeSource=
-                                         {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridAdress" Width="100"  KeyDown="GridName_KeyDown"   />
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTextColumn.HeaderTemplate>
-                    </DataGridTextColumn>
+                    
                     <DataGridTemplateColumn  IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -198,8 +169,10 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
+
             </DataGrid>
-            <!-- all the rest is UI to interact with the pager -->            
+            <!-- all the rest is UI to interact with the pager -->
+
         </Border>
         <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation='Horizontal'
                         Margin='6'
@@ -222,13 +195,7 @@
                 <Label x:Name='PageInfo'
                            Foreground='DarkSlateGray' />
             </Grid>
-            <!--<Grid VerticalAlignment='Center'
-                      Margin='6'
-                      HorizontalAlignment='Center'>
-                <ComboBox x:Name='NumberOfRecords'
-                              SelectedIndex='0'
-                              SelectionChanged='NumberOfRecords_SelectionChanged' />
-            </Grid>-->
+            
             <Button x:Name='btnLast'
                         Padding='4'
                        ToolTip="LastPage"
@@ -241,14 +208,7 @@
                         Content="{materialDesign:PackIcon Kind=GreaterThan,Size=25}"
                         Margin='6'
                         Click='Forward_Click'></Button>
-        </StackPanel>
-        <!-- Add Pager here -->       
-
-        <!--<Border Background="{DynamicResource DarkBlue}"/>
-        <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Customers" HorizontalAlignment="Left" Margin="10,5,0,0"/>
-        <Button x:Name="btnClose" Click="btnClose_Click" Content="X" Style="{DynamicResource btnDanger}" Margin="0,5,10,0" HorizontalAlignment="Right" Width="50" Height="40" VerticalAlignment="Top"/>-->
-
+        </StackPanel>       
+        
     </Grid>
-    
-   
 </UserControl>

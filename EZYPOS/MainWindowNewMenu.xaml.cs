@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using ChromeTabs;
 using EZYPOS.Helper.Session;
 using EZYPOS.UserControls;
+using EZYPOS.UserControls.Define.Crud;
 using EZYPOS.UserControls.Define.List;
 
 namespace EZYPOS
@@ -188,8 +189,17 @@ namespace EZYPOS
 
         private void SubCategory_Click(object sender, RoutedEventArgs e)
         {
+            UserControlListSubCategory Subcategory = new UserControlListSubCategory();
+            ActiveSession.DisplayuserControlMethod(Subcategory);
+        }
 
+        private void Group_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlListGroup Group = new UserControlListGroup();
+            ActiveSession.DisplayuserControlMethod(Group);
         }
         #endregion
+
+
     }
 }

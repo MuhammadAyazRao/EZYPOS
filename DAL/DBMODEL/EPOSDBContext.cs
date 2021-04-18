@@ -149,9 +149,7 @@ namespace DAL.DBModel
             {
                 entity.ToTable("ProductGroup");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Createdon).HasColumnType("datetime");
             });

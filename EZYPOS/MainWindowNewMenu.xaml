@@ -112,6 +112,8 @@
                     <MenuItem Header="_Product" Template="{StaticResource VsMenuSub}">
                         <MenuItem Header="_Category" Name="Category" Click="Category_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
                         <MenuItem Header="_SubCategory" Name="SubCategory" Click="SubCategory_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
+                        <MenuItem Header="_Group" Name="Group" Click="Group_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
+
                         <!--<MenuItem Header="_Feature" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_feature.png" />
                         <MenuItem Header="_Issue" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_issue.png" />
                         <MenuItem Header="_Task" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_task.png" />
