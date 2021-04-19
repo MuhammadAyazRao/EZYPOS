@@ -198,8 +198,19 @@ namespace EZYPOS
             UserControlListGroup Group = new UserControlListGroup();
             ActiveSession.DisplayuserControlMethod(Group);
         }
+
         #endregion
 
+        private void Product_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlListProduct Product = new UserControlListProduct();
+            ActiveSession.DisplayuserControlMethod(Product);
+        }
 
+        private void Supplier_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlSupplierCrud Supplier = new UserControlSupplierCrud();
+            ActiveSession.DisplayuserControlMethod(Supplier);
+        }
     }
 }

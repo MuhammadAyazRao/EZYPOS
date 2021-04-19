@@ -15,6 +15,10 @@ namespace DAL.IRepository
         IRepository<UserRole> UserRole { get; }
         IRepository<Emplyee> Employee { get; }
         IRepository<ExpenceType> ExpenceType { get; }
+        IRepository<ProductCategory> ProductCategory { get; }
+        IRepository<ProductSubcategory> ProductSubcategory { get; }
+        IRepository<ProductGroup> ProductGroup { get; }
+        IRepository<Product> Product { get; }
 
         int Complete();
     }

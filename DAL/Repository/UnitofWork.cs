@@ -24,6 +24,9 @@ namespace DAL.Repository
             ProductCategory= new Repository<ProductCategory>(_context);
             ProductSubcategory = new Repository<ProductSubcategory>(_context);
             ProductGroup= new Repository<ProductGroup>(_context);
+            Product= new Repository<Product>(_context);
+            Supplier= new Repository<Supplier>(_context);
+
         }
         public IRepository<City> City { get; }
         public ICustomerRepository Customers { get; }
@@ -34,6 +37,8 @@ namespace DAL.Repository
         public IRepository<ProductCategory> ProductCategory { get; }
         public IRepository<ProductSubcategory> ProductSubcategory { get; }
         public IRepository<ProductGroup> ProductGroup { get; }
+        public IRepository<Product> Product { get; }
+        public IRepository<Supplier> Supplier { get; }
 
         public int Complete()
         {
