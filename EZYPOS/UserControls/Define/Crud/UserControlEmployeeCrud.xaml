@@ -96,9 +96,11 @@
                            Margin="20,10,20,10"
                           materialDesign:HintAssist.Hint="Search City"                           
                           materialDesign:HintAssist.HintOpacity=".26"                          
-                          IsEditable="True">
+                          IsEditable="True"                       
+                           SelectionChanged="ddCity_SelectionChanged"/>
 
-                </ComboBox>
+
+
 
                 <ComboBox  Name="ddRole"
                            DisplayMemberPath="Name" 

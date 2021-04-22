@@ -193,6 +193,17 @@
                 </Style.Triggers>
             </Style>
 
+            <!--List Box Item PayentMode style for Transaction-->
+            <Style TargetType="ListBoxItem" x:Key="PaymentMode" BasedOn="{StaticResource listBoxItemStyle}">
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="{DynamicResource Info}"/>
+                    </Trigger>
+                </Style.Triggers>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="Width" Value="125" />
+                <Setter Property="Height" Value="30" />
+            </Style>
             <!--List Box Item Payment Via style for orderDtl-->
             <Style TargetType="ListBoxItem" x:Key="PaymentViaList" BasedOn="{StaticResource listBoxItemStyle}">
                 <Style.Triggers>
@@ -207,6 +218,7 @@
                 <Setter Property="HorizontalAlignment" Value="Center"/>
                 <Setter Property="Width" Value="250" />
             </Style>
+            
 
             <Style TargetType="ListBoxItem" x:Key="ComboboxItemStyle" BasedOn="{StaticResource listBoxItemStyle}">
                 <Setter Property="HorizontalContentAlignment" Value="Left"/>

@@ -14,10 +14,11 @@ namespace DAL.Repository
 
         public UnitOfWork(EPOSDBContext context)
         {
-            _context = context;
-            Customers = new CustomerRepository(_context);
+            _context = context;           
             City = new Repository<City>(_context);
-            UserRole= new Repository<UserRole>(_context);
+            Account = new Repository<Account>(_context);
+            Customers = new CustomerRepository(_context);
+            UserRole = new Repository<UserRole>(_context);
             UserPage = new Repository<UserPage>(_context);
             Employee = new Repository<Emplyee>(_context);
             ExpenceType = new Repository<ExpenceType>(_context);
@@ -26,9 +27,11 @@ namespace DAL.Repository
             ProductGroup= new Repository<ProductGroup>(_context);
             Product= new Repository<Product>(_context);
             Supplier= new Repository<Supplier>(_context);
+          
 
         }
         public IRepository<City> City { get; }
+        public IRepository<Account> Account { get; }
         public ICustomerRepository Customers { get; }
         public IRepository<UserPage> UserPage { get; }
         public IRepository<UserRole> UserRole { get; }
@@ -39,6 +42,8 @@ namespace DAL.Repository
         public IRepository<ProductGroup> ProductGroup { get; }
         public IRepository<Product> Product { get; }
         public IRepository<Supplier> Supplier { get; }
+       
+
 
         public int Complete()
         {

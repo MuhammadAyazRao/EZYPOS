@@ -95,8 +95,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        
+        </Grid.ColumnDefinitions>        
         <StackPanel>
             <Menu IsMainMenu="True">
                 <MenuItem Header="_EZYPOS" Name="VSOnline" Template="{StaticResource VsOnline}" >
@@ -106,8 +105,7 @@
                     <MenuItem Header="_Customers" Name="Cutomers" Click="Cutomers_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_Cities" Name="Cities" Click="Cities_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_Employee" Name="Employee" Click="Employee_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
-                    <MenuItem Header="_ExpenceHead" Name="Expence" Click="Expence_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png"  />
-                   
+                    <MenuItem Header="_ExpenceHead" Name="Expence" Click="Expence_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png"  />                   
                     <Separator Template="{StaticResource VsMenuSep}" />
                     <MenuItem Header="_Product Attribute" Template="{StaticResource VsMenuSub}">
                         <MenuItem Header="_Category" Name="Category" Click="Category_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
@@ -123,6 +121,9 @@
                     </MenuItem>
                     <MenuItem Header="_Supplier" Name="Supplier" Click="Supplier_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_Queries" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_queries.png" />
+                </MenuItem>
+                <MenuItem Header="_Transaction" Template="{StaticResource VsMenuTop}">
+                    <MenuItem Header="_SaleItem" Name="SaleItem" Click="SaleItem_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />                    
                 </MenuItem>
             </Menu>
         </StackPanel>
@@ -160,7 +161,6 @@
                 </my:ChromeTabItem>-->
             </my:ChromeTabControl>
         </ScrollViewer>
-
     </Grid>
     
 </Window>

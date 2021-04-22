@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="EZYPOS.UserControls.Misc.UserControlAccountType"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EZYPOS.UserControls.Misc"
+             Foreground="Gray"
+             mc:Ignorable="d" d:DesignWidth="612.406" Height="96.993">
+    <Grid Background="{DynamicResource Gray}">
+        <ListBox Name="PaymentViaList" SelectionChanged="PaymentViaList_SelectionChanged" ItemContainerStyle="{DynamicResource PaymentViaList}" Background="{DynamicResource Gray}" BorderThickness="0" Margin="0,27,0,0" Height="65" VerticalAlignment="Top">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBoxItem IsSelected="True">Cash Payment</ListBoxItem>
+            <ListBoxItem>Card at Shop</ListBoxItem>
+            <ListBoxItem>Online</ListBoxItem>
+        </ListBox>
+        <Label x:Name="label" Content="Payment Via" HorizontalAlignment="Left" Margin="32,10,0,0" VerticalAlignment="Top" Width="182"/>
+    </Grid>
+</UserControl>

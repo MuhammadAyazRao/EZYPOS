@@ -17,6 +17,7 @@ using EZYPOS.Helper.Session;
 using EZYPOS.UserControls;
 using EZYPOS.UserControls.Define.Crud;
 using EZYPOS.UserControls.Define.List;
+using EZYPOS.UserControls.Transaction;
 
 namespace EZYPOS
 {
@@ -209,8 +210,14 @@ namespace EZYPOS
 
         private void Supplier_Click(object sender, RoutedEventArgs e)
         {
-            UserControlSupplierCrud Supplier = new UserControlSupplierCrud();
+            UserControlListSupplier Supplier = new UserControlListSupplier();
             ActiveSession.DisplayuserControlMethod(Supplier);
+        }
+
+        private void SaleItem_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlSaleItem SaleItem = new UserControlSaleItem();
+            ActiveSession.DisplayuserControlMethod(SaleItem);
         }
     }
 }

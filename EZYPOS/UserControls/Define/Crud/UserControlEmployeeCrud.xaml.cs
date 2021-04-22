@@ -28,6 +28,7 @@ namespace EZYPOS.UserControls
     /// </summary>
     public partial class UserControlEmployeeCrud : UserControl
     {
+        System.Windows.Threading.DispatcherTimer DDTimer = new System.Windows.Threading.DispatcherTimer();
         public UserControlEmployeeCrud(EmployeeDTO Employee = null)
         {
             InitializeComponent();
@@ -440,6 +441,19 @@ namespace EZYPOS.UserControls
                 UserImage.Source = bitmap;
                 ImageSelector.Content = UserName;
             }
+        }
+        DateTime StartTime;
+        void TimerReset()
+        {
+            StartTime = DateTime.Now;
+            DDTimer.Interval = new TimeSpan(0, 0, 1);
+            DDTimer.Start();
+        }
+        private void ddCity_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {   DateTime TimeNow = StartTime.AddMilliseconds(5000);
+            if (TimeNow < DateTime.Now)
+            { EZYPOS.View.MessageBox.ShowCustom("selection changed" + ddCity.SelectedValue, "City", "Ok"); }
+            TimerReset();
         }
     }
 }

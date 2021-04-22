@@ -1,5 +1,6 @@
 ﻿using EZYPOS.DBModels;
 using EZYPOS.DTO;
+using EZYPOS.Helper;
 using EZYPOS.Helper.Session;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,8 @@ namespace EZYPOS.UserControls
     /// </summary>
     public partial class UserControlListSupplier : UserControl
     {
+        List<SupplierDTO> myList { get; set; }
+        Pager<SupplierDTO> Pager = new Helper.Pager<SupplierDTO>();
         public UserControlListSupplier(bool Ismenu=false)
         {
             if (Ismenu)
@@ -37,14 +40,14 @@ namespace EZYPOS.UserControls
         {
             using (EPOSDBContext DB = new EPOSDBContext())
             {
-                var SupplierData = DB.Suppliers.Select(x => new SupplierDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();                
-                SupplierGrid.ItemsSource = SupplierData;
+                myList= DB.Suppliers.Select(x => new SupplierDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
+                ResetPaging(myList);
             }
         }
 
         private void btnAddSupplier_Click(object sender, RoutedEventArgs e)
         {
-            ActiveSession.NavigateToSwitchScreen(new UserControlSupplierCrud());
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlSupplierCrud());
         }
 
 
@@ -55,46 +58,29 @@ namespace EZYPOS.UserControls
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            List<Supplier> SupplerData;
+          
             using (EPOSDBContext DB = new EPOSDBContext())
             {
-                if (StartDate.SelectedDate==null && EndDate.SelectedDate==null)
-                {
-                    SupplerData = DB.Suppliers.ToList();
-                }
-                else
+                myList = DB.Suppliers.Select(x => new SupplierDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress,Createdon=x.Createdon }).ToList();
+
+                if (StartDate.SelectedDate!=null && EndDate.SelectedDate!=null)                
                 {
                     DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
                     DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                     SupplerData = DB.Suppliers.Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
-                }
-                
-                SupplierGrid.ItemsSource = SupplerData;
+                     myList = myList.Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
+                }                
+                SupplierGrid.ItemsSource = myList;
             }
 
         }
-
       
 
         private void edit_Click(object sender, RoutedEventArgs e)
         {
             EZYPOS.DTO.SupplierDTO SupplierDTO = (EZYPOS.DTO.SupplierDTO)SupplierGrid.SelectedItem;
-            ActiveSession.NavigateToSwitchScreen(new UserControlSupplierCrud(SupplierDTO));
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlSupplierCrud(SupplierDTO));
         }
-
-        private void delete_Click(object sender, RoutedEventArgs e)
-        {
-
-            //restCust selectedCust = (restCust)SupplierGrid.SelectedValue;
-            //UnitOfWork uow = new UnitOfWork(new EPOSEntities());
-            //uow.restCusts.Remove(uow.restCusts.Find(x => x.pkcode == selectedCust.pkcode));
-            //uow.Complete();
-        }
-
-        
-
-        
-
+          
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -145,6 +131,39 @@ namespace EZYPOS.UserControls
             }
 
         }
+        #region Pagination
+
+        private void ResetPaging(List<SupplierDTO> ListTopagenate)
+        {
+            SupplierGrid.ItemsSource = Pager.First(ListTopagenate);
+            PageInfo.Content = Pager.PageNumberDisplay(ListTopagenate);
+        }
+        private void Forward_Click(object sender, RoutedEventArgs e)    //For each of these you call the direction you want and pass in the List and ComboBox output
+        {                                                               //and use the above function to output the Record number to the Label
+            SupplierGrid.ItemsSource = Pager.Next(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void Backwards_Click(object sender, RoutedEventArgs e)
+        {
+            SupplierGrid.ItemsSource = Pager.Previous(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void First_Click(object sender, RoutedEventArgs e)
+        {
+            SupplierGrid.ItemsSource = Pager.First(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void Last_Click(object sender, RoutedEventArgs e)
+        {
+            SupplierGrid.ItemsSource = Pager.Last(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+       
+        #endregion
 
     }
 }

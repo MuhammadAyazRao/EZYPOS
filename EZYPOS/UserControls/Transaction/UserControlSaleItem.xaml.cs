@@ -17,18 +17,37 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace EZYPOS.UserControls
+namespace EZYPOS.UserControls.Transaction
 {
     /// <summary>
-    /// Interaction logic for UserControlTransaction.xaml
+    /// Interaction logic for UserControlSaleItem.xaml
     /// </summary>
-    public partial class UserControlTransaction : UserControl
+    public partial class UserControlSaleItem : UserControl
     {
+        System.Windows.Threading.DispatcherTimer Timer = new System.Windows.Threading.DispatcherTimer();
         
-        public UserControlTransaction()
+
+
+        public UserControlSaleItem()
         {
+            AddHotKeys();
             InitializeComponent();
-            this.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
+            InitializeClock();
+
+
+        }
+        private void InitializeClock()
+        {
+            Timer.Tick += new EventHandler(Timer_Click);
+            Timer.Interval = new TimeSpan(0, 0, 1);
+            Timer.Start();
+        }
+
+        private void Timer_Click(object sender, EventArgs e)
+        {
+            DateTime d;
+            d = DateTime.Now;
+            Clock.Content = d.Hour + " : " + d.Minute + " : " + d.Second;
         }
         internal Order order = new Order();
         private void ActiveSession_DeleliveryChargesCaltulated(object parameter)
@@ -77,7 +96,7 @@ namespace EZYPOS.UserControls
 
                     if (button.Content.ToString() == "+")
                     {
-                        orderDetails.Qty= orderDetails.Qty+1;
+                        orderDetails.Qty = orderDetails.Qty + 1;
                         int INDEX = listBoxItemCart.SelectedIndex;
                         order.OrdersDetails.RemoveAt(INDEX);
                         listBoxItemCart.Items.RemoveAt(INDEX);
@@ -92,8 +111,8 @@ namespace EZYPOS.UserControls
                         if (orderDetails.Qty > 1)
                         {
                             orderDetails.Qty--;
-                           
-                            
+
+
                         }
                     }
                     UpdateBillSummary();
@@ -110,7 +129,7 @@ namespace EZYPOS.UserControls
         private void expander_Collapsed(object sender, RoutedEventArgs e)
         {
             // expander.Margin = new Thickness(0, 0, 0, 61);
-             expander.Height = 80;
+            expander.Height = 80;
             listBoxItemCart.Margin = new Thickness() { Bottom = 100, Top = 25 };
         }
 
@@ -649,7 +668,7 @@ namespace EZYPOS.UserControls
         {
             if (order.OrdersDetails != null)
             {
-                CartSummary OrderSummary = new CartSummary();                
+                CartSummary OrderSummary = new CartSummary();
                 OrderSummary.InvoiceUC.SetFlowDoc(Invoice.GetFlowDocuments(order));
                 OrderSummary.ShowDialog();
             }
@@ -727,8 +746,8 @@ namespace EZYPOS.UserControls
             if (order.OrdersDetails == null)
                 order.OrdersDetails = new List<OrderDetail>();
 
-            order.OrdersDetails.Insert(0, new OrderDetail { Qty = 1, Item = new item { name = "Samsung Mobile S4 2019", price = 33 } , ItemDiscount=10});
-            listBoxItemCart.Items.Insert(0, new OrderDetail { Qty = 1, Item = new item { name = "Samsung Mobile S4 2019", price = 33}, ItemDiscount = 10 });
+            order.OrdersDetails.Insert(0, new OrderDetail { Qty = 1, Item = new item { name = "Samsung Mobile S4 2019", price = 33 }, ItemDiscount = 10 });
+            listBoxItemCart.Items.Insert(0, new OrderDetail { Qty = 1, Item = new item { name = "Samsung Mobile S4 2019", price = 33 }, ItemDiscount = 10 });
             listBoxItemCart.SelectedIndex = 0;
             CartVisibility();
             UpdateBillSummary();
@@ -745,8 +764,9 @@ namespace EZYPOS.UserControls
             if (pinverify.ShowDialog() == true)
             {
                 Discount popup = new Discount();
-                if(popup.ShowDialog()==true)
-                {   double digit= Convert.ToDouble(popup.pin);
+                if (popup.ShowDialog() == true)
+                {
+                    double digit = Convert.ToDouble(popup.pin);
                     if (popup.DiscountType.SelectedIndex == 0)
                     {
                         ActiveSession.order_Discount_percentage = 0;
@@ -758,7 +778,7 @@ namespace EZYPOS.UserControls
                         order.Discount = (digit / 100) * order.GetTotal();
                     }
                     UpdateBillSummary();
-                    
+
                 }
             }
 
@@ -768,6 +788,47 @@ namespace EZYPOS.UserControls
         {
             Invoice inv = new Invoice();
             inv.DoPrintJob(order);
+        }
+
+        #region ShortCutKeys
+        private void My_first_event_handler(object sender, ExecutedRoutedEventArgs e)
+        {
+            //handler code goes here.
+            EZYPOS.View.MessageBox.ShowCustom("Alt+A key pressed","OK","OF");
+        }
+
+        private void My_second_event_handler(object sender, RoutedEventArgs e)
+        {
+            //handler code goes here. 
+            EZYPOS.View.MessageBox.ShowCustom("Alt+B key pressed", "OK", "OF");
+        }
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            EZYPOS.View.MessageBox.ShowCustom("Wndows Key Not Allowed", "Key Not Allowed", "ok");
+
+        }
+        private void AddHotKeys()
+        {
+            try
+            {
+                RoutedCommand firstSettings = new RoutedCommand();
+                firstSettings.InputGestures.Add(new KeyGesture(Key.A, ModifierKeys.Alt));
+                CommandBindings.Add(new CommandBinding(firstSettings, My_first_event_handler));
+
+                RoutedCommand secondSettings = new RoutedCommand();
+                secondSettings.InputGestures.Add(new KeyGesture(Key.B, ModifierKeys.Alt));
+                CommandBindings.Add(new CommandBinding(secondSettings, My_second_event_handler));
+            }
+            catch (Exception err)
+            {
+                //handle exception error
+            }
+        }
+        #endregion
+
+        private void PaymentMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

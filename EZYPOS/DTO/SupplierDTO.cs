@@ -14,5 +14,7 @@ namespace EZYPOS.DTO
         public string Adress { get; set; }
         public String City { get; set; }
         public string MobileNo { get; set; }
+        public DateTime? Createdon = DateTime.Now;
+
     }
 }

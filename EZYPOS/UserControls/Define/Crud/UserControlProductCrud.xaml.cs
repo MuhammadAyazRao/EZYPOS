@@ -33,49 +33,7 @@ namespace EZYPOS.UserControls.Define.Crud
                 InitializePage(Product);
             }
         }
-        private void RefreshPage()
-        {
-            Delete.IsEnabled = false;
-            Update.IsEnabled = false;
-            Save.IsEnabled = true;
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
-            {                
-                DDCategory.ItemsSource = Db.ProductCategory.GetAll().ToList();
-                DDSubCategory.ItemsSource = Db.ProductSubcategory.GetAll().ToList();
-                DDGroup.ItemsSource = Db.ProductGroup.GetAll().ToList();
-                DDSupplier.ItemsSource = Db.Supplier.GetAll().ToList();
-            }
-            txtPCode.Text = "Product Code";
-            txtPCode.Foreground = Brushes.Gray;
-
-            txtProductName.Text = "Product Name";
-            txtProductName.Foreground = Brushes.Gray;
-
-            txtProductUrduName.Text = "Product Urdu Name";
-            txtProductUrduName.Foreground = Brushes.Gray;
-
-            txtSalePrice.Text = "Sale Price";
-            txtSalePrice.Foreground = Brushes.Gray;
-
-            txtWholeSalePrice.Text = "WholeSale Price";
-            txtWholeSalePrice.Foreground = Brushes.Gray;
-
-            txtPurchasePrice.Text = "Purchase Price";
-            txtPurchasePrice.Foreground = Brushes.Gray;
-
-            txtStock.Text = "Current Stock";
-            txtStock.Foreground = Brushes.Gray;
-
-            txtStockMin.Text = "Minimum Stock";
-            txtStockMin.Foreground = Brushes.Gray;
-
-            txtStockMax.Text = "Maximum Stock";
-            txtStockMax.Foreground = Brushes.Gray;
-
-            DateStock.SelectedDate = DateTime.Now;
-
-            txtId.Text = "";
-        }
+       
 
         private void InitializePage(ProductDTO Product)
         {
@@ -142,6 +100,49 @@ namespace EZYPOS.UserControls.Define.Crud
                 txtId.Text = Productdata.Id.ToString();
             }
 
+        }
+        private void RefreshPage()
+        {
+            Delete.IsEnabled = false;
+            Update.IsEnabled = false;
+            Save.IsEnabled = true;
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            {
+                DDCategory.ItemsSource = Db.ProductCategory.GetAll().ToList();
+                DDSubCategory.ItemsSource = Db.ProductSubcategory.GetAll().ToList();
+                DDGroup.ItemsSource = Db.ProductGroup.GetAll().ToList();
+                DDSupplier.ItemsSource = Db.Supplier.GetAll().ToList();
+            }
+            txtPCode.Text = "Product Code";
+            txtPCode.Foreground = Brushes.Gray;
+
+            txtProductName.Text = "Product Name";
+            txtProductName.Foreground = Brushes.Gray;
+
+            txtProductUrduName.Text = "Product Urdu Name";
+            txtProductUrduName.Foreground = Brushes.Gray;
+
+            txtSalePrice.Text = "Sale Price";
+            txtSalePrice.Foreground = Brushes.Gray;
+
+            txtWholeSalePrice.Text = "WholeSale Price";
+            txtWholeSalePrice.Foreground = Brushes.Gray;
+
+            txtPurchasePrice.Text = "Purchase Price";
+            txtPurchasePrice.Foreground = Brushes.Gray;
+
+            txtStock.Text = "Current Stock";
+            txtStock.Foreground = Brushes.Gray;
+
+            txtStockMin.Text = "Minimum Stock";
+            txtStockMin.Foreground = Brushes.Gray;
+
+            txtStockMax.Text = "Maximum Stock";
+            txtStockMax.Foreground = Brushes.Gray;
+
+            DateStock.SelectedDate = DateTime.Now;
+
+            txtId.Text = "";
         }
         private void txtNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
