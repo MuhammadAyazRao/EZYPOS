@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="EZYPOS.UserControls.Misc.UserControlNumPad"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EZYPOS.UserControls.Misc"
+             mc:Ignorable="d" 
+             Language="en-GB"
+             Height="304.151" Width="274.06">
+    <Grid>
+        <Label x:Name="lblPin" ContentStringFormat="C" Padding="15 0 10 0" Background="{DynamicResource White}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="30" VerticalAlignment="Top" Height="50"/>
+        <Button Style="{DynamicResource btn}" Content="1" Margin="0,49,0,0" Click="Button_Click"/>
+        <Button Style="{DynamicResource btn}" Content="5" Margin="92,113,0,0" Click="Button_Click"/>
+        <Button Style="{DynamicResource btn}" Content="6" Margin="184,113,0,0" Click="Button_Click"/>
+        <Button Style="{DynamicResource btn}" Content="2" Margin="92,49,0,0" Click="Button_Click"/>
+        <Button Style="{DynamicResource btn}" Content="3" Margin="184,49,-2,0" Click="Button_Click" HorizontalAlignment="Left" Width="92"/>
+        <Button Style="{DynamicResource btn}" Content="7" Margin="0,177,0,0" Click="Button_Click"/>
+        <Button Style="{DynamicResource btn}" Content="4" Margin="0,113,0,0" Click="Button_Click"/>
+        <Button Style="{DynamicResource btn}" Margin="0,241,0,0" Click="Button_Click_1">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Label Style="{DynamicResource NumPad}">
+                        <Image Width="25" Source="..\..\Assets\icons\arrow-circle.png"/>
+                    </Label>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button Style="{DynamicResource btn}" Content="0" Margin="92,241,0,0" Click="Button_Click"/>
+        <Button Style="{DynamicResource btn}" Content="Back Space" Margin="184,241,-1,0" x:Name="btnBackSpace" Click="btnBackSpace_Click">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Label Style="{DynamicResource NumPad}">
+                        <Image Width="25" Source="..\..\Assets\icons\backspace-arrow.png"/>
+                    </Label>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button Style="{DynamicResource btn}" Content="8" Margin="92,177,0,0" Click="Button_Click"/>
+        <Button Style="{DynamicResource btn}" Content="9" Margin="184,177,-1,0" Click="Button_Click"/>
+    </Grid>
+</UserControl>

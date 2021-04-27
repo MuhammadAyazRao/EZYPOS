@@ -7,6 +7,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:EZYPOS"
         mc:Ignorable="d"
+        WindowStyle="None" WindowState="Maximized"  
         Title="EZY-POS" Height="450" Width="800">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />
@@ -89,7 +90,7 @@
     <!-- the real app and real menu -->
     <Grid>        
         <Grid.RowDefinitions>
-            <RowDefinition x:Name="ColMenu" Height="50"/>
+            <RowDefinition x:Name="ColMenu" Height="40"/>
             <RowDefinition x:Name="ColShowMenu" Height="0"/>
             <RowDefinition x:Name="ColContent" Height="*"/>         
         </Grid.RowDefinitions>
@@ -121,11 +122,35 @@
                     </MenuItem>
                     <MenuItem Header="_Supplier" Name="Supplier" Click="Supplier_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_Queries" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_queries.png" />
+                    <MenuItem Header="_AccountHead" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_queries.png" />
                 </MenuItem>
                 <MenuItem Header="_Transaction" Template="{StaticResource VsMenuTop}">
-                    <MenuItem Header="_SaleItem" Name="SaleItem" Click="SaleItem_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />                    
+                    <MenuItem Header="_Sale Item" Name="SaleItem" Click="SaleItem_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
+                    <MenuItem Header="_Return Item" Name="ReturnItem" Click="ReturnItem_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
+                    <MenuItem Header="_Purchase Item" Name="Purchase" Click="Purchase_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
+                    <MenuItem Header="_Customer Receipt" Name="CustomerReceipt" Click="CustomerReceipt_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
+                    <MenuItem Header="_Supplier Payment" Name="SupplierPayment" Click="SupplierPayment_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
+                    <MenuItem Header="_Stock Adjustment"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                 </MenuItem>
-            </Menu>
+                <MenuItem Header="_Reports" Template="{StaticResource VsMenuTop}">                   
+                    
+                    <MenuItem Header="_SaleReport" Template="{StaticResource VsMenuSub}">
+                        <MenuItem Header="_ItemWise"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
+                    </MenuItem>
+                    <MenuItem Header="_PurchaseReport" Template="{StaticResource VsMenuSub}">
+                        <MenuItem Header="_ItemWise"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
+                    </MenuItem>
+
+                </MenuItem>
+                <MenuItem Header="_Utilities" Template="{StaticResource VsMenuTop}">                  
+                        <MenuItem Header="_Barcode" Name="Barcode" Click="Barcode_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />                    
+                        <MenuItem Header="_BackUp"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />                   
+                </MenuItem>
+
+                <MenuItem Header="_Logout" Name="Logout" Click="Logout_Click" Template="{StaticResource VsMenuTop}"/>
+
+
+            </Menu>            
         </StackPanel>
         <ScrollViewer  HorizontalScrollBarVisibility="Auto"  VerticalScrollBarVisibility="Auto" Grid.Row="2">
             <!--<dragablz:TabablzControl Margin="8" ShowDefaultCloseButton="True" ShowDefaultAddButton="True">
@@ -146,6 +171,7 @@
             </dragablz:TabablzControl>-->
             <!--<StackPanel x:Name="contentArea" />-->
             <my:ChromeTabControl Name="chrometabs">
+                
                 <!--<my:ChromeTabItem Header="One" Background="Orange">
                     <Button>Uno</Button>
                 </my:ChromeTabItem>

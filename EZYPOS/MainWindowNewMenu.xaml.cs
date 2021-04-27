@@ -17,7 +17,10 @@ using EZYPOS.Helper.Session;
 using EZYPOS.UserControls;
 using EZYPOS.UserControls.Define.Crud;
 using EZYPOS.UserControls.Define.List;
+using EZYPOS.UserControls.Misc;
 using EZYPOS.UserControls.Transaction;
+using EZYPOS.View;
+using MessageBox = EZYPOS.View.MessageBox;
 
 namespace EZYPOS
 {
@@ -74,7 +77,7 @@ namespace EZYPOS
             ucType = Type.GetType(controlName);
             if (ucType == null)
             {
-                MessageBox.Show("The Control: " + controlName + " does not exist.");
+                MessageBox.ShowCustom("The Control: " + controlName + " does not exist.","Invalid","OK");
             }
             else
             {
@@ -216,8 +219,42 @@ namespace EZYPOS
 
         private void SaleItem_Click(object sender, RoutedEventArgs e)
         {
-            UserControlSaleItem SaleItem = new UserControlSaleItem();
+            UserControlSaleTransaction SaleItem = new UserControlSaleTransaction();
             ActiveSession.DisplayuserControlMethod(SaleItem);
+        }
+
+        private void Logout_Click(object sender, RoutedEventArgs e)
+        {
+            LoginScreen Login = new LoginScreen();
+            Login.Show();
+            this.Close();
+            
+        }
+
+        private void Purchase_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ReturnItem_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CustomerReceipt_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SupplierPayment_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Barcode_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlBarCode Barcode = new UserControlBarCode();
+            ActiveSession.DisplayuserControlMethod(Barcode);
         }
     }
 }

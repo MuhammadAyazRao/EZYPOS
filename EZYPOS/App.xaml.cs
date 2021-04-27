@@ -25,10 +25,17 @@ namespace EZYPOS
             // SetupExceptionHandling();
             await Task.Run(() => SetupExceptionHandling());
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
-            { 
+            {
             }
 
-            }
+            EZYPOS.View.SplashScreen Splash = new EZYPOS.View.SplashScreen();
+            Splash.Show();
+            await Task.Run(() => Thread.Sleep(3000));
+           
+            EZYPOS.View.LoginScreen LoginScreen = new EZYPOS.View.LoginScreen();
+            LoginScreen.Show();
+            Splash.Close();
+        }
 
         private void SetupExceptionHandling()
         {

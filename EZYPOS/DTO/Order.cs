@@ -176,7 +176,7 @@ namespace EZYPOS.DTO
             set
             {
                 seletedHeight = value;
-                OnPropertyChanged("Height");
+                OnPropertyChanged("SeletectedHeight");
             }
         }
 

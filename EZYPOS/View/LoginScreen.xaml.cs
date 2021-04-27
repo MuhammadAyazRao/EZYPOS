@@ -1,5 +1,7 @@
 ﻿using EZYPOS;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace EZYPOS.View
@@ -13,11 +15,14 @@ namespace EZYPOS.View
         {
             InitializeComponent();
         }
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-
-            MainWindow MainUI = new MainWindow();
+            EZYPOS.View.SplashScreen Splash = new EZYPOS.View.SplashScreen();
+            Splash.Show();
+            await Task.Run(() => Thread.Sleep(3000));           
+            MainWindowNewMenu MainUI = new MainWindowNewMenu();
             MainUI.Show();
+            Splash.Close();
             Close();
         }
 
@@ -37,7 +42,7 @@ namespace EZYPOS.View
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            btnLogin_Click(null, null);
         }
                
     }

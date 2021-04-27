@@ -16,7 +16,11 @@ namespace EZYPOS.Helper
 
         public List<T> Last(List<T> ListToPage, int RecordsPerPage=10)
         {
-            PageIndex = ListToPage.Count / RecordsPerPage;            
+            PageIndex = ListToPage.Count / RecordsPerPage;
+            if (ListToPage.Count % RecordsPerPage == 0)
+            {
+                PageIndex--;
+            }
             PagedList = SetPaging(ListToPage, RecordsPerPage);
             return PagedList;
         }
@@ -32,6 +36,10 @@ namespace EZYPOS.Helper
             if (PageIndex >= ListToPage.Count / RecordsPerPage)
             {
                 PageIndex = ListToPage.Count / RecordsPerPage;
+                if (ListToPage.Count % RecordsPerPage == 0)
+                {
+                    PageIndex--;
+                }
             }
             PagedList = SetPaging(ListToPage, RecordsPerPage);
             return PagedList;

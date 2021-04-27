@@ -14,7 +14,7 @@ namespace DAL.DBModel
         public int? SubcategoryId { get; set; }
         public bool? Isdeleted { get; set; }
         public int? GroupId { get; set; }
-        public long? RetailPrice { get; set; }
+        public long RetailPrice { get; set; }
         public long? Wholesaleprice { get; set; }
         public long? PurchasePrice { get; set; }
         public DateTime? Lastupdated { get; set; }
