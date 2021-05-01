@@ -18,6 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DAL.Repository;
 using DAL.IRepository;
+using Common.Session;
 
 namespace EZYPOS.UserControls
 {

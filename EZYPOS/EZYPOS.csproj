@@ -106,16 +106,23 @@
     <PackageReference Include="MaterialDesignColors" Version="1.2.7" />
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
     <PackageReference Include="NLog" Version="4.7.5" />
+    <PackageReference Include="ReportViewerCore.NETCore" Version="15.1.13" />
+    <PackageReference Include="ReportViewerCore.WinForms" Version="15.1.13" />
     <PackageReference Include="ZXing.Net" Version="0.16.6" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\DAL\DAL.csproj" />
+    <ProjectReference Include="..\Report\Report.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="ChromeTabs">
       <HintPath>ExternalDll\ChromeTabs.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsFormsIntegration">
+      <HintPath>..\..\..\..\..\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\WindowsFormsIntegration.dll</HintPath>
     </Reference>
   </ItemGroup>
 

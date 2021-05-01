@@ -7,6 +7,11 @@ namespace DAL.DBModel
 {
     public partial class SaleOrder
     {
+        public SaleOrder()
+        {
+            SaleOrderDetails = new HashSet<SaleOrderDetail>();
+        }
+
         public int Id { get; set; }
         public int RestaurantId { get; set; }
         public int UserId { get; set; }
@@ -34,5 +39,7 @@ namespace DAL.DBModel
         public long OnlineAmount { get; set; }
         public int IsPrinted { get; set; }
         public long? ServiceCharge { get; set; }
+
+        public virtual ICollection<SaleOrderDetail> SaleOrderDetails { get; set; }
     }
 }

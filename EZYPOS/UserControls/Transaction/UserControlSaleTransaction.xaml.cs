@@ -1,4 +1,6 @@
-﻿using DAL.Repository;
+﻿using Common.DTO;
+using Common.Session;
+using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.Helper;
 using EZYPOS.Helper.Session;
@@ -27,7 +29,7 @@ namespace EZYPOS.UserControls.Transaction
     /// </summary>
     public partial class UserControlSaleTransaction : UserControl
     {
-        public UserControlSaleTransaction()
+        public UserControlSaleTransaction(Order EditOrder=null)
         {
             InitializeComponent();
             // this.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
@@ -43,9 +45,24 @@ namespace EZYPOS.UserControls.Transaction
             
             listKitchenLineItems.ItemsSource = GetProducts();
             BusyIndicator.CloseBusy();
+            if (EditOrder != null)
+            {
+                order.OrderId = EditOrder.OrderId;
+                Initialize(EditOrder);
+            }
+           
 
         }
 
+        public void Initialize(Order Odr)
+        {
+            btnEdit.Visibility = Visibility.Visible;
+            btnPay.Visibility = Visibility.Collapsed;
+            foreach (var odritem in Odr?.OrdersDetails)
+            {
+                AddToCart(odritem?.Item.name, (long)odritem?.Item.price,(int) odritem?.Item.id, (int)odritem?.Qty);
+            }
+        }
         public Order order = new Order();
         private void ActiveSession_DeleliveryChargesCaltulated(object parameter)
         {
@@ -86,34 +103,47 @@ namespace EZYPOS.UserControls.Transaction
         {
             try
             {
-                Label button = (Label)sender;
-                if (button != null)
+                using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                 {
-                    OrderDetail orderDetails = (OrderDetail)listBoxItemCart.SelectedItem;
-
-                    if (button.Content.ToString() == "+")
+                    Label button = (Label)sender;
+                    if (button != null)
                     {
-                        orderDetails.Qty = orderDetails.Qty + 1;
-                        int INDEX = listBoxItemCart.SelectedIndex;
-                        order.OrdersDetails.RemoveAt(INDEX);
-                        listBoxItemCart.Items.RemoveAt(INDEX);
-                        order.OrdersDetails.Insert(INDEX, orderDetails);
-                        listBoxItemCart.Items.Insert(INDEX, orderDetails);
-                        listBoxItemCart.SelectedIndex = INDEX;
+                        OrderDetail orderDetails = (OrderDetail)listBoxItemCart.SelectedItem;
 
-
-                    }
-                    else
-                    {
-                        if (orderDetails.Qty > 1)
+                        if (button.Content.ToString() == "+")
                         {
-                            orderDetails.Qty--;
-
+                            if (orderDetails.Qty + 1 <= Db.Stock.GetProductQty(orderDetails.Item.id))
+                            {
+                                orderDetails.Qty = orderDetails.Qty + 1;
+                                int INDEX = listBoxItemCart.SelectedIndex;
+                                order.OrdersDetails.RemoveAt(INDEX);
+                                listBoxItemCart.Items.RemoveAt(INDEX);
+                                order.OrdersDetails.Insert(INDEX, orderDetails);
+                                listBoxItemCart.Items.Insert(INDEX, orderDetails);
+                                listBoxItemCart.SelectedIndex = INDEX;
+                            }
+                            else
+                            {
+                                EZYPOS.View.MessageBox.ShowCustom("Available Qty is " + Db.Stock.GetProductQty(orderDetails.Item.id), "QTY Exceeded", "Ok");
+                            }
 
                         }
-                    }
-                    UpdateBillSummary();
+                        else
+                        {
+                            if (orderDetails.Qty > 1)
+                            {
+                                orderDetails.Qty--;
+                                int INDEX = listBoxItemCart.SelectedIndex;
+                                order.OrdersDetails.RemoveAt(INDEX);
+                                listBoxItemCart.Items.RemoveAt(INDEX);
+                                order.OrdersDetails.Insert(INDEX, orderDetails);
+                                listBoxItemCart.Items.Insert(INDEX, orderDetails);
+                                listBoxItemCart.SelectedIndex = INDEX;
+                            }
+                        }
+                        UpdateBillSummary();
 
+                    }
                 }
             }
             catch (Exception ex)
@@ -149,12 +179,7 @@ namespace EZYPOS.UserControls.Transaction
                     var status = EZYPOS.View.MessageYesNo.ShowCustom("confirmation", "Want to delete", "yes", "No");
                     if (status)
                     {
-                        order = new Order();
-                        btnEdit.Visibility = Visibility.Collapsed;
-                        listBoxItemCart.Items.Clear();
-                        CartVisibility();
-                        UpdateBillSummary();
-                        ActiveSession.order_Discount_percentage = 0;
+                        EmptyCart();
                     }
                 }
             }
@@ -336,22 +361,36 @@ namespace EZYPOS.UserControls.Transaction
 
         public void UpdateBillSummary()
         {
-            ViewHalper.FindChild<Label>(expander, "lblItems").Content = listBoxItemCart.Items.Count;
-            ViewHalper.FindChild<Label>(expander, "lblDicAmt").Content = order.GetTotalDiscount();
-            ViewHalper.FindChild<Label>(expander, "lblTotal").Content = order.GetNetTotal();
-            ViewHalper.FindChild<Label>(expander, "lblDeliverCharges").Content = order.DeliverCharges;
-            ViewHalper.FindChild<Label>(expander, "lblSerAmt").Content = order.ServiceCharges;
+            lblDicAmt.Content = order.GetTotalDiscount();
+            lblItems.Content = listBoxItemCart.Items.Count;
+            lblTotal.Content = order.GetNetTotal();
+
+            //ViewHelper.FindChild<Label>(expander, "lblItems").Content = listBoxItemCart.Items.Count;
+            //ViewHelper.FindChild<Label>(expander, "lblDicAmt").Content = order.GetTotalDiscount();
+            //ViewHelper.FindChild<Label>(expander, "lblTotal").Content = order.GetNetTotal();
+            //ViewHelper.FindChild<Label>(expander, "lblDeliverCharges").Content = order.DeliverCharges;
+            //ViewHelper.FindChild<Label>(expander, "lblSerAmt").Content = order.ServiceCharges;
 
         }
 
         #endregion
-
+        public void EmptyCart()
+        {
+            order = new Order();
+            btnEdit.Visibility = Visibility.Collapsed;
+            btnPay.Visibility = Visibility.Visible;
+            listBoxItemCart.Items.Clear();
+            CartVisibility();
+            UpdateBillSummary();
+            ActiveSession.order_Discount_percentage = 0;
+        }
         private void btnPay_Click(object sender, RoutedEventArgs e)
         {
             CheckOutForm Checkout = new CheckOutForm(order);
             if (Checkout.ShowDialog() == true)
             {
                 EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Sucess", "Ok");
+                EmptyCart();
             }
             //try
             //{
@@ -468,90 +507,22 @@ namespace EZYPOS.UserControls.Transaction
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-           
-            //    if (listBoxItemCart.Items.Count != 0)
-            //    {
-            //        order.OrdersDetails = listBoxItemCart.Items.Cast<OrderDetail>().ToList();
-            //        order odr = new order();
 
-            //        int a = 0;
-            //        try
-            //        {
-            //            odr.total = order.GetNetTotal();
-            //            odr.discount_amount = order.GetTotalDiscount();
-            //            odr.description = order.Instrictions;
-            //            odr.id = order.OrderId;
-            //            odr.user_id = order.CustId;
-            //            odr.delivery_charges = order.DeliverCharges;
-            //            odr.delivery_type = order.diverlyType;
-            //            odr.Service_Charge = order.ServiceCharges;
-            //            odr = Converssion.Add_Order_Api(odr, OrderEnums.PaymentStatus.completed, OrderEnums.eatinn_payment_status.completed, 0);
-            //            odr.order_count = order.OrderCount;
-            //            List<OrderDetail> _Details = order.OrdersDetails;
-
-            //            using (var db = new jayeatEntities())
-            //            {
-            //                var result = db.orders.FirstOrDefault(x => x.id == odr.id);
-
-            //                if (result == null)
-            //                    return;
-
-            //                db.Entry(result).CurrentValues.SetValues(odr);
-            //                db.Database.ExecuteSqlCommand("DELETE FROM `order_detail` WHERE order_id = {0}", odr.id);
-            //                db.SaveChanges();
-
-            //                for (int i = 0; i < _Details.Count; i++)
-            //                {
-            //                    order_detail order_Detail = Converssion.Add_to_orderDetail(odr.id, _Details[i].Item.id, _Details[i].Item.name, _Details[i].Note, _Details[i].Qty, _Details[i].Item.price, 0, "Null", i, "cooking", _Details[i].Item);
-
-            //                    if (_Details[i].subCategoryId != null)
-            //                        order_Detail.sub_cat_id = _Details[i].subCategoryId;
-
-            //                    if (_Details[i].subCategory != null)
-            //                        order_Detail.sub_cat_name = _Details[i].subCategory;
-
-            //                    db.order_detail.Add(order_Detail);
-            //                    if (_Details[i].AdonItems != null)
-            //                    {
-            //                        for (int y = 0; y < _Details[i].AdonItems.Count; y++)
-            //                        {
-            //                            order_detail adon = new order_detail();
-            //                            addon_item item = _Details[i].AdonItems[y];
-            //                            adon = Converssion.Add_to_orderDetail(odr.id, item.id, item.name, "null", item.qty * _Details[i].Qty, item.price, _Details[i].Item.id, y.ToString(), 0, "cooking", null);
-            //                            db.order_detail.Add(adon);
-            //                        }
-            //                    }
-            //                }
-            //                a = db.SaveChanges();
-            //            }
-            //        }
-            //        catch (DbEntityValidationException dbEx)
-            //        {
-            //            foreach (var validationErrors in dbEx.EntityValidationErrors)
-            //            {
-            //                foreach (var validationError in validationErrors.ValidationErrors)
-            //                {
-            //                    Console.WriteLine("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
-            //                }
-            //            }
-            //        }
-
-
-            //        if (a != 0)
-            //        {
-            //            using (var db = new jayeatEntities())
-            //            {
-            //                OnCheckout?.Invoke(db.orders.Find(odr.id), EventArgs.Empty);
-            //                listBoxItemCart.Items.Clear();
-            //                order = new Order();
-            //                UpdateBillSummary();
-            //                CartVisibility();
-            //                ActiveSession.ClearTempDataForCaller();
-            //                ActiveSession.order_Discount_percentage = 0;
-            //                btnEdit.Visibility = Visibility.Collapsed;
-            //            }
-            //        }
-            //    }
+            
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            {
+                // Delete Order 
+                //Delete Order Detail
+                // Detele Stock_OrderDetail
+                if (Db.SaleOrder.DeleteOrder(order.OrderId))
+                {
+                    if (Db.SaleOrder.SaveOrder(order))
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Sucess", "Ok");
+                        EmptyCart();
+                    }
+                }
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -754,19 +725,50 @@ namespace EZYPOS.UserControls.Transaction
             CartVisibility();
             UpdateBillSummary();
         }
-        private void AddToCart(string Name,long Price , int Qty=1,int Discount=0)
+        private void AddToCart(string Name, long Price, int ProductId, int Qty = 1, int Discount = 0)
         {
-            if (order.OrdersDetails == null)
-                order.OrdersDetails = new List<OrderDetail>();
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            {                
 
-            if (order.OrdersDetails == null)
-                order.OrdersDetails = new List<OrderDetail>();
+                if (order.OrdersDetails == null)
+                    order.OrdersDetails = new List<OrderDetail>();
 
-            order.OrdersDetails.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price }, ItemDiscount = Discount });
-            listBoxItemCart.Items.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price }, ItemDiscount = Discount });
-            listBoxItemCart.SelectedIndex = 0;
-            CartVisibility();
-            UpdateBillSummary();
+
+                var CartProduct = order.OrdersDetails.Where(x => x.Item?.id == ProductId).FirstOrDefault();
+                if (CartProduct != null)
+                {
+                    if (CartProduct.Qty + 1 <= Db.Stock.GetProductQty(ProductId))
+                    {
+                        CartProduct.Qty = CartProduct.Qty + 1;
+                        int INDEX = listBoxItemCart.SelectedIndex;
+                        order.OrdersDetails.RemoveAt(INDEX);
+                        listBoxItemCart.Items.RemoveAt(INDEX);
+                        order.OrdersDetails.Insert(INDEX, CartProduct);
+                        listBoxItemCart.Items.Insert(INDEX, CartProduct);
+                        listBoxItemCart.SelectedIndex = INDEX;
+                    }
+                    else
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Available Qty is " + Db.Stock.GetProductQty(ProductId), "QTY Exceeded", "Ok");
+                    }
+                }
+                else
+                {
+                    if (Db.Stock.GetProductQty(ProductId) >= 1)
+                    {
+                        order.OrdersDetails.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, id = ProductId }, ItemDiscount = Discount });
+                        listBoxItemCart.Items.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, id = ProductId }, ItemDiscount = Discount });
+                        listBoxItemCart.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Available Qty is " + Db.Stock.GetProductQty(ProductId), "QTY Exceeded", "Ok");
+                    }
+                }
+
+                CartVisibility();
+                UpdateBillSummary();
+            }
         }
         public List<ProductDTO> GetProducts(int CategoryId=0)
         {
@@ -853,8 +855,7 @@ namespace EZYPOS.UserControls.Transaction
             ProductDTO Product = selectedItem.Content as ProductDTO;
             if (Product != null)
             {
-                AddToCart(Product.ProductName, Product.RetailPrice);
-            
+              AddToCart(Product.ProductName, Product.RetailPrice, Product.Id);            
             }           
         }
 
@@ -889,7 +890,7 @@ namespace EZYPOS.UserControls.Transaction
                     var item = GetProductsbycode(Barcode.Text);
                     if (item != null)
                     {
-                        AddToCart(item.ProductName, item.RetailPrice);
+                        AddToCart(item.ProductName, item.RetailPrice,item.Id);
                         listKitchenLineItems.ItemsSource = null;
                     }
                     else

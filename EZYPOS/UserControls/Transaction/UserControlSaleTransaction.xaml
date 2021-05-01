@@ -214,16 +214,16 @@
                     <ItemContainerTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="25*"/>
-                                <ColumnDefinition Width="25*"/>
+                                <ColumnDefinition Width="*"/>
+                                <!--<ColumnDefinition Width="25*"/>-->
                             </Grid.ColumnDefinitions>
-                            <Label Content="Items" Grid.Row="0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" Height="25" Margin="0,5,0,5"/>
-                            <Label Content="0" x:Name="lblItems" FontWeight="Bold" HorizontalContentAlignment="Right" VerticalAlignment="Center" Width="Auto" Margin="60,0,20,0" Height="25"/>
+                            <!--<Label Content="Items" Grid.Row="0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" Height="25" Margin="0,5,0,5"/>
+                            <Label Content="0" x:Name="lblItems" FontWeight="Bold" HorizontalContentAlignment="Right" VerticalAlignment="Center" Width="Auto" Margin="60,0,20,0" Height="25"/>-->
 
-                            <Label Margin="0,0,10,0" BorderBrush="{DynamicResource Gray}" BorderThickness="0,0,3,0" VerticalAlignment="Stretch" Height="Auto" HorizontalAlignment="Right" Width="28"/>
+                            <!--<Label Margin="0,0,10,0" BorderBrush="{DynamicResource Gray}" BorderThickness="0,0,3,0" VerticalAlignment="Stretch" Height="Auto" HorizontalAlignment="Right" Width="28"/>-->
 
-                            <Label Content="Total" FontWeight="Bold" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"  Height="25" Margin="0,5,0,5"/>
-                            <Label x:Name="lblTotal" ContentStringFormat="c" Content="0" Grid.Column="1" FontFamily="Raleway"  FontWeight="Bold" HorizontalContentAlignment="Right" VerticalAlignment="Center" HorizontalAlignment="Stretch"  Margin="50,5,5,0" Height="25"/>
+                            <Label Content="Total Summary" FontWeight="Bold" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"  Height="25" Margin="0,5,0,5"/>
+                            <!--<Label x:Name="lblTotal" ContentStringFormat="c" Content="0" Grid.Column="1" FontFamily="Raleway"  FontWeight="Bold" HorizontalContentAlignment="Right" VerticalAlignment="Center" HorizontalAlignment="Stretch"  Margin="50,5,5,0" Height="25"/>-->
                         </Grid>
                     </ItemContainerTemplate>
                 </Expander.HeaderTemplate>
@@ -235,11 +235,11 @@
                     <Label Content="Total Discount" Foreground="{DynamicResource Success}" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left" Width="92" Margin="11,0,0,0" Height="26" VerticalAlignment="Top" />
                     <Label x:Name="lblDicAmt" Foreground="{DynamicResource Success}" Content="0.00" ContentStringFormat="C" Grid.Row="0" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalAlignment="Top" Width="Auto" Margin="54,0,6,0" Height="26" Grid.Column="0"/>
 
-                    <Label Content="Service Charges" Foreground="{DynamicResource DarkBlue}" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left" Width="99" Margin="9,26,0,0" Height="26" VerticalAlignment="Top" />
-                    <Label x:Name="lblSerAmt" Foreground="{DynamicResource DarkBlue}" Content="0.00" ContentStringFormat="C" Grid.Row="0" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalAlignment="Top" Width="Auto" Margin="54,26,6,0" Height="26" RenderTransformOrigin="0.5,0.308" Grid.Column="0"/>
+                    <Label Content="Total Items" Foreground="{DynamicResource DarkBlue}" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left" Width="99" Margin="9,26,0,0" Height="26" VerticalAlignment="Top" />
+                    <Label x:Name="lblItems" Foreground="{DynamicResource DarkBlue}" Content="0.00" ContentStringFormat="C" Grid.Row="0" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalAlignment="Top" Width="Auto" Margin="54,26,6,0" Height="26" RenderTransformOrigin="0.5,0.308" Grid.Column="0"/>
 
-                    <Label Content="Deliver Charges" Grid.Column="1" Foreground="{DynamicResource Danger}" FontWeight="Bold" VerticalAlignment="Bottom" Margin="1,0,45,86" Height="26"/>
-                    <Label Name="lblDeliverCharges" Content="0.00" ContentStringFormat="C" FontWeight="Bold" Foreground="{DynamicResource Danger}"  Grid.Column="1" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="Auto" Margin="95,0,10,0" Height="26"/>
+                    <Label Content="Total Charges" Grid.Column="1" Foreground="{DynamicResource Danger}" FontWeight="Bold" VerticalAlignment="Bottom" Margin="1,0,45,86" Height="26"/>
+                    <Label Name="lblTotal" Content="0.00" ContentStringFormat="C" FontWeight="Bold" Foreground="{DynamicResource Danger}"  Grid.Column="1" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="Auto" Margin="95,0,10,0" Height="26"/>
 
                     <WrapPanel x:Name="stackBtn" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="10,62,0,0" >
                         <Button Content="{materialDesign:PackIcon Kind=Discount,Size=30}" Name="orderDiscount" ToolTip="Order Discount" Click="orderDiscount_Click" Style="{DynamicResource btnExpander}"/>
@@ -293,7 +293,7 @@
                 </Grid.ColumnDefinitions>
                 <Button Content="Delete" Click="btnDeleteCart_Click" x:Name="btnDeleteCart_Copy" Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Margin="10,5,0,5" Width="185"/>
                 <Button Content="Proceed" Click="btnPay_Click" x:Name="btnPay" Style="{DynamicResource btnSuccess}" HorizontalAlignment="Right" Margin="0,5,10,5" Width="185" Grid.Column="1"/>
-                <Button Content="Update" Visibility="Collapsed" Click="btnEdit_Click" x:Name="btnEdit" Style="{DynamicResource btnPrimery}" HorizontalAlignment="Right" Margin="0,5,10,5" Width="185" Grid.Column="1"/>
+                <Button Content="Update"  Click="btnEdit_Click" x:Name="btnEdit" Style="{DynamicResource btnPrimery}" HorizontalAlignment="Right" Margin="0,5,10,5" Width="185" Grid.Column="1" Visibility="Collapsed"/>
 
                 <!--<Button Content="Hold" Click="btnHold_Click" x:Name="btnHold" HorizontalAlignment="Left" Style="{DynamicResource btnInfo}" Margin="115,0,0,10" VerticalAlignment="Bottom" Width="70" Height="41"/>-->
 

@@ -1,4 +1,6 @@
-﻿using EZYPOS.DTO;
+﻿using Common.DTO;
+using Common.Session;
+using EZYPOS.DTO;
 using EZYPOS.Helper.Session;
 using System;
 using System.Collections.Generic;

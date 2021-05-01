@@ -1,4 +1,6 @@
-﻿using EZYPOS.DTO;
+﻿using Common.DTO;
+using DAL.Repository;
+using EZYPOS.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +59,28 @@ namespace EZYPOS.View
 
         private void btnCheckout_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (CustPay < Order.GetNetTotal())
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("Please Collect Payment", "Notification", "Ok");
+                    return;
+                }
+                else
+                {
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    {
+                        Db.Stock.GetStockDetailToAdjust(50,4);
+                        this.DialogResult = Db.SaleOrder.SaveOrder(Order);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.DialogResult = false;
+            }
 
+            this.Close();
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

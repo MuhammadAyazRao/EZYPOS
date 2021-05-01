@@ -7,6 +7,11 @@ namespace DAL.DBModel
 {
     public partial class Product
     {
+        public Product()
+        {
+            StockOderDetails = new HashSet<StockOderDetail>();
+        }
+
         public int Id { get; set; }
         public string ProductName { get; set; }
         public string Barcode { get; set; }
@@ -24,5 +29,6 @@ namespace DAL.DBModel
         public virtual ProductCategory Category { get; set; }
         public virtual ProductGroup Group { get; set; }
         public virtual ProductSubcategory Subcategory { get; set; }
+        public virtual ICollection<StockOderDetail> StockOderDetails { get; set; }
     }
 }

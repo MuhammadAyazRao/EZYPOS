@@ -1,4 +1,5 @@
-﻿using DAL.Repository;
+﻿using Common.Session;
+using DAL.Repository;
 using EZYPOS.Helper.Session;
 using EZYPOS.UserControls.Define.Crud;
 using System;

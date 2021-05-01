@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ProductStockExpiryDataset" targetNamespace="http://tempuri.org/ProductStockExpiryDataset.xsd" xmlns:mstns="http://tempuri.org/ProductStockExpiryDataset.xsd" xmlns="http://tempuri.org/ProductStockExpiryDataset.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="ProductStockExpiryDataset" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="ProductStockExpiryDataset" msprop:Generator_UserDSName="ProductStockExpiryDataset">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ProductExpiry" msprop:Generator_TableClassName="ProductExpiryDataTable" msprop:Generator_TableVarName="tableProductExpiry" msprop:Generator_TablePropName="ProductExpiry" msprop:Generator_RowDeletingName="ProductExpiryRowDeleting" msprop:Generator_RowChangingName="ProductExpiryRowChanging" msprop:Generator_RowEvHandlerName="ProductExpiryRowChangeEventHandler" msprop:Generator_RowDeletedName="ProductExpiryRowDeleted" msprop:Generator_UserTableName="ProductExpiry" msprop:Generator_RowChangedName="ProductExpiryRowChanged" msprop:Generator_RowEvArgName="ProductExpiryRowChangeEvent" msprop:Generator_RowClassName="ProductExpiryRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ProductId" msprop:Generator_ColumnVarNameInTable="columnProductId" msprop:Generator_ColumnPropNameInRow="ProductId" msprop:Generator_ColumnPropNameInTable="ProductIdColumn" msprop:Generator_UserColumnName="ProductId" type="xs:int" minOccurs="0" />
+              <xs:element name="AvailableQty" msprop:Generator_ColumnVarNameInTable="columnAvailableQty" msprop:Generator_ColumnPropNameInRow="AvailableQty" msprop:Generator_ColumnPropNameInTable="AvailableQtyColumn" msprop:Generator_UserColumnName="AvailableQty" type="xs:int" minOccurs="0" />
+              <xs:element name="StartDate" msprop:Generator_ColumnVarNameInTable="columnStartDate" msprop:Generator_ColumnPropNameInRow="StartDate" msprop:Generator_ColumnPropNameInTable="StartDateColumn" msprop:Generator_UserColumnName="StartDate" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="ExpirationDate" msprop:Generator_ColumnVarNameInTable="columnExpirationDate" msprop:Generator_ColumnPropNameInRow="ExpirationDate" msprop:Generator_ColumnPropNameInTable="ExpirationDateColumn" msprop:Generator_UserColumnName="ExpirationDate" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

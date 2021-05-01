@@ -131,11 +131,13 @@
                     <MenuItem Header="_Customer Receipt" Name="CustomerReceipt" Click="CustomerReceipt_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_Supplier Payment" Name="SupplierPayment" Click="SupplierPayment_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_Stock Adjustment"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
+                    <MenuItem Header="_View Orders" Name="ViewOrder" Click="ViewOrder_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                 </MenuItem>
                 <MenuItem Header="_Reports" Template="{StaticResource VsMenuTop}">                   
                     
                     <MenuItem Header="_SaleReport" Template="{StaticResource VsMenuSub}">
                         <MenuItem Header="_ItemWise"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
+                        <MenuItem Header="_Test" Name="Test" Click="Test_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
                     </MenuItem>
                     <MenuItem Header="_PurchaseReport" Template="{StaticResource VsMenuSub}">
                         <MenuItem Header="_ItemWise"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />

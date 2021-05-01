@@ -22,6 +22,7 @@ using System.ComponentModel;
 using System.Data;
 using EZYPOS.Helper;
 using DAL.Repository;
+using Common.Session;
 
 namespace EZYPOS.UserControls
 {

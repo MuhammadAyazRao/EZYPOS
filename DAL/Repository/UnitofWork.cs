@@ -27,12 +27,16 @@ namespace DAL.Repository
             ProductGroup= new Repository<ProductGroup>(_context);
             Product= new Repository<Product>(_context);
             Supplier= new Repository<Supplier>(_context);
-          
-
+            SaleOrder = new SaleOrderRepository(_context);
+            Stock = new StockRepository(_context);
+            SaleOrderDetail = new Repository<SaleOrderDetail>(_context);
+            StockOderDetail= new Repository<StockOderDetail>(_context);
         }
         public IRepository<City> City { get; }
         public IRepository<Account> Account { get; }
         public ICustomerRepository Customers { get; }
+        public ISaleOrderRepository SaleOrder { get; }
+        
         public IRepository<UserPage> UserPage { get; }
         public IRepository<UserRole> UserRole { get; }
         public IRepository<Emplyee> Employee { get; }
@@ -42,9 +46,9 @@ namespace DAL.Repository
         public IRepository<ProductGroup> ProductGroup { get; }
         public IRepository<Product> Product { get; }
         public IRepository<Supplier> Supplier { get; }
-       
-
-
+        public IStockRepository Stock { get; }
+        public IRepository<SaleOrderDetail> SaleOrderDetail { get; }
+        public IRepository<StockOderDetail> StockOderDetail { get; }
         public int Complete()
         {
             return _context.SaveChanges();

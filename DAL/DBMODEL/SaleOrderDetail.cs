@@ -7,6 +7,11 @@ namespace DAL.DBModel
 {
     public partial class SaleOrderDetail
     {
+        public SaleOrderDetail()
+        {
+            StockOderDetails = new HashSet<StockOderDetail>();
+        }
+
         public int Id { get; set; }
         public int OrderId { get; set; }
         public int ItemId { get; set; }
@@ -24,5 +29,8 @@ namespace DAL.DBModel
         public int? BillNo { get; set; }
         public string IsUpdated { get; set; }
         public string IsDeleted { get; set; }
+
+        public virtual SaleOrder Order { get; set; }
+        public virtual ICollection<StockOderDetail> StockOderDetails { get; set; }
     }
 }

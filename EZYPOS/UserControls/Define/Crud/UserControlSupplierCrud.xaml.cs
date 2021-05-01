@@ -1,4 +1,5 @@
-﻿using EZYPOS.DBModels;
+﻿using Common.Session;
+using EZYPOS.DBModels;
 using EZYPOS.DTO;
 using EZYPOS.Helper.Session;
 using System;

@@ -13,11 +13,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ChromeTabs;
+using Common.Session;
 using EZYPOS.Helper.Session;
 using EZYPOS.UserControls;
 using EZYPOS.UserControls.Define.Crud;
 using EZYPOS.UserControls.Define.List;
 using EZYPOS.UserControls.Misc;
+using EZYPOS.UserControls.Report;
 using EZYPOS.UserControls.Transaction;
 using EZYPOS.View;
 using MessageBox = EZYPOS.View.MessageBox;
@@ -255,6 +257,19 @@ namespace EZYPOS
         {
             UserControlBarCode Barcode = new UserControlBarCode();
             ActiveSession.DisplayuserControlMethod(Barcode);
+        }
+
+        private void ViewOrder_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlViewOrder OrderScreen = new UserControlViewOrder();
+            ActiveSession.DisplayuserControlMethod(OrderScreen);
+
+        }
+
+        private void Test_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlStockExpiry UserControlStockExpiry = new UserControlStockExpiry();
+            ActiveSession.DisplayuserControlMethod(UserControlStockExpiry);
         }
     }
 }

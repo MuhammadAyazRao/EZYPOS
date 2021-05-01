@@ -27,10 +27,12 @@ namespace DAL.DBModel
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<ProductGroup> ProductGroups { get; set; }
+        public virtual DbSet<ProductStock> ProductStocks { get; set; }
         public virtual DbSet<ProductSubcategory> ProductSubcategories { get; set; }
         public virtual DbSet<SaleOrder> SaleOrders { get; set; }
         public virtual DbSet<SaleOrderDetail> SaleOrderDetails { get; set; }
         public virtual DbSet<ShopSetting> ShopSettings { get; set; }
+        public virtual DbSet<StockOderDetail> StockOderDetails { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<UserPage> UserPages { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
@@ -154,6 +156,15 @@ namespace DAL.DBModel
                 entity.Property(e => e.Createdon).HasColumnType("datetime");
             });
 
+            modelBuilder.Entity<ProductStock>(entity =>
+            {
+                entity.ToTable("ProductStock");
+
+                entity.Property(e => e.ExpiryDate).HasColumnType("date");
+
+                entity.Property(e => e.StartDate).HasColumnType("date");
+            });
+
             modelBuilder.Entity<ProductSubcategory>(entity =>
             {
                 entity.ToTable("ProductSubcategory");
@@ -170,9 +181,9 @@ namespace DAL.DBModel
 
             modelBuilder.Entity<SaleOrder>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("Sale_Orders");
+
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Addby)
                     .IsRequired()
@@ -238,8 +249,6 @@ namespace DAL.DBModel
                     .IsUnicode(false)
                     .HasColumnName("discount_desc");
 
-                entity.Property(e => e.Id).HasColumnName("id");
-
                 entity.Property(e => e.IsDeleted)
                     .IsRequired()
                     .HasMaxLength(20)
@@ -289,9 +298,9 @@ namespace DAL.DBModel
 
             modelBuilder.Entity<SaleOrderDetail>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("Sale_OrderDetail");
+
+                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.BillNo).HasColumnName("bill_no");
 
@@ -304,8 +313,6 @@ namespace DAL.DBModel
                     .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("fixed_item_des");
-
-                entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.IsDeleted)
                     .IsRequired()
@@ -358,6 +365,12 @@ namespace DAL.DBModel
                     .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("sub_cat_name");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.SaleOrderDetails)
+                    .HasForeignKey(d => d.OrderId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Sale_OrderDetail_Sale_Orders");
             });
 
             modelBuilder.Entity<ShopSetting>(entity =>
@@ -369,6 +382,31 @@ namespace DAL.DBModel
                 entity.Property(e => e.ShopId).HasColumnName("Shop_Id");
 
                 entity.Property(e => e.ShopName).HasColumnName("Shop_Name");
+            });
+
+            modelBuilder.Entity<StockOderDetail>(entity =>
+            {
+                entity.ToTable("Stock_OderDetail");
+
+                entity.Property(e => e.OrderDetailId).HasColumnName("OrderDetail_Id");
+
+                entity.HasOne(d => d.OrderDetail)
+                    .WithMany(p => p.StockOderDetails)
+                    .HasForeignKey(d => d.OrderDetailId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Stock_OderDetail_Sale_OrderDetail");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.StockOderDetails)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Stock_OderDetail_Products");
+
+                entity.HasOne(d => d.Stock)
+                    .WithMany(p => p.StockOderDetails)
+                    .HasForeignKey(d => d.StockId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Stock_OderDetail_ProductStock");
             });
 
             modelBuilder.Entity<Supplier>(entity =>

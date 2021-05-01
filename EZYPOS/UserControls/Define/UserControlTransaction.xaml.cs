@@ -1,4 +1,6 @@
-﻿using EZYPOS.DTO;
+﻿using Common.DTO;
+using Common.Session;
+using EZYPOS.DTO;
 using EZYPOS.Helper;
 using EZYPOS.Helper.Session;
 using EZYPOS.View;
@@ -30,7 +32,7 @@ namespace EZYPOS.UserControls
             InitializeComponent();
             this.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
         }
-        internal Order order = new Order();
+        public Order order = new Order();
         private void ActiveSession_DeleliveryChargesCaltulated(object parameter)
         {
             //if (listBoxItemCart.Items.Count != 0)
@@ -320,11 +322,11 @@ namespace EZYPOS.UserControls
 
         public void UpdateBillSummary()
         {
-            ViewHalper.FindChild<Label>(expander, "lblItems").Content = listBoxItemCart.Items.Count;
-            ViewHalper.FindChild<Label>(expander, "lblDicAmt").Content = order.GetTotalDiscount();
-            ViewHalper.FindChild<Label>(expander, "lblTotal").Content = order.GetNetTotal();
-            ViewHalper.FindChild<Label>(expander, "lblDeliverCharges").Content = order.DeliverCharges;
-            ViewHalper.FindChild<Label>(expander, "lblSerAmt").Content = order.ServiceCharges;
+            ViewHelper.FindChild<Label>(expander, "lblItems").Content = listBoxItemCart.Items.Count;
+            ViewHelper.FindChild<Label>(expander, "lblDicAmt").Content = order.GetTotalDiscount();
+            ViewHelper.FindChild<Label>(expander, "lblTotal").Content = order.GetNetTotal();
+            ViewHelper.FindChild<Label>(expander, "lblDeliverCharges").Content = order.DeliverCharges;
+            ViewHelper.FindChild<Label>(expander, "lblSerAmt").Content = order.ServiceCharges;
 
         }
 

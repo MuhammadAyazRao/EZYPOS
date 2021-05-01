@@ -1,4 +1,5 @@
-﻿using EZYPOS.DTO;
+﻿using Common.DTO;
+using EZYPOS.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
