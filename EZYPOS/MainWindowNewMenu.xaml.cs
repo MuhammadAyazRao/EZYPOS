@@ -235,7 +235,8 @@ namespace EZYPOS
 
         private void Purchase_Click(object sender, RoutedEventArgs e)
         {
-
+            UserControlPurchaseTransaction PurchaseItem = new UserControlPurchaseTransaction();
+            ActiveSession.DisplayuserControlMethod(PurchaseItem);
         }
 
         private void ReturnItem_Click(object sender, RoutedEventArgs e)

@@ -6,14 +6,10 @@
 
   <ItemGroup>
     <None Remove="RDLC\Product\ProductStockExpiryReport.rdlc" />
-    <None Remove="Report1.rdlc" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="RDLC\Product\ProductStockExpiryReport.rdlc">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Report1.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

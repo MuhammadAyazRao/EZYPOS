@@ -1,0 +1,321 @@
+﻿<UserControl x:Class="EZYPOS.UserControls.Transaction.UserControlPurchaseTransaction"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EZYPOS.UserControls.Transaction"
+               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignWidth="768" Language="en-GB">
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="400"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Row="0" Grid.Column="0" KeyDown="Barcode_KeyDown" Name="Barcode"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="40"  TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Barcode"  />
+            <ComboBox  Name="DDCategory" Grid.Row="0" Grid.Column="1" DisplayMemberPath="SubcategoryName"  SelectedValuePath="Id" Margin="5,5,5,5" materialDesign:HintAssist.HintOpacity=".26" materialDesign:HintAssist.Hint="Search Category" SelectionChanged="DDCategory_SelectionChanged"    IsEditable="False"/>
+            <ListBox   Grid.Row="1" Grid.ColumnSpan="2"  Height="630"  BorderThickness="0" Name="listKitchenLineItems" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{DynamicResource SharpBlue}" Width="160"  Height="150" CornerRadius="3">
+                            <Grid>
+                                <Label BorderBrush="White"  BorderThickness="2" Height="30" VerticalAlignment="Top"  HorizontalContentAlignment="Center" HorizontalAlignment="Center" Width="100" Margin="10,45,10,10" Foreground="White" FontWeight="Bold">
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding RetailPrice, StringFormat=C}"></TextBlock>
+                                </Label>
+
+                                <!--<Label BorderBrush="White" BorderThickness="2" Height="30" VerticalAlignment="Top" Content="{Binding SubCategory}" HorizontalContentAlignment="Right" HorizontalAlignment="Right" Width="100" Margin="10,10,10,10" Foreground="White" FontWeight="Bold"/>-->
+                                <Label HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" Height="auto" Margin="5,5,5,5" Width="auto" FontWeight="Bold" Foreground="White">
+                                    <Label.Content>
+                                        <TextBlock TextWrapping="Wrap">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{} {0} -{1}">
+                                                    <Binding Path="Size"/>
+                                                    <Binding Path="ProductName"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Label.Content>
+                                </Label>
+                                <Label BorderBrush="White"  BorderThickness="2" FontSize="8" Height="auto" VerticalAlignment="Top"  HorizontalContentAlignment="Center" HorizontalAlignment="Center" Width="auto" Margin="10,80,10,10" Background="{DynamicResource DarkBlue}" Foreground="White">
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding CategoryName}"></TextBlock>
+                                </Label>
+                                <!--<Label HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" Height="auto"  Margin="5,120,5,5"  FontWeight="Bold" Foreground="White">
+                                    <Label.Content>
+                                        <TextBlock TextWrapping="Wrap">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{} {0} ">
+                                                    <Binding Path="Id"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Label.Content>
+                                </Label>-->
+
+
+                                <Button Name="AddTocart" Click="AddTocart_Click" Content="Add" Style="{DynamicResource btnDefault}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="30" Margin="5"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        <!--<TextBox Grid.Row="1"  Grid.Column="0"  Margin="10,10,10,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="Auto" AcceptsReturn="True" TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Barcode"  />-->
+
+        <Grid Grid.Column="1" VerticalAlignment="Stretch"  Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Background="White"  Visibility="Visible" x:Name="cartImg" Grid.Row="0" VerticalAlignment="Top" >
+                <Label Content="{materialDesign:PackIcon Kind=Cart,Size=100}" Foreground="#FFA3A3A3" FontFamily="Raleway" FontWeight="Bold" FontSize="20" Margin="0,108,0,0" HorizontalContentAlignment="Center" Height="100" VerticalAlignment="Top"/>
+                <!--<Image Source="..\Assets\Icons\shopping-cart.png" HorizontalAlignment="Center" x:Name="image" Margin="0,108,0,0" Height="111" VerticalAlignment="Top" Width="102"/>-->
+                <Label Content="Cart Empty" Foreground="#FFA3A3A3" FontFamily="Raleway" FontWeight="Bold" FontSize="20" Margin="0,219,0,0" HorizontalContentAlignment="Center" Height="34" VerticalAlignment="Top"/>
+                <Label Content="Add some items" Foreground="#FFA3A3A3" FontFamily="Raleway" FontWeight="Bold" FontSize="10" Margin="0,253,0,0" HorizontalContentAlignment="Center" Height="25" VerticalAlignment="Top"/>
+            </Grid>
+            <ListBox Background="White" Visibility="Collapsed" Grid.Row="0" x:Name="listBoxItemCart" ScrollViewer.VerticalScrollBarVisibility="Auto"   ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.PanningMode="Both" ScrollViewer.CanContentScroll="true" Height="400"  Margin="0,25,0,0" BorderThickness="0">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Border x:Name="listStl"
+                                    MinHeight="{TemplateBinding MinHeight}"
+                                    MaxHeight="{TemplateBinding MaxHeight}"
+                                    Margin="0 2 0 2"
+                                    Padding="{TemplateBinding Padding}"
+                                    Background="{TemplateBinding Background}"
+                                    SnapsToDevicePixels="true">
+                                        <ContentPresenter
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment ="Top"
+                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                        <Setter Property="VerticalAlignment" Value="Top"/>
+                        <Setter Property="VerticalContentAlignment" Value="Top"/>
+                        <Setter Property="Foreground" Value="Gray"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                                <Setter Property="IsSelected" Value="True"/>
+                            </Trigger>
+                            <Trigger Property="AreAnyTouchesCapturedWithin" Value="True">
+                                <Setter Property="IsSelected" Value="True"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource SharpBlue}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Width" Value="385"/>
+                                <!--<Setter Property="Height" Value="{Binding SelectedHeight}"/>-->
+                                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                                <Setter Property="HorizontalAlignment" Value="Left"/>
+                                <Setter Property="VerticalAlignment" Value="Top"/>
+                                <Setter Property="VerticalContentAlignment" Value="Top"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter Property="Height" Value="{Binding NormalHeight}"/>
+                                <Setter Property="Background" Value="#99565656"/>
+                                <Setter Property="Width" Value="383"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="{x:Null}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="27"/>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="70"/>
+                            </Grid.RowDefinitions>
+                            <ContentControl MouseDoubleClick="itemname_PreviewMouseDown">
+                                <TextBlock Text="{Binding Item.name}" Name="itemname" Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" Margin="5" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            </ContentControl>
+                            <TextBlock Text="{Binding Qty}"   Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" TextAlignment="Center" Margin="230 5 0 0" Width="30" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <TextBlock Text="{Binding Item.price, StringFormat=C}" Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" TextAlignment="Center" Margin="260 5 0 0" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <TextBlock Text="{Binding GetTotal, StringFormat=C}" Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" TextAlignment="Right" Margin="310 5 0 0" Width="60" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <StackPanel Grid.Row="1" Margin="0">
+                                <Border Visibility="{Binding DiscVisibility}" Width="263" Margin="0 0 5 5">
+                                    <TextBlock Text="{Binding GetCouponDiscount, StringFormat=C}" Foreground="Wheat" HorizontalAlignment="Right"/>
+                                </Border>
+                                <Border Visibility="Visible" Margin="10" Width="263" BorderBrush="White" BorderThickness="1" CornerRadius="3">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button x:Name="btnNoteEdit" Height="30" Width="30" Margin="10" Click="btnNoteEdit_Click">
+                                            <Button.Template>
+                                                <ControlTemplate>
+                                                    <Label Content="{materialDesign:PackIcon Kind=Pencil,Size=20}" Foreground="White"  HorizontalContentAlignment="Center"  VerticalAlignment="Center"/>
+                                                    <!--<Image Source="..\Assets\Icons\pencil-with-stripes.png"/>-->
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                        <Label Content="{Binding StartDate}" ContentStringFormat="dd/MM/yyyy" VerticalAlignment="Center"  Foreground="White" Width="75" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10,5,10"/>
+                                        <Label Content="to"  VerticalAlignment="Center"  Foreground="White" Width="20" FontWeight="Bold" HorizontalAlignment="Left" Margin="5,10,5,10"/>
+                                        <Label Content="{Binding ExpiryDate}" ContentStringFormat="dd/MM/yyyy" VerticalAlignment="Center"  Foreground="White" Width="75" FontWeight="Bold" HorizontalAlignment="Left" Margin="5,10,5,10"/>
+
+                                        <!--<Label HorizontalAlignment="Left" ContentStringFormat="dd/MM/yyyy" VerticalAlignment="Center" Height="auto"  Margin="10"  FontWeight="Bold" Foreground="White">
+                                    <Label.Content>
+                                        <TextBlock TextWrapping="Wrap">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{} {0} - {1}">
+                                                    <Binding Path="StartDate" />
+                                                    <Binding Path="ExpiryDate"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Label.Content>
+                                </Label>-->
+                                       
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                            <!--<Button x:Name="btnOpenNoteInput" HorizontalAlignment="Left" Grid.Row="2" Click="btnOpenNoteInput_Click" Width="32" VerticalAlignment="Bottom" Margin="10 0 0 20">
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Image  Source="Assets\icons\pencil.png"/>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>-->
+
+                            <Label x:Name="btnOpenNoteInput" PreviewMouseDown="btnOpenNoteInput_Click" Content="{materialDesign:PackIcon Kind=Pencil,Size=20}"   Foreground="White" HorizontalAlignment="Left" Grid.Row="2"  Width="32" VerticalAlignment="Bottom" Margin="10 0 0 20"/>
+
+                            <Label Content="+" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Left" Grid.Row="2" Width="32" VerticalAlignment="Bottom" Margin="93 0 0 20" PreviewMouseDown="incdec_Click"/>
+
+
+                            <Label Content="{Binding Qty}" MouseDoubleClick="itemqty_PreviewMouseDown" Grid.Row="2" HorizontalContentAlignment="Center" Margin="120 0 0 20" Width="50" Height="30" Background="{DynamicResource White}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+                            <Label Content="-" FontSize="25" FontWeight="Bold" Foreground="White"  HorizontalAlignment="Left" Grid.Row="2" Width="32" VerticalAlignment="Bottom" Margin="173 0 0 20" PreviewMouseDown="incdec_Click"/>
+                            <Label Content="{Binding ItemDiscount}" MouseDoubleClick="itemqty_PreviewMouseDown" Grid.Row="2" HorizontalContentAlignment="Center" Margin="250 0 0 20" Width="50" Height="30" Background="{DynamicResource White}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+
+
+                            <Label HorizontalAlignment="Right" Content="{materialDesign:PackIcon Kind=Delete,Size=20}" Foreground="White" Width="32" Grid.Row="2" VerticalAlignment="Bottom" Margin="0 0 0 20" PreviewMouseDown="Button_Click">
+
+                            </Label>
+                            <Label HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Bottom" Foreground="White" FontFamily="Times" FontSize="9" FontStyle="Italic" Content="EDIT" Margin="7 0 0 0"/>
+                            <Label HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Bottom" Foreground="White" FontFamily="Times" FontSize="9" FontStyle="Italic" Content="QUANTITY" HorizontalContentAlignment="Center" Margin="120 0 0 0"/>
+                            <Label HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Bottom" Foreground="White" FontFamily="Times" FontSize="9" FontStyle="Italic" Content="DISCOUNT" HorizontalContentAlignment="Center" Margin="250 0 0 0"/>
+                            <Label HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Bottom" Foreground="White" FontFamily="Times" FontSize="9" FontStyle="Italic" Content="DELETE" HorizontalContentAlignment="Center" Margin="0 0 -2 0"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <StackPanel Visibility="Collapsed" Grid.Row="0" x:Name="cartHeader"  Height="25" VerticalAlignment="Top" Orientation="Horizontal">
+                <Label Content="PRODUCTS" FontSize="9" Margin="5 0 0 0" VerticalContentAlignment="Bottom" Width="230"/>
+                <Label Content="QTY" FontSize="9" VerticalContentAlignment="Bottom" Width="40" HorizontalContentAlignment="Center"/>
+                <Label HorizontalContentAlignment="Center" Content="Each" FontSize="9" VerticalContentAlignment="Bottom" Width="40"/>
+                <Label HorizontalContentAlignment="Right" Content="Total" FontSize="9" VerticalContentAlignment="Bottom" Width="60"/>
+            </StackPanel>
+            <Expander  Collapsed="expander_Collapsed" VerticalAlignment="Bottom"  Expanded="expander_Expanded" Name="expander"    IsExpanded="True" Header="Expander">
+
+                <Expander.HeaderTemplate>
+                    <ItemContainerTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <!--<ColumnDefinition Width="25*"/>-->
+                            </Grid.ColumnDefinitions>
+                            <!--<Label Content="Items" Grid.Row="0" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Width="50" Height="25" Margin="0,5,0,5"/>
+                            <Label Content="0" x:Name="lblItems" FontWeight="Bold" HorizontalContentAlignment="Right" VerticalAlignment="Center" Width="Auto" Margin="60,0,20,0" Height="25"/>-->
+
+                            <!--<Label Margin="0,0,10,0" BorderBrush="{DynamicResource Gray}" BorderThickness="0,0,3,0" VerticalAlignment="Stretch" Height="Auto" HorizontalAlignment="Right" Width="28"/>-->
+
+                            <Label Content="Total Summary" FontWeight="Bold" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center"  Height="25" Margin="0,5,0,5"/>
+                            <!--<Label x:Name="lblTotal" ContentStringFormat="c" Content="0" Grid.Column="1" FontFamily="Raleway"  FontWeight="Bold" HorizontalContentAlignment="Right" VerticalAlignment="Center" HorizontalAlignment="Stretch"  Margin="50,5,5,0" Height="25"/>-->
+                        </Grid>
+                    </ItemContainerTemplate>
+                </Expander.HeaderTemplate>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*"/>
+                        <ColumnDefinition Width="25*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Total Discount" Foreground="{DynamicResource Success}" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left" Width="92" Margin="11,0,0,0" Height="26" VerticalAlignment="Top" />
+                    <Label x:Name="lblDicAmt" Foreground="{DynamicResource Success}" Content="0.00" ContentStringFormat="C" Grid.Row="0" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalAlignment="Top" Width="Auto" Margin="54,0,6,0" Height="26" Grid.Column="0"/>
+
+                    <Label Content="Total Items" Foreground="{DynamicResource DarkBlue}" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left" Width="99" Margin="9,26,0,0" Height="26" VerticalAlignment="Top" />
+                    <Label x:Name="lblItems" Foreground="{DynamicResource DarkBlue}" Content="0.00" ContentStringFormat="C" Grid.Row="0" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalAlignment="Top" Width="Auto" Margin="54,26,6,0" Height="26" RenderTransformOrigin="0.5,0.308" Grid.Column="0"/>
+
+                    <Label Content="Total Charges" Grid.Column="1" Foreground="{DynamicResource Danger}" FontWeight="Bold" VerticalAlignment="Bottom" Margin="1,0,45,86" Height="26"/>
+                    <Label Name="lblTotal" Content="0.00" ContentStringFormat="C" FontWeight="Bold" Foreground="{DynamicResource Danger}"  Grid.Column="1" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="Auto" Margin="95,0,10,0" Height="26"/>
+
+                    <WrapPanel x:Name="stackBtn" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="10,62,0,0" >
+                        <Button Content="{materialDesign:PackIcon Kind=Discount,Size=30}" Name="orderDiscount" ToolTip="Order Discount" Click="orderDiscount_Click" Style="{DynamicResource btnExpander}"/>
+                        <Button Content="{materialDesign:PackIcon Kind=Prize,Size=30}" ToolTip="Coupon"  Click="Button_Coupon" Style="{DynamicResource btnExpander}"/>
+                        <!--<Button Content="Eat-IN" x:Name="btnEatIn" Click="btnEatIn_Click" Style="{DynamicResource btnExpander}">
+                            <Button.Template>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border
+                                        Background="{TemplateBinding Background}"
+                                        CornerRadius="4"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                        <StackPanel>
+                                            <Image Source="..\Assets\Icons\dinner-table (1).png" Width="20" Margin="0 3 0 0"/>
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                        <Button Content="Petty Cash" Click="btnPrttyCash_Click" x:Name="btnPrttyCash" Style="{DynamicResource btnExpander}">
+                            <Button.Template>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border
+                                        Background="{TemplateBinding Background}"
+                                        CornerRadius="4"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}">
+                                        <StackPanel>
+                                            <Image Source="Icons\dollar-symbol.png" Width="20" Margin="0 2 0 0"/>
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>-->
+                        <Button Content="{materialDesign:PackIcon Kind=Plus,Size=30}" ToolTip="Manual Item"  Click="btnnew_Click" x:Name="btnnew" Style="{DynamicResource btnExpander}"/>
+                        <Button Content="{materialDesign:PackIcon Kind=NoteMultiple,Size=30}" ToolTip="Summary"  Click="btmSummary_Click" x:Name="btmSummary" Style="{DynamicResource btnExpander}"/>
+                        <Button Content="{materialDesign:PackIcon Kind=Printer,Size=30}" ToolTip="Print"  Click="btnPrint_Click" x:Name="btnPrint" Style="{DynamicResource btnExpander}"/>
+
+
+
+                    </WrapPanel>
+                    <!--<Label Margin="0,0,129,0" BorderBrush="{DynamicResource Gray}" BorderThickness="0,0,3,0" VerticalAlignment="Top" Height="26" Grid.Column="2"/>-->
+                </Grid>
+            </Expander>
+            <Grid   VerticalAlignment="Bottom" Height="60">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="Delete" Click="btnDeleteCart_Click" x:Name="btnDeleteCart_Copy" Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Margin="10,5,0,5" Width="185"/>
+                <Button Content="Proceed" Click="btnPay_Click" x:Name="btnPay" Style="{DynamicResource btnSuccess}" HorizontalAlignment="Right" Margin="0,5,10,5" Width="185" Grid.Column="1"/>
+                <Button Content="Update"  Click="btnEdit_Click" x:Name="btnEdit" Style="{DynamicResource btnPrimery}" HorizontalAlignment="Right" Margin="0,5,10,5" Width="185" Grid.Column="1" Visibility="Collapsed"/>
+
+                <!--<Button Content="Hold" Click="btnHold_Click" x:Name="btnHold" HorizontalAlignment="Left" Style="{DynamicResource btnInfo}" Margin="115,0,0,10" VerticalAlignment="Bottom" Width="70" Height="41"/>-->
+
+
+            </Grid>
+        </Grid>
+
+    </Grid>
+</UserControl>

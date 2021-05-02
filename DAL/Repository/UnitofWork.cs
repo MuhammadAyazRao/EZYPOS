@@ -31,6 +31,10 @@ namespace DAL.Repository
             Stock = new StockRepository(_context);
             SaleOrderDetail = new Repository<SaleOrderDetail>(_context);
             StockOderDetail= new Repository<StockOderDetail>(_context);
+            PurchaseOrderDetail = new Repository<PurchaseOrderDetail>(_context);
+            PurchaseOrder = new PurchaseOrderRpository(_context);
+            ProductStock = new Repository<ProductStock>(_context);
+
         }
         public IRepository<City> City { get; }
         public IRepository<Account> Account { get; }
@@ -49,6 +53,11 @@ namespace DAL.Repository
         public IStockRepository Stock { get; }
         public IRepository<SaleOrderDetail> SaleOrderDetail { get; }
         public IRepository<StockOderDetail> StockOderDetail { get; }
+        public IRepository<PurchaseOrderDetail> PurchaseOrderDetail { get; }
+
+        public IPurchaseRepository PurchaseOrder { get; }
+        public IRepository<ProductStock> ProductStock { get; }
+
         public int Complete()
         {
             return _context.SaveChanges();

@@ -279,7 +279,7 @@ namespace Report.Dataset.Product {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class ProductExpiryDataTable : global::System.Data.TypedTableBase<ProductExpiryRow> {
             
-            private global::System.Data.DataColumn columnProductId;
+            private global::System.Data.DataColumn columnProductName;
             
             private global::System.Data.DataColumn columnAvailableQty;
             
@@ -322,9 +322,9 @@ namespace Report.Dataset.Product {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn ProductIdColumn {
+            public global::System.Data.DataColumn ProductNameColumn {
                 get {
-                    return this.columnProductId;
+                    return this.columnProductName;
                 }
             }
             
@@ -389,10 +389,10 @@ namespace Report.Dataset.Product {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public ProductExpiryRow AddProductExpiryRow(int ProductId, int AvailableQty, System.DateTime StartDate, string ExpirationDate) {
+            public ProductExpiryRow AddProductExpiryRow(int ProductName, int AvailableQty, System.DateTime StartDate, string ExpirationDate) {
                 ProductExpiryRow rowProductExpiryRow = ((ProductExpiryRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        ProductId,
+                        ProductName,
                         AvailableQty,
                         StartDate,
                         ExpirationDate};
@@ -418,7 +418,7 @@ namespace Report.Dataset.Product {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             internal void InitVars() {
-                this.columnProductId = base.Columns["ProductId"];
+                this.columnProductName = base.Columns["ProductName"];
                 this.columnAvailableQty = base.Columns["AvailableQty"];
                 this.columnStartDate = base.Columns["StartDate"];
                 this.columnExpirationDate = base.Columns["ExpirationDate"];
@@ -427,8 +427,8 @@ namespace Report.Dataset.Product {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             private void InitClass() {
-                this.columnProductId = new global::System.Data.DataColumn("ProductId", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnProductId);
+                this.columnProductName = new global::System.Data.DataColumn("ProductName", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnProductName);
                 this.columnAvailableQty = new global::System.Data.DataColumn("AvailableQty", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAvailableQty);
                 this.columnStartDate = new global::System.Data.DataColumn("StartDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
@@ -577,17 +577,17 @@ namespace Report.Dataset.Product {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public int ProductId {
+            public int ProductName {
                 get {
                     try {
-                        return ((int)(this[this.tableProductExpiry.ProductIdColumn]));
+                        return ((int)(this[this.tableProductExpiry.ProductNameColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ProductId\' in table \'ProductExpiry\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'ProductName\' in table \'ProductExpiry\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableProductExpiry.ProductIdColumn] = value;
+                    this[this.tableProductExpiry.ProductNameColumn] = value;
                 }
             }
             
@@ -641,14 +641,14 @@ namespace Report.Dataset.Product {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsProductIdNull() {
-                return this.IsNull(this.tableProductExpiry.ProductIdColumn);
+            public bool IsProductNameNull() {
+                return this.IsNull(this.tableProductExpiry.ProductNameColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetProductIdNull() {
-                this[this.tableProductExpiry.ProductIdColumn] = global::System.Convert.DBNull;
+            public void SetProductNameNull() {
+                this[this.tableProductExpiry.ProductNameColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

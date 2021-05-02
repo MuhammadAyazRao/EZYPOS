@@ -23,6 +23,8 @@ namespace DAL.IRepository
         ISaleOrderRepository SaleOrder { get; }
         IStockRepository Stock { get; }
         IRepository<StockOderDetail> StockOderDetail { get; }
+        IRepository<PurchaseOrderDetail> PurchaseOrderDetail { get; }
+        IPurchaseRepository PurchaseOrder { get; }
 
         int Complete();
     }

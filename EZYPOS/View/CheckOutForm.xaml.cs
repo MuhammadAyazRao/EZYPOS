@@ -70,7 +70,7 @@ namespace EZYPOS.View
                 {
                     using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                     {
-                        Db.Stock.GetStockDetailToAdjust(50,4);
+                       
                         this.DialogResult = Db.SaleOrder.SaveOrder(Order);
                     }
                 }

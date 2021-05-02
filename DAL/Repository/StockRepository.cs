@@ -16,16 +16,20 @@ namespace DAL.Repository
 
         private readonly EPOSDBContext _DbEntities;
         IRepository<StockOderDetail> StockOderDetail { get; }
+        IRepository<ProductStock> ProductStock { get; }
+        IRepository<Product> Product { get; }
         public StockRepository(EPOSDBContext context) : base(context)
         {
             _DbEntities = context;
             StockOderDetail= new Repository<StockOderDetail>(context);
+            ProductStock =new  Repository<ProductStock>(context);
+            Product = new Repository<Product>(context);
         }
 
         public List<StockDetailDTO> GetStockDetailToAdjust(int Qty, int? ProductId)
         {
             List<StockDetailDTO> StockList = new List<StockDetailDTO>();
-            using (TransactionScope scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            //using (TransactionScope scope = new TransactionScope(TransactionScopeOption.RequiresNew))
             {
                
                 try
@@ -79,12 +83,12 @@ namespace DAL.Repository
 
 
                     //The Transaction will be completed    
-                    scope.Complete();
+                    //scope.Complete();
 
                 }
                 catch (Exception ex)
                 {
-                    scope.Dispose();
+                    //scope.Dispose();
                 }
                 return StockList;
             }         
@@ -115,23 +119,27 @@ namespace DAL.Repository
         {
             List<StockDetailDTO> StockList = new List<StockDetailDTO>();
             try
-            {                
-                foreach (var item in _DbEntities.ProductStocks.ToList())
-                {
-                    long? ToTalStock = 0;
-                    StockDetailDTO StockDetail = new StockDetailDTO();
-                    StockDetail.ProductId = item.ProductId;
-                    StockDetail.StockId = (int)item.Id;
-                    StockDetail.StartDate = item.StartDate;
-                    StockDetail.ExpirationDate = item.ExpiryDate;
-                    ToTalStock = item.Qty + (item.Adjustment);
-                    foreach (var subitem in _DbEntities.StockOderDetails.Where(x => x.StockId == item.Id).ToList())
+            {
+                
+                    foreach (var item in ProductStock.GetAll().ToList())
                     {
-                        ToTalStock -= subitem.Qty;
+                        long? ToTalStock = 0;
+                        StockDetailDTO StockDetail = new StockDetailDTO();
+                        StockDetail.ProductId = item.ProductId;
+                        StockDetail.ProductName = Product.Get(item.ProductId).ProductName;
+
+                        StockDetail.StockId = (int)item.Id;
+                        StockDetail.StartDate = item.StartDate;
+                        StockDetail.ExpirationDate = item.ExpiryDate;
+                        ToTalStock = item.Qty + (item.Adjustment);
+                        foreach (var subitem in StockOderDetail.GetAll().Where(x => x.StockId == item.Id).ToList())
+                        {
+                            ToTalStock -= subitem.Qty;
+                        }
+                        StockDetail.AvailableQty = (int)ToTalStock;
+                        StockList.Add(StockDetail);
                     }
-                    StockDetail.AvailableQty = (int)ToTalStock;
-                    StockList.Add(StockDetail);
-                }
+                
             }
             catch (Exception ex)
             {

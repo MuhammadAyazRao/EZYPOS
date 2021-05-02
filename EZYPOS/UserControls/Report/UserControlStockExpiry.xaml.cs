@@ -36,7 +36,8 @@ namespace EZYPOS.UserControls.Report
             string exePath = Directory.GetCurrentDirectory();
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
-                var items = Db.Stock.GetStockDetail().ToList();
+
+                var items = Db.Stock.GetStockDetail().ToList();                
                 Microsoft.Reporting.WinForms.ReportDataSource rds = new Microsoft.Reporting.WinForms.ReportDataSource();
                 rds.Name = "ProductStockExpiry";
                 rds.Value = items;

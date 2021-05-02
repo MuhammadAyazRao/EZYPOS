@@ -14,7 +14,7 @@ namespace Common.DTO
         
             public string PaymentType { get; set; }
             public int OrderId { get; set; }
-            public List<OrderDetail> OrdersDetails { get; set; }
+            public List<PurchaseOrderDetail> OrdersDetails { get; set; }
             public DateTime OrderDate { get; set; }
             public coupon Coupon { get; set; }
             public int OrderStatusNo { get; set; }
@@ -73,7 +73,7 @@ namespace Common.DTO
                 Recalculatediscount();
                 double total = 0;
                 if (OrdersDetails != null)
-                    foreach (OrderDetail or in OrdersDetails)
+                    foreach (PurchaseOrderDetail or in OrdersDetails)
                     {
                         total += or.GetCouponDiscount;
                     }
@@ -105,7 +105,7 @@ namespace Common.DTO
     {
         public int id { get; set; }       
         public string name { get; set; }    
-        public long Purchase_price { get; set; }
+        public long price { get; set; }
         public long Sale_price { get; set; }  
         public int sub_cat_id { get; set; }       
         public string status { get; set; }
@@ -117,6 +117,8 @@ namespace Common.DTO
         private int qty;
         private int itemdisc;
         private string note;
+        private DateTime startDate=DateTime.Now;
+        private DateTime expiryDate = DateTime.Now;
         private int seletedHeight;
         private int normalHeight;
         private string noteVisibilty;
@@ -157,7 +159,7 @@ namespace Common.DTO
             set { isMiscItem = value; }
         }
 
-        public item Item { get; set; }
+        public Purchaseitem Item { get; set; }
 
 
         public int NormalHeight
@@ -191,6 +193,31 @@ namespace Common.DTO
             set
             {
                 note = value;
+                OnPropertyChanged("Note");
+                OnPropertyChanged("NoteVisibility");
+                OnPropertyChanged("NormalHeight");
+            }
+        }
+
+        public DateTime StartDate
+        {
+            get { return startDate; }
+            set
+            {
+                startDate = value;
+                OnPropertyChanged("Note");
+                OnPropertyChanged("NoteVisibility");
+                OnPropertyChanged("NormalHeight");
+            }
+        }
+
+
+        public DateTime ExpiryDate
+        {
+            get { return expiryDate; }
+            set
+            {
+                expiryDate = value;
                 OnPropertyChanged("Note");
                 OnPropertyChanged("NoteVisibility");
                 OnPropertyChanged("NormalHeight");
@@ -265,23 +292,24 @@ namespace Common.DTO
                 return "Collapsed";
             }
         }
-        public string NoteVisibility
-        {
-            get
-            {
-                if (!string.IsNullOrWhiteSpace(Note))
-                {
-                    if (noteVisibilty == "Collapsed")
-                        NormalHeight += 60;
-                    else
-                        NormalHeight = NormalHeight;
-                    noteVisibilty = "Visible";
-                    return "Visible";
-                }
-                noteVisibilty = "Collapsed";
-                return "Collapsed";
-            }
-        }
+        //public string NoteVisibility
+        //{
+        //    get
+        //    {
+        //        if (StartDate!=null)
+        //        {
+        //            if (noteVisibilty == "Collapsed")
+        //            {// NormalHeight += 60;
+        //             }
+        //            else
+        //                NormalHeight = NormalHeight;
+        //            noteVisibilty = "Visible";
+        //            return "Visible";
+        //        }
+        //        noteVisibilty = "Collapsed";
+        //        return "Collapsed";
+        //    }
+        //}
 
         #endregion
 

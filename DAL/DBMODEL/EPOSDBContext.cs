@@ -29,6 +29,8 @@ namespace DAL.DBModel
         public virtual DbSet<ProductGroup> ProductGroups { get; set; }
         public virtual DbSet<ProductStock> ProductStocks { get; set; }
         public virtual DbSet<ProductSubcategory> ProductSubcategories { get; set; }
+        public virtual DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+        public virtual DbSet<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
         public virtual DbSet<SaleOrder> SaleOrders { get; set; }
         public virtual DbSet<SaleOrderDetail> SaleOrderDetails { get; set; }
         public virtual DbSet<ShopSetting> ShopSettings { get; set; }
@@ -163,6 +165,17 @@ namespace DAL.DBModel
                 entity.Property(e => e.ExpiryDate).HasColumnType("date");
 
                 entity.Property(e => e.StartDate).HasColumnType("date");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.ProductStocks)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ProductStock_Products");
+
+                entity.HasOne(d => d.PurchaseOrder)
+                    .WithMany(p => p.ProductStocks)
+                    .HasForeignKey(d => d.PurchaseOrderId)
+                    .HasConstraintName("FK_ProductStock_PurchaseOrder");
             });
 
             modelBuilder.Entity<ProductSubcategory>(entity =>
@@ -177,6 +190,26 @@ namespace DAL.DBModel
                     .WithMany(p => p.ProductSubcategories)
                     .HasForeignKey(d => d.CategoryId)
                     .HasConstraintName("FK_ProductSubcategory_ProductCategory");
+            });
+
+            modelBuilder.Entity<PurchaseOrder>(entity =>
+            {
+                entity.ToTable("PurchaseOrder");
+
+                entity.Property(e => e.Date).HasColumnType("datetime");
+
+                entity.Property(e => e.PaymentMode).HasMaxLength(50);
+
+                entity.Property(e => e.PaymentStatus).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<PurchaseOrderDetail>(entity =>
+            {
+                entity.ToTable("Purchase_OrderDetail");
+
+                entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
+
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<SaleOrder>(entity =>
