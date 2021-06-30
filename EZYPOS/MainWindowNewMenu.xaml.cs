@@ -21,6 +21,7 @@ using EZYPOS.UserControls.Define.List;
 using EZYPOS.UserControls.Misc;
 using EZYPOS.UserControls.Report;
 using EZYPOS.UserControls.Transaction;
+using EZYPOS.UserControls.Utility;
 using EZYPOS.View;
 using MessageBox = EZYPOS.View.MessageBox;
 
@@ -271,6 +272,29 @@ namespace EZYPOS
         {
             UserControlStockExpiry UserControlStockExpiry = new UserControlStockExpiry();
             ActiveSession.DisplayuserControlMethod(UserControlStockExpiry);
+        }
+
+        private void Backup_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlDatabaseBackup Backup = new UserControlDatabaseBackup();
+            ActiveSession.DisplayuserControlMethod(Backup);
+
+        }
+
+        private void PurchaseOrder_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlPurchaseOrder PurchaseOrder = new UserControlPurchaseOrder();
+            ActiveSession.DisplayuserControlMethod(PurchaseOrder);
+        }
+
+        private void ExpenceTransaction_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void StockTransfer_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

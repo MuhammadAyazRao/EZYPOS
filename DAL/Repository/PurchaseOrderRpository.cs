@@ -15,11 +15,13 @@ namespace DAL.Repository
         private readonly EPOSDBContext _DbEntities;
         public IStockRepository Stock { get; }
         public IRepository<DAL.DBModel.PurchaseOrderDetail> PurchaseOrderDetail { get; }
+        public IRepository<DAL.DBModel.Product> Product { get; }
         public PurchaseOrderRpository(EPOSDBContext context) : base(context)
         {
             _DbEntities = context;
             Stock = new StockRepository(context);
             PurchaseOrderDetail = new Repository<DAL.DBModel.PurchaseOrderDetail>(context);
+            Product = new Repository<DAL.DBModel.Product>(context);
         }
 
 
@@ -53,7 +55,7 @@ namespace DAL.Repository
                         DAL.DBModel.PurchaseOrderDetail NewOrderDetail = new  DAL.DBModel.PurchaseOrderDetail();
                         NewOrderDetail.PurchaseOrderId = NewOrder.Id;
                         NewOrderDetail.ProductId = (int)item?.Item.id;
-                       // NewOrderDetail.ItemName = item?.Item.name;
+                        NewOrderDetail.ItemName = item?.Item.name;
                         NewOrderDetail.Qty = (int)item?.Qty;
                         NewOrderDetail.PurchasePrice = (int) item?.Item.price;
                         NewOrderDetail.ExpiryDate = item?.ExpiryDate;
@@ -81,10 +83,10 @@ namespace DAL.Repository
             }
             return true;
         }
-        public List<Order> GetMappedOrder(int Id = 0)
+        public List<PurchaseOrderDTO> GetMappedOrder(int Id = 0)
         {
             List<PurchaseOrder> Alldata;
-            List<Order> MappedOrdeList = new List<Order>();
+            List<PurchaseOrderDTO> MappedOrdeList = new List<PurchaseOrderDTO>();
             if (Id == 0)
             {
                 Alldata = GetAll().ToList();
@@ -96,7 +98,7 @@ namespace DAL.Repository
 
             foreach (var SingleItem in Alldata)
             {
-                Order SingleOrder = new Order();
+                PurchaseOrderDTO SingleOrder = new PurchaseOrderDTO();
                 SingleOrder.OrderId = SingleItem.Id;
                 //SingleOrder.Discount = (double)SingleItem.DiscountAmount;
                 SingleOrder.PaymentType = SingleItem.PaymentMode;
@@ -104,17 +106,17 @@ namespace DAL.Repository
                 //SingleOrder.OrderDate = (DateTime)SingleItem.OrderDate;
                 foreach (var orderdetail in PurchaseOrderDetail.GetAll().Where(x => x.PurchaseOrderId == SingleItem.Id))
                 {
-                    OrderDetail SingleOrderDetail = new OrderDetail();
+                    Common.DTO.PurchaseOrderDetail SingleOrderDetail = new Common.DTO.PurchaseOrderDetail();
                     SingleOrderDetail.OrderId = orderdetail.Id;
                     SingleOrderDetail.Qty = (int)orderdetail?.Qty;
 
-                    item NewItem = new item();
-                   // NewItem.id = orderdetail.ItemId;
-                   // NewItem.name = orderdetail?.ItemName;
+                    Purchaseitem NewItem = new Purchaseitem();
+                    NewItem.id = orderdetail.ProductId;
+                    NewItem.name =orderdetail.ItemName;
                     NewItem.price = (long)orderdetail?.PurchasePrice;
                     SingleOrderDetail.Item = NewItem;
                     if (SingleOrder.OrdersDetails == null)
-                    { SingleOrder.OrdersDetails = new List<OrderDetail>(); }
+                    { SingleOrder.OrdersDetails = new List<Common.DTO.PurchaseOrderDetail>(); }
                     SingleOrder.OrdersDetails.Add(SingleOrderDetail);
 
 
@@ -126,10 +128,19 @@ namespace DAL.Repository
         }
         public bool DeleteOrder(int id)
         {
-            //_DbEntities.ProductStocks.RemoveRange(_DbEntities.ProductStocks.Where(x => x.p == id).ToList());
-            //_DbEntities.SaleOrderDetails.RemoveRange(_DbEntities.SaleOrderDetails.Where(x => x.OrderId == id).ToList());
-            //Delete(id);
-            return true;
+            if (_DbEntities.StockOderDetails.Where(x => x.StockId == _DbEntities.ProductStocks.Where(x => x.PurchaseOrderId == id).FirstOrDefault().Id).Count() <= 0)
+            {
+                _DbEntities.SaveChanges();
+                _DbEntities.ProductStocks.RemoveRange(_DbEntities.ProductStocks.Where(x => x.PurchaseOrderId == id).ToList());
+                _DbEntities.SaveChanges();
+                _DbEntities.PurchaseOrderDetails.RemoveRange(_DbEntities.PurchaseOrderDetails.Where(x => x.PurchaseOrderId == id).ToList());
+                Delete(id);
+                return true;
+            }
+            else
+            { 
+                return false; 
+            }
 
         }
 
@@ -138,9 +149,6 @@ namespace DAL.Repository
         //    throw new NotImplementedException();
         //}
 
-        List<Order> IPurchaseRepository.GetMappedOrder(int id)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

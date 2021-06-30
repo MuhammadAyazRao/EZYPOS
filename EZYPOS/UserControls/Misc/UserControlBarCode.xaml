@@ -63,7 +63,7 @@
            
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="200"/>
             <RowDefinition Height="30"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="200"/>
@@ -74,13 +74,15 @@
        
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="10" Text="Static Text"/>
-                <Button Margin="10">Any control can be here</Button>
-                <Button x:Name="test" Click="test_Click"></Button>
+                <TextBox Grid.Row="0"  Grid.Column="0" PreviewTextInput="txtNumber_PreviewTextInput"  Name="txtBarcode" Margin="10,10,10,10" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" Width="200"  VerticalAlignment="Center" Height="Auto" AcceptsReturn="True" TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Barcode"  />
+
+
+                <Button x:Name="View" Content="Generate" Click="View_Click"></Button>
+                <Button x:Name="Print" Content="Print" Click="Print_Click"></Button>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Margin="10" Width="100"  Text="{Binding Text1}"/>
-                <TextBox Width="100" Text="{Binding Text2}"/>
+            <StackPanel Orientation="Vertical" Background="Pink">
+                
+                <Image  x:Name="bcode" Height="150" Width="400"/>
             </StackPanel>
         </StackPanel>
     </Grid>

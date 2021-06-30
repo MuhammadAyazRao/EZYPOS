@@ -8,6 +8,7 @@ namespace DAL.DBModel
     public partial class PurchaseOrderDetail
     {
         public int Id { get; set; }
+        public string ItemName { get; set; }
         public int ProductId { get; set; }
         public int PurchasePrice { get; set; }
         public long? SalePrice { get; set; }

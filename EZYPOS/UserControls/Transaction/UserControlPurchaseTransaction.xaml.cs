@@ -40,13 +40,13 @@ namespace EZYPOS.UserControls.Transaction
 
             listKitchenLineItems.ItemsSource = GetProducts();
             BusyIndicator.CloseBusy();
-            //if (EditOrder != null)
-            //{
-            //    order.OrderId = EditOrder.OrderId;
-            //    Initialize(EditOrder);
-            //}
+            if (EditOrder != null)
+            {
+                order.OrderId = EditOrder.OrderId;
+                Initialize(EditOrder);
+            }
         }
-        public void Initialize(Order Odr)
+        public void Initialize(PurchaseOrderDTO Odr)
         {
             btnEdit.Visibility = Visibility.Visible;
             btnPay.Visibility = Visibility.Collapsed;
@@ -54,6 +54,7 @@ namespace EZYPOS.UserControls.Transaction
             {
                 AddToCart(odritem?.Item.name, (long)odritem?.Item.price, (int)odritem?.Item.id, (int)odritem?.Qty);
             }
+           
         }
         public PurchaseOrderDTO order = new PurchaseOrderDTO();
         private void ActiveSession_DeleliveryChargesCaltulated(object parameter)
@@ -440,6 +441,11 @@ namespace EZYPOS.UserControls.Transaction
                     {
                         EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Sucess", "Ok");
                         EmptyCart();
+                    }
+                    else
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Can not update order", "Failed", "Ok");
+
                     }
                 }
             }

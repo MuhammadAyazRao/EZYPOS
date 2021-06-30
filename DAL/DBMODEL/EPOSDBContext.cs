@@ -19,8 +19,10 @@ namespace DAL.DBModel
 
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<AppPage> AppPages { get; set; }
+        public virtual DbSet<CashBookLead> CashBookLeads { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<CustomerLead> CustomerLeads { get; set; }
         public virtual DbSet<Emplyee> Emplyees { get; set; }
         public virtual DbSet<ExpenceTransaction> ExpenceTransactions { get; set; }
         public virtual DbSet<ExpenceType> ExpenceTypes { get; set; }
@@ -34,8 +36,10 @@ namespace DAL.DBModel
         public virtual DbSet<SaleOrder> SaleOrders { get; set; }
         public virtual DbSet<SaleOrderDetail> SaleOrderDetails { get; set; }
         public virtual DbSet<ShopSetting> ShopSettings { get; set; }
+        public virtual DbSet<StockLead> StockLeads { get; set; }
         public virtual DbSet<StockOderDetail> StockOderDetails { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
+        public virtual DbSet<SupplierLead> SupplierLeads { get; set; }
         public virtual DbSet<UserPage> UserPages { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
 
@@ -44,7 +48,7 @@ namespace DAL.DBModel
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=False;User ID=admin;Password=A722713yaz@");
+                optionsBuilder.UseSqlServer("Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;");
             }
         }
 
@@ -59,6 +63,37 @@ namespace DAL.DBModel
                 entity.Property(e => e.Isdeleted).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Type).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<CashBookLead>(entity =>
+            {
+                entity.ToTable("CashBookLead");
+
+                entity.Property(e => e.CashBookId).HasColumnName("CashBook_Id");
+
+                entity.Property(e => e.CrAmt)
+                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnName("CR_Amt");
+
+                entity.Property(e => e.DrAmt)
+                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnName("DR_Amt");
+
+                entity.Property(e => e.PosId).HasColumnName("POS_Id");
+
+                entity.Property(e => e.TransactionDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Transaction_date");
+
+                entity.Property(e => e.TransactionDetail).HasColumnName("Transaction_detail");
+
+                entity.Property(e => e.TransactionId).HasColumnName("Transaction_Id");
+
+                entity.Property(e => e.TransactionType)
+                    .HasMaxLength(50)
+                    .HasColumnName("Transaction_type");
+
+                entity.Property(e => e.UserId).HasColumnName("User_Id");
             });
 
             modelBuilder.Entity<City>(entity =>
@@ -78,6 +113,29 @@ namespace DAL.DBModel
                     .WithMany(p => p.Customers)
                     .HasForeignKey(d => d.City)
                     .HasConstraintName("FK_Customer_City");
+            });
+
+            modelBuilder.Entity<CustomerLead>(entity =>
+            {
+                entity.ToTable("CustomerLead");
+
+                entity.Property(e => e.Cr).HasColumnName("CR");
+
+                entity.Property(e => e.CustomerId).HasColumnName("Customer_id");
+
+                entity.Property(e => e.Dr).HasColumnName("DR");
+
+                entity.Property(e => e.TransactionDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Transaction_date");
+
+                entity.Property(e => e.TransactionDetail).HasColumnName("Transaction_detail");
+
+                entity.Property(e => e.TransactionId).HasColumnName("Transaction_id");
+
+                entity.Property(e => e.TransactionType)
+                    .HasMaxLength(50)
+                    .HasColumnName("Transaction_type");
             });
 
             modelBuilder.Entity<Emplyee>(entity =>
@@ -208,6 +266,10 @@ namespace DAL.DBModel
                 entity.ToTable("Purchase_OrderDetail");
 
                 entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
+
+                entity.Property(e => e.ItemName)
+                    .HasMaxLength(1000)
+                    .HasColumnName("itemName");
 
                 entity.Property(e => e.StartDate).HasColumnType("datetime");
             });
@@ -417,6 +479,37 @@ namespace DAL.DBModel
                 entity.Property(e => e.ShopName).HasColumnName("Shop_Name");
             });
 
+            modelBuilder.Entity<StockLead>(entity =>
+            {
+                entity.ToTable("StockLead");
+
+                entity.Property(e => e.CrQty)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("CR_qty");
+
+                entity.Property(e => e.DrQty)
+                    .HasColumnType("numeric(18, 2)")
+                    .HasColumnName("DR_qty");
+
+                entity.Property(e => e.PosId).HasColumnName("POS_id");
+
+                entity.Property(e => e.ProductId).HasColumnName("Product_id");
+
+                entity.Property(e => e.TransactionDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Transaction_date");
+
+                entity.Property(e => e.TransactionDetail).HasColumnName("Transaction_detail");
+
+                entity.Property(e => e.TransactionId).HasColumnName("Transaction_id");
+
+                entity.Property(e => e.TransactionType)
+                    .HasMaxLength(50)
+                    .HasColumnName("Transaction_type");
+
+                entity.Property(e => e.UserId).HasColumnName("User_id");
+            });
+
             modelBuilder.Entity<StockOderDetail>(entity =>
             {
                 entity.ToTable("Stock_OderDetail");
@@ -452,6 +545,35 @@ namespace DAL.DBModel
                     .WithMany(p => p.Suppliers)
                     .HasForeignKey(d => d.City)
                     .HasConstraintName("FK_Supplier_City");
+            });
+
+            modelBuilder.Entity<SupplierLead>(entity =>
+            {
+                entity.ToTable("SupplierLead");
+
+                entity.Property(e => e.Cr)
+                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnName("CR");
+
+                entity.Property(e => e.Dr)
+                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnName("DR");
+
+                entity.Property(e => e.SuplierId).HasColumnName("Suplier_id");
+
+                entity.Property(e => e.TransactionDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("Transaction_date");
+
+                entity.Property(e => e.TransactionDet)
+                    .HasMaxLength(500)
+                    .HasColumnName("Transaction_det");
+
+                entity.Property(e => e.TransactionId).HasColumnName("Transaction_id");
+
+                entity.Property(e => e.TransactionType)
+                    .HasMaxLength(50)
+                    .HasColumnName("Transaction_type");
             });
 
             modelBuilder.Entity<UserPage>(entity =>

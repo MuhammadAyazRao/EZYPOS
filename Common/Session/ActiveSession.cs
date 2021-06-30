@@ -8,6 +8,14 @@ namespace Common.Session
 {
   public static  class ActiveSession
     {
+        #region DatabaseSettings
+        //public static string Database = "Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=False;User ID=admin;Password=A722713yaz@";
+        public static string Database = "Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;";
+        public static string ServerName = "HAIER-PC\\SQLEXPRESS";
+        public static string UserName = "admin";
+        public static string Password = "A722713yaz";
+        public static string DatabaseName = "EPOS-DB";
+        #endregion
         public static bool PrintLogo = true;
         public static double order_Discount_percentage;
         public delegate void CommunucationHandler(object parameter);
