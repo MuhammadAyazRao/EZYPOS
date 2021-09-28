@@ -11,6 +11,8 @@ namespace DAL.IRepository
     {
         ICustomerRepository Customers { get; }
         IRepository<City> City { get; }
+        IRepository<ExpenceTransaction> expt { get; }
+        IRepository<TblShelf> Shelf { get; }
         IRepository<UserPage> UserPage { get; }
         IRepository<UserRole> UserRole { get; }
         IRepository<Emplyee> Employee { get; }

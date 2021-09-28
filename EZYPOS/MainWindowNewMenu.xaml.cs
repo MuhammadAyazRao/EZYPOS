@@ -296,5 +296,17 @@ namespace EZYPOS
         {
 
         }
+
+        private void Shelf_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlShelfList Shelf = new UserControlShelfList();
+            ActiveSession.DisplayuserControlMethod(Shelf);
+        }
+
+        private void ExpenseTransation_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlListExpenseTransaction exptl = new UserControlListExpenseTransaction();
+            ActiveSession.DisplayuserControlMethod(exptl);
+        }
     }
 }

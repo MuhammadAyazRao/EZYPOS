@@ -40,6 +40,7 @@ namespace DAL.DBModel
         public virtual DbSet<StockOderDetail> StockOderDetails { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<SupplierLead> SupplierLeads { get; set; }
+        public virtual DbSet<TblShelf> TblShelves { get; set; }
         public virtual DbSet<UserPage> UserPages { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
 
@@ -48,7 +49,7 @@ namespace DAL.DBModel
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-9P6UG7P\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;");
             }
         }
 
@@ -574,6 +575,26 @@ namespace DAL.DBModel
                 entity.Property(e => e.TransactionType)
                     .HasMaxLength(50)
                     .HasColumnName("Transaction_type");
+            });
+
+            modelBuilder.Entity<TblShelf>(entity =>
+            {
+                entity.HasKey(e => e.Sid)
+                    .HasName("PK_dbo.Shelf");
+
+                entity.ToTable("tbl_Shelf");
+
+                entity.Property(e => e.Sid).HasColumnName("SId");
+
+                entity.Property(e => e.ShelfCode)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ShelfName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<UserPage>(entity =>
