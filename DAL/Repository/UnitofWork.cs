@@ -34,8 +34,16 @@ namespace DAL.Repository
             PurchaseOrderDetail = new Repository<PurchaseOrderDetail>(_context);
             PurchaseOrder = new PurchaseOrderRpository(_context);
             ProductStock = new Repository<ProductStock>(_context);
+            StockLeader = new Repository<StockLead>(_context);
+            CustomerLead = new Repository<CustomerLead>(_context);
+            SupplierLead = new Repository<SupplierLead>(_context);
+            CashBookLead = new Repository<CashBookLead>(_context);
 
         }
+        public IRepository<SupplierLead> SupplierLead { get; }
+        public IRepository<CustomerLead> CustomerLead { get; }
+        public IRepository<CashBookLead> CashBookLead { get; }
+        public IRepository<StockLead> StockLeader { get; }
         public IRepository<City> City { get; }
         public IRepository<Account> Account { get; }
         public ICustomerRepository Customers { get; }

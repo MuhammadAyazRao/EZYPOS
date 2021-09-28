@@ -1,4 +1,5 @@
-﻿using Common.DTO;
+﻿using Common;
+using Common.DTO;
 using DAL.DBModel;
 using DAL.IRepository;
 using System;
@@ -16,12 +17,20 @@ namespace DAL.Repository
         public IStockRepository Stock { get; }
         public IRepository<DAL.DBModel.PurchaseOrderDetail> PurchaseOrderDetail { get; }
         public IRepository<DAL.DBModel.Product> Product { get; }
+        public IRepository<StockLead> StockLead { get; }
+        public IRepository<CustomerLead> CustomerLead { get; }
+        public IRepository<CashBookLead> CashBookLead { get; }
+        public IRepository<SupplierLead> SupplierLeader { get; }
         public PurchaseOrderRpository(EPOSDBContext context) : base(context)
         {
             _DbEntities = context;
             Stock = new StockRepository(context);
             PurchaseOrderDetail = new Repository<DAL.DBModel.PurchaseOrderDetail>(context);
             Product = new Repository<DAL.DBModel.Product>(context);
+            StockLead = new Repository<StockLead>(context);
+            CustomerLead = new Repository<CustomerLead>(context);
+            CashBookLead = new Repository<CashBookLead>(context);
+            SupplierLeader= new Repository<SupplierLead>(context);
         }
 
 
@@ -68,9 +77,52 @@ namespace DAL.Repository
                         PurchaseOrderDetail.Add(NewOrderDetail);                        
                         Stock.Add(new ProductStock { ProductId= NewOrderDetail.ProductId,StartDate=(DateTime) NewOrderDetail.StartDate,ExpiryDate= (DateTime)NewOrderDetail.ExpiryDate,Qty= NewOrderDetail.Qty, PurchaseOrderId = NewOrderDetail.PurchaseOrderId ,Adjustment=0});
 
-                       // Stock.SaveStockAdjustment(CartOrderToProcess, NewOrderDetail.Id, NewOrder.Id);
-                    }
+                        // Stock.SaveStockAdjustment(CartOrderToProcess, NewOrderDetail.Id, NewOrder.Id);
 
+                        //Stock Transaction
+                        StockLead stockled = new StockLead();
+                        stockled.DrQty = NewOrderDetail.Qty;
+                        stockled.TransactionDate = DateTime.Now;
+                        stockled.TransactionId = NewOrder.Id;
+                        stockled.TransactionType = Common.InvoiceType.PurchaseInvoice;
+                        stockled.TransactionDetail = "Purchase Transaction against Invoice Number # " + NewOrder.Id;
+                        stockled.ProductId = NewOrderDetail.ProductId;
+                        StockLead.Add(stockled);
+                    }
+                    // Supplier Transaction
+                    SupplierLead SupplierLead = new SupplierLead();
+                    SupplierLead.Dr = (int)NewOrder.TotalAmount;
+                    SupplierLead.TransactionDate = DateTime.Now;
+                    SupplierLead.TransactionId = NewOrder.Id;
+                    SupplierLead.TransactionType = Common.InvoiceType.SaleInvoice;
+                    SupplierLead.TransactionDet = "Purchase Transaction against Invoice Number # " + NewOrder.Id;
+                    SupplierLead.SuplierId = 1;
+                    SupplierLeader.Add(SupplierLead);
+
+
+                    if (CartOrderToProcess.PaymentType.ToUpper() == OrderEnums.PaymentType.CASH)
+                    {
+                        // Supplier Transaction
+                        SupplierLead SupplierLeadCr = new SupplierLead();
+                        SupplierLeadCr.Cr = (int)NewOrder.TotalAmount;
+                        SupplierLeadCr.TransactionDate = DateTime.Now;
+                        SupplierLeadCr.TransactionId = NewOrder.Id;
+                        SupplierLeadCr.TransactionType = Common.InvoiceType.SaleInvoice;
+                        SupplierLeadCr.TransactionDet = "Cash Purchase Transaction against Invoice Number # " + NewOrder.Id;
+                        SupplierLeadCr.SuplierId = 1;
+                        SupplierLeader.Add(SupplierLeadCr);
+
+                        // CashBook Leader Transaction
+
+                        CashBookLead CashBookLed = new CashBookLead();
+                        CashBookLed.CrAmt = (int)NewOrder.TotalAmount;
+                        CashBookLed.TransactionDate = DateTime.Now;
+                        CashBookLed.TransactionId = NewOrder.Id;
+                        CashBookLed.TransactionType = Common.InvoiceType.SaleInvoice;
+                        CashBookLed.TransactionDetail = "Cash Purchase Transaction against Invoice Number # " + NewOrder.Id;
+                        //CashBookLed.CustomerId = 1;
+                        CashBookLead.Add(CashBookLed);
+                    }
 
                     //The Transaction will be completed    
                     scope.Complete();

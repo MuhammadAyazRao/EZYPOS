@@ -387,6 +387,7 @@ namespace EZYPOS.UserControls.Transaction
         private void btnPay_Click(object sender, RoutedEventArgs e)
         {
             CheckOutForm Checkout = new CheckOutForm(order);
+            Checkout.ScreenType = Common.ScreenType.Sale;
             if (Checkout.ShowDialog() == true)
             {
                 EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Sucess", "Ok");

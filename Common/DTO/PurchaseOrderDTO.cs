@@ -10,9 +10,9 @@ namespace Common.DTO
 {
     public class PurchaseOrderDTO
     {
-       
-        
-            public string PaymentType { get; set; }
+
+
+            public string PaymentType = Common.OrderEnums.PaymentType.CASH;
             public int OrderId { get; set; }
             public List<PurchaseOrderDetail> OrdersDetails { get; set; }
             public DateTime OrderDate { get; set; }

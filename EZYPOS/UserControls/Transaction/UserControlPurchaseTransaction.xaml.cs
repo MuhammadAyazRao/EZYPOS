@@ -395,11 +395,14 @@ namespace EZYPOS.UserControls.Transaction
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
-                if (Db.PurchaseOrder.SaveOrder(order))
+                CheckOutForm Checkout = new CheckOutForm(order);
+                Checkout.ScreenType = Common.ScreenType.Sale;
+                if (Checkout.ShowDialog() == true)
                 {
                     EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Sucess", "Ok");
                     EmptyCart();
                 }
+                
             }           
         }
 

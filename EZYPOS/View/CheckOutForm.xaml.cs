@@ -1,4 +1,5 @@
-﻿using Common.DTO;
+﻿using Common;
+using Common.DTO;
 using DAL.Repository;
 using EZYPOS.DTO;
 using System;
@@ -23,6 +24,8 @@ namespace EZYPOS.View
     public partial class CheckOutForm : Window
     {
         Order Order { get; set; }
+        PurchaseOrderDTO PurchaseOrder { get; set; }
+        public string ScreenType { get; set; }
         public double CustPay { get; set; }
         public CheckOutForm(Order odr)
         {
@@ -33,6 +36,15 @@ namespace EZYPOS.View
             lblTotal.Content = Order.GetNetTotal();
             lblDisc.Content = Order.GetTotalDiscount();
         }
+        public CheckOutForm(PurchaseOrderDTO odr)
+        {
+            InitializeComponent();
+            PurchaseOrder = odr;
+            UCNum.OnButtonPressed += UCNum_OnButtonPressed;
+            UCSide.onButtonPress += UCSide_onButtonPress;
+            lblTotal.Content = Order.GetNetTotal();
+            lblDisc.Content = Order.GetTotalDiscount();
+        }
         private void UCSide_onButtonPress(object sender, EventArgs e)
         {
             UCNum.lblPin.Content = sender as string;
@@ -40,9 +52,35 @@ namespace EZYPOS.View
             UCNum.pin = sender as string;
             UCNum_OnButtonPressed(sender, e);
         }
+        private void SetPaymentode()
+        {
+            if (Order != null)
+            {
+                if (PaymentVia.SelectedIndex == 0)
+                {
+                    Order.PaymentType = OrderEnums.PaymentType.CASH;
+                }
+                else if (PaymentVia.SelectedIndex == 1)
+                {
+                    Order.PaymentType = OrderEnums.PaymentType.CREDIT;
+                }
+            }
+
+            if (PurchaseOrder != null)
+            {
+                if (PaymentVia.SelectedIndex == 0)
+                {
+                    PurchaseOrder.PaymentType = OrderEnums.PaymentType.CASH;
+                }
+                else if (PaymentVia.SelectedIndex == 1)
+                {
+                    PurchaseOrder.PaymentType = OrderEnums.PaymentType.CREDIT;
+                }
+            }
+        }
         private void PaymentVia_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            SetPaymentode();
         }
         private void UCNum_OnButtonPressed(object sender, EventArgs e)
         {
@@ -61,17 +99,36 @@ namespace EZYPOS.View
         {
             try
             {
-                if (CustPay < Order.GetNetTotal())
+                if (ScreenType == Common.ScreenType.Sale)
                 {
-                    EZYPOS.View.MessageBox.ShowCustom("Please Collect Payment", "Notification", "Ok");
-                    return;
-                }
-                else
-                {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    if (CustPay < Order.GetNetTotal())
                     {
-                       
-                        this.DialogResult = Db.SaleOrder.SaveOrder(Order);
+                        EZYPOS.View.MessageBox.ShowCustom("Please Collect Payment", "Notification", "Ok");
+                        return;
+                    }
+                    else
+                    {
+                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                        {
+
+                            this.DialogResult = Db.SaleOrder.SaveOrder(Order);
+                        }
+                    }
+                }
+                else if (ScreenType == Common.ScreenType.Purchase)
+                {
+                    if (CustPay < PurchaseOrder.GetNetTotal())
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Please Collect Payment", "Notification", "Ok");
+                        return;
+                    }
+                    else
+                    {
+                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                        {
+
+                            this.DialogResult = Db.PurchaseOrder.SaveOrder(PurchaseOrder);
+                        }
                     }
                 }
             }

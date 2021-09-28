@@ -33,6 +33,7 @@ namespace DAL.DBModel
         public string Addon { get; set; }
         public string CustomerPhone { get; set; }
         public string CustomerName { get; set; }
+        //public string CustomerId { get; set; }
         public string IsUpdated { get; set; }
         public string IsDeleted { get; set; }
         public long CashAmount { get; set; }

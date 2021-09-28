@@ -1,6 +1,8 @@
 Scaffold-DbContext "Data Source=192.168.1.103;Database=EPOS-DB;Trusted_Connection=False;User ID=admin;Password=A722713yaz@" Microsoft.EntityFrameworkCore.SqlServer -OutputDir DBModel -Project "DAL" -force
 Scaffold-DbContext "Data Source=HAIER-PC\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=False;User ID=admin;Password=A722713yaz@" Microsoft.EntityFrameworkCore.SqlServer -OutputDir DBModel -Project "DAL" -force
 
+Scaffold-DbContext "Data Source=HAIER-PC\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir DBModel -Project "DAL" -force
+
 
 Network Connectionstring:
 

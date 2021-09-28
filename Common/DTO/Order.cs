@@ -10,7 +10,7 @@ namespace Common.DTO
 {
     public class Order
     {
-        public string PaymentType { get; set; }
+        public string PaymentType = Common.OrderEnums.PaymentType.CASH;
         public int OrderId { get; set; }
         public List<OrderDetail> OrdersDetails { get; set; }
         public DateTime OrderDate { get; set; }
