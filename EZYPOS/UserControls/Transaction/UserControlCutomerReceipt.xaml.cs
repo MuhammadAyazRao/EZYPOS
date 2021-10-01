@@ -20,11 +20,12 @@ using System.Windows.Shapes;
 namespace EZYPOS.UserControls.Transaction
 {
     /// <summary>
-    /// Interaction logic for UserControlSupplierPayment.xaml
+    /// Interaction logic for UserControlCutomerReceipt.xaml
     /// </summary>
-    public partial class UserControlSupplierPayment : UserControl
+
+    public partial class UserControlCutomerReceipt : UserControl
     {
-        public UserControlSupplierPayment(SupplierPaymentDTO Sp = null)
+        public UserControlCutomerReceipt(CustomerReceiptDTO Sp = null)
         {
             InitializeComponent();
             RefreshPage();
@@ -40,8 +41,8 @@ namespace EZYPOS.UserControls.Transaction
             Save.IsEnabled = true;
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
-                DDSupplier.ItemsSource = Db.Supplier.GetAll().ToList();
-                DDPayedBy.ItemsSource = Db.User.GetAll().ToList();
+                DDCustomer.ItemsSource = Db.Customers.GetAll().ToList();
+                DDReceivedBy.ItemsSource = Db.User.GetAll().ToList();
             }
             txtDiscription.Text = "Discription";
             txtDiscription.Foreground = Brushes.Gray;
@@ -49,7 +50,7 @@ namespace EZYPOS.UserControls.Transaction
             txtAmount.Foreground = Brushes.Gray;
             txtId.Text = "";
         }
-        private void InitializePage(SupplierPaymentDTO Sp)
+        private void InitializePage(CustomerReceiptDTO Sp)
         {
             Delete.IsEnabled = true;
             Update.IsEnabled = true;
@@ -57,33 +58,33 @@ namespace EZYPOS.UserControls.Transaction
 
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
-                var SupplierPaymentData = Db.SupplierPayment.Get(Sp.Id);
+                var CustomerReceiptData = Db.CustomerReceipt.Get(Sp.Id);
 
-                if (!string.IsNullOrEmpty( Convert.ToString(SupplierPaymentData?.Amount)))
+                if (!string.IsNullOrEmpty(Convert.ToString(CustomerReceiptData?.ReceiptAmount)))
                 {
-                    txtAmount.Text = Convert.ToString(SupplierPaymentData?.Amount);
+                    txtAmount.Text = Convert.ToString(CustomerReceiptData?.ReceiptAmount);
                     txtAmount.Foreground = Brushes.Black;
                 }
-                if (!string.IsNullOrEmpty(SupplierPaymentData?.Discription))
+                if (!string.IsNullOrEmpty(CustomerReceiptData?.Discription))
                 {
-                    txtDiscription.Text = SupplierPaymentData?.Discription;
+                    txtDiscription.Text = CustomerReceiptData?.Discription;
                     txtDiscription.Foreground = Brushes.Black;
                 }
-                if (!string.IsNullOrEmpty(Convert.ToString(SupplierPaymentData?.TransactionDate)))
+                if (!string.IsNullOrEmpty(Convert.ToString(CustomerReceiptData?.TransactionDate)))
                 {
-                    TransactionDate.Text = Convert.ToString(SupplierPaymentData?.TransactionDate);
-                    
+                    TransactionDate.Text = Convert.ToString(CustomerReceiptData?.TransactionDate);
+
                 }
-                if (!string.IsNullOrEmpty(Convert.ToString(SupplierPaymentData?.PayedBy)))
+                if (!string.IsNullOrEmpty(Convert.ToString(CustomerReceiptData?.ReceivedBy)))
                 {
-                    DDPayedBy.SelectedValue = SupplierPaymentData?.PayedBy;
+                    DDReceivedBy.SelectedValue = CustomerReceiptData?.ReceivedBy;
                 }
-                if (!string.IsNullOrEmpty(Convert.ToString(SupplierPaymentData?.Supplier)))
+                if (!string.IsNullOrEmpty(Convert.ToString(CustomerReceiptData?.CustomerId)))
                 {
-                    DDSupplier.SelectedValue = SupplierPaymentData?.Supplier;
+                    DDCustomer.SelectedValue = CustomerReceiptData?.CustomerId;
                 }
 
-                txtId.Text = SupplierPaymentData.Id.ToString();
+                txtId.Text = CustomerReceiptData.Id.ToString();
             }
 
         }
@@ -105,7 +106,7 @@ namespace EZYPOS.UserControls.Transaction
                     tb.Text = string.Empty;
                     tb.Foreground = Brushes.Black;
                     break;
-                
+
             }
         }
         private void txt_LostFocus(object sender, RoutedEventArgs e)
@@ -127,7 +128,7 @@ namespace EZYPOS.UserControls.Transaction
                         tb.Foreground = Brushes.Gray;
                     }
                     break;
-                
+
 
             }
         }
@@ -203,15 +204,15 @@ namespace EZYPOS.UserControls.Transaction
                 {
                     if (txtId.Text != "" && txtId.Text != "0")
                     {
-                        using(UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                         {
-                            SupplierPayment sp = Db.SupplierPayment.Get(Convert.ToInt32(txtId.Text));
-                            sp.Amount = Convert.ToInt32(txtAmount.Text);
+                            CustomerReceipt sp = Db.CustomerReceipt.Get(Convert.ToInt32(txtId.Text));
+                            sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
                             sp.Discription = txtDiscription.Text;
                             sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
-                            sp.PayedBy = Convert.ToInt32(DDPayedBy.SelectedValue);
-                            sp.Supplier = Convert.ToInt32(DDSupplier.SelectedValue);
-                            Db.SupplierPayment.Save();
+                            sp.ReceivedBy = Convert.ToInt32(DDReceivedBy.SelectedValue);
+                            sp.CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
+                            Db.CustomerReceipt.Save();
                             EZYPOS.View.MessageBox.ShowCustom("Your Record Updated Succesfully", "Message", "Ok");
                             RefreshPage();
                         }
@@ -230,15 +231,15 @@ namespace EZYPOS.UserControls.Transaction
                 {
                     using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                     {
-                        SupplierPayment sp = new SupplierPayment();
+                        CustomerReceipt sp = new CustomerReceipt();
                         sp.Discription = txtDiscription.Text;
-                        sp.Amount = Convert.ToInt32(txtAmount.Text);
-                        sp.PayedBy = Convert.ToInt32(DDPayedBy.SelectedValue);
-                        sp.Supplier = Convert.ToInt32(DDSupplier.SelectedValue);
+                        sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
+                        sp.ReceivedBy = Convert.ToInt32(DDReceivedBy.SelectedValue);
+                        sp.CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
                         sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
                         sp.CreatedOn = DateTime.Now;
-                        DB.SupplierPayment.Add(sp);
-                        DB.SupplierPayment.Save();
+                        DB.CustomerReceipt.Add(sp);
+                        DB.CustomerReceipt.Save();
 
                         EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
                         RefreshPage();
@@ -258,10 +259,10 @@ namespace EZYPOS.UserControls.Transaction
 
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    using(UnitOfWork db= new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                     {
-                        db.SupplierPayment.Delete(Convert.ToInt32(txtId.Text));
-                        db.SupplierPayment.Save();
+                        db.CustomerReceipt.Delete(Convert.ToInt32(txtId.Text));
+                        db.CustomerReceipt.Save();
                         RefreshPage();
                     }
                 }
@@ -286,17 +287,17 @@ namespace EZYPOS.UserControls.Transaction
                 EZYPOS.View.MessageBox.ShowCustom("Please Select Transaction Date.", "Error", "OK");
                 return false;
             }
-            if (DDPayedBy.SelectedValue == null)
+            if (DDReceivedBy.SelectedValue == null)
             {
                 EZYPOS.View.MessageBox.ShowCustom("Please Select User.", "Error", "OK");
                 return false;
             }
-            if (DDSupplier.SelectedValue == null)
+            if (DDCustomer.SelectedValue == null)
             {
-                EZYPOS.View.MessageBox.ShowCustom("Please Select Supplier.", "Error", "OK");
+                EZYPOS.View.MessageBox.ShowCustom("Please Select Customer.", "Error", "OK");
                 return false;
             }
-            
+
 
             return true;
         }

@@ -10,11 +10,13 @@ namespace DAL.DBModel
         public UserRole()
         {
             Emplyees = new HashSet<Emplyee>();
+            Users = new HashSet<User>();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
 
         public virtual ICollection<Emplyee> Emplyees { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

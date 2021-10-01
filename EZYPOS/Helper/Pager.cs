@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EZYPOS.DTO;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -54,6 +56,11 @@ namespace EZYPOS.Helper
             PagedList = SetPaging(ListToPage, RecordsPerPage);
             return PagedList;
         }
+
+        //internal IEnumerable First(List<SupplierPaymentDTO> listTopagenate)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public List<T> SetPaging(List<T> ListToPage, int RecordsPerPage=10)
         {

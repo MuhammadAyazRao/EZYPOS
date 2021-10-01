@@ -44,7 +44,7 @@
             <VirtualizingStackPanel/>
         </ItemsPanelTemplate>
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="0,0,0,150">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="61"/>
@@ -62,14 +62,11 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Name="txtReceiptNumber"  Padding="10" IsEnabled="False" TextWrapping="Wrap" Text="Receipt Number" PreviewTextInput="txtNumber_PreviewTextInput" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus"  Foreground="Gray" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="0" Height="Auto" Style="{Binding txtInput}" />
-                <ComboBox  Name="DDCustomer" DisplayMemberPath="Name" SelectedValuePath="Id" Grid.Row="1" Grid.Column="0" Margin="20,10,20,10" materialDesign:HintAssist.Hint="Search Category"     materialDesign:HintAssist.HintOpacity=".26" IsEditable="True"></ComboBox>
-                <TextBox Name="txtBalance" Text="Balance" IsEnabled="False"  TextWrapping="Wrap"   Padding="10" Foreground="Gray" MaxLength="10" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus"  VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="2"  Height="Auto" Style="{Binding txtInput}"  />
-                <TextBox Name="txtAmount"  BorderBrush="{DynamicResource Danger}" Padding="10" TextWrapping="Wrap" Text="Amount" Foreground="Gray" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus"  Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="3" Height="Auto" Style="{Binding txtInput}"  />
-                <TextBox Name="txtRefrence"  Grid.Column="1" Grid.Row="0"  Padding="10"  TextWrapping="Wrap" Text="Refrence"  Foreground="Gray" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus"  Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10"  Height="Auto" Style="{Binding txtInput}" />
-                <ComboBox  Name="DDRefrenceBy" DisplayMemberPath="Name" SelectedValuePath="Id" Grid.Row="1" Grid.Column="1" Margin="20,10,20,10" materialDesign:HintAssist.Hint="Search Refrence"     materialDesign:HintAssist.HintOpacity=".26" IsEditable="True"></ComboBox>
-                <ComboBox  Name="DDAccount" DisplayMemberPath="Name" SelectedValuePath="Id" Grid.Row="2" Grid.Column="1" Margin="20,10,20,10" materialDesign:HintAssist.Hint="Search Refrence"     materialDesign:HintAssist.HintOpacity=".26" IsEditable="True"></ComboBox>
-                <DatePicker Name="DatePocessing" Grid.Column="1" Grid.Row="3" materialDesign:HintAssist.Hint="Processing Date"   Margin="20,10,20,10" Style="{StaticResource MaterialDesignDatePicker}" />
+                <ComboBox  Name="DDSupplier" DisplayMemberPath="Name" SelectedValuePath="Id" Grid.Row="0" Grid.Column="0" Margin="20,10,20,10" materialDesign:HintAssist.Hint="Search Supplier"     materialDesign:HintAssist.HintOpacity=".26" IsEditable="True"></ComboBox>
+                <ComboBox  Name="DDPayedBy" DisplayMemberPath="Name" SelectedValuePath="Id" Grid.Row="0" Grid.Column="1" Margin="20,10,20,10" materialDesign:HintAssist.Hint="Search User"     materialDesign:HintAssist.HintOpacity=".26" IsEditable="True"></ComboBox>
+                <TextBox Name="txtAmount" PreviewTextInput="txtNumber_PreviewTextInput"  BorderBrush="{DynamicResource Danger}" Padding="10" TextWrapping="Wrap" Text="Amount" Foreground="Gray" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus"  Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{Binding txtInput}"  />
+                <TextBox Name="txtDiscription"  Grid.Column="1" Grid.Row="1"  Padding="10"  TextWrapping="Wrap" Text="Discription"  Foreground="Gray" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus"  Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10"  Height="Auto" Style="{Binding txtInput}" />
+                <DatePicker Name="TransactionDate" Grid.Column="0" Grid.Row="2" materialDesign:HintAssist.Hint="Transaction Date"   Margin="20,10,20,10" Style="{StaticResource MaterialDesignDatePicker}" />
                 <TextBox Name="txtId" Visibility="Collapsed" BorderBrush="{DynamicResource Danger}" Padding="10"  TextWrapping="Wrap" Text="Product Code" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus"  PreviewTextInput="txtNumber_PreviewTextInput"  Foreground="Gray" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="0" Height="Auto" Style="{Binding txtInput}" />
             </Grid>
         </Border>
@@ -77,7 +74,7 @@
         <Button  Content="{materialDesign:PackIcon Kind=Pencil,Size=50}" Name="Update" Click="Update_Click" Style="{DynamicResource btnInfo}" HorizontalAlignment="Left" Grid.Row="1" Margin="300,0,0,0" Width="100"   ToolTip="Edit"  />
         <Button  Content="{materialDesign:PackIcon Kind=Delete,Size=50}" Name="Delete" Click="Delete_Click"  BorderThickness="0"  Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Grid.Row="1" Margin="175,0,0,0" Width="100"  ToolTip="Delete" />
         <Button  Content="{materialDesign:PackIcon Kind=ContentSave,Size=50}" Name="Save" Click="Save_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left" Grid.Row="1" Margin="430,0,0,0" Width="100"  ToolTip="Save" />
-        <Label x:Name="lblTitleDetails" Content="Curtomer Receipt Details" Foreground="{DynamicResource DarkBlue}" HorizontalAlignment="Left" Margin="18,26,0,0" Grid.Row="0" VerticalAlignment="Top" Width="245" Height="24"/>
+        <Label x:Name="lblTitleDetails" Content="Suppliar Payment" Foreground="{DynamicResource DarkBlue}" HorizontalAlignment="Left" Margin="18,26,0,0" Grid.Row="0" VerticalAlignment="Top" Width="245" Height="24"/>
 
 
     </Grid>
