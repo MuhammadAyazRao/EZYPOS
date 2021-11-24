@@ -1,5 +1,6 @@
 ﻿using Common.Session;
 using DAL.Repository;
+using EZYPOS.Helper;
 using EZYPOS.Helper.Session;
 using EZYPOS.UserControls.Define.Crud;
 using System;
@@ -25,6 +26,7 @@ namespace EZYPOS.UserControls.Define.List
     public partial class UserControlListGroup : UserControl
     {
         List<DAL.DBModel.ProductGroup> myList { get; set; }
+        Pager<DAL.DBModel.ProductGroup> Pager = new Helper.Pager<DAL.DBModel.ProductGroup>();
 
         public UserControlListGroup()
         {
@@ -36,7 +38,8 @@ namespace EZYPOS.UserControls.Define.List
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
                 myList = DB.ProductGroup.GetAll().ToList();
-                MainGrid.ItemsSource = myList;
+                GroupGrid.ItemsSource = myList;
+                ResetPaging(myList);
             }
         }
 
@@ -60,7 +63,7 @@ namespace EZYPOS.UserControls.Define.List
                     // myList = DB.ProductCategory.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
                 }
 
-                MainGrid.ItemsSource = myList;
+                GroupGrid.ItemsSource = myList;
             }
 
         }
@@ -80,15 +83,42 @@ namespace EZYPOS.UserControls.Define.List
                     {
                         myList = DB.ProductGroup.GetAll().Where(x => x.GroupName.ToUpper().StartsWith(filter.ToUpper())).ToList();
                     }
-                    MainGrid.ItemsSource = myList;
+                    GroupGrid.ItemsSource = myList;
 
 
                 }
             }
         }
+        private void ResetPaging(List<DAL.DBModel.ProductGroup> ListTopagenate)
+        {
+            GroupGrid.ItemsSource = Pager.First(ListTopagenate);
+            PageInfo.Content = Pager.PageNumberDisplay(ListTopagenate);
+        }
+        private void Forward_Click(object sender, RoutedEventArgs e)    //For each of these you call the direction you want and pass in the List and ComboBox output
+        {                                                               //and use the above function to output the Record number to the Label
+            GroupGrid.ItemsSource = Pager.Next(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void Backwards_Click(object sender, RoutedEventArgs e)
+        {
+           GroupGrid.ItemsSource = Pager.Previous(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+        private void First_Click(object sender, RoutedEventArgs e)
+        {
+            GroupGrid.ItemsSource = Pager.First(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void Last_Click(object sender, RoutedEventArgs e)
+        {
+            GroupGrid.ItemsSource = Pager.Last(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            DAL.DBModel.ProductGroup ProductGroup = (DAL.DBModel.ProductGroup)MainGrid.SelectedItem;
+            DAL.DBModel.ProductGroup ProductGroup = (DAL.DBModel.ProductGroup)GroupGrid.SelectedItem;
             ActiveSession.CloseDisplayuserControlMethod(new UserControlGroupCrud(ProductGroup));
         }
     }

@@ -98,27 +98,32 @@ namespace EZYPOS.UserControls.Define.Crud
         }
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            if (Validate())
+            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Alert", "Do You Want To Update This Record", "Yes", "No");
+            if (isconfirm)
             {
-                if (txtId.Text != "" && txtId.Text != "0")
+                if (Validate())
                 {
-                    int Id = Convert.ToInt32(txtId.Text);
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    if (txtId.Text != "" && txtId.Text != "0")
                     {
-                        var city = Db.City.Get(Id);
-                        if (city != null)
+                        int ID = Convert.ToInt32(txtId.Text);
+                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                         {
-                            if (!string.IsNullOrEmpty(txtFName.Text))
+                            var city = Db.City.GetAll().Where(x=> x.Id==ID).FirstOrDefault();
+                            if (city != null)
                             {
-                                city.CityName = txtFName.Text;
+                                if (!string.IsNullOrEmpty(txtFName.Text))
+                                {
+                                    city.CityName = txtFName.Text;
+                                }
+                                Db.Complete();
+                                EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
+                                RefreshPage();
                             }
-                            Db.Complete();
-                            EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
-                            RefreshPage();
                         }
                     }
                 }
             }
+            
         }
         private bool Validate()
         {

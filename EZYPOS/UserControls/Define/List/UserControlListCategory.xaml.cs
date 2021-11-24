@@ -43,6 +43,7 @@ namespace EZYPOS.UserControls.Define.List
             {
                 myList = DB.ProductCategory.GetAll().ToList();
                 CategoryGrid.ItemsSource = myList;
+                ResetPaging(myList);
             }
         }
 
@@ -88,6 +89,34 @@ namespace EZYPOS.UserControls.Define.List
 
                 }
             }
+        }
+
+        private void ResetPaging(List<DAL.DBModel.ProductCategory> ListTopagenate)
+        {
+            CategoryGrid.ItemsSource = Pager.First(ListTopagenate);
+            PageInfo.Content = Pager.PageNumberDisplay(ListTopagenate);
+        }
+        private void Forward_Click(object sender, RoutedEventArgs e)    //For each of these you call the direction you want and pass in the List and ComboBox output
+        {                                                               //and use the above function to output the Record number to the Label
+            CategoryGrid.ItemsSource = Pager.Next(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void Backwards_Click(object sender, RoutedEventArgs e)
+        {
+            CategoryGrid.ItemsSource = Pager.Previous(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+        private void First_Click(object sender, RoutedEventArgs e)
+        {
+            CategoryGrid.ItemsSource = Pager.First(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void Last_Click(object sender, RoutedEventArgs e)
+        {
+            CategoryGrid.ItemsSource = Pager.Last(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)

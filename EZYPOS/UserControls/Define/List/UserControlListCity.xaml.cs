@@ -1,5 +1,6 @@
 ﻿using Common.Session;
 using DAL.Repository;
+using EZYPOS.DTO;
 using EZYPOS.Helper;
 using EZYPOS.Helper.Session;
 using EZYPOS.UserControls.Define.Crud;
@@ -37,11 +38,17 @@ namespace EZYPOS.UserControls.Define.List
         {
             ActiveSession.CloseDisplayuserControlMethod(new UserControlCityCrud());
         }
+        private void ResetPaging(List<DAL.DBModel.City> ListTopagenate)
+        {
+            CityGrid.ItemsSource = Pager.First(ListTopagenate);
+            PageInfo.Content = Pager.PageNumberDisplay(ListTopagenate);
+        }
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
+                List<DAL.DBModel.City> myList;
                 if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
                 {
                     myList = DB.City.GetAll().ToList();
@@ -63,6 +70,7 @@ namespace EZYPOS.UserControls.Define.List
             {
                 myList = DB.City.GetAll().ToList();
                 CityGrid.ItemsSource = myList;
+                ResetPaging(myList);
             }
         }
 
@@ -95,6 +103,25 @@ namespace EZYPOS.UserControls.Define.List
             }
         }
 
-
+        private void Backwards_Click(object sender, RoutedEventArgs e)
+        {
+            CityGrid.ItemsSource = Pager.Previous(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+        private void First_Click(object sender, RoutedEventArgs e)
+        {
+            CityGrid.ItemsSource = Pager.First(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+        private void Last_Click(object sender, RoutedEventArgs e)
+        {
+            CityGrid.ItemsSource = Pager.Last(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+        private void Forward_Click(object sender, RoutedEventArgs e)
+        {
+            CityGrid.ItemsSource = Pager.Next(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
     }
 }

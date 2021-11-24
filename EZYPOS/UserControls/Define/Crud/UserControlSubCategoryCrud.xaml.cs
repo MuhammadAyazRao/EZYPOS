@@ -52,7 +52,7 @@ namespace EZYPOS.UserControls.Define.Crud
             Save.IsEnabled = false;
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
-                var ProductSubCategory = Db.ProductSubcategory.Get(SubCategory.Id);
+                var ProductSubCategory = Db.ProductSubcategory.GetAll().Where(x => x.Id == SubCategory.Id).FirstOrDefault();
                 if (!string.IsNullOrEmpty(ProductSubCategory?.SubcategoryName))
                 {
                     txtFName.Text = ProductSubCategory?.SubcategoryName;
@@ -68,7 +68,7 @@ namespace EZYPOS.UserControls.Define.Crud
         }
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirmed = EZYPOS.View.MessageYesNo.ShowCustom("Refresh", "Do you want to refresh page?", "Yes", "No");
+            bool Isconfirmed = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to refresh page?", "Yes", "No");
             if (Isconfirmed)
             { RefreshPage(); }
         }
@@ -76,8 +76,6 @@ namespace EZYPOS.UserControls.Define.Crud
         private void txt_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = sender as TextBox;
-            //tb.Text = string.Empty;
-            //tb.Foreground = Brushes.Black;
             switch (tb.Text)
             {
                 case "Name":
@@ -105,28 +103,33 @@ namespace EZYPOS.UserControls.Define.Crud
         }
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            if (Validate())
+            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do You Want To Update This Record", "Yes", "NO");
+            if (isconfirm)
             {
-                if (txtId.Text != "" && txtId.Text != "0")
+                if (Validate())
                 {
-                    int Id = Convert.ToInt32(txtId.Text);
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    if (txtId.Text != "" && txtId.Text != "0")
                     {
-                        var SubCategory = Db.ProductSubcategory.Get(Id);
-                        if (SubCategory != null)
+                        int Id = Convert.ToInt32(txtId.Text);
+                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                         {
-                            if (!string.IsNullOrEmpty(txtFName.Text))
+                            var SubCategory = Db.ProductSubcategory.GetAll().Where(x => x.Id == Id).FirstOrDefault();
+                            if (SubCategory != null)
                             {
-                                SubCategory.SubcategoryName = txtFName.Text;
-                                SubCategory.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
+                                if (!string.IsNullOrEmpty(txtFName.Text))
+                                {
+                                    SubCategory.SubcategoryName = txtFName.Text;
+                                    SubCategory.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
+                                }
+                                Db.Complete();
+                                EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
+                                RefreshPage();
                             }
-                            Db.Complete();
-                            EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
-                            RefreshPage();
                         }
                     }
                 }
             }
+            
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -158,10 +161,9 @@ namespace EZYPOS.UserControls.Define.Crud
 
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    int Id = Convert.ToInt32(txtId.Text);
                     using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                     {
-                        Db.ProductSubcategory.Delete(Id);
+                        Db.ProductSubcategory.Delete(Convert.ToInt32(txtId.Text));
                         Db.Complete();
                         EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
                     }

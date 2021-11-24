@@ -156,15 +156,14 @@ namespace EZYPOS.UserControls.Define.Crud
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Do You Want To Update Record", "Alert", "Yes", "No");
+            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Alert", "Do You Want To Update Record", "Yes", "No");
             if (isconfirm)
             {
                 if (Validate())
                 {
                     using(UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
                     {
-                        int id = Convert.ToInt32(txtId.Text);
-                        var ex= uw.expt.Get(id);
+                        var ex= uw.expt.GetAll().Where(x=> x.Id == Convert.ToInt32(txtId.Text)).FirstOrDefault();
                         ex.Discription = txtDescription.Text;
                         ex.Amount = Convert.ToInt32(txtAmount.Text);
                         ex.ExpenceType = Convert.ToInt32(ddEType.SelectedValue);
@@ -180,13 +179,12 @@ namespace EZYPOS.UserControls.Define.Crud
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Do You Want to Delete this Record", "Alert", "Yes", "NO");
+            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Alert", "Do You Want to Delete this Record", "Yes", "NO");
             if (isconfirm)
             {
-                int id = Convert.ToInt32(txtId.Text);
                 using(UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
                 {
-                    uw.expt.Delete(id);
+                    uw.expt.Delete(Convert.ToInt32(txtId.Text));
                     uw.expt.Save();
                     EZYPOS.View.MessageBox.ShowCustom("Your Record Deleted Sucessfully", "Message", "Ok");
                     RefreshPage();
@@ -196,7 +194,7 @@ namespace EZYPOS.UserControls.Define.Crud
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Do You Want to Save Record", "Alert", "Yes", "No");
+            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Alert", "Do You Want to Save Record", "Yes", "No");
             if (isconfirm)
             {
                 if (Validate())

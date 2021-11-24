@@ -1,5 +1,5 @@
 ﻿using DAL.Repository;
-using EZYPOS.DBModels;
+using DAL.DBModel;
 using EZYPOS.Helper.Session;
 using System;
 using System.Collections.Generic;
@@ -70,8 +70,7 @@ namespace EZYPOS.UserControls
         private void txt_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = sender as TextBox;
-            //tb.Text = string.Empty;
-            //tb.Foreground = Brushes.Black;
+           
             switch (tb.Text)
             {
                 case "Name":
@@ -101,27 +100,31 @@ namespace EZYPOS.UserControls
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            if (Validate())
+            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Alert", "Do You Want To Update This Record", "Yes", "NO");
+            if (isconfirm)
             {
-                if (txtId.Text != "" && txtId.Text != "0")
+                if (Validate())
                 {
-                    int Id = Convert.ToInt32(txtId.Text);
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    if (txtId.Text != "" && txtId.Text != "0")
                     {
-                        var Expence = Db.ExpenceType.Get(Id);
-                        if (Expence != null)
+                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                         {
-                            if (!string.IsNullOrEmpty(txtFName.Text))
+                            var Expence = Db.ExpenceType.Get(Convert.ToInt32(txtId.Text));
+                            if (Expence != null)
                             {
-                                Expence.ExpenceName = txtFName.Text;
+                                if (!string.IsNullOrEmpty(txtFName.Text))
+                                {
+                                    Expence.ExpenceName = txtFName.Text;
+                                }
+                                Db.Complete();
+                                EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
+                                RefreshPage();
                             }
-                            Db.Complete();
-                            EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
-                            RefreshPage();
                         }
                     }
                 }
             }
+            
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -162,10 +165,9 @@ namespace EZYPOS.UserControls
 
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    int Id = Convert.ToInt32(txtId.Text);
                     using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
                     {
-                        Db.ExpenceType.Delete(Id);
+                        Db.ExpenceType.Delete(Convert.ToInt32(txtId.Text));
                         Db.Complete();
                         EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
                     }

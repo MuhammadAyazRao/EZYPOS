@@ -1,5 +1,5 @@
 ﻿
-using EZYPOS.DBModels;
+using DAL.DBModel;
 using EZYPOS.Helper.Session;
 using EZYPOS.DTO;
 using System;
@@ -187,19 +187,19 @@ namespace EZYPOS.UserControls
        
 
         private void Search_Click(object sender, RoutedEventArgs e)
-        {                
-            using (EPOSDBContext DB = new EPOSDBContext())
+        {
+            using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
             {
                 List<Customer> CustomerData;
                 if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
                 {
-                    CustomerData = DB.Customers.ToList();
+                    CustomerData = DB.Customers.GetAll().ToList();
                 }
                 else
                 {
                     DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
                     DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    CustomerData = DB.Customers.Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
+                    CustomerData = DB.Customers.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
                 }
                 customerGrid.ItemsSource = CustomerData;
             }
@@ -301,7 +301,8 @@ namespace EZYPOS.UserControls
         }
 
         private void Last_Click(object sender, RoutedEventArgs e)
-        {customerGrid.ItemsSource = Pager.Last(myList);
+        {
+            customerGrid.ItemsSource = Pager.Last(myList);
             PageInfo.Content = Pager.PageNumberDisplay(myList);
         }
 

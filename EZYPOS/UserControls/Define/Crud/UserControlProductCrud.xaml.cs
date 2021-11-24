@@ -368,6 +368,7 @@ namespace EZYPOS.UserControls.Define.Crud
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            
             bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Save Record?", "Yes", "No");
             if (Isconfirm)
             {

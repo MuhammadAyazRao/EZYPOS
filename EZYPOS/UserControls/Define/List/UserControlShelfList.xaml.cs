@@ -1,5 +1,7 @@
 ﻿using Common.Session;
 using DAL.DBModel;
+using DAL.Repository;
+using EZYPOS.Helper;
 using EZYPOS.UserControls.Define.Crud;
 using System;
 using System.Collections.Generic;
@@ -23,16 +25,29 @@ namespace EZYPOS.UserControls.Define.List
     /// </summary>
     public partial class UserControlShelfList : UserControl
     {
+        List<DAL.DBModel.TblShelf> myList { get; set; }
+        Pager<DAL.DBModel.TblShelf> Pager = new Helper.Pager<DAL.DBModel.TblShelf>();
         public UserControlShelfList()
         {
             InitializeComponent();
-            DG_GetData();
+            Refresh();
+            
         }
 
         private void AddShelf_Click(object sender, RoutedEventArgs e)
         {
             ActiveSession.CloseDisplayuserControlMethod(new UserControlShelfCrud());
         }
+        private void Refresh(object sender = null)
+        {
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            {
+                myList = DB.Shelf.GetAll().ToList();
+                ShelfGrid.ItemsSource = myList;
+                ResetPaging(myList);
+            }
+        }
+        
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
@@ -44,16 +59,38 @@ namespace EZYPOS.UserControls.Define.List
 
         }
 
+        private void ResetPaging(List<DAL.DBModel.TblShelf> ListTopagenate)
+        {
+            ShelfGrid.ItemsSource = Pager.First(ListTopagenate);
+            PageInfo.Content = Pager.PageNumberDisplay(ListTopagenate);
+        }
+        private void Forward_Click(object sender, RoutedEventArgs e)    //For each of these you call the direction you want and pass in the List and ComboBox output
+        {                                                               //and use the above function to output the Record number to the Label
+            ShelfGrid.ItemsSource = Pager.Next(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void Backwards_Click(object sender, RoutedEventArgs e)
+        {
+            ShelfGrid.ItemsSource = Pager.Previous(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+        private void First_Click(object sender, RoutedEventArgs e)
+        {
+            ShelfGrid.ItemsSource = Pager.First(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void Last_Click(object sender, RoutedEventArgs e)
+        {
+            ShelfGrid.ItemsSource = Pager.Last(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             TblShelf shlf = (TblShelf)ShelfGrid.SelectedItem;
             ActiveSession.CloseDisplayuserControlMethod(new UserControlShelfCrud(shlf));
-        }
-
-        void DG_GetData()
-        {
-            EPOSDBContext db = new EPOSDBContext();
-            ShelfGrid.ItemsSource = db.TblShelves.ToList();
         }
 
     }

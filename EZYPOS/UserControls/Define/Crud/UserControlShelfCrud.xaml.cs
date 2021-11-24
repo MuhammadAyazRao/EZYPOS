@@ -39,11 +39,11 @@ namespace EZYPOS.UserControls.Define.Crud
             Save.IsEnabled = false;
             using (UnitOfWork Db = new UnitOfWork(new EPOSDBContext()))
             {
-                var shelfData = Db.Shelf.Get(shlf.Sid);
+                var shelfData = Db.Shelf.GetAll().Where(x=> x.Sid == shlf.Sid).FirstOrDefault();
                 if (!string.IsNullOrEmpty(shelfData?.ShelfName))
                 {
                     txtShelfName.Text = shelfData?.ShelfName;
-                   txtShelfName.Foreground = Brushes.Black;
+                    txtShelfName.Foreground = Brushes.Black;
                     txtShelfCode.Text = shelfData?.ShelfCode;
                     txtShelfCode.Foreground = Brushes.Black;
                 }
@@ -155,8 +155,8 @@ namespace EZYPOS.UserControls.Define.Crud
         {
             using(UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
             {
-                int id = Convert.ToInt32(txtId.Text);
-                uw.Shelf.Delete(id);
+                uw.Shelf.Delete(Convert.ToInt32(txtId.Text));
+                uw.Complete();
                 EZYPOS.View.MessageBox.ShowCustom("Record Deleted Succesfully", "Status", "Ok");
             }
         }
