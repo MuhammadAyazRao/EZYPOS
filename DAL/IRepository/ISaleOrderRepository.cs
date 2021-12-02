@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Common.DTO;
-using DAL.DBModel;
+using DAL.DBMODEL;
 
 namespace DAL.IRepository
 {

@@ -1,6 +1,6 @@
 ﻿using Common;
 using Common.DTO;
-using DAL.DBModel;
+using DAL.DBMODEL;
 using DAL.IRepository;
 using System;
 using System.Collections.Generic;
@@ -15,8 +15,8 @@ namespace DAL.Repository
     {
         private readonly EPOSDBContext _DbEntities;
         public IStockRepository Stock { get; }
-        public IRepository<DAL.DBModel.PurchaseOrderDetail> PurchaseOrderDetail { get; }
-        public IRepository<DAL.DBModel.Product> Product { get; }
+        public IRepository<DAL.DBMODEL.PurchaseOrderDetail> PurchaseOrderDetail { get; }
+        public IRepository<DAL.DBMODEL.Product> Product { get; }
         public IRepository<StockLead> StockLead { get; }
         public IRepository<CustomerLead> CustomerLead { get; }
         public IRepository<CashBookLead> CashBookLead { get; }
@@ -25,8 +25,8 @@ namespace DAL.Repository
         {
             _DbEntities = context;
             Stock = new StockRepository(context);
-            PurchaseOrderDetail = new Repository<DAL.DBModel.PurchaseOrderDetail>(context);
-            Product = new Repository<DAL.DBModel.Product>(context);
+            PurchaseOrderDetail = new Repository<DAL.DBMODEL.PurchaseOrderDetail>(context);
+            Product = new Repository<DAL.DBMODEL.Product>(context);
             StockLead = new Repository<StockLead>(context);
             CustomerLead = new Repository<CustomerLead>(context);
             CashBookLead = new Repository<CashBookLead>(context);
@@ -61,7 +61,7 @@ namespace DAL.Repository
                     //Order Detail
                     foreach (var item in CartOrderToProcess?.OrdersDetails)
                     {
-                        DAL.DBModel.PurchaseOrderDetail NewOrderDetail = new  DAL.DBModel.PurchaseOrderDetail();
+                        DAL.DBMODEL.PurchaseOrderDetail NewOrderDetail = new  DAL.DBMODEL.PurchaseOrderDetail();
                         NewOrderDetail.PurchaseOrderId = NewOrder.Id;
                         NewOrderDetail.ProductId = (int)item?.Item.id;
                         NewOrderDetail.ItemName = item?.Item.name;

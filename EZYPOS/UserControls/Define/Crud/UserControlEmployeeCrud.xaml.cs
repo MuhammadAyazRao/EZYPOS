@@ -1,6 +1,6 @@
 ﻿using Common.Session;
 using DAL.Repository;
-using DAL.DBModel;
+using DAL.DBMODEL;
 using EZYPOS.DTO;
 using EZYPOS.Helper.Session;
 using Microsoft.Win32;
@@ -43,7 +43,7 @@ namespace EZYPOS.UserControls
             Delete.IsEnabled = false;
             Update.IsEnabled = false;
             Save.IsEnabled = true;
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var cities = Db.City.GetAll().ToList();
                 ddCity.ItemsSource = cities;

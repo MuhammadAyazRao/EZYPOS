@@ -26,8 +26,8 @@ namespace EZYPOS.UserControls
     /// </summary>
     public partial class UserControlExpenceHeadList : UserControl
     {
-        List<DAL.DBModel.ExpenceType> myList { get; set; }
-        Pager<DAL.DBModel.ExpenceType> Pager = new Helper.Pager<DAL.DBModel.ExpenceType>();
+        List<DAL.DBMODEL.ExpenceType> myList { get; set; }
+        Pager<DAL.DBMODEL.ExpenceType> Pager = new Helper.Pager<DAL.DBMODEL.ExpenceType>();
         public UserControlExpenceHeadList()
         {
             
@@ -36,7 +36,7 @@ namespace EZYPOS.UserControls
         }
         private void Refresh(object sender = null)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.ExpenceType.GetAll().ToList();
                 ExpenceHeadGrid.ItemsSource = myList;
@@ -58,7 +58,7 @@ namespace EZYPOS.UserControls
         private void Search_Click(object sender, RoutedEventArgs e)
         {
 
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
                 {
@@ -84,7 +84,7 @@ namespace EZYPOS.UserControls
                 string filter = t.Text;
                 var cv = CollectionViewSource.GetDefaultView(ExpenceHeadGrid.ItemsSource);
 
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
 
                         if (t.Name == "GridName")
@@ -98,7 +98,7 @@ namespace EZYPOS.UserControls
                 }
             }
         }
-        private void ResetPaging(List<DAL.DBModel.ExpenceType> ListTopagenate)
+        private void ResetPaging(List<DAL.DBMODEL.ExpenceType> ListTopagenate)
         {
             ExpenceHeadGrid.ItemsSource = Pager.First(ListTopagenate);
             PageInfo.Content = Pager.PageNumberDisplay(ListTopagenate);
@@ -128,7 +128,7 @@ namespace EZYPOS.UserControls
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            DAL.DBModel.ExpenceType ExpenceType = (DAL.DBModel.ExpenceType)ExpenceHeadGrid.SelectedItem;
+            DAL.DBMODEL.ExpenceType ExpenceType = (DAL.DBMODEL.ExpenceType)ExpenceHeadGrid.SelectedItem;
             ActiveSession.CloseDisplayuserControlMethod(new UserControlExpenceHeadCrud(ExpenceType));
         }
     }

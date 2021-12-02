@@ -1,5 +1,5 @@
 ﻿using Common.Session;
-using DAL.DBModel;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.Helper;
@@ -36,7 +36,7 @@ namespace EZYPOS.UserControls.Define.List
         }
         private void Refresh(object sender = null)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.Product.GetAll().Select(x => new ProductDTO { Id = x.Id, ProductName = x.ProductName, Barcode=x.Barcode, RetailPrice=x.RetailPrice,Wholesaleprice=x.Wholesaleprice,PurchasePrice=x.PurchasePrice,CategoryName=x.Category.Name,SubcategoryName=x.Subcategory.SubcategoryName}).ToList();                
                 ResetPaging(myList);
@@ -71,7 +71,7 @@ namespace EZYPOS.UserControls.Define.List
             {
                 TextBox t = (TextBox)sender;
                 string filter = t.Text;
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
                     myList = DB.Product.GetAll().Select(x => new ProductDTO { Id = x.Id, ProductName = x.ProductName, Barcode = x.Barcode, RetailPrice = x.RetailPrice, Wholesaleprice = x.Wholesaleprice, PurchasePrice = x.PurchasePrice, CategoryName = x.Category.Name, SubcategoryName = x.Subcategory.SubcategoryName }).ToList();
 

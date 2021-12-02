@@ -1,4 +1,4 @@
-﻿using DAL.DBModel;
+﻿using DAL.DBMODEL;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -21,7 +21,7 @@ namespace EZYPOS.UserControls.Define.Crud
     /// </summary>
     public partial class UserControlGroupCrud : UserControl
     {
-        public UserControlGroupCrud(DAL.DBModel.ProductGroup ProductGroup = null)
+        public UserControlGroupCrud(DAL.DBMODEL.ProductGroup ProductGroup = null)
         {
             InitializeComponent();
             RefreshPage();
@@ -40,12 +40,12 @@ namespace EZYPOS.UserControls.Define.Crud
             txtId.Text = "";
 
         }
-        private void InitializePage(DAL.DBModel.ProductGroup ProductGroup)
+        private void InitializePage(DAL.DBMODEL.ProductGroup ProductGroup)
         {
             Delete.IsEnabled = true;
             Update.IsEnabled = true;
             Save.IsEnabled = false;
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var Group = Db.ProductGroup.GetAll().Where(x=> x.Id == ProductGroup.Id).FirstOrDefault();
                 if (!string.IsNullOrEmpty(Group?.GroupName))
@@ -96,7 +96,7 @@ namespace EZYPOS.UserControls.Define.Crud
                     if (txtId.Text != "" && txtId.Text != "0")
                     {
                         int Id = Convert.ToInt32(txtId.Text);
-                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                         {
                             var ProductGroup = Db.ProductGroup.Get(Id);
                             if (ProductGroup != null)
@@ -128,9 +128,9 @@ namespace EZYPOS.UserControls.Define.Crud
             {
                 if (Validate())
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        DAL.DBModel.ProductGroup ProductGroup = new DAL.DBModel.ProductGroup();
+                        DAL.DBMODEL.ProductGroup ProductGroup = new DAL.DBMODEL.ProductGroup();
                         ProductGroup.GroupName = txtFName.Text;
                         Db.ProductGroup.Add(ProductGroup);
                         Db.Complete();
@@ -149,7 +149,7 @@ namespace EZYPOS.UserControls.Define.Crud
 
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
                         Db.ProductGroup.Delete(Convert.ToInt32(txtId.Text));
                         Db.Complete();

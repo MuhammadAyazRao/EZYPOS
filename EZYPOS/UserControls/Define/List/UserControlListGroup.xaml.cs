@@ -25,8 +25,8 @@ namespace EZYPOS.UserControls.Define.List
     /// </summary>
     public partial class UserControlListGroup : UserControl
     {
-        List<DAL.DBModel.ProductGroup> myList { get; set; }
-        Pager<DAL.DBModel.ProductGroup> Pager = new Helper.Pager<DAL.DBModel.ProductGroup>();
+        List<DAL.DBMODEL.ProductGroup> myList { get; set; }
+        Pager<DAL.DBMODEL.ProductGroup> Pager = new Helper.Pager<DAL.DBMODEL.ProductGroup>();
 
         public UserControlListGroup()
         {
@@ -35,7 +35,7 @@ namespace EZYPOS.UserControls.Define.List
         }
         private void Refresh(object sender = null)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.ProductGroup.GetAll().ToList();
                 GroupGrid.ItemsSource = myList;
@@ -50,7 +50,7 @@ namespace EZYPOS.UserControls.Define.List
         private void Search_Click(object sender, RoutedEventArgs e)
         {
 
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
                 {
@@ -76,7 +76,7 @@ namespace EZYPOS.UserControls.Define.List
                 string filter = t.Text;
                
 
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
 
                     if (t.Name == "GridName")
@@ -89,7 +89,7 @@ namespace EZYPOS.UserControls.Define.List
                 }
             }
         }
-        private void ResetPaging(List<DAL.DBModel.ProductGroup> ListTopagenate)
+        private void ResetPaging(List<DAL.DBMODEL.ProductGroup> ListTopagenate)
         {
             GroupGrid.ItemsSource = Pager.First(ListTopagenate);
             PageInfo.Content = Pager.PageNumberDisplay(ListTopagenate);
@@ -118,7 +118,7 @@ namespace EZYPOS.UserControls.Define.List
         }
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            DAL.DBModel.ProductGroup ProductGroup = (DAL.DBModel.ProductGroup)GroupGrid.SelectedItem;
+            DAL.DBMODEL.ProductGroup ProductGroup = (DAL.DBMODEL.ProductGroup)GroupGrid.SelectedItem;
             ActiveSession.CloseDisplayuserControlMethod(new UserControlGroupCrud(ProductGroup));
         }
     }

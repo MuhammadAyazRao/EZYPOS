@@ -25,8 +25,8 @@ namespace EZYPOS.UserControls.Define.List
     /// </summary>
     public partial class UserControlListCategory : UserControl
     {
-        List<DAL.DBModel.ProductCategory> myList { get; set; }
-        Pager<DAL.DBModel.ProductCategory> Pager = new Helper.Pager<DAL.DBModel.ProductCategory>();
+        List<DAL.DBMODEL.ProductCategory> myList { get; set; }
+        Pager<DAL.DBMODEL.ProductCategory> Pager = new Helper.Pager<DAL.DBMODEL.ProductCategory>();
         public UserControlListCategory()
         {
             InitializeComponent();
@@ -39,7 +39,7 @@ namespace EZYPOS.UserControls.Define.List
         }
         private void Refresh(object sender = null)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.ProductCategory.GetAll().ToList();
                 CategoryGrid.ItemsSource = myList;
@@ -50,7 +50,7 @@ namespace EZYPOS.UserControls.Define.List
         private void Search_Click(object sender, RoutedEventArgs e)
         {
 
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
                 {
@@ -76,7 +76,7 @@ namespace EZYPOS.UserControls.Define.List
                 string filter = t.Text;
                 var cv = CollectionViewSource.GetDefaultView(CategoryGrid.ItemsSource);
 
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
 
                     if (t.Name == "GridName")
@@ -91,7 +91,7 @@ namespace EZYPOS.UserControls.Define.List
             }
         }
 
-        private void ResetPaging(List<DAL.DBModel.ProductCategory> ListTopagenate)
+        private void ResetPaging(List<DAL.DBMODEL.ProductCategory> ListTopagenate)
         {
             CategoryGrid.ItemsSource = Pager.First(ListTopagenate);
             PageInfo.Content = Pager.PageNumberDisplay(ListTopagenate);
@@ -121,7 +121,7 @@ namespace EZYPOS.UserControls.Define.List
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            DAL.DBModel.ProductCategory ProductCategory = (DAL.DBModel.ProductCategory)CategoryGrid.SelectedItem;
+            DAL.DBMODEL.ProductCategory ProductCategory = (DAL.DBMODEL.ProductCategory)CategoryGrid.SelectedItem;
             ActiveSession.CloseDisplayuserControlMethod(new UserControlCategoryCrud(ProductCategory));
         }
     }

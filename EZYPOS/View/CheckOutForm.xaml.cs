@@ -42,8 +42,8 @@ namespace EZYPOS.View
             PurchaseOrder = odr;
             UCNum.OnButtonPressed += UCNum_OnButtonPressed;
             UCSide.onButtonPress += UCSide_onButtonPress;
-            lblTotal.Content = Order.GetNetTotal();
-            lblDisc.Content = Order.GetTotalDiscount();
+            lblTotal.Content = PurchaseOrder.GetNetTotal();
+            lblDisc.Content = PurchaseOrder.GetTotalDiscount();
         }
         private void UCSide_onButtonPress(object sender, EventArgs e)
         {
@@ -84,14 +84,29 @@ namespace EZYPOS.View
         }
         private void UCNum_OnButtonPressed(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(UCNum.pin))
+            if (ScreenType == Common.ScreenType.Sale)
             {
-                CustPay = Convert.ToDouble(UCNum.pin);
-                lblDue.Content = Order.GetNetTotal() - CustPay;
+                if (!string.IsNullOrEmpty(UCNum.pin))
+                {
+                    CustPay = Convert.ToDouble(UCNum.pin);
+                    lblDue.Content = Order.GetNetTotal() - CustPay;
+                }
+                else
+                {
+                    lblDue.Content = Order.GetNetTotal();
+                }
             }
-            else
+            else if (ScreenType == Common.ScreenType.Purchase)
             {
-                lblDue.Content = Order.GetNetTotal();
+                if (!string.IsNullOrEmpty(UCNum.pin))
+                {
+                    CustPay = Convert.ToDouble(UCNum.pin);
+                    lblDue.Content = PurchaseOrder.GetNetTotal() - CustPay;
+                }
+                else
+                {
+                    lblDue.Content = PurchaseOrder.GetNetTotal();
+                }
             }
         }
 
@@ -108,7 +123,7 @@ namespace EZYPOS.View
                     }
                     else
                     {
-                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                         {
 
                             this.DialogResult = Db.SaleOrder.SaveOrder(Order);
@@ -124,7 +139,7 @@ namespace EZYPOS.View
                     }
                     else
                     {
-                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                         {
 
                             this.DialogResult = Db.PurchaseOrder.SaveOrder(PurchaseOrder);

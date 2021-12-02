@@ -133,7 +133,7 @@
                     <MenuItem Header="_Purchase Item" Name="Purchase" Click="Purchase_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_Customer Receipt" Name="CustomerReceipt" Click="CustomerReceipt_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_Supplier Payment" Name="SupplierPayment" Click="SupplierPayment_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
-                    <MenuItem Header="_Stock Adjustment"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
+                    <MenuItem Header="_Stock Adjustment" Name="StockAdjustment" Click="StockAdjustment_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_Expence Transaction" Click="ExpenseTransation_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_View Orders" Template="{StaticResource VsMenuSub}">
                         <MenuItem Header="_Sale Orders" Name="SaleOrder" Click="ViewOrder_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />

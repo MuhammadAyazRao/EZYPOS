@@ -36,7 +36,7 @@ namespace EZYPOS.UserControls.Define.List
         private void Refresh(object sender = null)
         {
 
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.ProductSubcategory.GetAll().Select(x => new SubCategoryDTO { Id = x.Id, SubcategoryName = x.SubcategoryName, CategoryName = x.Category.Name == null ? null : x.Category.Name }).ToList();
                 //customerGrid.ItemsSource = First(myList, numberOfRecPerPage).DefaultView; //Fill a DataTable with the First set based on the numberOfRecPerPage                 
@@ -53,7 +53,7 @@ namespace EZYPOS.UserControls.Define.List
         }
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                
                 if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
@@ -77,7 +77,7 @@ namespace EZYPOS.UserControls.Define.List
             {
                 TextBox t = (TextBox)sender;
                 string filter = t.Text;
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
                     myList = DB.ProductSubcategory.GetAll().Select(x => new SubCategoryDTO { Id = x.Id, SubcategoryName = x.SubcategoryName, CategoryName = x.Category.Name == null ? null : x.Category.Name }).ToList();
 

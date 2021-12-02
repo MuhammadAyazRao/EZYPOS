@@ -1,5 +1,5 @@
 ﻿using Common.Session;
-using DAL.DBModel;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.Helper;
 using EZYPOS.UserControls.Define.Crud;
@@ -25,8 +25,8 @@ namespace EZYPOS.UserControls.Define.List
     /// </summary>
     public partial class UserControlShelfList : UserControl
     {
-        List<DAL.DBModel.TblShelf> myList { get; set; }
-        Pager<DAL.DBModel.TblShelf> Pager = new Helper.Pager<DAL.DBModel.TblShelf>();
+        List<DAL.DBMODEL.TblShelf> myList { get; set; }
+        Pager<DAL.DBMODEL.TblShelf> Pager = new Helper.Pager<DAL.DBMODEL.TblShelf>();
         public UserControlShelfList()
         {
             InitializeComponent();
@@ -40,7 +40,7 @@ namespace EZYPOS.UserControls.Define.List
         }
         private void Refresh(object sender = null)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.Shelf.GetAll().ToList();
                 ShelfGrid.ItemsSource = myList;
@@ -59,7 +59,7 @@ namespace EZYPOS.UserControls.Define.List
 
         }
 
-        private void ResetPaging(List<DAL.DBModel.TblShelf> ListTopagenate)
+        private void ResetPaging(List<DAL.DBMODEL.TblShelf> ListTopagenate)
         {
             ShelfGrid.ItemsSource = Pager.First(ListTopagenate);
             PageInfo.Content = Pager.PageNumberDisplay(ListTopagenate);

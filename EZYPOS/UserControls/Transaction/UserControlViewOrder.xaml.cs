@@ -41,7 +41,7 @@ namespace EZYPOS.UserControls.Transaction
 
         void Refresh()
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 listOrderAccepted.Items.Clear();
                foreach (var item in DB.SaleOrder.GetMappedOrder(0))
@@ -154,7 +154,7 @@ namespace EZYPOS.UserControls.Transaction
             Order Order = selectedItem.Content as Order;
             if (Order != null)
             {
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
 
                     Order = DB.SaleOrder.GetMappedOrder(Order.OrderId).FirstOrDefault();
@@ -178,7 +178,7 @@ namespace EZYPOS.UserControls.Transaction
             Order Order = selectedItem.Content as Order;
             if (Order != null)
             {
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
 
                     Order = DB.SaleOrder.GetMappedOrder(Order.OrderId).FirstOrDefault();
@@ -201,7 +201,7 @@ namespace EZYPOS.UserControls.Transaction
             Order Order = selectedItem.Content as Order;
             if (Order != null)
             {
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
 
                     Order = DB.SaleOrder.GetMappedOrder(Order.OrderId).FirstOrDefault();
@@ -227,7 +227,7 @@ namespace EZYPOS.UserControls.Transaction
             Order Order = selectedItem.Content as Order;
             if (Order != null)
             {
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
                     if (DB.SaleOrder.DeleteOrder(Order.OrderId))
                     { 

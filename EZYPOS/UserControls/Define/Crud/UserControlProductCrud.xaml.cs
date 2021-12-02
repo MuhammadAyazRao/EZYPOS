@@ -1,4 +1,4 @@
-﻿using DAL.DBModel;
+﻿using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
 using System;
@@ -41,7 +41,7 @@ namespace EZYPOS.UserControls.Define.Crud
             Update.IsEnabled = true;
             Save.IsEnabled = false;
 
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var Productdata = Db.Product.GetAll().Where(x => x.Id == Product.Id).FirstOrDefault();
 
@@ -106,7 +106,7 @@ namespace EZYPOS.UserControls.Define.Crud
             Delete.IsEnabled = false;
             Update.IsEnabled = false;
             Save.IsEnabled = true;
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 DDCategory.ItemsSource = Db.ProductCategory.GetAll().ToList();
                 DDSubCategory.ItemsSource = Db.ProductSubcategory.GetAll().ToList();

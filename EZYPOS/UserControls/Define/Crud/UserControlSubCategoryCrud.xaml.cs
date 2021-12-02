@@ -39,7 +39,7 @@ namespace EZYPOS.UserControls.Define.Crud
             txtFName.Text = "Name";
             txtFName.Foreground = Brushes.Gray;
             txtId.Text = "";
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 DDCategory.ItemsSource = Db.ProductCategory.GetAll().ToList();
             }
@@ -50,7 +50,7 @@ namespace EZYPOS.UserControls.Define.Crud
             Delete.IsEnabled = true;
             Update.IsEnabled = true;
             Save.IsEnabled = false;
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var ProductSubCategory = Db.ProductSubcategory.GetAll().Where(x => x.Id == SubCategory.Id).FirstOrDefault();
                 if (!string.IsNullOrEmpty(ProductSubCategory?.SubcategoryName))
@@ -111,7 +111,7 @@ namespace EZYPOS.UserControls.Define.Crud
                     if (txtId.Text != "" && txtId.Text != "0")
                     {
                         int Id = Convert.ToInt32(txtId.Text);
-                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                         {
                             var SubCategory = Db.ProductSubcategory.GetAll().Where(x => x.Id == Id).FirstOrDefault();
                             if (SubCategory != null)
@@ -139,9 +139,9 @@ namespace EZYPOS.UserControls.Define.Crud
             {
                 if (Validate())
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        DAL.DBModel.ProductSubcategory ProductSubcategory = new DAL.DBModel.ProductSubcategory();
+                        DAL.DBMODEL.ProductSubcategory ProductSubcategory = new DAL.DBMODEL.ProductSubcategory();
                         ProductSubcategory.SubcategoryName = txtFName.Text;
                         ProductSubcategory.CategoryId =Convert.ToInt32(DDCategory.SelectedValue);
                         Db.ProductSubcategory.Add(ProductSubcategory);
@@ -161,7 +161,7 @@ namespace EZYPOS.UserControls.Define.Crud
 
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
                         Db.ProductSubcategory.Delete(Convert.ToInt32(txtId.Text));
                         Db.Complete();

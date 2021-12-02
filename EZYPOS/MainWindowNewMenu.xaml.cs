@@ -309,5 +309,11 @@ namespace EZYPOS
             UserControlListExpenseTransaction exptl = new UserControlListExpenseTransaction();
             ActiveSession.DisplayuserControlMethod(exptl);
         }
+
+        private void StockAdjustment_Click(object sender, RoutedEventArgs e)
+        {
+            StockAdjustment stad = new StockAdjustment();
+            ActiveSession.DisplayuserControlMethod(stad);
+        }
     }
 }

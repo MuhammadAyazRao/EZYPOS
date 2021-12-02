@@ -1,5 +1,5 @@
 ﻿using DAL.Repository;
-using DAL.DBModel;
+using DAL.DBMODEL;
 using EZYPOS.Helper.Session;
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace EZYPOS.UserControls
     /// </summary>
     public partial class UserControlExpenceHeadCrud : UserControl
     {
-        public UserControlExpenceHeadCrud(DAL.DBModel.ExpenceType ExpenceType = null)
+        public UserControlExpenceHeadCrud(DAL.DBMODEL.ExpenceType ExpenceType = null)
         {
             InitializeComponent();
             RefreshPage();
@@ -31,12 +31,12 @@ namespace EZYPOS.UserControls
             if (ExpenceType != null)
             { InitializePage(ExpenceType); }
         }
-        private void InitializePage(DAL.DBModel.ExpenceType ExpenceType)
+        private void InitializePage(DAL.DBMODEL.ExpenceType ExpenceType)
         {
             Delete.IsEnabled = true;
             Update.IsEnabled = true;
             Save.IsEnabled = false;
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var Expencedata = Db.ExpenceType.Get(ExpenceType.Id);
                 if (!string.IsNullOrEmpty(Expencedata?.ExpenceName))
@@ -107,7 +107,7 @@ namespace EZYPOS.UserControls
                 {
                     if (txtId.Text != "" && txtId.Text != "0")
                     {
-                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                         {
                             var Expence = Db.ExpenceType.Get(Convert.ToInt32(txtId.Text));
                             if (Expence != null)
@@ -134,9 +134,9 @@ namespace EZYPOS.UserControls
             {
                 if (Validate())
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        DAL.DBModel.ExpenceType Expence = new DAL.DBModel.ExpenceType();
+                        DAL.DBMODEL.ExpenceType Expence = new DAL.DBMODEL.ExpenceType();
                         Expence.ExpenceName = txtFName.Text;
                         Expence.Createdon = DateTime.Now;
                         Db.ExpenceType.Add(Expence);
@@ -165,7 +165,7 @@ namespace EZYPOS.UserControls
 
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
                         Db.ExpenceType.Delete(Convert.ToInt32(txtId.Text));
                         Db.Complete();

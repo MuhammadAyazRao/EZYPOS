@@ -21,7 +21,7 @@ namespace EZYPOS.UserControls.Define.Crud
     /// </summary>
     public partial class UserControlCategoryCrud : UserControl
     {
-        public UserControlCategoryCrud(DAL.DBModel.ProductCategory Category = null)
+        public UserControlCategoryCrud(DAL.DBMODEL.ProductCategory Category = null)
         {
             InitializeComponent();
 
@@ -41,12 +41,12 @@ namespace EZYPOS.UserControls.Define.Crud
             txtId.Text = "";
 
         }
-        private void InitializePage(DAL.DBModel.ProductCategory Category)
+        private void InitializePage(DAL.DBMODEL.ProductCategory Category)
         {
             Delete.IsEnabled = true;
             Update.IsEnabled = true;
             Save.IsEnabled = false;
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var ProductCategory = Db.ProductCategory.Get(Category.Id);
                 if (!string.IsNullOrEmpty(ProductCategory?.Name))
@@ -103,7 +103,7 @@ namespace EZYPOS.UserControls.Define.Crud
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
                     int Id = Convert.ToInt32(txtId.Text);
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
                         var Category = Db.ProductCategory.Get(Id);
                         if (Category != null)
@@ -128,9 +128,9 @@ namespace EZYPOS.UserControls.Define.Crud
             {
                 if (Validate())
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        DAL.DBModel.ProductCategory Category = new DAL.DBModel.ProductCategory();
+                        DAL.DBMODEL.ProductCategory Category = new DAL.DBMODEL.ProductCategory();
                         Category.Name = txtFName.Text;                      
                         Db.ProductCategory.Add(Category);
                         Db.Complete();
@@ -150,7 +150,7 @@ namespace EZYPOS.UserControls.Define.Crud
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
                     int Id = Convert.ToInt32(txtId.Text);
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
                         Db.ProductCategory.Delete(Id);
                         Db.Complete();

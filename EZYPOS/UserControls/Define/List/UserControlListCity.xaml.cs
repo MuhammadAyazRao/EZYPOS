@@ -26,8 +26,8 @@ namespace EZYPOS.UserControls.Define.List
     /// </summary>
     public partial class UserControlListCity : UserControl
     {
-        List<DAL.DBModel.City> myList { get; set; }
-        Pager<DAL.DBModel.City> Pager = new Helper.Pager<DAL.DBModel.City>();
+        List<DAL.DBMODEL.City> myList { get; set; }
+        Pager<DAL.DBMODEL.City> Pager = new Helper.Pager<DAL.DBMODEL.City>();
         public UserControlListCity()
         {
             InitializeComponent();
@@ -38,7 +38,7 @@ namespace EZYPOS.UserControls.Define.List
         {
             ActiveSession.CloseDisplayuserControlMethod(new UserControlCityCrud());
         }
-        private void ResetPaging(List<DAL.DBModel.City> ListTopagenate)
+        private void ResetPaging(List<DAL.DBMODEL.City> ListTopagenate)
         {
             CityGrid.ItemsSource = Pager.First(ListTopagenate);
             PageInfo.Content = Pager.PageNumberDisplay(ListTopagenate);
@@ -46,9 +46,9 @@ namespace EZYPOS.UserControls.Define.List
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                List<DAL.DBModel.City> myList;
+                List<DAL.DBMODEL.City> myList;
                 if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
                 {
                     myList = DB.City.GetAll().ToList();
@@ -66,7 +66,7 @@ namespace EZYPOS.UserControls.Define.List
 
         private void Refresh(object sender = null)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.City.GetAll().ToList();
                 CityGrid.ItemsSource = myList;
@@ -76,7 +76,7 @@ namespace EZYPOS.UserControls.Define.List
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            DAL.DBModel.City City = (DAL.DBModel.City)CityGrid.SelectedItem;
+            DAL.DBMODEL.City City = (DAL.DBMODEL.City)CityGrid.SelectedItem;
             ActiveSession.CloseDisplayuserControlMethod(new UserControlCityCrud(City));
         }
 
@@ -88,7 +88,7 @@ namespace EZYPOS.UserControls.Define.List
                 string filter = t.Text;
                 var cv = CollectionViewSource.GetDefaultView(CityGrid.ItemsSource);
 
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
 
                     if (t.Name == "GridName")

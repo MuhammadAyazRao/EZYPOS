@@ -13,7 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using DAL.DBModel;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
 namespace EZYPOS.UserControls.Define.Crud

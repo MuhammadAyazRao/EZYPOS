@@ -1,5 +1,5 @@
 ﻿using Common.Session;
-using DAL.DBModel;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.Helper;

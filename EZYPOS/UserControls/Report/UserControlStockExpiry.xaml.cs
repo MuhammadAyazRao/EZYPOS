@@ -34,7 +34,7 @@ namespace EZYPOS.UserControls.Report
         void setreport()
         {
             string exePath = Directory.GetCurrentDirectory();
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
 
                 var items = Db.Stock.GetStockDetail().ToList();                

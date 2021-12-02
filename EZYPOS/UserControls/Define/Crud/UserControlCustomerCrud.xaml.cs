@@ -1,5 +1,4 @@
-﻿using DAL.DBModel;
-using EZYPOS.Helper.Session;
+﻿using EZYPOS.Helper.Session;
 using EZYPOS.DTO;
 using System;
 using System.Collections.Generic;
@@ -19,6 +18,7 @@ using System.Windows.Shapes;
 using DAL.Repository;
 using DAL.IRepository;
 using Common.Session;
+using DAL.DBMODEL;
 
 namespace EZYPOS.UserControls
 {
@@ -43,7 +43,7 @@ namespace EZYPOS.UserControls
             Update.IsEnabled = true;
             Save.IsEnabled = false;
 
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var Customerdata = Db.Customers.GetAll().Where(x => x.Id == Customer.Id).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace EZYPOS.UserControls
             Delete.IsEnabled = false;
             Update.IsEnabled = false;
             Save.IsEnabled = true;
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var cities = Db.City.GetAll().ToList();
                 ddCity.ItemsSource = cities;
@@ -175,7 +175,7 @@ namespace EZYPOS.UserControls
             {
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
                         var UpdateCustomer = Db.Customers.Get(Convert.ToInt32(txtId.Text));
                         if (UpdateCustomer != null)
