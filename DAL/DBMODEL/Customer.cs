@@ -7,6 +7,11 @@ namespace DAL.DBModel
 {
     public partial class Customer
     {
+        public Customer()
+        {
+            CustomerReceipts = new HashSet<CustomerReceipt>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string PhoneNo { get; set; }
@@ -16,5 +21,6 @@ namespace DAL.DBModel
         public DateTime? Createdon { get; set; }
 
         public virtual City CityNavigation { get; set; }
+        public virtual ICollection<CustomerReceipt> CustomerReceipts { get; set; }
     }
 }

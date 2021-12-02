@@ -21,6 +21,7 @@ using EZYPOS.UserControls.Define.List;
 using EZYPOS.UserControls.Misc;
 using EZYPOS.UserControls.Report;
 using EZYPOS.UserControls.Transaction;
+using EZYPOS.UserControls.Transaction.Lists;
 using EZYPOS.UserControls.Utility;
 using EZYPOS.View;
 using MessageBox = EZYPOS.View.MessageBox;
@@ -247,12 +248,12 @@ namespace EZYPOS
 
         private void CustomerReceipt_Click(object sender, RoutedEventArgs e)
         {
-
+            ActiveSession.DisplayuserControlMethod(new UserControlCustomerReceiptList());
         }
 
         private void SupplierPayment_Click(object sender, RoutedEventArgs e)
         {
-
+            ActiveSession.DisplayuserControlMethod(new SupplierPaymentList());
         }
 
         private void Barcode_Click(object sender, RoutedEventArgs e)
@@ -295,6 +296,18 @@ namespace EZYPOS
         private void StockTransfer_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void Shelf_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlShelfList Shelf = new UserControlShelfList();
+            ActiveSession.DisplayuserControlMethod(Shelf);
+        }
+
+        private void ExpenseTransation_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlListExpenseTransaction exptl = new UserControlListExpenseTransaction();
+            ActiveSession.DisplayuserControlMethod(exptl);
         }
     }
 }

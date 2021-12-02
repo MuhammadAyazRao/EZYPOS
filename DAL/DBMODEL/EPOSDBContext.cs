@@ -23,6 +23,7 @@ namespace DAL.DBModel
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerLead> CustomerLeads { get; set; }
+        public virtual DbSet<CustomerReceipt> CustomerReceipts { get; set; }
         public virtual DbSet<Emplyee> Emplyees { get; set; }
         public virtual DbSet<ExpenceTransaction> ExpenceTransactions { get; set; }
         public virtual DbSet<ExpenceType> ExpenceTypes { get; set; }
@@ -40,6 +41,9 @@ namespace DAL.DBModel
         public virtual DbSet<StockOderDetail> StockOderDetails { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
         public virtual DbSet<SupplierLead> SupplierLeads { get; set; }
+        public virtual DbSet<SupplierPayment> SupplierPayments { get; set; }
+        public virtual DbSet<TblShelf> TblShelves { get; set; }
+        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserPage> UserPages { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
 
@@ -48,7 +52,7 @@ namespace DAL.DBModel
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-9P6UG7P\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;");
             }
         }
 
@@ -136,6 +140,34 @@ namespace DAL.DBModel
                 entity.Property(e => e.TransactionType)
                     .HasMaxLength(50)
                     .HasColumnName("Transaction_type");
+            });
+
+            modelBuilder.Entity<CustomerReceipt>(entity =>
+            {
+                entity.ToTable("CustomerReceipt");
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+
+                entity.Property(e => e.Discription)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TransactionDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.CustomerReceipts)
+                    .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CustomerReceipt_Customer");
+
+                entity.HasOne(d => d.ReceivedByNavigation)
+                    .WithMany(p => p.CustomerReceipts)
+                    .HasForeignKey(d => d.ReceivedBy)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CustomerReceipt_User");
             });
 
             modelBuilder.Entity<Emplyee>(entity =>
@@ -574,6 +606,77 @@ namespace DAL.DBModel
                 entity.Property(e => e.TransactionType)
                     .HasMaxLength(50)
                     .HasColumnName("Transaction_type");
+            });
+
+            modelBuilder.Entity<SupplierPayment>(entity =>
+            {
+                entity.ToTable("SupplierPayment");
+
+                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+
+                entity.Property(e => e.Discription)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("discription");
+
+                entity.Property(e => e.TransactionDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.PayedByNavigation)
+                    .WithMany(p => p.SupplierPayments)
+                    .HasForeignKey(d => d.PayedBy)
+                    .HasConstraintName("FK_SupplierPayment_User");
+
+                entity.HasOne(d => d.SupplierNavigation)
+                    .WithMany(p => p.SupplierPayments)
+                    .HasForeignKey(d => d.Supplier)
+                    .HasConstraintName("FK_SupplierPayment_Supplier");
+            });
+
+            modelBuilder.Entity<TblShelf>(entity =>
+            {
+                entity.HasKey(e => e.Sid)
+                    .HasName("PK_dbo.Shelf");
+
+                entity.ToTable("tbl_Shelf");
+
+                entity.Property(e => e.Sid).HasColumnName("SId");
+
+                entity.Property(e => e.ShelfCode)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ShelfName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.ToTable("User");
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Password)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.UserRoleNavigation)
+                    .WithMany(p => p.Users)
+                    .HasForeignKey(d => d.UserRole)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_User_UserRole");
             });
 
             modelBuilder.Entity<UserPage>(entity =>

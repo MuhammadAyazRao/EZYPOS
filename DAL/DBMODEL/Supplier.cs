@@ -7,6 +7,11 @@ namespace DAL.DBModel
 {
     public partial class Supplier
     {
+        public Supplier()
+        {
+            SupplierPayments = new HashSet<SupplierPayment>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string PhoneNo { get; set; }
@@ -16,5 +21,6 @@ namespace DAL.DBModel
         public DateTime? Createdon { get; set; }
 
         public virtual City CityNavigation { get; set; }
+        public virtual ICollection<SupplierPayment> SupplierPayments { get; set; }
     }
 }

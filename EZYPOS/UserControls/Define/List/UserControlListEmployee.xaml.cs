@@ -46,16 +46,11 @@ namespace EZYPOS.UserControls
        
         private async  void Add_Click(object sender, RoutedEventArgs e)
         {
-           
-                //ActiveSession.CloseDisplayuserControlMethod(new UserControlEmployeeCrud());
-                ActiveSession.CloseDisplayuserControlMethod(new UserControlEmployeeCrud());
-           
-           // ActiveSession.CloseDisplayuserControlMethod(new UserControlEmployeeCrud());
+                ActiveSession.CloseDisplayuserControlMethod(new UserControlEmployeeCrud());  
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
             {
                 if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
