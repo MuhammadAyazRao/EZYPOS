@@ -107,13 +107,13 @@
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="0"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Column="0" Margin="5 0 0 0" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" Foreground="White" Name="lblOrderType" Content="{Binding PaymentType}" FontSize="12">
+                <Label Grid.Column="0" Margin="5 0 0 0" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" Foreground="White" Name="lblOrderType" Content="{Binding payment_status}" FontSize="12">
                     <Label.Style>
                         <Style TargetType="Label">
-                            <Setter Property="Background" Value="{DynamicResource Info}"/>
+                            <Setter Property="Background" Value="Salmon"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding PaymentType}" Value="Cash">
-                                    <Setter Property="Background" Value="Salmon"/>
+                                <DataTrigger Binding="{Binding payment_status}" Value="Paid">
+                                    <Setter Property="Background" Value="{DynamicResource Info}"/>
                                 </DataTrigger>
                                 <!--<DataTrigger Binding="{Binding delivery_type}" Value="waiting">
                                     <Setter Property="Background" Value="{DynamicResource Success}"/>
@@ -155,7 +155,7 @@
                         </TextBlock.Text>
                     </TextBlock>
                 </Label>-->
-                <TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding PaymentType}" FontSize="15" Margin="3 0 5 0" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource DarkBlue}" VerticalAlignment="Center" Height="22">
+                <!--<TextBlock Grid.Column="4" Grid.Row="0" Text="{Binding PaymentType}" FontSize="15" Margin="3 0 5 0" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource DarkBlue}" VerticalAlignment="Center" Height="22">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Style.Triggers>
@@ -165,8 +165,8 @@
                             </Style.Triggers>
                         </Style>
                     </TextBlock.Style>
-                </TextBlock>
-                <TextBlock Text="{Binding PaymentType}" Grid.Column="5" Grid.Row="0" FontSize="15" Foreground="Gray" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Height="22"/>
+                </TextBlock>-->
+                <!--<TextBlock Text="{Binding PaymentType}" Grid.Column="5" Grid.Row="0" FontSize="15" Foreground="Gray" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Height="22"/>-->
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="QueueListTemplate" DataType="ListBoxItem">
