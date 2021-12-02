@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace DAL.DBModel
+namespace DAL.DBMODEL
 {
     public partial class City
     {

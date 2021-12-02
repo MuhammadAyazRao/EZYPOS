@@ -25,8 +25,8 @@ namespace EZYPOS.UserControls.Define.List
     /// </summary>
     public partial class UserControlListCategory : UserControl
     {
-        List<DAL.DBModel.ProductCategory> myList { get; set; }
-        Pager<DAL.DBModel.ProductCategory> Pager = new Helper.Pager<DAL.DBModel.ProductCategory>();
+        List<DAL.DBMODEL.ProductCategory> myList { get; set; }
+        Pager<DAL.DBMODEL.ProductCategory> Pager = new Helper.Pager<DAL.DBMODEL.ProductCategory>();
         public UserControlListCategory()
         {
             InitializeComponent();
@@ -39,17 +39,18 @@ namespace EZYPOS.UserControls.Define.List
         }
         private void Refresh(object sender = null)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.ProductCategory.GetAll().ToList();
                 CategoryGrid.ItemsSource = myList;
+                ResetPaging(myList);
             }
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
 
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
                 {
@@ -75,7 +76,7 @@ namespace EZYPOS.UserControls.Define.List
                 string filter = t.Text;
                 var cv = CollectionViewSource.GetDefaultView(CategoryGrid.ItemsSource);
 
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
 
                     if (t.Name == "GridName")
@@ -90,9 +91,37 @@ namespace EZYPOS.UserControls.Define.List
             }
         }
 
+        private void ResetPaging(List<DAL.DBMODEL.ProductCategory> ListTopagenate)
+        {
+            CategoryGrid.ItemsSource = Pager.First(ListTopagenate);
+            PageInfo.Content = Pager.PageNumberDisplay(ListTopagenate);
+        }
+        private void Forward_Click(object sender, RoutedEventArgs e)    //For each of these you call the direction you want and pass in the List and ComboBox output
+        {                                                               //and use the above function to output the Record number to the Label
+            CategoryGrid.ItemsSource = Pager.Next(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void Backwards_Click(object sender, RoutedEventArgs e)
+        {
+            CategoryGrid.ItemsSource = Pager.Previous(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+        private void First_Click(object sender, RoutedEventArgs e)
+        {
+            CategoryGrid.ItemsSource = Pager.First(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void Last_Click(object sender, RoutedEventArgs e)
+        {
+            CategoryGrid.ItemsSource = Pager.Last(myList);
+            PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            DAL.DBModel.ProductCategory ProductCategory = (DAL.DBModel.ProductCategory)CategoryGrid.SelectedItem;
+            DAL.DBMODEL.ProductCategory ProductCategory = (DAL.DBMODEL.ProductCategory)CategoryGrid.SelectedItem;
             ActiveSession.CloseDisplayuserControlMethod(new UserControlCategoryCrud(ProductCategory));
         }
     }

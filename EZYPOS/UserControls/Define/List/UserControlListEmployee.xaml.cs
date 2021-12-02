@@ -36,7 +36,7 @@ namespace EZYPOS.UserControls
 
         private void Refresh(object sender = null)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                  myList = DB.Employee.GetAll().Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation.CityName== null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress,Salary=x.Salary,Role=x.RoleNavigation.Name==null?null:x.RoleNavigation.Name,Cnic=x.Cnic }).ToList();
                 ResetPaging(myList);
@@ -51,7 +51,7 @@ namespace EZYPOS.UserControls
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
                 {
@@ -76,7 +76,7 @@ namespace EZYPOS.UserControls
                 TextBox t = (TextBox)sender;
                 string filter = t.Text;
                
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
                     if (filter == "")
                     {

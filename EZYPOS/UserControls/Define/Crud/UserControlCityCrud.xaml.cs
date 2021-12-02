@@ -21,7 +21,7 @@ namespace EZYPOS.UserControls.Define.Crud
     /// </summary>
     public partial class UserControlCityCrud : UserControl
     {
-        public UserControlCityCrud(DAL.DBModel.City City = null)
+        public UserControlCityCrud(DAL.DBMODEL.City City = null)
         {
             InitializeComponent();
             RefreshPage();
@@ -30,12 +30,12 @@ namespace EZYPOS.UserControls.Define.Crud
             { InitializePage(City); }
         }
 
-        private void InitializePage(DAL.DBModel.City City)
+        private void InitializePage(DAL.DBMODEL.City City)
         {
             Delete.IsEnabled = true;
             Update.IsEnabled = true;
             Save.IsEnabled = false;
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var Citydata = Db.City.Get(City.Id);
                 if (!string.IsNullOrEmpty(Citydata?.CityName))
@@ -98,27 +98,32 @@ namespace EZYPOS.UserControls.Define.Crud
         }
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            if (Validate())
+            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Alert", "Do You Want To Update This Record", "Yes", "No");
+            if (isconfirm)
             {
-                if (txtId.Text != "" && txtId.Text != "0")
+                if (Validate())
                 {
-                    int Id = Convert.ToInt32(txtId.Text);
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    if (txtId.Text != "" && txtId.Text != "0")
                     {
-                        var city = Db.City.Get(Id);
-                        if (city != null)
+                        int ID = Convert.ToInt32(txtId.Text);
+                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                         {
-                            if (!string.IsNullOrEmpty(txtFName.Text))
+                            var city = Db.City.GetAll().Where(x=> x.Id==ID).FirstOrDefault();
+                            if (city != null)
                             {
-                                city.CityName = txtFName.Text;
+                                if (!string.IsNullOrEmpty(txtFName.Text))
+                                {
+                                    city.CityName = txtFName.Text;
+                                }
+                                Db.Complete();
+                                EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
+                                RefreshPage();
                             }
-                            Db.Complete();
-                            EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
-                            RefreshPage();
                         }
                     }
                 }
             }
+            
         }
         private bool Validate()
         {
@@ -139,7 +144,7 @@ namespace EZYPOS.UserControls.Define.Crud
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
                     int Id = Convert.ToInt32(txtId.Text);
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
                         Db.City.Delete(Id);
                         Db.Complete();
@@ -156,9 +161,9 @@ namespace EZYPOS.UserControls.Define.Crud
             {
                 if (Validate())
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        DAL.DBModel.City City = new DAL.DBModel.City();
+                        DAL.DBMODEL.City City = new DAL.DBMODEL.City();
                         City.CityName = txtFName.Text;
                         City.Createdon = DateTime.Now;
                         Db.City.Add(City);

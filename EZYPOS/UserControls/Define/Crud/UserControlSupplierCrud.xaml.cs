@@ -1,5 +1,6 @@
 ﻿using Common.Session;
-using EZYPOS.DBModels;
+using DAL.DBMODEL;
+using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.Helper.Session;
 using System;
@@ -38,10 +39,9 @@ namespace EZYPOS.UserControls
             Delete.IsEnabled = false;
             Update.IsEnabled = false;
             Save.IsEnabled = true;
-            using (EPOSDBContext Db = new EPOSDBContext())
-            {                
-                var cities = Db.Cities.ToList();
-                ddCity.ItemsSource = cities;
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                ddCity.ItemsSource = Db.City.GetAll().ToList();
             }
             txtFName.Text = "Name";
             txtFName.Foreground = Brushes.Gray;
@@ -60,9 +60,9 @@ namespace EZYPOS.UserControls
             Update.IsEnabled = true;
             Save.IsEnabled = false;
 
-            using (EPOSDBContext Db = new EPOSDBContext())
+            using (UnitOfWork Db = new UnitOfWork(new EPOSDBContext()))
             {
-                var SupplierData = Db.Suppliers.Where(x => x.Id == Supplier.Id).FirstOrDefault();
+                var SupplierData = Db.Supplier.GetAll().Where(x => x.Id == Supplier.Id).FirstOrDefault();
 
                 if (!string.IsNullOrEmpty(SupplierData?.Name))
                 {
@@ -109,8 +109,6 @@ namespace EZYPOS.UserControls
         private void txt_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = sender as TextBox;
-            //tb.Text = string.Empty;
-            //tb.Foreground = Brushes.Black;
             switch (tb.Text)
             {
                 case "Name":
@@ -172,46 +170,51 @@ namespace EZYPOS.UserControls
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            if (Validate())
+            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do You Want To Update", "Yes", "No");
+            if (isconfirm)
             {
-                if (txtId.Text != "" && txtId.Text != "0")
+                if (Validate())
                 {
-                    int Id = Convert.ToInt32(txtId.Text);
-                    using (EPOSDBContext DB = new EPOSDBContext())
+                    if (txtId.Text != "" && txtId.Text != "0")
                     {
-                        var UpdateSupplier = DB.Suppliers.Where(x => x.Id == Id).FirstOrDefault();
-                        if (UpdateSupplier != null)
+                        int Id = Convert.ToInt32(txtId.Text);
+                        using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                         {
-                            if (!string.IsNullOrEmpty(txtFName.Text))
+                            var UpdateSupplier = DB.Supplier.GetAll().Where(x => x.Id == Id).FirstOrDefault();
+                            if (UpdateSupplier != null)
                             {
-                                UpdateSupplier.Name = txtFName.Text;
-                            }
-                            if (!string.IsNullOrEmpty(txtPhone.Text))
-                            {
-                                UpdateSupplier.PhoneNo = txtPhone.Text;
-                            }
-                            if (!string.IsNullOrEmpty(txtMobile.Text))
-                            {
-                                UpdateSupplier.MobileNo = txtMobile.Text;
-                            }
+                                if (!string.IsNullOrEmpty(txtFName.Text))
+                                {
+                                    UpdateSupplier.Name = txtFName.Text;
+                                }
+                                if (!string.IsNullOrEmpty(txtPhone.Text))
+                                {
+                                    UpdateSupplier.PhoneNo = txtPhone.Text;
+                                }
+                                if (!string.IsNullOrEmpty(txtMobile.Text))
+                                {
+                                    UpdateSupplier.MobileNo = txtMobile.Text;
+                                }
 
-                            if (!string.IsNullOrEmpty(txtAddress.Text))
+                                if (!string.IsNullOrEmpty(txtAddress.Text))
 
-                            {
-                                UpdateSupplier.Adress = txtAddress.Text;
+                                {
+                                    UpdateSupplier.Adress = txtAddress.Text;
+                                }
+                                int CityId = Convert.ToInt32(ddCity.SelectedValue);
+                                if (CityId != 0)
+                                {
+                                    UpdateSupplier.City = CityId;
+                                }
+                                DB.Complete();
+                                EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
+                                RefreshPage();
                             }
-                            int CityId = Convert.ToInt32(ddCity.SelectedValue);
-                            if (CityId != 0)
-                            {
-                                UpdateSupplier.City = CityId;
-                            }
-                            DB.SaveChanges();
-                            EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
-                            RefreshPage();
                         }
                     }
                 }
             }
+            
         }
         private bool Validate()
         {
@@ -251,7 +254,7 @@ namespace EZYPOS.UserControls
             {
                 if (Validate())
                 {
-                    using (EPOSDBContext DB = new EPOSDBContext())
+                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                     {
                         Supplier NewSupplier = new Supplier();
                         NewSupplier.Name = txtFName.Text;
@@ -260,8 +263,8 @@ namespace EZYPOS.UserControls
                         NewSupplier.Adress = txtAddress.Text;
                         NewSupplier.City = Convert.ToInt32(ddCity.SelectedValue);
                         NewSupplier.Createdon = DateTime.Now;
-                        DB.Suppliers.Add(NewSupplier);
-                        DB.SaveChanges();
+                        DB.Supplier.Add(NewSupplier);
+                        DB.Complete();
                         EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
                         RefreshPage();
                     }
@@ -277,12 +280,10 @@ namespace EZYPOS.UserControls
 
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    int Id = Convert.ToInt32(txtId.Text);
-                    using (EPOSDBContext DB = new EPOSDBContext())
+                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                     {
-                        var Supplier = DB.Suppliers.Where(x => x.Id == Id).FirstOrDefault();
-                        DB.Remove(Supplier);
-                        DB.SaveChanges();
+                        DB.Supplier.Delete(Convert.ToInt32(txtId.Text));
+                        DB.Complete();
                         EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
                         RefreshPage();
                     }

@@ -13,6 +13,7 @@
 
             <RowDefinition Height="150"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
@@ -106,6 +107,47 @@
 
             </DataGrid>
         </Border>
+        <StackPanel Grid.Row="3" Grid.ColumnSpan="2" Orientation='Horizontal'
+                        Margin='6'
+                        HorizontalAlignment='Center'>
+            <Button x:Name='btnBackwards'
+                        Padding='4'
+                        ToolTip="PreviosPage"
+                        Content="{materialDesign:PackIcon Kind=LessThan,Size=25}"
+                        Margin='6'
+                        Click='Backwards_Click'></Button>
+            <Button x:Name='btnFirst'
+                        Padding='4'
+                       ToolTip="FirstPage"
+                        Content="{materialDesign:PackIcon Kind=PageFirst,Size=25}"
+                        Margin='6'
+                        Click='First_Click'></Button>
+            <Grid Margin='6'
+                      VerticalAlignment='Center'
+                      HorizontalAlignment='Center'>
+                <Label x:Name='PageInfo'
+                           Foreground='DarkSlateGray' />
+            </Grid>
+            <!--<Grid VerticalAlignment='Center'
+                      Margin='6'
+                      HorizontalAlignment='Center'>
+                <ComboBox x:Name='NumberOfRecords'
+                              SelectedIndex='0'
+                              SelectionChanged='NumberOfRecords_SelectionChanged' />
+            </Grid>-->
+            <Button x:Name='btnLast'
+                        Padding='4'
+                       ToolTip="LastPage"
+                        Content="{materialDesign:PackIcon Kind=PageLast,Size=25}"
+                        Margin='6'
+                        Click='Last_Click'></Button>
+            <Button x:Name='btnForward'
+                        Padding='4'
+                      ToolTip="NextPage"
+                        Content="{materialDesign:PackIcon Kind=GreaterThan,Size=25}"
+                        Margin='6'
+                        Click='Forward_Click'></Button>
+        </StackPanel>
         <!--<Border Background="{DynamicResource DarkBlue}"/>
         <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Expence Head" HorizontalAlignment="Left" Margin="10,5,0,0"/>
         <Button x:Name="btnClose" Click="btnClose_Click" Content="X" Style="{DynamicResource btnDanger}" Margin="0,5,10,0" HorizontalAlignment="Right" Width="50" Height="40" VerticalAlignment="Top"/>-->

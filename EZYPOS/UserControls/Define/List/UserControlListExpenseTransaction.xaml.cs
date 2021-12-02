@@ -36,7 +36,7 @@ namespace EZYPOS.UserControls.Define.List
         private void Refresh(object sender = null)
         {
 
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.expt.GetAll().Select(x => new ExpenseTransactionDTO { Id = x.Id, ExpenseDate = Convert.ToDateTime(x.ExpenceDate), CreateBy = Convert.ToInt32(x.CreatedBy), Discription = x.Discription, Amount = Convert.ToInt32(x.Amount), Isdeleted = Convert.ToBoolean(x.Isdeleted), ExpenseType = x.ExpenceTypeNavigation == null ? null : x.ExpenceTypeNavigation.ExpenceName,}).ToList();
                 //customerGrid.ItemsSource = First(myList, numberOfRecPerPage).DefaultView; //Fill a DataTable with the First set based on the numberOfRecPerPage                 
@@ -94,7 +94,7 @@ namespace EZYPOS.UserControls.Define.List
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
                 {

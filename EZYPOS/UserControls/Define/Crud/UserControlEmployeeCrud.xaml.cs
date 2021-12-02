@@ -1,6 +1,6 @@
 ﻿using Common.Session;
 using DAL.Repository;
-using EZYPOS.DBModels;
+using DAL.DBMODEL;
 using EZYPOS.DTO;
 using EZYPOS.Helper.Session;
 using Microsoft.Win32;
@@ -43,7 +43,7 @@ namespace EZYPOS.UserControls
             Delete.IsEnabled = false;
             Update.IsEnabled = false;
             Save.IsEnabled = true;
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var cities = Db.City.GetAll().ToList();
                 ddCity.ItemsSource = cities;
@@ -74,9 +74,9 @@ namespace EZYPOS.UserControls
             Update.IsEnabled = true;
             Save.IsEnabled = false;
 
-            using (EPOSDBContext Db = new EPOSDBContext())
+            using (UnitOfWork Db = new UnitOfWork(new EPOSDBContext()))
             {
-                var EmployeeData = Db.Emplyees.Where(x => x.Id == Employee.Id).FirstOrDefault();
+                var EmployeeData = Db.Employee.GetAll().Where(x => x.Id == Employee.Id).FirstOrDefault();
 
                 if (!string.IsNullOrEmpty(EmployeeData?.UserName))
                 {
@@ -224,9 +224,9 @@ namespace EZYPOS.UserControls
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
                     int Id = Convert.ToInt32(txtId.Text);
-                    using (EPOSDBContext DB = new EPOSDBContext())
+                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                     {
-                        var UpdateEmployee = DB.Emplyees.Where(x => x.Id == Id).FirstOrDefault();
+                        var UpdateEmployee = DB.Employee.GetAll().Where(x => x.Id == Id).FirstOrDefault();
                         if (UpdateEmployee != null)
                         {
                             if (!string.IsNullOrEmpty(txtFName.Text))
@@ -267,7 +267,7 @@ namespace EZYPOS.UserControls
                             {
                                 UpdateEmployee.Image = UserImage.Source?.ToString();
                             }
-                            DB.SaveChanges();
+                            DB.Employee.Save();
                             EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
                             RefreshPage();
                         }
@@ -313,7 +313,7 @@ namespace EZYPOS.UserControls
             {
                 if (Validate())
                 {
-                    using (EPOSDBContext DB = new EPOSDBContext())
+                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                     {
                         Emplyee AddEmployee = new Emplyee();
 
@@ -355,11 +355,11 @@ namespace EZYPOS.UserControls
                         {
                             AddEmployee.Image = UserImage.Source?.ToString();
                         }
-                        DB.Emplyees.Add(AddEmployee);
-                        DB.SaveChanges();
+                        DB.Employee.Add(AddEmployee);
+                        DB.Employee.Save();
                         EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
                         RefreshPage();
-                    
+
 
                     }
                 }
@@ -374,12 +374,12 @@ namespace EZYPOS.UserControls
 
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    int Id = Convert.ToInt32(txtId.Text);
-                    using (EPOSDBContext DB = new EPOSDBContext())
+                    
+                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                     {
-                        var Employee = DB.Emplyees.Where(x => x.Id == Id).FirstOrDefault();
-                        DB.Remove(Employee);
-                        DB.SaveChanges();
+                        
+                        DB.Employee.Delete(Convert.ToInt32(txtId.Text));
+                        DB.Employee.Save();
                         EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
                         RefreshPage();
                     }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace DAL.DBModel
+namespace DAL.DBMODEL
 {
     public partial class TblShelf
     {
-        public int Sid { get; set; }
+        public int Id { get; set; }
         public string ShelfName { get; set; }
         public string ShelfCode { get; set; }
     }

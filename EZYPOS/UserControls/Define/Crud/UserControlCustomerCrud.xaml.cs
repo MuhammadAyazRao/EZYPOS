@@ -1,5 +1,4 @@
-﻿using EZYPOS.DBModels;
-using EZYPOS.Helper.Session;
+﻿using EZYPOS.Helper.Session;
 using EZYPOS.DTO;
 using System;
 using System.Collections.Generic;
@@ -19,6 +18,7 @@ using System.Windows.Shapes;
 using DAL.Repository;
 using DAL.IRepository;
 using Common.Session;
+using DAL.DBMODEL;
 
 namespace EZYPOS.UserControls
 {
@@ -43,7 +43,7 @@ namespace EZYPOS.UserControls
             Update.IsEnabled = true;
             Save.IsEnabled = false;
 
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var Customerdata = Db.Customers.GetAll().Where(x => x.Id == Customer.Id).FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace EZYPOS.UserControls
             Delete.IsEnabled = false;
             Update.IsEnabled = false;
             Save.IsEnabled = true;
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var cities = Db.City.GetAll().ToList();
                 ddCity.ItemsSource = cities;
@@ -175,10 +175,9 @@ namespace EZYPOS.UserControls
             {
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    int Id = Convert.ToInt32(txtId.Text);
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        var UpdateCustomer = Db.Customers.Get(Id);
+                        var UpdateCustomer = Db.Customers.Get(Convert.ToInt32(txtId.Text));
                         if (UpdateCustomer != null)
                         {
                             if (!string.IsNullOrEmpty(txtFName.Text))
@@ -221,7 +220,7 @@ namespace EZYPOS.UserControls
            {
                 if (Validate())
                 {
-                    using (EPOSDBContext DB = new EPOSDBContext())
+                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                     {
                         Customer NewCustomer = new Customer();
                         NewCustomer.Name = txtFName.Text;
@@ -231,7 +230,7 @@ namespace EZYPOS.UserControls
                         NewCustomer.City = Convert.ToInt32(ddCity.SelectedValue);
                         NewCustomer.Createdon = DateTime.Now;
                         DB.Customers.Add(NewCustomer);
-                        DB.SaveChanges();
+                        DB.Customers.Save();
                         EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
                         RefreshPage();
                         ActiveSession.NavigateToRefreshMenu("");
@@ -277,12 +276,12 @@ namespace EZYPOS.UserControls
 
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    int Id = Convert.ToInt32(txtId.Text);
-                    using (EPOSDBContext DB = new EPOSDBContext())
+                    //int Id = Convert.ToInt32(txtId.Text);
+                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                     {
-                        var Customer = DB.Customers.Where(x => x.Id == Id).FirstOrDefault();
-                        DB.Remove(Customer);
-                        DB.SaveChanges();
+                        //var Customer = DB.Customers.GetAll().Where(x => x.Id == Id).FirstOrDefault();
+                        DB.Customers.Delete(Convert.ToInt32(txtId.Text));
+                        DB.Customers.Save();
                         EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
                         RefreshPage();
                     }

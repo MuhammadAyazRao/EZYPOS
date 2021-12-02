@@ -21,7 +21,7 @@ namespace EZYPOS.UserControls.Define.Crud
     /// </summary>
     public partial class UserControlGroupCrud : UserControl
     {
-        public UserControlGroupCrud(DAL.DBModel.ProductGroup ProductGroup = null)
+        public UserControlGroupCrud(DAL.DBMODEL.ProductGroup ProductGroup = null)
         {
             InitializeComponent();
             RefreshPage();
@@ -40,14 +40,14 @@ namespace EZYPOS.UserControls.Define.Crud
             txtId.Text = "";
 
         }
-        private void InitializePage(DAL.DBModel.ProductGroup ProductGroup)
+        private void InitializePage(DAL.DBMODEL.ProductGroup ProductGroup)
         {
             Delete.IsEnabled = true;
             Update.IsEnabled = true;
             Save.IsEnabled = false;
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                var Group = Db.ProductGroup.Get(ProductGroup.Id);
+                var Group = Db.ProductGroup.GetAll().Where(x=> x.Id == ProductGroup.Id).FirstOrDefault();
                 if (!string.IsNullOrEmpty(Group?.GroupName))
                 {
                     txtFName.Text = Group?.GroupName;
@@ -88,31 +88,36 @@ namespace EZYPOS.UserControls.Define.Crud
         }
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            if (Validate())
+            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Alert", "Do You Want To Update This Record", "Yes", "NO");
+            if (isconfirm)
             {
-                if (txtId.Text != "" && txtId.Text != "0")
+                if (Validate())
                 {
-                    int Id = Convert.ToInt32(txtId.Text);
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    if (txtId.Text != "" && txtId.Text != "0")
                     {
-                        var ProductGroup = Db.ProductGroup.Get(Id);
-                        if (ProductGroup != null)
+                        int Id = Convert.ToInt32(txtId.Text);
+                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                         {
-                            if (!string.IsNullOrEmpty(txtFName.Text))
+                            var ProductGroup = Db.ProductGroup.Get(Id);
+                            if (ProductGroup != null)
                             {
-                                ProductGroup.GroupName = txtFName.Text;
+                                if (!string.IsNullOrEmpty(txtFName.Text))
+                                {
+                                    ProductGroup.GroupName = txtFName.Text;
+                                }
+                                Db.Complete();
+                                EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
+                                RefreshPage();
                             }
-                            Db.Complete();
-                            EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
-                            RefreshPage();
                         }
                     }
                 }
             }
+            
         }
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirmed = EZYPOS.View.MessageYesNo.ShowCustom("Refresh", "Do you want to refresh page?", "Yes", "No");
+            bool Isconfirmed = EZYPOS.View.MessageYesNo.ShowCustom("Alert", "Do you want to refresh page?", "Yes", "No");
             if (Isconfirmed)
             { RefreshPage(); }
         }
@@ -123,9 +128,9 @@ namespace EZYPOS.UserControls.Define.Crud
             {
                 if (Validate())
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        DAL.DBModel.ProductGroup ProductGroup = new DAL.DBModel.ProductGroup();
+                        DAL.DBMODEL.ProductGroup ProductGroup = new DAL.DBMODEL.ProductGroup();
                         ProductGroup.GroupName = txtFName.Text;
                         Db.ProductGroup.Add(ProductGroup);
                         Db.Complete();
@@ -144,10 +149,9 @@ namespace EZYPOS.UserControls.Define.Crud
 
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    int Id = Convert.ToInt32(txtId.Text);
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        Db.ProductGroup.Delete(Id);
+                        Db.ProductGroup.Delete(Convert.ToInt32(txtId.Text));
                         Db.Complete();
                         EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
                     }

@@ -35,7 +35,7 @@ namespace EZYPOS.UserControls.Transaction.Lists
 
         private void Refresh(object sender = null)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.CustomerReceipt.GetAll().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, CustomerID = x.Customer.Name }).ToList();
                 ResetPaging(myList);
@@ -59,11 +59,11 @@ namespace EZYPOS.UserControls.Transaction.Lists
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
                 {
-                    myList = DB.CustomerReceipt.GetAll().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name,}).ToList();
+                   myList = DB.CustomerReceipt.GetAll().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name,}).ToList();
                 }
                 else
                 {

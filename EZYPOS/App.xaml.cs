@@ -24,7 +24,7 @@ namespace EZYPOS
         {
             // SetupExceptionHandling();
             await Task.Run(() => SetupExceptionHandling());
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
             }
 

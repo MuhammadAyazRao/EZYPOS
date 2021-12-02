@@ -37,7 +37,7 @@ namespace EZYPOS.UserControls.Transaction
 
         void Refresh()
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 listOrderAccepted.Items.Clear();
                 foreach (var item in DB.PurchaseOrder.GetMappedOrder(0))
@@ -178,7 +178,7 @@ namespace EZYPOS.UserControls.Transaction
             PurchaseOrderDTO Order = selectedItem.Content as PurchaseOrderDTO;
             if (Order != null)
             {
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
 
                     Order = DB.PurchaseOrder.GetMappedOrder(Order.OrderId).FirstOrDefault();
@@ -204,7 +204,7 @@ namespace EZYPOS.UserControls.Transaction
             PurchaseOrderDTO Order = selectedItem.Content as PurchaseOrderDTO;
             if (Order != null)
             {
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
                     if (DB.PurchaseOrder.DeleteOrder(Order.OrderId))
                     {

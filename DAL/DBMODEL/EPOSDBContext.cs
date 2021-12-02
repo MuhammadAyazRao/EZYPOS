@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace DAL.DBModel
+namespace DAL.DBMODEL
 {
     public partial class EPOSDBContext : DbContext
     {
@@ -52,7 +52,7 @@ namespace DAL.DBModel
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-9P6UG7P\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-E7Q1BER\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;");
             }
         }
 
@@ -148,10 +148,7 @@ namespace DAL.DBModel
 
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
-                entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
-
                 entity.Property(e => e.Discription)
-                    .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
@@ -615,10 +612,8 @@ namespace DAL.DBModel
                 entity.Property(e => e.CreatedOn).HasColumnType("datetime");
 
                 entity.Property(e => e.Discription)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("discription");
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.TransactionDate).HasColumnType("datetime");
 
@@ -635,21 +630,14 @@ namespace DAL.DBModel
 
             modelBuilder.Entity<TblShelf>(entity =>
             {
-                entity.HasKey(e => e.Sid)
-                    .HasName("PK_dbo.Shelf");
-
-                entity.ToTable("tbl_Shelf");
-
-                entity.Property(e => e.Sid).HasColumnName("SId");
+                entity.ToTable("TblShelf");
 
                 entity.Property(e => e.ShelfCode)
-                    .IsRequired()
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ShelfName)
-                    .IsRequired()
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
             });
 
@@ -658,17 +646,14 @@ namespace DAL.DBModel
                 entity.ToTable("User");
 
                 entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Password)
-                    .IsRequired()
-                    .HasMaxLength(200)
+                    .HasMaxLength(100)
                     .IsUnicode(false);
 
                 entity.Property(e => e.UserName)
-                    .IsRequired()
                     .HasMaxLength(500)
                     .IsUnicode(false);
 

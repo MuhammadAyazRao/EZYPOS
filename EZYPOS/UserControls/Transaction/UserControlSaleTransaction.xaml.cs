@@ -36,7 +36,7 @@ namespace EZYPOS.UserControls.Transaction
             // this.Width = System.Windows.SystemParameters.PrimaryScreenWidth;        
             listKitchenLineItems.Width = System.Windows.SystemParameters.PrimaryScreenWidth - 400;
             BusyIndicator.ShowBusy();
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 List<SubCategoryDTO> CategoryList = DB.ProductSubcategory.GetAll().Select(x => new SubCategoryDTO { SubcategoryName = x.SubcategoryName, Id = x.Id }).ToList();
                 CategoryList.Insert(0, new SubCategoryDTO { Id = 0, SubcategoryName = "ALL" });
@@ -103,7 +103,7 @@ namespace EZYPOS.UserControls.Transaction
         {
             try
             {
-                using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
                     Label button = (Label)sender;
                     if (button != null)
@@ -510,7 +510,7 @@ namespace EZYPOS.UserControls.Transaction
         {
 
             
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 // Delete Order 
                 //Delete Order Detail
@@ -728,7 +728,7 @@ namespace EZYPOS.UserControls.Transaction
         }
         private void AddToCart(string Name, long Price, int ProductId, int Qty = 1, int Discount = 0)
         {
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {                
 
                 if (order.OrdersDetails == null)
@@ -774,7 +774,7 @@ namespace EZYPOS.UserControls.Transaction
         public List<ProductDTO> GetProducts(int CategoryId=0)
         {
             List<ProductDTO> Products = new List<ProductDTO>();
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 if (CategoryId != 0)
                 {
@@ -791,7 +791,7 @@ namespace EZYPOS.UserControls.Transaction
         public ProductDTO GetProductsbycode(string code)
         {
             ProductDTO Product = new ProductDTO();
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 
                     Product = Db.Product.GetAll().Where(x => x.Barcode == code).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).FirstOrDefault();
@@ -803,7 +803,7 @@ namespace EZYPOS.UserControls.Transaction
         public List<ProductDTO> GetProductsbyName(string Name)
         {
             List<ProductDTO> Products = new List<ProductDTO>();
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
 
                 Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).ToList();

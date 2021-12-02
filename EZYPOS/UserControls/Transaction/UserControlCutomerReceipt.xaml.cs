@@ -1,4 +1,4 @@
-﻿using DAL.DBModel;
+﻿using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
 using System;
@@ -39,7 +39,7 @@ namespace EZYPOS.UserControls.Transaction
             Delete.IsEnabled = false;
             Update.IsEnabled = false;
             Save.IsEnabled = true;
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 DDCustomer.ItemsSource = Db.Customers.GetAll().ToList();
                 DDReceivedBy.ItemsSource = Db.User.GetAll().ToList();
@@ -56,7 +56,7 @@ namespace EZYPOS.UserControls.Transaction
             Update.IsEnabled = true;
             Save.IsEnabled = false;
 
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var CustomerReceiptData = Db.CustomerReceipt.Get(Sp.Id);
 
@@ -204,10 +204,10 @@ namespace EZYPOS.UserControls.Transaction
                 {
                     if (txtId.Text != "" && txtId.Text != "0")
                     {
-                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                         {
                             CustomerReceipt sp = Db.CustomerReceipt.Get(Convert.ToInt32(txtId.Text));
-                            sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
+                            //sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
                             sp.Discription = txtDiscription.Text;
                             sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
                             sp.ReceivedBy = Convert.ToInt32(DDReceivedBy.SelectedValue);
@@ -233,7 +233,7 @@ namespace EZYPOS.UserControls.Transaction
                     {
                         CustomerReceipt sp = new CustomerReceipt();
                         sp.Discription = txtDiscription.Text;
-                        sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
+                        //sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
                         sp.ReceivedBy = Convert.ToInt32(DDReceivedBy.SelectedValue);
                         sp.CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
                         sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
@@ -259,7 +259,7 @@ namespace EZYPOS.UserControls.Transaction
 
                 if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    using (UnitOfWork db = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
+                    using (UnitOfWork db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
                         db.CustomerReceipt.Delete(Convert.ToInt32(txtId.Text));
                         db.CustomerReceipt.Save();

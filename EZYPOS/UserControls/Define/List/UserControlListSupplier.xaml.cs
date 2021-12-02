@@ -1,5 +1,6 @@
 ﻿using Common.Session;
-using EZYPOS.DBModels;
+using DAL.DBMODEL;
+using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.Helper;
 using EZYPOS.Helper.Session;
@@ -39,9 +40,9 @@ namespace EZYPOS.UserControls
 
         private void Refresh(object sender=null)
         {
-            using (EPOSDBContext DB = new EPOSDBContext())
+            using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
             {
-                myList= DB.Suppliers.Select(x => new SupplierDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
+                myList = DB.Supplier.GetAll().Select(x => new SupplierDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
                 ResetPaging(myList);
             }
         }
@@ -59,17 +60,17 @@ namespace EZYPOS.UserControls
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-          
-            using (EPOSDBContext DB = new EPOSDBContext())
-            {
-                myList = DB.Suppliers.Select(x => new SupplierDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress,Createdon=x.Createdon }).ToList();
 
-                if (StartDate.SelectedDate!=null && EndDate.SelectedDate!=null)                
+            using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+            {
+                myList = DB.Supplier.GetAll().Select(x => new SupplierDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress, Createdon = x.Createdon }).ToList();
+
+                if (StartDate.SelectedDate != null && EndDate.SelectedDate != null)
                 {
                     DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
                     DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                     myList = myList.Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
-                }                
+                    myList = myList.Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
+                }
                 SupplierGrid.ItemsSource = myList;
             }
 
