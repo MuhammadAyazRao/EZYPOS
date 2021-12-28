@@ -60,6 +60,8 @@ namespace EZYPOS.UserControls.Define.Crud
             {
                 var expt = uw.ExpenceType.GetAll().ToList();
                 ddEType.ItemsSource = expt;
+                var user = uw.User.GetAll().ToList();
+                ddUser.ItemsSource = user;
 
             }
             txtDescription.Text = "Description";

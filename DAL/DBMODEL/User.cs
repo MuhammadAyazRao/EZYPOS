@@ -10,6 +10,7 @@ namespace DAL.DBMODEL
         public User()
         {
             CustomerReceipts = new HashSet<CustomerReceipt>();
+            SaleOrders = new HashSet<SaleOrder>();
             SupplierPayments = new HashSet<SupplierPayment>();
         }
 
@@ -21,6 +22,7 @@ namespace DAL.DBMODEL
 
         public virtual UserRole UserRoleNavigation { get; set; }
         public virtual ICollection<CustomerReceipt> CustomerReceipts { get; set; }
+        public virtual ICollection<SaleOrder> SaleOrders { get; set; }
         public virtual ICollection<SupplierPayment> SupplierPayments { get; set; }
     }
 }

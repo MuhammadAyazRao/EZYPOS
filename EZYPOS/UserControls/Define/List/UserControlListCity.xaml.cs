@@ -86,17 +86,27 @@ namespace EZYPOS.UserControls.Define.List
             {
                 TextBox t = (TextBox)sender;
                 string filter = t.Text;
-                var cv = CollectionViewSource.GetDefaultView(CityGrid.ItemsSource);
+                //var cv = CollectionViewSource.GetDefaultView(CityGrid.ItemsSource);
 
                 using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-
-                    if (t.Name == "GridName")
+                    if (filter == "")
                     {
-                        myList = DB.City.GetAll().Where(x => x.CityName.ToUpper().StartsWith(filter.ToUpper())).ToList();
+                        myList = DB.City.GetAll().ToList();
+                        ResetPaging(myList);
+                    }
+                    else
+                    {
+                        if (t.Name == "GridName")
+                        {
+                            myList = DB.City.GetAll().Where(x => x.CityName.ToUpper().StartsWith(filter.ToUpper())).ToList();
+                            ResetPaging(myList);
+                        }
                     }
 
-                    CityGrid.ItemsSource = myList;
+                    
+
+                    //CityGrid.ItemsSource = myList;
 
 
                 }

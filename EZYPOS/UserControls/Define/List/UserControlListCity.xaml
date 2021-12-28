@@ -7,10 +7,80 @@
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="450" Name="CityList" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="AlternationCount" Value="2" />
+        </Style>
+        <Style TargetType="DataGridRow">
+
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HeaderStyle" Value="{x:Null}"/>
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background" Value="#CCC"></Setter>
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="#EEE"></Setter>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#78909c"/>
+                </Trigger>
+
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type DataGridCell}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{x:Null}"/>
+                    <Setter Property="BorderBrush" Value="{x:Null}"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <!--<Setter Property="Background" Value="{StaticResource PrimaryHueMidBrush}"/>-->
+            <Setter Property="Background" Value="{DynamicResource DarkBlue}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Gray}"/>
+            <Setter Property="BorderThickness" Value="0 0 0 2"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="4 2 2 2"/>
+        </Style>
+        <Style  BasedOn="{StaticResource MaterialDesignTextBox}"  TargetType="{x:Type TextBox}">
+            <Setter Property="BorderBrush" Value="White"/>
+            <!--<Setter Property="Foreground" Value="Black"/>-->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
 
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="125"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
@@ -30,45 +100,16 @@
             <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />
             <Button x:Name="AddCity"  Click="AddCity_Click" Content="Add City" Margin="20,20,0,0" Style="{DynamicResource btnInfo}" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="35"/>
         </Grid>
-        <!--<Label Content="Start Date" FontSize="12" Foreground="Gray" FontWeight="Bold" HorizontalAlignment="Left" Margin="5,62,0,0" Grid.Row="1" VerticalAlignment="Top" Width="100"/>-->
-        <!--<TextBox TouchDown="textBoxSearch_TouchDown"  Text="" KeyDown="textBoxSearch_KeyDown" x:Name="textBoxSearch" KeyUp="textBox_KeyUp" HorizontalAlignment="Left" BorderBrush="Gray" BorderThickness="1" Style="{DynamicResource txtInput}" Margin="10,89,0,0" Grid.Row="1" VerticalAlignment="Top" Width="612"/>-->
+        
         <Border x:Name="label" Grid.Row="1">
             <DataGrid Name="CityGrid"                     
-                      Margin="5,0,5,0"
                       RowHeaderWidth="0"
                       HorizontalGridLinesBrush="{DynamicResource Gray}"
                       AutoGenerateColumns="False"
-                      SelectionMode="Single"
+                      SelectionMode="Single"                      
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       CanUserReorderColumns="True" BorderBrush="White" Background="White" GridLinesVisibility="Horizontal">
-                <DataGrid.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="Height" Value="40"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="{x:Null}"/>
-                                <Setter Property="BorderBrush" Value="{x:Null}"/>
-                                <Setter Property="Foreground" Value="Black"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.CellStyle>
-                <DataGrid.RowStyle>
-                    <Style TargetType="DataGridRow">
-                        <Setter Property="Height" Value="40"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="Wheat"/>
-                            </Trigger>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="Wheat"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding Id}" Visibility="Hidden" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
@@ -81,13 +122,14 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Name" Binding="{Binding CityName}" IsReadOnly="True">
+                    <DataGridTextColumn  Binding="{Binding CityName}" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridName" Width="100"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox materialDesign:HintAssist.Hint="Name"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridName" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>

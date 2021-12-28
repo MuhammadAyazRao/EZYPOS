@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -84,6 +85,53 @@ namespace EZYPOS.UserControls.Transaction
 
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Enter)
+            {
+                TextBox t = (TextBox)sender;
+                string filter = t.Text;
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    if (filter == "")
+                    {
+                        myList = DB.SupplierPayment.GetAll().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
+                        ResetPaging(myList);
+                    }
+                    else
+                    {
+                        {
+                            {
+
+                                if (t.Name == "GridAmount")
+                                {
+                                    myList = DB.SupplierPayment.GetAll().Where(x => x.Amount.ToString().Contains(filter)).ToList().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
+                                    ResetPaging(myList);
+                                }
+                                if (t.Name == "GridDiscription")
+                                {
+                                    myList = DB.SupplierPayment.GetAll().Where(x => x.Discription.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
+                                    ResetPaging(myList);
+                                }
+                                if (t.Name == "GridTdate")
+                                {
+                                    myList = DB.SupplierPayment.GetAll().Where(x => x.TransactionDate.ToString().Contains(filter)).ToList().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
+                                    ResetPaging(myList);
+                                }
+                                if (t.Name == "GridPayedBy")
+                                {
+                                    myList = DB.SupplierPayment.GetAll().Where(x => x.PayedByNavigation.Name.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
+                                    ResetPaging(myList);
+                                }
+                                if (t.Name == "GridSupplier")
+                                {
+                                    myList = DB.SupplierPayment.GetAll().Where(x => x.SupplierNavigation.Name.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
+                                    ResetPaging(myList);
+                                }
+
+                            }
+                        };
+                    }
+                }
+            }
 
         }
 
@@ -125,6 +173,12 @@ namespace EZYPOS.UserControls.Transaction
         {
             EZYPOS.DTO.SupplierPaymentDTO SupplierPaymentDTO = (EZYPOS.DTO.SupplierPaymentDTO)SupplierPaymentGrid.SelectedItem;
             ActiveSession.CloseDisplayuserControlMethod(new UserControlSupplierPayment(SupplierPaymentDTO));
+        }
+
+        private void txtNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

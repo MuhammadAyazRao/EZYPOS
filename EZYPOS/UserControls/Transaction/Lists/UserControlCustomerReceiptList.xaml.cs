@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -84,6 +85,53 @@ namespace EZYPOS.UserControls.Transaction.Lists
 
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Enter)
+            {
+                TextBox t = (TextBox)sender;
+                string filter = t.Text;
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    if (filter == "")
+                    {
+                        myList = DB.CustomerReceipt.GetAll().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, CustomerID = x.Customer.Name }).ToList();
+                        ResetPaging(myList);
+                    }
+                    else
+                    {
+                        {
+                            {
+
+                                if (t.Name == "GridAmount")
+                                {
+                                    myList = DB.CustomerReceipt.GetAll().Where(x => x.ReceiptAmount.ToString().Contains(filter)).ToList().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, CustomerID = x.Customer.Name }).ToList();
+                                    ResetPaging(myList);
+                                }
+                                if (t.Name == "GridDiscription")
+                                {
+                                    myList = DB.CustomerReceipt.GetAll().Where(x => x.Discription.ToUpper().Contains(filter.ToUpper())).Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, CustomerID = x.Customer.Name }).ToList();
+                                    ResetPaging(myList);
+                                }
+                                if (t.Name == "GridTdate")
+                                {
+                                    myList = DB.CustomerReceipt.GetAll().Where(x => x.TransactionDate.ToString().ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, CustomerID = x.Customer.Name }).ToList();
+                                    ResetPaging(myList);
+                                }
+                                if (t.Name == "GridRecievedBy")
+                                {
+                                    myList = DB.CustomerReceipt.GetAll().Where(x => x.ReceivedByNavigation.Name.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, CustomerID = x.Customer.Name }).ToList();
+                                    ResetPaging(myList);
+                                }
+                                if (t.Name == "GridCustomer")
+                                {
+                                    myList = DB.CustomerReceipt.GetAll().Where(x => x.Customer.Name.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, CustomerID = x.Customer.Name }).ToList();
+                                    ResetPaging(myList);
+                                }
+
+                            }
+                        };
+                    }
+                }
+            }
 
         }
 
@@ -125,6 +173,11 @@ namespace EZYPOS.UserControls.Transaction.Lists
         {
             EZYPOS.DTO.CustomerReceiptDTO CRDTO = (EZYPOS.DTO.CustomerReceiptDTO)CustomerReceiptGrid.SelectedItem;
             ActiveSession.CloseDisplayuserControlMethod(new UserControlCutomerReceipt(CRDTO));
+        }
+        private void txtNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

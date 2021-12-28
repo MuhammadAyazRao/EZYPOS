@@ -118,7 +118,7 @@ namespace EZYPOS.UserControls
                             }
                             if (t.Name == "GridPhone")
                             {
-                                myList = DB.Employee.GetAll().Where(x => x.Phone.ToString().ToUpper().StartsWith(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList(); ;
+                                //myList = DB.Employee.GetAll().Where(x => x.Phone.ToString().ToUpper().StartsWith(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList(); ;
 
                             }
                             if (t.Name == "GridCnic")

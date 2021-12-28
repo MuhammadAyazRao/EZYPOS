@@ -40,7 +40,7 @@ namespace EZYPOS.UserControls
             txtUpdatequantity.Foreground = Brushes.Gray;
             lblAvailableStock.Content = "";
         }
-        void GetTotalAvailableStock()
+         void GetTotalAvailableStock()
         {
             int id = Convert.ToInt32(ddProductStock.SelectedValue);
             using (UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
@@ -177,19 +177,13 @@ namespace EZYPOS.UserControls
                         bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do You Want to Decrease Available Stock", "Yes", "No");
                         if (isconfirm)
                         {
-                            if (StockToDecrease > Stock)
-                            {
-                                EZYPOS.View.MessageBox.ShowCustom("Stock You Provided is Greater Than Available Stock", "Message", "Ok");
-                            }
-                            else
-                            {
+                            
                                 int AdjustedStock = Stock - StockToDecrease;
                                 SelectedProductStock.Adjustment = AdjustedStock;
                                 uw.ProductStock.Save();
                                 GetTotalAvailableStock();
                                 txtUpdatequantity.Text = "Update Availabe Stock";
                                 txtUpdatequantity.Foreground = Brushes.Gray;
-                            }
                         }
                     }
                 }

@@ -38,7 +38,6 @@ namespace EZYPOS.UserControls.Define.List
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.ProductGroup.GetAll().ToList();
-                GroupGrid.ItemsSource = myList;
                 ResetPaging(myList);
             }
         }
@@ -74,16 +73,23 @@ namespace EZYPOS.UserControls.Define.List
             {
                 TextBox t = (TextBox)sender;
                 string filter = t.Text;
-               
-
                 using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-
-                    if (t.Name == "GridName")
+                    if (filter == "")
                     {
-                        myList = DB.ProductGroup.GetAll().Where(x => x.GroupName.ToUpper().StartsWith(filter.ToUpper())).ToList();
+                        myList = DB.ProductGroup.GetAll().ToList();
+                        ResetPaging(myList);
                     }
-                    GroupGrid.ItemsSource = myList;
+                    else
+                    {
+
+                        if (t.Name == "GridName")
+                        {
+                            myList = DB.ProductGroup.GetAll().Where(x => x.GroupName.ToUpper().StartsWith(filter.ToUpper())).ToList();
+                            ResetPaging(myList);
+
+                        }
+                    }
 
 
                 }

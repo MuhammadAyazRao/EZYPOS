@@ -12,10 +12,12 @@ namespace DAL.DBMODEL
         public DateTime? TransactionDate { get; set; }
         public string TransactionType { get; set; }
         public string TransactionDetail { get; set; }
-        public long? ProductId { get; set; }
+        public int ProductId { get; set; }
         public decimal? DrQty { get; set; }
         public decimal? CrQty { get; set; }
         public long? UserId { get; set; }
         public long? PosId { get; set; }
+
+        public virtual Product Product { get; set; }
     }
 }

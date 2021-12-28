@@ -462,6 +462,16 @@
                 <Setter Property="FontFamily" Value="Raleway"/>
             </Style>
 
+            <!--Dialogue Window Style2-->
+            <Style TargetType="Window" x:Key="winDialogue2">
+                <Setter Property="AllowsTransparency" Value="True"/>
+                <Setter Property="WindowState" Value="Normal"/>
+                <Setter Property="WindowStyle" Value="None"/>
+                <Setter Property="ResizeMode" Value="NoResize"/>
+                <Setter Property="Background" Value="#66000000"/>
+                <Setter Property="FontFamily" Value="Raleway"/>
+            </Style>
+
             <!--Input Box Style-->
             <Style TargetType="TextBox"  x:Key="txtInput">
                 <Setter Property="Height" Value="50"/>

@@ -207,7 +207,7 @@ namespace EZYPOS.UserControls.Transaction
                         using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                         {
                             CustomerReceipt sp = Db.CustomerReceipt.Get(Convert.ToInt32(txtId.Text));
-                            //sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
+                            sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
                             sp.Discription = txtDiscription.Text;
                             sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
                             sp.ReceivedBy = Convert.ToInt32(DDReceivedBy.SelectedValue);
@@ -233,7 +233,7 @@ namespace EZYPOS.UserControls.Transaction
                     {
                         CustomerReceipt sp = new CustomerReceipt();
                         sp.Discription = txtDiscription.Text;
-                        //sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
+                        sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
                         sp.ReceivedBy = Convert.ToInt32(DDReceivedBy.SelectedValue);
                         sp.CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
                         sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);

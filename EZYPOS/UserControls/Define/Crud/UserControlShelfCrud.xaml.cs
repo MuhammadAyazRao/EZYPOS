@@ -160,6 +160,7 @@ namespace EZYPOS.UserControls.Define.Crud
                 uw.Complete();
                 EZYPOS.View.MessageBox.ShowCustom("Record Deleted Succesfully", "Status", "Ok");
             }
+            RefreshPage();
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)

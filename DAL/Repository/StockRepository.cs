@@ -44,7 +44,7 @@ namespace DAL.Repository
                         StockDetail.StockId = (int)item.Id;
                         StockDetail.StartDate = item.StartDate;
                         StockDetail.ExpirationDate = item.ExpiryDate;
-                        var Available = item.Qty + (item.Adjustment);
+                        var Available = item.Qty + (item.Adjustment)+item.Conversion;
                         foreach (var subitem in _DbEntities.StockOderDetails.Where(x => x.StockId == item.Id).ToList())
                         {
                             Available = Available - subitem.Qty;
@@ -103,7 +103,7 @@ namespace DAL.Repository
                 foreach (var item in _DbEntities.ProductStocks.Where(x => x.ProductId == ProductId).ToList())
                 {
 
-                    ToTalStock += item.Qty + (item.Adjustment);
+                    ToTalStock += item.Qty + (item.Adjustment)+item.Conversion;
                     foreach (var subitem in _DbEntities.StockOderDetails.Where(x => x.StockId == item.Id).ToList())
                     {
                         ToTalStock = ToTalStock - subitem.Qty;
@@ -132,7 +132,7 @@ namespace DAL.Repository
                         StockDetail.StockId = (int)item.Id;
                         StockDetail.StartDate = item.StartDate;
                         StockDetail.ExpirationDate = item.ExpiryDate;
-                        ToTalStock = item.Qty + (item.Adjustment);
+                        ToTalStock = item.Qty + (item.Adjustment)+ item.Conversion;
                         foreach (var subitem in StockOderDetail.GetAll().Where(x => x.StockId == item.Id).ToList())
                         {
                             ToTalStock -= subitem.Qty;

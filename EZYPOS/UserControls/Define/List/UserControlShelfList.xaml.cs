@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,7 +44,6 @@ namespace EZYPOS.UserControls.Define.List
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.Shelf.GetAll().ToList();
-                ShelfGrid.ItemsSource = myList;
                 ResetPaging(myList);
             }
         }
@@ -56,7 +56,42 @@ namespace EZYPOS.UserControls.Define.List
 
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Enter)
+            {
+                TextBox t = (TextBox)sender;
+                string filter = t.Text;
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    if (filter == "")
+                    {
+                        myList = DB.Shelf.GetAll().ToList();
+                        ResetPaging(myList);
+                    }
+                    else
+                    {
+                        {
+                            {
+                                if (t.Name == "GridName")
+                                {
+                                    myList = DB.Shelf.GetAll().Where(x => x.ShelfName.ToUpper().StartsWith(filter.ToUpper())).ToList();
+                                    ResetPaging(myList);
+                                }
+                                if (t.Name == "GridCode")
+                                {
+                                    myList = DB.Shelf.GetAll().Where(x => x.ShelfCode.StartsWith(filter)).ToList();
+                                    ResetPaging(myList);
+                                }
+                                                            }
+                        };
+                    }
+                }
+            }
 
+        }
+        private void txtNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
 
         private void ResetPaging(List<DAL.DBMODEL.TblShelf> ListTopagenate)

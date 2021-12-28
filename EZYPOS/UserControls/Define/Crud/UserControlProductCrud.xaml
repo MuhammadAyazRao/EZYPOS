@@ -58,7 +58,9 @@
                     <RowDefinition Height="60"/>
                     <RowDefinition Height="60"/>
                     <RowDefinition Height="60"/>
-                    <RowDefinition Height="60"/>                    
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -71,6 +73,7 @@
                 <ComboBox  Name="DDSubCategory" DisplayMemberPath="SubcategoryName" SelectedValuePath="Id" Grid.Row="4" Grid.Column="0" Margin="20,10,20,10" materialDesign:HintAssist.Hint="Search SubCategory"     materialDesign:HintAssist.HintOpacity=".26" IsEditable="True"></ComboBox>
                 <ComboBox  Name="DDGroup" DisplayMemberPath="GroupName" SelectedValuePath="Id" Grid.Row="5" Grid.Column="0" Margin="20,10,20,10" materialDesign:HintAssist.Hint="Search Group"     materialDesign:HintAssist.HintOpacity=".26" IsEditable="True"></ComboBox>
                 <ComboBox  Name="DDSupplier" DisplayMemberPath="Name" SelectedValuePath="Id" Grid.Row="6" Grid.Column="0" Margin="20,10,20,10" materialDesign:HintAssist.Hint="Search Supplier"     materialDesign:HintAssist.HintOpacity=".26" IsEditable="True"></ComboBox>
+                <ComboBox  Name="DDMunit" DisplayMemberPath="Name" SelectedValuePath="Id" Grid.Row="7" Grid.Column="0" Margin="20,10,20,10" materialDesign:HintAssist.Hint="Search Measuring Unit"     materialDesign:HintAssist.HintOpacity=".26" IsEditable="True" ></ComboBox>
 
                 <TextBox Name="txtSalePrice"  Grid.Column="1" Grid.Row="0" BorderBrush="{DynamicResource Danger}" Padding="10"  TextWrapping="Wrap" Text="Sale Price" PreviewTextInput="txtNumber_PreviewTextInput"  Foreground="Gray" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus"  Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10"  Height="Auto" Style="{Binding txtInput}" />
                 <TextBox Name="txtWholeSalePrice"  Grid.Column="1" Grid.Row="1"  Padding="10"  TextWrapping="Wrap" Text="WholeSale Price" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" PreviewTextInput="txtNumber_PreviewTextInput"  Foreground="Gray" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10"  Height="Auto" Style="{Binding txtInput}" />
@@ -79,6 +82,8 @@
                 <DatePicker Name="DateStock" Grid.Column="1" Grid.Row="4" materialDesign:HintAssist.Hint="Stock Adjustment Date"   Margin="20,10,20,10" Style="{StaticResource MaterialDesignDatePicker}" />
                 <TextBox Name="txtStockMin"  Grid.Column="1" Grid.Row="5"  Padding="10"  TextWrapping="Wrap" Text="Minimum Stock" PreviewTextInput="txtNumber_PreviewTextInput"  GotFocus="txt_GotFocus" LostFocus="txt_LostFocus"  Foreground="Gray" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10"  Height="Auto" Style="{Binding txtInput}" />
                 <TextBox Name="txtStockMax"  Grid.Column="1" Grid.Row="6"  Padding="10"  TextWrapping="Wrap" Text="Maximum Stock" PreviewTextInput="txtNumber_PreviewTextInput" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus"   Foreground="Gray" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10"  Height="Auto" Style="{Binding txtInput}" />
+                <TextBox Name="txtSize"  Grid.Column="1" Grid.Row="7"  Padding="10"  TextWrapping="Wrap" Text="Size" PreviewTextInput="txtNumber_PreviewTextInput" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus"   Foreground="Gray" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10"  Height="Auto" Style="{Binding txtInput}" />
+
                 <TextBox Name="txtId" Visibility="Collapsed" BorderBrush="{DynamicResource Danger}" Padding="10"  TextWrapping="Wrap" Text="Product Code" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus"  PreviewTextInput="txtNumber_PreviewTextInput"  Foreground="Gray" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="0" Height="Auto" Style="{Binding txtInput}" />
 
             </Grid>

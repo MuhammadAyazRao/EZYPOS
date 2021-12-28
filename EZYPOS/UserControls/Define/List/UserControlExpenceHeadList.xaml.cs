@@ -39,7 +39,6 @@ namespace EZYPOS.UserControls
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.ExpenceType.GetAll().ToList();
-                ExpenceHeadGrid.ItemsSource = myList;
                 ResetPaging(myList);
             }
         }
@@ -86,14 +85,20 @@ namespace EZYPOS.UserControls
 
                 using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
+                    if (filter == "")
+                    {
+                        myList = DB.ExpenceType.GetAll().ToList();
+                        ResetPaging(myList);
+                    }
+                    else
+                    {
 
                         if (t.Name == "GridName")
                         {
-                            myList= DB.ExpenceType.GetAll().Where(x=>x.ExpenceName.ToUpper().StartsWith(filter.ToUpper())).ToList();                            
+                            myList = DB.ExpenceType.GetAll().Where(x => x.ExpenceName.ToUpper().StartsWith(filter.ToUpper())).ToList();
+                            ResetPaging(myList);
                         }
-
-                    ExpenceHeadGrid.ItemsSource = myList;
-
+                    }
 
                 }
             }

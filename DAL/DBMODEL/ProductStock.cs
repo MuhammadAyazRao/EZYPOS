@@ -18,6 +18,7 @@ namespace DAL.DBMODEL
         public DateTime ExpiryDate { get; set; }
         public long Qty { get; set; }
         public int Adjustment { get; set; }
+        public int? Conversion { get; set; }
         public int? PurchaseOrderId { get; set; }
 
         public virtual Product Product { get; set; }

@@ -17,6 +17,7 @@ namespace DAL.Repository
             _context = context;           
             City = new Repository<City>(_context);
             Shelf = new Repository<TblShelf>(_context);
+            MUnit = new Repository<Unit>(_context);
             SupplierPayment = new Repository<SupplierPayment>(_context);
             User = new Repository<User>(_context);
             CustomerReceipt = new Repository<CustomerReceipt>(_context);
@@ -51,6 +52,7 @@ namespace DAL.Repository
         public IRepository<StockLead> StockLeader { get; }
         public IRepository<City> City { get; }
         public IRepository<TblShelf> Shelf { get; }
+        public IRepository<Unit> MUnit { get; }
         public IRepository<SupplierPayment> SupplierPayment { get; }
         public IRepository<User> User { get; }
         public IRepository<CustomerReceipt> CustomerReceipt { get; }
@@ -75,6 +77,9 @@ namespace DAL.Repository
 
         public IPurchaseRepository PurchaseOrder { get; }
         public IRepository<ProductStock> ProductStock { get; }
+
+        
+
         public int Complete()
         {
             return _context.SaveChanges();

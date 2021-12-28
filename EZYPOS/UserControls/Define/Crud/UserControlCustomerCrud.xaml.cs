@@ -295,5 +295,10 @@ namespace EZYPOS.UserControls
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
+
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

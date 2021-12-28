@@ -26,7 +26,7 @@
                     <Setter Property="Background" Value="#EEE"></Setter>
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#37474f"/>
+                    <Setter Property="Background" Value="White"/>
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="#78909c"/>
@@ -63,7 +63,7 @@
             <Setter Property="Margin" Value="0 0 0 0"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Height" Value="40"/>
+            <Setter Property="Height" Value="50"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Padding" Value="4 2 2 2"/>
         </Style>
@@ -129,13 +129,14 @@
                             </MultiBinding>                            
                         </DataGridTextColumn.Binding>-->
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Barcode" Binding="{Binding Barcode}"  IsReadOnly="True">
+                    <DataGridTextColumn Binding="{Binding Barcode}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridBarcode" Width="100"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox materialDesign:HintAssist.Hint="Barcode"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridBarcode" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
@@ -146,29 +147,31 @@
                             </MultiBinding>                            
                         </DataGridTextColumn.Binding>-->
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Product" Binding="{Binding ProductName}" IsReadOnly="True">
+                    <DataGridTextColumn Binding="{Binding ProductName}" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridProductName" Width="50"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox materialDesign:HintAssist.Hint="Product"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridProductName" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Retail Price" Binding="{Binding RetailPrice}"  IsReadOnly="True">
+                    <DataGridTextColumn Binding="{Binding RetailPrice}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridRetailPrice" Width="100"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox materialDesign:HintAssist.Hint="Retail Price"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridRetailPrice" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Wholesale Price" Binding="{Binding Wholesaleprice}" IsReadOnly="True">
+                    <DataGridTextColumn Binding="{Binding Wholesaleprice}" IsReadOnly="True">
                         <!--<DataGridTextColumn.Binding>
                             <MultiBinding StringFormat="{}{0} - {1} {2} {3}">
                                 <Binding Path="bill_door_num"/>
@@ -182,40 +185,44 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridWholesaleprice" Width="100"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox materialDesign:HintAssist.Hint="Whole Sale Price"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridWholesaleprice" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Purchase Price" Binding="{Binding PurchasePrice}"  IsReadOnly="True">
+                    <DataGridTextColumn Binding="{Binding PurchasePrice}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridPurchasePrice" Width="100"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox materialDesign:HintAssist.Hint="Purchase Price"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridPurchasePrice" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Category" Binding="{Binding CategoryName}"  IsReadOnly="True">
+                    <DataGridTextColumn Binding="{Binding CategoryName}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridCategoryName" Width="100"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox materialDesign:HintAssist.Hint="Category"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridCategoryName" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="SubCategory" Binding="{Binding SubcategoryName}"  IsReadOnly="True">
+                    <DataGridTextColumn Binding="{Binding SubcategoryName}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridSubcategoryName" Width="100"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox materialDesign:HintAssist.Hint="Sub Category"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridSubcategoryName" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
@@ -225,7 +232,6 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                     <Button Name="btnEdit" Click="edit_Click" Style="{DynamicResource btnInfo}" FontSize="12" Margin="5 0" Content="Edit" Height="30" Width="50"/>
-                                    <!--<Button Name="btnDelete" Click="delete_Click" Style="{DynamicResource btnDanger}" FontSize="12" Margin="5 0" Content="Delete" Height="30" Width="50"/>-->
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

@@ -13,6 +13,8 @@ namespace DAL.IRepository
         IRepository<City> City { get; }
         IRepository<ExpenceTransaction> expt { get; }
         IRepository<TblShelf> Shelf { get; }
+        IRepository<Unit> MUnit { get; }
+
         IRepository<SupplierPayment> SupplierPayment { get; }
         IRepository<Supplier> Supplier { get; }
         IRepository<User> User { get; }
