@@ -242,6 +242,18 @@ namespace EZYPOS.UserControls.Transaction
                     SelectedCustomer = Convert.ToInt32(ddCustomer.SelectedValue);
                 }
                 string SelectedPaymentStatus = "";
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 if (ddPaymentStatus.SelectedValue != null)
                 {
                     SelectedPaymentStatus = Convert.ToString(ddPaymentStatus.Text);
@@ -272,7 +284,7 @@ namespace EZYPOS.UserControls.Transaction
 
                 if (SelectedPaymentStatus != "ALL" && SelectedPaymentStatus != "")
                 {
-                    Allorders = Allorders.Where(x => x.payment_status == SelectedPaymentStatus).ToList();
+                    Allorders = Allorders.Where(x => x.payment_status.ToUpper() == SelectedPaymentStatus).ToList();
                 }
 
                 if (SelectedPaymentMode != "ALL" && SelectedPaymentMode != "")
@@ -289,7 +301,7 @@ namespace EZYPOS.UserControls.Transaction
 
                 foreach (var item in Allorders)
                 {
-                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, payment_status = item.PaymentType, Instrictions = item.PaymentType, Discount = item.GetNetTotal(), OrderDate = item.OrderDate,});
+                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, payment_status = item.payment_status, Instrictions = item.PaymentType, OrderCount =(int)item.GetNetTotal(), OrderDate = item.OrderDate,});
 
                 }
 
@@ -311,7 +323,7 @@ namespace EZYPOS.UserControls.Transaction
                 Allorders = Allorders.Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate).ToList();
                 foreach (var item in Allorders)
                 {
-                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, payment_status = item.PaymentType, Instrictions = item.PaymentType, Discount = item.GetNetTotal(), OrderDate = item.OrderDate,});
+                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, payment_status = item.payment_status, Instrictions = item.PaymentType, OrderCount = (int)item.GetNetTotal(), OrderDate = item.OrderDate,});
 
                 }
             }

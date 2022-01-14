@@ -9,6 +9,8 @@ namespace DAL.DBMODEL
     {
         public Emplyee()
         {
+            AdvancedSalaryEmployees = new HashSet<AdvancedSalary>();
+            AdvancedSalaryPayedByNavigations = new HashSet<AdvancedSalary>();
             CustomerReceipts = new HashSet<CustomerReceipt>();
             ExpenceTransactions = new HashSet<ExpenceTransaction>();
             PurchaseOrders = new HashSet<PurchaseOrder>();
@@ -33,6 +35,8 @@ namespace DAL.DBMODEL
 
         public virtual City CityNavigation { get; set; }
         public virtual UserRole RoleNavigation { get; set; }
+        public virtual ICollection<AdvancedSalary> AdvancedSalaryEmployees { get; set; }
+        public virtual ICollection<AdvancedSalary> AdvancedSalaryPayedByNavigations { get; set; }
         public virtual ICollection<CustomerReceipt> CustomerReceipts { get; set; }
         public virtual ICollection<ExpenceTransaction> ExpenceTransactions { get; set; }
         public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; }

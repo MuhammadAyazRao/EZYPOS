@@ -123,19 +123,19 @@
                     <MenuItem Header="_Supplier" Name="Supplier" Click="Supplier_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
 
                     <MenuItem Header="_Shelf" Name="Shelf" Click="Shelf_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
-
                     <MenuItem Header="_Queries" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_queries.png" />
                     <MenuItem Header="_AccountHead" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_queries.png" />
                 </MenuItem>
                 <MenuItem Header="_Transaction" Template="{StaticResource VsMenuTop}">
                     <MenuItem Header="_Sale Item" Name="SaleItem" Click="SaleItem_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
-                    <MenuItem Header="_Return Item" Name="ReturnItem" Click="ReturnItem_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
+                    <!--<MenuItem Header="_Return Item" Name="ReturnItem" Click="ReturnItem_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />-->
                     <MenuItem Header="_Purchase Item" Name="Purchase" Click="Purchase_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_Customer Receipt" Name="CustomerReceipt" Click="CustomerReceipt_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_Supplier Payment" Name="SupplierPayment" Click="SupplierPayment_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_Stock Adjustment" Name="StockAdjustment" Click="StockAdjustment_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
-                    <MenuItem Header="_Stock Conversion" Name="StockConversion" Click="StockConversion_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
+                    <!--<MenuItem Header="_Stock Conversion" Name="StockConversion" Click="StockConversion_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />-->
                     <MenuItem Header="_Expence Transaction" Click="ExpenseTransation_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
+                    <MenuItem Header="_Advance Salary" Name="AdvanceSalary" Click="AdvanceSalary_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_View Orders" Template="{StaticResource VsMenuSub}">
                         <MenuItem Header="_Sale Orders" Name="SaleOrder" Click="ViewOrder_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                         <MenuItem Header="_Purchase Orders" Name="PurchaseOrder" Click="PurchaseOrder_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
@@ -167,8 +167,8 @@
                     </MenuItem>
                     <MenuItem Header="_Cash Report" Template="{StaticResource VsMenuSub}">
                         <MenuItem Header="_CashBook Leadger" Click="CashBookLedgerReport_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
-                        <MenuItem Header="_Profit Statement"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
-                        <MenuItem Header="_Loss Statement"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
+                        <!--<MenuItem Header="_Profit Statement"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
+                        <MenuItem Header="_Loss Statement"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />-->
                     </MenuItem>
                     <MenuItem Header="_Salary Report" Template="{StaticResource VsMenuSub}">
                         <MenuItem Header="_Advance Salary Report"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
@@ -178,11 +178,11 @@
                 <MenuItem Header="_Utilities" Template="{StaticResource VsMenuTop}">                  
                         <MenuItem Header="_Barcode" Name="Barcode" Click="Barcode_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />                    
                         <MenuItem Header="_BackUp" Name="Backup" Click="Backup_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
-                        <MenuItem Header="_Stock Transfer" Name="StockTransfer" Click="StockTransfer_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
+                        <!--<MenuItem Header="_Stock Transfer" Name="StockTransfer" Click="StockTransfer_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
                     <MenuItem Header="_Payroll" Template="{StaticResource VsMenuSub}">
                         <MenuItem Header="_Salary Disbursement"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
                         <MenuItem Header="_Advance Salary"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
-                    </MenuItem>
+                    </MenuItem>-->
                 </MenuItem>
                 <MenuItem Header="_Logout" Name="Logout" Click="Logout_Click" Template="{StaticResource VsMenuTop}"/>
             </Menu>            

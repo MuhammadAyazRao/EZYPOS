@@ -5,9 +5,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EZYPOS.UserControls.Transaction"
              mc:Ignorable="d" 
-             Language="en-OM"
+             Language="en-GB"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             Name="odr" d:DesignWidth="927.063" d:DesignHeight="571.643">
+             Name="PurchaseOrder" d:DesignWidth="927.063" d:DesignHeight="571.643">
     <UserControl.Resources>
         <Style TargetType="ListBoxItem" x:Key="queueStyle">
             <Setter Property="Template">
@@ -108,7 +108,7 @@
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="0"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Column="0" Grid.Row="0" Margin="5 0 0 0" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" Foreground="White" Name="lblOrderType" Content="{Binding ShopName}" FontSize="12">
+                <Label Grid.Column="0" Grid.Row="0" Margin="5 0 0 0" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" Foreground="White" Name="lblOrderType" Content="{Binding diverlyType}" FontSize="12">
                     <Label.Style>
                         <Style TargetType="Label">
                             <Setter Property="Background" Value="{DynamicResource Info}"/>
@@ -128,7 +128,7 @@
                         </Style>
                     </Label.Style>
                 </Label>
-                <Label Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" Margin="0 10 0 0" ContentStringFormat="C" FontWeight="Bold" HorizontalContentAlignment="Left" Content="{Binding Discount}" FontSize="12">
+                <Label Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" Margin="0 10 0 0" ContentStringFormat="C" FontWeight="Bold" HorizontalContentAlignment="Left" Content="{Binding OrderCount}" FontSize="12">
                 </Label>
                 <Label Grid.Column="1"  Grid.Row="0" Margin="0 10 0 0" Content="{Binding OrderId}" FontWeight="Bold" Foreground="Gray"  HorizontalContentAlignment="Left" FontSize="10"/>
                 <Label Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="0" Margin="0 10 0 0" Content="{Binding OrderDate}" FontWeight="Bold" Foreground="Gray" ContentStringFormat="dd/MM/yyyy hh:mm tt" HorizontalContentAlignment="Left" FontSize="10"/>
@@ -337,8 +337,8 @@
                 <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="0" Grid.Column="5"  materialDesign:HintAssist.Hint="End Date" Margin="5,30,0,0" VerticalAlignment="Top"  Style="{StaticResource MaterialDesignDatePicker}" />
                 <TextBox PreviewTextInput="txtOrderNum_PreviewTextInput" x:Name="txtOrderNum" Text="Order No" FontSize="12" VerticalContentAlignment="Center" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Padding="8" Template="{DynamicResource TextBoxBaseControlTemplate}" Height="50" Margin="5,10,5,0"  Foreground="Gray" VerticalAlignment="Top" Grid.Row="0" Grid.Column="6"/>
                 <Button Name="Search" Content="Search" Click="Search_Click"  Width="Auto" Margin="5,10,5,0" Style="{DynamicResource btnPrimery}" Height="50" VerticalAlignment="Top" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2" />
-                <Button Name="btnRefresh" Content="Refresh" Click="btnRefresh_Click"  Width="Auto" Margin="5,10,5,0" Style="{DynamicResource btnPrimery}" Height="50" VerticalAlignment="Top" Grid.Row="1" Grid.Column="3" />
-                <Button Name="btnShowTodaysOrders" Click="btnShowTodaysOrders_Click"  Style="{DynamicResource btnPrimery}" FontSize="10" Margin="5,10,5,0" VerticalAlignment="Top" Width="Auto" Height="50" Grid.Row="1" Grid.Column="4">
+                <Button Name="btnRefresh" Content="Refresh" Click="btnRefresh_Click"  Width="Auto" Margin="5,10,5,0" Style="{DynamicResource btnPrimery}" Height="50" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" />
+                <Button Name="btnShowTodaysOrders" Click="btnShowTodaysOrders_Click"  Style="{DynamicResource btnPrimery}" FontSize="10" Margin="5,10,5,0" VerticalAlignment="Top" Width="Auto" Height="50" Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="2">
                     <Button.Content>
                         <TextBlock Text="Show Today's Orders" TextAlignment="Center" TextWrapping="Wrap"/>
                     </Button.Content>

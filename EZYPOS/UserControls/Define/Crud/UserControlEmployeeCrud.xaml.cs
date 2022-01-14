@@ -429,7 +429,7 @@ namespace EZYPOS.UserControls
 
         private void SetImage(string ImagePath,string UserName="Employee Image")
         {
-            //if (File.Exists(ImagePath))
+            if (File.Exists(ImagePath))
             {
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();

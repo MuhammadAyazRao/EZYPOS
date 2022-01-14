@@ -18,6 +18,7 @@ namespace DAL.DBMODEL
         }
 
         public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<AdvancedSalary> AdvancedSalaries { get; set; }
         public virtual DbSet<AppPage> AppPages { get; set; }
         public virtual DbSet<CashBookLead> CashBookLeads { get; set; }
         public virtual DbSet<City> Cities { get; set; }
@@ -68,6 +69,27 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.Isdeleted).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Type).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<AdvancedSalary>(entity =>
+            {
+                entity.ToTable("AdvancedSalary");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Date).HasColumnType("date");
+
+                entity.Property(e => e.Month).HasMaxLength(50);
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.AdvancedSalaryEmployees)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .HasConstraintName("FK_AdvancedSalary_Emplyee");
+
+                entity.HasOne(d => d.PayedByNavigation)
+                    .WithMany(p => p.AdvancedSalaryPayedByNavigations)
+                    .HasForeignKey(d => d.PayedBy)
+                    .HasConstraintName("FK_AdvancedSalary_Emplyee1");
             });
 
             modelBuilder.Entity<CashBookLead>(entity =>

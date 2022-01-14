@@ -391,5 +391,11 @@ namespace EZYPOS
             UserControlEmployeeWiseSaleReport EmployeeWiseSale = new UserControlEmployeeWiseSaleReport();
             ActiveSession.DisplayuserControlMethod(EmployeeWiseSale);
         }
+
+        private void AdvanceSalary_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlListAdvanceSalary ListAdvanceSalary = new UserControlListAdvanceSalary();
+            ActiveSession.DisplayuserControlMethod(ListAdvanceSalary);
+        }
     }
 }
