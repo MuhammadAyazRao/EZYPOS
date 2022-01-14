@@ -25,6 +25,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ProductStockExpiryDataset.xsd</DependentUpon>
     </Compile>
+    <Compile Update="Dataset\Purchase\PurchaseOrderDataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PurchaseOrderDataSet.xsd</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +40,13 @@
     <None Update="Dataset\Product\ProductStockExpiryDataset.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>ProductStockExpiryDataset.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Dataset\Purchase\PurchaseOrderDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PurchaseOrderDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="RDLC\Purchase\PurchaseOrderReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

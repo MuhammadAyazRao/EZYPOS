@@ -10,6 +10,7 @@ namespace DAL.DBMODEL
         public Customer()
         {
             CustomerReceipts = new HashSet<CustomerReceipt>();
+            SaleOrders = new HashSet<SaleOrder>();
         }
 
         public int Id { get; set; }
@@ -22,5 +23,6 @@ namespace DAL.DBMODEL
 
         public virtual City CityNavigation { get; set; }
         public virtual ICollection<CustomerReceipt> CustomerReceipts { get; set; }
+        public virtual ICollection<SaleOrder> SaleOrders { get; set; }
     }
 }

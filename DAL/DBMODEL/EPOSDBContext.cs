@@ -43,6 +43,7 @@ namespace DAL.DBMODEL
         public virtual DbSet<SupplierLead> SupplierLeads { get; set; }
         public virtual DbSet<SupplierPayment> SupplierPayments { get; set; }
         public virtual DbSet<TblShelf> TblShelves { get; set; }
+        public virtual DbSet<Unit> Units { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserPage> UserPages { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
@@ -213,6 +214,8 @@ namespace DAL.DBMODEL
 
                 entity.Property(e => e.Lastupdated).HasColumnType("datetime");
 
+                entity.Property(e => e.Unit).HasDefaultValueSql("((0))");
+
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.CategoryId)
@@ -227,6 +230,11 @@ namespace DAL.DBMODEL
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.SubcategoryId)
                     .HasConstraintName("FK_Products_ProductSubcategory");
+
+                entity.HasOne(d => d.UnitNavigation)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.Unit)
+                    .HasConstraintName("FK_Products_Unit");
             });
 
             modelBuilder.Entity<ProductCategory>(entity =>
@@ -288,6 +296,12 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.PaymentMode).HasMaxLength(50);
 
                 entity.Property(e => e.PaymentStatus).HasMaxLength(50);
+
+                entity.HasOne(d => d.Supplier)
+                    .WithMany(p => p.PurchaseOrders)
+                    .HasForeignKey(d => d.SupplierId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PurchaseOrder_Supplier");
             });
 
             modelBuilder.Entity<PurchaseOrderDetail>(entity =>
@@ -348,14 +362,10 @@ namespace DAL.DBMODEL
                     .IsUnicode(false)
                     .HasColumnName("coupon_value");
 
-                entity.Property(e => e.CustomerName)
-                    .HasMaxLength(80)
-                    .IsUnicode(false)
-                    .HasColumnName("customer_name");
+                entity.Property(e => e.CustomerId).HasColumnName("customer_id");
 
                 entity.Property(e => e.CustomerPhone)
-                    .HasMaxLength(80)
-                    .IsUnicode(false)
+                    .HasMaxLength(50)
                     .HasColumnName("customer_phone");
 
                 entity.Property(e => e.Date)
@@ -418,6 +428,17 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.Total).HasColumnName("total");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.SaleOrders)
+                    .HasForeignKey(d => d.CustomerId)
+                    .HasConstraintName("FK_Sale_Orders_Customer");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.SaleOrders)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Sale_Orders_User");
             });
 
             modelBuilder.Entity<SaleOrderDetail>(entity =>
@@ -537,6 +558,12 @@ namespace DAL.DBMODEL
                     .HasColumnName("Transaction_type");
 
                 entity.Property(e => e.UserId).HasColumnName("User_id");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.StockLeads)
+                    .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_StockLead_Products");
             });
 
             modelBuilder.Entity<StockOderDetail>(entity =>
@@ -603,6 +630,11 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.TransactionType)
                     .HasMaxLength(50)
                     .HasColumnName("Transaction_type");
+
+                entity.HasOne(d => d.Suplier)
+                    .WithMany(p => p.SupplierLeads)
+                    .HasForeignKey(d => d.SuplierId)
+                    .HasConstraintName("FK_SupplierLead_Supplier");
             });
 
             modelBuilder.Entity<SupplierPayment>(entity =>
@@ -639,6 +671,15 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.ShelfName)
                     .HasMaxLength(100)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Unit>(entity =>
+            {
+                entity.ToTable("Unit");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Name).HasMaxLength(50);
             });
 
             modelBuilder.Entity<User>(entity =>

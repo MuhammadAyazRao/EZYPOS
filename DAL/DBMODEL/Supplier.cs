@@ -9,6 +9,8 @@ namespace DAL.DBMODEL
     {
         public Supplier()
         {
+            PurchaseOrders = new HashSet<PurchaseOrder>();
+            SupplierLeads = new HashSet<SupplierLead>();
             SupplierPayments = new HashSet<SupplierPayment>();
         }
 
@@ -21,6 +23,8 @@ namespace DAL.DBMODEL
         public DateTime? Createdon { get; set; }
 
         public virtual City CityNavigation { get; set; }
+        public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; }
+        public virtual ICollection<SupplierLead> SupplierLeads { get; set; }
         public virtual ICollection<SupplierPayment> SupplierPayments { get; set; }
     }
 }

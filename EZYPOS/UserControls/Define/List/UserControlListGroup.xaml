@@ -8,10 +8,79 @@
               Background="White"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="1024" Name="GroupList" d:DesignWidth="768">
+    <UserControl.Resources>
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="AlternationCount" Value="2" />
+        </Style>
+        <Style TargetType="DataGridRow">
+
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HeaderStyle" Value="{x:Null}"/>
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background" Value="#CCC"></Setter>
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="#EEE"></Setter>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#78909c"/>
+                </Trigger>
+
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type DataGridCell}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{x:Null}"/>
+                    <Setter Property="BorderBrush" Value="{x:Null}"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <!--<Setter Property="Background" Value="{StaticResource PrimaryHueMidBrush}"/>-->
+            <Setter Property="Background" Value="{DynamicResource DarkBlue}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Gray}"/>
+            <Setter Property="BorderThickness" Value="0 0 0 2"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="4 2 2 2"/>
+        </Style>
+        <Style  BasedOn="{StaticResource MaterialDesignTextBox}"  TargetType="{x:Type TextBox}">
+            <Setter Property="BorderBrush" Value="White"/>
+            <!--<Setter Property="Foreground" Value="Black"/>-->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
 
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="125"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
@@ -43,33 +112,7 @@
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       CanUserReorderColumns="True" BorderBrush="White" Background="White" GridLinesVisibility="Horizontal">
-                <DataGrid.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="Height" Value="40"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="{x:Null}"/>
-                                <Setter Property="BorderBrush" Value="{x:Null}"/>
-                                <Setter Property="Foreground" Value="Black"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.CellStyle>
-                <DataGrid.RowStyle>
-                    <Style TargetType="DataGridRow">
-                        <Setter Property="Height" Value="40"/>
-                        <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="Wheat"/>
-                            </Trigger>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="Background" Value="Wheat"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.RowStyle>
+               
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID" Binding="{Binding Id}" Visibility="Hidden" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
@@ -82,13 +125,14 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Name" Binding="{Binding GroupName}" IsReadOnly="True">
+                    <DataGridTextColumn Binding="{Binding GroupName}" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridName" Width="100"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox materialDesign:HintAssist.Hint="Name"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridName" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>

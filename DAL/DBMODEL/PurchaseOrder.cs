@@ -19,6 +19,7 @@ namespace DAL.DBMODEL
         public string PaymentMode { get; set; }
         public int? TotalAmount { get; set; }
 
+        public virtual Supplier Supplier { get; set; }
         public virtual ICollection<ProductStock> ProductStocks { get; set; }
     }
 }

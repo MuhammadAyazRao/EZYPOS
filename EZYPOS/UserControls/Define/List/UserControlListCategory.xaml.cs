@@ -42,7 +42,6 @@ namespace EZYPOS.UserControls.Define.List
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.ProductCategory.GetAll().ToList();
-                CategoryGrid.ItemsSource = myList;
                 ResetPaging(myList);
             }
         }
@@ -78,13 +77,21 @@ namespace EZYPOS.UserControls.Define.List
 
                 using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-
-                    if (t.Name == "GridName")
+                    if (filter == "")
                     {
-                        myList = DB.ProductCategory.GetAll().Where(x => x.Name.ToUpper().StartsWith(filter.ToUpper())).ToList();
+                        myList = DB.ProductCategory.GetAll().ToList();
+                        ResetPaging(myList);
+                    }
+                    else
+                    {
+                        if (t.Name == "GridName")
+                        {
+                            myList = DB.ProductCategory.GetAll().Where(x => x.Name.ToUpper().StartsWith(filter.ToUpper())).ToList();
+                            ResetPaging(myList);
+                        }
                     }
 
-                    CategoryGrid.ItemsSource = myList;
+                      
 
 
                 }

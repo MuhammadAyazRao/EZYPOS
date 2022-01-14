@@ -15,5 +15,7 @@ namespace DAL.DBMODEL
         public decimal? Dr { get; set; }
         public decimal? Cr { get; set; }
         public DateTime? TransactionDate { get; set; }
+
+        public virtual Supplier Suplier { get; set; }
     }
 }

@@ -26,7 +26,7 @@
                     <Setter Property="Background" Value="#EEE"></Setter>
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#37474f"/>
+                    <Setter Property="Background" Value="White"/>
                 </Trigger>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="#78909c"/>
@@ -63,7 +63,7 @@
             <Setter Property="Margin" Value="0 0 0 0"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Height" Value="40"/>
+            <Setter Property="Height" Value="50"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Padding" Value="4 2 2 2"/>
         </Style>
@@ -80,7 +80,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <!--<RowDefinition Height="50"/>-->
-            <RowDefinition Height="125"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
@@ -96,10 +96,10 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <DatePicker Name="StartDate" Grid.Row="1"  DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"   Grid.Column="0"  materialDesign:HintAssist.Hint="Start Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
-            <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="1" Grid.Column="1"  materialDesign:HintAssist.Hint="End Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
+            <DatePicker Name="StartDate" Visibility="Collapsed" Grid.Row="1"   DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"   Grid.Column="0"  materialDesign:HintAssist.Hint="Start Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
+            <DatePicker Name="EndDate" Visibility="Collapsed"  DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="1" Grid.Column="1"  materialDesign:HintAssist.Hint="End Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <!--<Button x:Name="Search" Content="Search"  Margin="655,89,0,11" Click="Search_Click"  Style="{DynamicResource btnSuccess}" Width="100" HorizontalAlignment="Left" Grid.Row="1" />-->
-            <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />
+            <Button Visibility="Collapsed"  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />
             <Button x:Name="btnAddCustomer"  Click="btnAddCustomer_Click" Content="Add Customer" Margin="20,20,0,0" Style="{DynamicResource btnInfo}" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="35"/>
         </Grid>
         <Border x:Name="label" Grid.Row="1">
@@ -133,9 +133,8 @@
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Content, RelativeSource=
-                                         {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridName" Width="100"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox  materialDesign:HintAssist.Hint="Name"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridName" Width="100" KeyDown="GridName_KeyDown"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
@@ -146,43 +145,38 @@
                             </MultiBinding>                            
                         </DataGridTextColumn.Binding>-->
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Contact" Binding="{Binding PhoneNo}" IsReadOnly="True">
+                    <DataGridTextColumn Binding="{Binding PhoneNo}" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridContact" Width="50"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox materialDesign:HintAssist.Hint="Contact"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridContact" Width="50"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="City" Binding="{Binding City}"  IsReadOnly="True">
+                    <DataGridTextColumn  Binding="{Binding City}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridCity" Width="100"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox materialDesign:HintAssist.Hint="City"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridCity" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Address" Binding="{Binding Adress}" IsReadOnly="True">
-                        <!--<DataGridTextColumn.Binding>
-                            <MultiBinding StringFormat="{}{0} - {1} {2} {3}">
-                                <Binding Path="bill_door_num"/>
-                                <Binding Path="bill_street"/>
-                                <Binding Path="bill_town"/>
-                                <Binding Path="bill_zipcode"/>
-                            </MultiBinding>
-                        </DataGridTextColumn.Binding>-->
+                    <DataGridTextColumn Binding="{Binding Adress}" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="GridAdress" Width="100"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox materialDesign:HintAssist.Hint="Address"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridAdress" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>

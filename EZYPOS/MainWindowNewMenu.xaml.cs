@@ -271,8 +271,8 @@ namespace EZYPOS
 
         private void Test_Click(object sender, RoutedEventArgs e)
         {
-            UserControlStockExpiry UserControlStockExpiry = new UserControlStockExpiry();
-            ActiveSession.DisplayuserControlMethod(UserControlStockExpiry);
+            UserControlPurchaseOrderReport PurchaseOrderReport = new UserControlPurchaseOrderReport();
+            ActiveSession.DisplayuserControlMethod(PurchaseOrderReport);
         }
 
         private void Backup_Click(object sender, RoutedEventArgs e)
@@ -314,6 +314,54 @@ namespace EZYPOS
         {
             StockAdjustment stad = new StockAdjustment();
             ActiveSession.DisplayuserControlMethod(stad);
+        }
+        private void StockConversion_Click(object sender, RoutedEventArgs e)
+        {
+            StockConversion stcon = new StockConversion();
+            ActiveSession.DisplayuserControlMethod(stcon);
+        }
+
+        private void ProductWiseStockReport_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlProductWiseStockReport pwsr = new UserControlProductWiseStockReport();
+            ActiveSession.DisplayuserControlMethod(pwsr);
+        }
+
+        private void SaleReport_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlSaleOrderReport sor = new UserControlSaleOrderReport();
+            ActiveSession.DisplayuserControlMethod(sor);
+
+        }
+
+        private void StockReport_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlStockExpiry UserControlStockExpiry = new UserControlStockExpiry();
+            ActiveSession.DisplayuserControlMethod(UserControlStockExpiry);
+        }
+
+        private void SupplierLedgerReport_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlSupplierLedgerReport SupplierLedgerReport = new UserControlSupplierLedgerReport();
+            ActiveSession.DisplayuserControlMethod(SupplierLedgerReport);
+        }
+
+        private void CustomerLedgerReport_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlCustomerLedgerReport CustomerLedgerReport = new UserControlCustomerLedgerReport();
+            ActiveSession.DisplayuserControlMethod(CustomerLedgerReport);
+        }
+
+        private void CashBookLedgerReport_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlCashBookLedgerReport CashBookLedgerReport = new UserControlCashBookLedgerReport();
+            ActiveSession.DisplayuserControlMethod(CashBookLedgerReport);
+        }
+
+        private void ProductLedgerReport_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlProductLedgerReport ProductLedgerReport = new UserControlProductLedgerReport();
+            ActiveSession.DisplayuserControlMethod(ProductLedgerReport);
         }
     }
 }

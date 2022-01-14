@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Common
 {
+
+    public enum MeasuringUnit
+    { 
+        KG=1,
+        G=2
+    }
     public static class InvoiceType
     {
         public static string SaleInvoice { get { return nameof(SaleInvoice); } }        

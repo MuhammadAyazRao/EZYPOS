@@ -112,6 +112,8 @@ namespace EZYPOS.UserControls.Define.Crud
                 DDSubCategory.ItemsSource = Db.ProductSubcategory.GetAll().ToList();
                 DDGroup.ItemsSource = Db.ProductGroup.GetAll().ToList();
                 DDSupplier.ItemsSource = Db.Supplier.GetAll().ToList();
+                DDMunit.ItemsSource = Db.MUnit.GetAll().ToList();
+
             }
             txtPCode.Text = "Product Code";
             txtPCode.Foreground = Brushes.Gray;
@@ -346,14 +348,17 @@ namespace EZYPOS.UserControls.Define.Crud
                             NewProduct.Wholesaleprice = Convert.ToInt32(txtWholeSalePrice.Text);
                             NewProduct.PurchasePrice = Convert.ToInt32(txtPurchasePrice.Text);
                             NewProduct.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
-                            NewProduct.SubcategoryId = Convert.ToInt32(DDCategory.SelectedValue);
+                            NewProduct.SubcategoryId = Convert.ToInt32(DDSubCategory.SelectedValue);
                             NewProduct.GroupId = Convert.ToInt32(DDGroup.SelectedValue);
                             //CurrentStock
                             //Supplier
                             //Maximum
                             //Minimum
                             //StockDate
-                            NewProduct.Createdon = DateTime.Now;                          
+                            NewProduct.Createdon = DateTime.Now;
+                            NewProduct.Unit = Convert.ToInt32(DDMunit.SelectedValue);
+                            NewProduct.Size = Convert.ToInt32(txtSize.Text);
+
                             DB.Complete();
                             EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
                             RefreshPage();
@@ -384,13 +389,15 @@ namespace EZYPOS.UserControls.Define.Crud
                         NewProduct.Wholesaleprice = Convert.ToInt32(txtWholeSalePrice.Text);
                         NewProduct.PurchasePrice = Convert.ToInt32(txtPurchasePrice.Text);
                         NewProduct.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
-                        NewProduct.SubcategoryId = Convert.ToInt32(DDCategory.SelectedValue);
+                        NewProduct.SubcategoryId = Convert.ToInt32(DDSubCategory.SelectedValue);
                         NewProduct.GroupId = Convert.ToInt32(DDGroup.SelectedValue);
                         //CurrentStock
                         //Supplier
                         //Maximum
                         //Minimum
                         //StockDate
+                        NewProduct.Unit = Convert.ToInt32(DDMunit.SelectedValue);
+                        NewProduct.Size = Convert.ToInt32(txtSize.Text);
                         NewProduct.Createdon = DateTime.Now;
                         DB.Product.Add(NewProduct);
                         DB.Complete();
@@ -479,5 +486,7 @@ namespace EZYPOS.UserControls.Define.Crud
 
             return true;
         }
+
+        
     }
 }

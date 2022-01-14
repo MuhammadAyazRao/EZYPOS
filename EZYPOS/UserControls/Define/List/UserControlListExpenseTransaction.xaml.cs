@@ -39,8 +39,8 @@ namespace EZYPOS.UserControls.Define.List
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.expt.GetAll().Select(x => new ExpenseTransactionDTO { Id = x.Id, ExpenseDate = Convert.ToDateTime(x.ExpenceDate), CreateBy = Convert.ToInt32(x.CreatedBy), Discription = x.Discription, Amount = Convert.ToInt32(x.Amount), Isdeleted = Convert.ToBoolean(x.Isdeleted), ExpenseType = x.ExpenceTypeNavigation == null ? null : x.ExpenceTypeNavigation.ExpenceName,}).ToList();
-                //customerGrid.ItemsSource = First(myList, numberOfRecPerPage).DefaultView; //Fill a DataTable with the First set based on the numberOfRecPerPage                 
                 ResetPaging(myList);
+
             }
         }
 
@@ -63,8 +63,49 @@ namespace EZYPOS.UserControls.Define.List
             ActiveSession.DisplayuserControlMethod(new UserControlExpenseTransactionCrud());
         }
 
-        private void Id_KeyDown(object sender, KeyEventArgs e)
+        private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Enter)
+            {
+                TextBox t = (TextBox)sender;
+                string filter = t.Text;
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    if (filter == "")
+                    {
+                        myList = DB.expt.GetAll().Select(x => new ExpenseTransactionDTO { Id = x.Id, ExpenseDate = Convert.ToDateTime(x.ExpenceDate), CreateBy = Convert.ToInt32(x.CreatedBy), Discription = x.Discription, Amount = Convert.ToInt32(x.Amount), Isdeleted = Convert.ToBoolean(x.Isdeleted), ExpenseType = x.ExpenceTypeNavigation == null ? null : x.ExpenceTypeNavigation.ExpenceName, }).ToList();
+                        ResetPaging(myList);
+                    }
+                    else
+                    {
+                        {
+                            {
+
+                                if (t.Name == "GridEtype")
+                                {
+                                    myList = DB.expt.GetAll().Where(x => x.ExpenceTypeNavigation.ExpenceName.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new ExpenseTransactionDTO { Id = x.Id, ExpenseDate = Convert.ToDateTime(x.ExpenceDate), CreateBy = Convert.ToInt32(x.CreatedBy), Discription = x.Discription, Amount = Convert.ToInt32(x.Amount), Isdeleted = Convert.ToBoolean(x.Isdeleted), ExpenseType = x.ExpenceTypeNavigation == null ? null : x.ExpenceTypeNavigation.ExpenceName, }).ToList();
+                                    ResetPaging(myList);
+                                }
+                                if (t.Name == "GridDiscription")
+                                {
+                                    myList = DB.expt.GetAll().Where(x => x.Discription.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new ExpenseTransactionDTO { Id = x.Id, ExpenseDate = Convert.ToDateTime(x.ExpenceDate), CreateBy = Convert.ToInt32(x.CreatedBy), Discription = x.Discription, Amount = Convert.ToInt32(x.Amount), Isdeleted = Convert.ToBoolean(x.Isdeleted), ExpenseType = x.ExpenceTypeNavigation == null ? null : x.ExpenceTypeNavigation.ExpenceName, }).ToList();
+                                    ResetPaging(myList);
+                                }
+                                if (t.Name == "GridAmount")
+                                {
+                                    myList = DB.expt.GetAll().Where(x => x.Amount.ToString().Contains(filter)).ToList().Select(x => new ExpenseTransactionDTO { Id = x.Id, ExpenseDate = Convert.ToDateTime(x.ExpenceDate), CreateBy = Convert.ToInt32(x.CreatedBy), Discription = x.Discription, Amount = Convert.ToInt32(x.Amount), Isdeleted = Convert.ToBoolean(x.Isdeleted), ExpenseType = x.ExpenceTypeNavigation == null ? null : x.ExpenceTypeNavigation.ExpenceName, }).ToList();
+                                    ResetPaging(myList);
+                                }
+                                if (t.Name == "GridTtype")
+                                {
+                                    myList = DB.expt.GetAll().Where(x => x.ExpenceDate.ToString().ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new ExpenseTransactionDTO { Id = x.Id, ExpenseDate = Convert.ToDateTime(x.ExpenceDate), CreateBy = Convert.ToInt32(x.CreatedBy), Discription = x.Discription, Amount = Convert.ToInt32(x.Amount), Isdeleted = Convert.ToBoolean(x.Isdeleted), ExpenseType = x.ExpenceTypeNavigation == null ? null : x.ExpenceTypeNavigation.ExpenceName, }).ToList();
+                                    ResetPaging(myList);
+                                }
+                            }
+                        };
+                    }
+                }
+            }
 
         }
 

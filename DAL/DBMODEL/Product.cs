@@ -10,6 +10,7 @@ namespace DAL.DBMODEL
         public Product()
         {
             ProductStocks = new HashSet<ProductStock>();
+            StockLeads = new HashSet<StockLead>();
             StockOderDetails = new HashSet<StockOderDetail>();
         }
 
@@ -26,11 +27,15 @@ namespace DAL.DBMODEL
         public DateTime? Lastupdated { get; set; }
         public int? Createdby { get; set; }
         public DateTime? Createdon { get; set; }
+        public int? Size { get; set; }
+        public int? Unit { get; set; }
 
         public virtual ProductCategory Category { get; set; }
         public virtual ProductGroup Group { get; set; }
         public virtual ProductSubcategory Subcategory { get; set; }
+        public virtual Unit UnitNavigation { get; set; }
         public virtual ICollection<ProductStock> ProductStocks { get; set; }
+        public virtual ICollection<StockLead> StockLeads { get; set; }
         public virtual ICollection<StockOderDetail> StockOderDetails { get; set; }
     }
 }
