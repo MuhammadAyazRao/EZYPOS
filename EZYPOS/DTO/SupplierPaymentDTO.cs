@@ -11,8 +11,8 @@ namespace EZYPOS.DTO
         public int Id { get; set; }
         public int Amount { get; set; }
         public string Discription { get; set; }
-        public DateTime TransactionDate { get; set; }
-        public string PayedBy { get; set; }
+        public DateTime? TransactionDate { get; set; }
+        public string Employee { get; set; }
         public string Supplier { get; set; }
     }
 }

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:EZYPOS.UserControls.Define.List"
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="450" Name="CityList" d:DesignWidth="800">
+             d:DesignHeight="1024" Name="CityList" d:DesignWidth="768">
     <UserControl.Resources>
         <Style TargetType="{x:Type DataGrid}">
             <Setter Property="AlternationCount" Value="2" />
@@ -45,6 +45,7 @@
             </Setter>
             <Setter Property="Height" Value="40"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5"/>
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="{x:Null}"/>
@@ -80,28 +81,27 @@
     <Grid>
         <Grid.RowDefinitions>
 
-            <RowDefinition Height="125"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <!--<RowDefinition Height="*"/>-->
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <!--<ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>-->
             </Grid.ColumnDefinitions>
-            <DatePicker Name="StartDate" Grid.Row="1"  DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"   Grid.Column="0"  materialDesign:HintAssist.Hint="Start Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
+            <!--<DatePicker Name="StartDate" Grid.Row="1"  DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"   Grid.Column="0"  materialDesign:HintAssist.Hint="Start Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="1" Grid.Column="1"  materialDesign:HintAssist.Hint="End Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
-            <!--<Button x:Name="Search" Content="Search"  Margin="655,89,0,11" Click="Search_Click"  Style="{DynamicResource btnSuccess}" Width="100" HorizontalAlignment="Left" Grid.Row="1" />-->
-            <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />
+            <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />-->
             <Button x:Name="AddCity"  Click="AddCity_Click" Content="Add City" Margin="20,20,0,0" Style="{DynamicResource btnInfo}" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="35"/>
         </Grid>
         
-        <Border x:Name="label" Grid.Row="1">
+        <Border x:Name="label" Grid.Row="1" Margin="20,0,20,0">
             <DataGrid Name="CityGrid"                     
                       RowHeaderWidth="0"
                       HorizontalGridLinesBrush="{DynamicResource Gray}"
@@ -134,12 +134,12 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTemplateColumn Width="100" IsReadOnly="True">
+                    <DataGridTemplateColumn Width="120" IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Button Name="btnEdit" Click="btnEdit_Click" Style="{DynamicResource btnInfo}" FontSize="12" Margin="5 0" Content="Edit" Height="30" Width="50"/>
-                                    <!--<Button Name="btnDelete" Click="delete_Click" Style="{DynamicResource btnDanger}" FontSize="12" Margin="5 0" Content="Delete" Height="30" Width="50"/>-->
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Name="btnEdit" Click="btnEdit_Click" Style="{DynamicResource btnInfo}" FontSize="12" Margin="5 0" Content="{materialDesign:PackIcon Kind=Pencil,Size=25}" Height="30" Width="50"/>
+                                    <Button Name="btnDelete" Click="delete_Click" Style="{DynamicResource btnDanger}" FontSize="12" Margin="5 0" Content="{materialDesign:PackIcon Kind=Delete,Size=25}" Height="30" Width="50"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

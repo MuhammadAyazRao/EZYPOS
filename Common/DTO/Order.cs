@@ -24,6 +24,8 @@ namespace Common.DTO
         public string diverlyType { get;  set; }
         public double DeliverCharges { get; set; }
         public int CustId { get;  set; }
+        public int UserId { get; set; }
+        public int EmployeeId { get; set; }
         public int OrderCount { get;  set; }
         public double Discount { get;  set; }
         public double ServiceCharges { get; set; }

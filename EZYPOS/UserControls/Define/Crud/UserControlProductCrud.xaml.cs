@@ -1,6 +1,8 @@
-﻿using DAL.DBMODEL;
+﻿using Common.Session;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
+using EZYPOS.UserControls.Define.List;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +47,7 @@ namespace EZYPOS.UserControls.Define.Crud
             {
                 var Productdata = Db.Product.GetAll().Where(x => x.Id == Product.Id).FirstOrDefault();
 
-                if (!string.IsNullOrEmpty(Productdata?.ProductName))
+                if (!string.IsNullOrEmpty(Productdata?.Barcode))
                 {
                     txtPCode.Text = Productdata?.Barcode;
                     txtPCode.Foreground = Brushes.Black;
@@ -55,12 +57,17 @@ namespace EZYPOS.UserControls.Define.Crud
                     txtProductName.Text = Productdata?.ProductName;
                     txtProductName.Foreground = Brushes.Black;
                 }
-                //if (!string.IsNullOrEmpty(Productdata?.ProductName))
-                //{
-                //    txtProductUrduName.Text = Productdata.ProductName;
-                //    txtProductUrduName.Foreground = Brushes.Black;
-                //}
-                if (Productdata.RetailPrice!=null)
+                if (!string.IsNullOrEmpty(Productdata?.ProductName))
+                {
+                    txtProductUrduName.Text = Productdata.ProductName;
+                    txtProductUrduName.Foreground = Brushes.Black;
+                }
+                if (Productdata?.Size != null)
+                {
+                    txtSize.Text = Convert.ToString(Productdata.Size);
+                    txtSize.Foreground = Brushes.Black;
+                }
+                if (Productdata.RetailPrice != null )
 
                 {
                     txtSalePrice.Text = Productdata.RetailPrice.ToString();
@@ -90,7 +97,10 @@ namespace EZYPOS.UserControls.Define.Crud
                 {
                     DDGroup.SelectedValue = Productdata.GroupId;
                 }
-                
+                if (Productdata.Unit != null && Productdata.Unit > 0)
+                {
+                    DDMunit.SelectedValue = Productdata.Unit;
+                }
                 //CurrentStock
                 //Supplier
                 //Maximum
@@ -109,7 +119,7 @@ namespace EZYPOS.UserControls.Define.Crud
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 DDCategory.ItemsSource = Db.ProductCategory.GetAll().ToList();
-                DDSubCategory.ItemsSource = Db.ProductSubcategory.GetAll().ToList();
+                DDSubCategory.ItemsSource = null;
                 DDGroup.ItemsSource = Db.ProductGroup.GetAll().ToList();
                 DDSupplier.ItemsSource = Db.Supplier.GetAll().ToList();
                 DDMunit.ItemsSource = Db.MUnit.GetAll().ToList();
@@ -141,6 +151,9 @@ namespace EZYPOS.UserControls.Define.Crud
 
             txtStockMax.Text = "Maximum Stock";
             txtStockMax.Foreground = Brushes.Gray;
+            
+            txtSize.Text = "Size";
+            txtSize.Foreground = Brushes.Gray;
 
             DateStock.SelectedDate = DateTime.Now;
 
@@ -189,6 +202,10 @@ namespace EZYPOS.UserControls.Define.Crud
                     tb.Foreground = Brushes.Black;
                     break;
                 case "Maximum Stock":
+                    tb.Text = string.Empty;
+                    tb.Foreground = Brushes.Black;
+                    break;
+                case "Size":
                     tb.Text = string.Empty;
                     tb.Foreground = Brushes.Black;
                     break;
@@ -262,6 +279,13 @@ namespace EZYPOS.UserControls.Define.Crud
                         tb.Foreground = Brushes.Gray;
                     }
                     break;
+                case "txtSize":
+                    if (tb.Text == string.Empty)
+                    {
+                        tb.Text = "Size";
+                        tb.Foreground = Brushes.Gray;
+                    }
+                    break;
 
             }
         }
@@ -330,58 +354,14 @@ namespace EZYPOS.UserControls.Define.Crud
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Update Record?", "Yes", "No");
-            if (Isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    if (txtId.Text != "" && txtId.Text != "0")
-                    {
-                        int Id = Convert.ToInt32(txtId.Text);
-                        using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
-                        {
-                            Product NewProduct = DB.Product.Get(Id);
-                            NewProduct.Barcode = txtPCode.Text;
-                            NewProduct.ProductName = txtProductName.Text;
-                            //urduName
-                            NewProduct.RetailPrice = Convert.ToInt32(txtSalePrice.Text);
-                            NewProduct.Wholesaleprice = Convert.ToInt32(txtWholeSalePrice.Text);
-                            NewProduct.PurchasePrice = Convert.ToInt32(txtPurchasePrice.Text);
-                            NewProduct.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
-                            NewProduct.SubcategoryId = Convert.ToInt32(DDSubCategory.SelectedValue);
-                            NewProduct.GroupId = Convert.ToInt32(DDGroup.SelectedValue);
-                            //CurrentStock
-                            //Supplier
-                            //Maximum
-                            //Minimum
-                            //StockDate
-                            NewProduct.Createdon = DateTime.Now;
-                            NewProduct.Unit = Convert.ToInt32(DDMunit.SelectedValue);
-                            NewProduct.Size = Convert.ToInt32(txtSize.Text);
-
-                            DB.Complete();
-                            EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
-                            RefreshPage();
-
-                        }
-                    }
-
-                }
-            }
-
-        }
-
-        private void Save_Click(object sender, RoutedEventArgs e)
-        {
-            
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Save Record?", "Yes", "No");
-            if (Isconfirm)
-            {
-                if (Validate())
-                {
+                    int Id = Convert.ToInt32(txtId.Text);
                     using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                     {
-                        Product NewProduct = new Product();
+                        Product NewProduct = DB.Product.Get(Id);
                         NewProduct.Barcode = txtPCode.Text;
                         NewProduct.ProductName = txtProductName.Text;
                         //urduName
@@ -396,19 +376,52 @@ namespace EZYPOS.UserControls.Define.Crud
                         //Maximum
                         //Minimum
                         //StockDate
+                        NewProduct.Createdon = DateTime.Now;
                         NewProduct.Unit = Convert.ToInt32(DDMunit.SelectedValue);
                         NewProduct.Size = Convert.ToInt32(txtSize.Text);
-                        NewProduct.Createdon = DateTime.Now;
-                        DB.Product.Add(NewProduct);
+
                         DB.Complete();
                         EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
-                         RefreshPage();
+                        RefreshPage();
 
                     }
+                }
+
+            }
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            if (Validate())
+            {
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                {
+                    Product NewProduct = new Product();
+                    NewProduct.Barcode = txtPCode.Text;
+                    NewProduct.ProductName = txtProductName.Text;
+                    //urduName
+                    NewProduct.RetailPrice = Convert.ToInt32(txtSalePrice.Text);
+                    NewProduct.Wholesaleprice = Convert.ToInt32(txtWholeSalePrice.Text);
+                    NewProduct.PurchasePrice = Convert.ToInt32(txtPurchasePrice.Text);
+                    NewProduct.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
+                    NewProduct.SubcategoryId = Convert.ToInt32(DDSubCategory.SelectedValue);
+                    NewProduct.GroupId = Convert.ToInt32(DDGroup.SelectedValue);
+                    //CurrentStock
+                    //Supplier
+                    //Maximum
+                    //Minimum
+                    //StockDate
+                    NewProduct.Unit = Convert.ToInt32(DDMunit.SelectedValue);
+                    NewProduct.Size = Convert.ToInt32(txtSize.Text);
+                    NewProduct.Createdon = DateTime.Today;
+                    DB.Product.Add(NewProduct);
+                    DB.Complete();
+                    EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                    RefreshPage();
 
                 }
-            }
 
+            }
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
@@ -487,6 +500,20 @@ namespace EZYPOS.UserControls.Define.Crud
             return true;
         }
 
-        
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlListProduct());
+        }
+
+        private void DDCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            using(UnitOfWork Db = new UnitOfWork(new EPOSDBContext()))
+            {
+                if (DDCategory.SelectedItem != null)
+                {
+                    DDSubCategory.ItemsSource = Db.ProductSubcategory.GetAll().Where(x=> x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue)).ToList();
+                }
+            }
+        }
     }
 }

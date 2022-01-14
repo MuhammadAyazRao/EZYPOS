@@ -44,6 +44,7 @@
             </Setter>
             <Setter Property="Height" Value="40"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5" />
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="{x:Null}"/>
@@ -94,11 +95,10 @@
             <DatePicker Name="StartDate" Grid.Row="1"  DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"   Grid.Column="0"  materialDesign:HintAssist.Hint="Start Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="1" Grid.Column="1"  materialDesign:HintAssist.Hint="End Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />
-            <Label Content="Sale Order Report" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Grid.Row="0" Grid.Column="0" Margin="10,15,0,0"/>
+            <Label Content="Sale Order Report" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Grid.Row="0" Grid.Column="0" Margin="20,15,0,0"/>
         </Grid>
-        <Border x:Name="label" Grid.Row="1">
-            <DataGrid Name="SaleOrderGrid"                     
-                      Margin="5,0,5,0"
+        <Border x:Name="label" Grid.Row="1" Margin="20,0,20,0">
+            <DataGrid Name="SaleOrderGrid"
                       RowHeaderWidth="0"
                       HorizontalGridLinesBrush="{DynamicResource Gray}"
                       AutoGenerateColumns="False"
@@ -119,53 +119,53 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Customer Name" Binding="{Binding customer_id}"  IsReadOnly="True">
+                    <DataGridTextColumn Header="Customer Name" Binding="{Binding Customer}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     
                                     <TextBox materialDesign:HintAssist.Hint="Customer Name"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridCName" Width="100"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridCName" Width="110"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Phone" Binding="{Binding customer_phone}"  IsReadOnly="True">
+                    <DataGridTextColumn Header="Employee" Binding="{Binding Employee}" Width="110"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBox materialDesign:HintAssist.Hint="Phone"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridPhone" Width="100"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox materialDesign:HintAssist.Hint="Employee"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridEmployee" KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="order_date" Binding="{Binding order_date}"  IsReadOnly="True">
+                    <DataGridTextColumn Header="order_date" Binding="{Binding Date}" Width="110" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox materialDesign:HintAssist.Hint="Order Date"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridOrderDate" Width="100"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" IsReadOnly="True" x:Name="GridOrderDate" KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="order amount" Binding="{Binding total}"  IsReadOnly="True">
+                    <DataGridTextColumn Header="order amount" Binding="{Binding TotalAmount}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox materialDesign:HintAssist.Hint="Order Amount"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridOrderAmount" Width="100"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" PreviewTextInput="NumberOnly_PreviewTextInput" IsReadOnly="True" x:Name="GridOrderAmount" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="User" Binding="{Binding user_id}"  IsReadOnly="True">
+                    <DataGridTextColumn Header="PaymentMode" Binding="{Binding PaymentMode}" Width="110" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBox materialDesign:HintAssist.Hint="User"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridUser" Width="100"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox materialDesign:HintAssist.Hint="PaymentMode"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridPaymentMode" KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>

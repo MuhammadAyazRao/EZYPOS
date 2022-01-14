@@ -308,60 +308,56 @@ namespace EZYPOS.UserControls
         }
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Save Record?", "Yes", "No");
-            if (Isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                 {
-                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                    Emplyee AddEmployee = new Emplyee();
+
+                    if (!string.IsNullOrEmpty(txtFName.Text))
                     {
-                        Emplyee AddEmployee = new Emplyee();
-
-                        if (!string.IsNullOrEmpty(txtFName.Text))
-                        {
-                            AddEmployee.UserName = txtFName.Text;
-                        }
-                        if (!string.IsNullOrEmpty(txtPhone.Text))
-                        {
-                            AddEmployee.Phone = txtPhone.Text;
-                        }
-                        if (!string.IsNullOrEmpty(txtSalary.Text))
-                        {
-                            AddEmployee.Salary = Convert.ToInt32(txtSalary.Text);
-                        }
-                        if (!string.IsNullOrEmpty(txtAddress.Text))
-                        {
-                            AddEmployee.Adress = txtAddress.Text;
-                        }
-                        int CityId = Convert.ToInt32(ddCity.SelectedValue);
-                        if (CityId != 0)
-                        {
-                            AddEmployee.City = CityId;
-                        }
-                        int RoleId = Convert.ToInt32(ddRole.SelectedValue);
-                        if (RoleId != 0)
-                        {
-                            AddEmployee.Role = RoleId;
-                        }
-                        if (!string.IsNullOrEmpty(txtCnic.Text))
-                        {
-                            AddEmployee.Cnic = txtCnic.Text;
-                        }
-                        if (!string.IsNullOrEmpty(JoiningDate.Text))
-                        {
-                            AddEmployee.Createdon = Convert.ToDateTime(JoiningDate.Text);
-                        }
-                        if (!string.IsNullOrEmpty(UserImage.Source?.ToString()))
-                        {
-                            AddEmployee.Image = UserImage.Source?.ToString();
-                        }
-                        DB.Employee.Add(AddEmployee);
-                        DB.Employee.Save();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
-                        RefreshPage();
-
-
+                        AddEmployee.UserName = txtFName.Text;
                     }
+                    if (!string.IsNullOrEmpty(txtPhone.Text))
+                    {
+                        AddEmployee.Phone = txtPhone.Text;
+                    }
+                    if (!string.IsNullOrEmpty(txtSalary.Text))
+                    {
+                        AddEmployee.Salary = Convert.ToInt32(txtSalary.Text);
+                    }
+                    if (!string.IsNullOrEmpty(txtAddress.Text))
+                    {
+                        AddEmployee.Adress = txtAddress.Text;
+                    }
+                    int CityId = Convert.ToInt32(ddCity.SelectedValue);
+                    if (CityId != 0)
+                    {
+                        AddEmployee.City = CityId;
+                    }
+                    int RoleId = Convert.ToInt32(ddRole.SelectedValue);
+                    if (RoleId != 0)
+                    {
+                        AddEmployee.Role = RoleId;
+                    }
+                    if (!string.IsNullOrEmpty(txtCnic.Text))
+                    {
+                        AddEmployee.Cnic = txtCnic.Text;
+                    }
+                    if (!string.IsNullOrEmpty(JoiningDate.Text))
+                    {
+                        AddEmployee.Createdon = Convert.ToDateTime(JoiningDate.Text);
+                    }
+                    if (!string.IsNullOrEmpty(UserImage.Source?.ToString()))
+                    {
+                        AddEmployee.Image = UserImage.Source?.ToString();
+                    }
+                    DB.Employee.Add(AddEmployee);
+                    DB.Employee.Save();
+                    EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
+                    RefreshPage();
+
+
                 }
             }
         }
@@ -451,10 +447,16 @@ namespace EZYPOS.UserControls
             DDTimer.Start();
         }
         private void ddCity_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {   DateTime TimeNow = StartTime.AddMilliseconds(5000);
-            if (TimeNow < DateTime.Now)
-            { EZYPOS.View.MessageBox.ShowCustom("selection changed" + ddCity.SelectedValue, "City", "Ok"); }
-            TimerReset();
+        {   
+            //DateTime TimeNow = StartTime.AddMilliseconds(5000);
+            //if (TimeNow < DateTime.Now)
+            //{ EZYPOS.View.MessageBox.ShowCustom("selection changed" + ddCity.SelectedValue, "City", "Ok"); }
+            //TimerReset();
+        }
+
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlListEmployee());
         }
     }
 }

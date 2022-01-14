@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EZYPOS.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:UserControls="clr-namespace:EZYPOS.UserControls.Misc"
         Style="{DynamicResource winDialogue}"
         Language="en-GB"
@@ -77,11 +78,18 @@
                     <ListBoxItem>Credit</ListBoxItem>
                 </ListBox>
             </StackPanel>
-            <!--<Label x:Name="label" Content="Payment Via" HorizontalAlignment="Left" Margin="32,10,0,0" VerticalAlignment="Top" Width="auto"/>-->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <!--<TextBox  materialDesign:HintAssist.Hint="Delivery Charge" Visibility="Collapsed" PreviewTextInput="NumberDecimal_PreviewTextInput" Name="txtDeliveryCharge"  Style="{StaticResource MaterialDesignFloatingHintTextBox}" Height="50" Margin="10,0,10,125" Width="100" TextWrapping="Wrap" VerticalAlignment="Bottom"/>-->
+
+                <ComboBox  Name="DDSupplier" Visibility="Visible"   DisplayMemberPath="Name"  SelectedValuePath="Id"  Margin="10,0,0,125" Height="30" Width="200" VerticalAlignment="Bottom" materialDesign:HintAssist.HintOpacity=".26" materialDesign:HintAssist.Hint="Search Supplier" IsEditable="False"/>
+                <ComboBox  Name="DDCustomer" Visibility="Visible"   DisplayMemberPath="Name"  SelectedValuePath="Id"  Margin="10,0,0,125" Height="30" Width="200" VerticalAlignment="Bottom" materialDesign:HintAssist.HintOpacity=".26" materialDesign:HintAssist.Hint="Search Customer" IsEditable="True"/>
+                <ComboBox  Name="DDEmployee" Visibility="Visible"   DisplayMemberPath="Name"  SelectedValuePath="Id"  Margin="10,0,0,125" Height="30" Width="200" VerticalAlignment="Bottom" materialDesign:HintAssist.HintOpacity=".26" materialDesign:HintAssist.Hint="Transaction By Employee" IsEditable="True"/>
+                <DatePicker Name="TransactionDate"  materialDesign:HintAssist.Hint="Transaction Date"   Margin="10,0,0,125" Height="30" Width="100" VerticalAlignment="Bottom" Style="{StaticResource MaterialDesignDatePicker}" />
+            </StackPanel>
             <Button x:Name="btnCheckout" Content="Checkout" Click="btnCheckout_Click"  Style="{DynamicResource btnSuccess}" HorizontalAlignment="Left" Margin="270,544,0,0" VerticalAlignment="Top" Width="120" Height="50"/>
             <Button x:Name="btnCancel" Content="Cancel" Click="btnCancel_Click"  Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Margin="400,544,0,0" VerticalAlignment="Top" Width="120" Height="50"/>
-            <TextBox  Template="{DynamicResource TextBoxBaseControlTemplate}" Height="50" Margin="10,480,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-            <Label Content="Comments" HorizontalAlignment="Left" Margin="35,437,0,0" VerticalAlignment="Top" Width="99"/>
+            <TextBox Visibility="Collapsed"  Template="{DynamicResource TextBoxBaseControlTemplate}" Height="50" Margin="10,480,10,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+            <Label Content="Comments" Visibility="Collapsed" HorizontalAlignment="Left" Margin="35,437,0,0" VerticalAlignment="Top" Width="99"/>
 
 
         </Grid>

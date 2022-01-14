@@ -46,26 +46,26 @@ namespace EZYPOS.UserControls.Define.List
         {
             ActiveSession.CloseDisplayuserControlMethod(new UserControlGroupCrud());
         }
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
+        //private void Search_Click(object sender, RoutedEventArgs e)
+        //{
 
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {
-                if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
-                {
-                    myList = DB.ProductGroup.GetAll().ToList();
-                }
-                else
-                {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    // myList = DB.ProductCategory.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
-                }
+        //    using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+        //    {
+        //        if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
+        //        {
+        //            myList = DB.ProductGroup.GetAll().ToList();
+        //        }
+        //        else
+        //        {
+        //            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+        //            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+        //            // myList = DB.ProductCategory.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
+        //        }
 
-                GroupGrid.ItemsSource = myList;
-            }
+        //        GroupGrid.ItemsSource = myList;
+        //    }
 
-        }
+        //}
 
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
@@ -78,20 +78,17 @@ namespace EZYPOS.UserControls.Define.List
                     if (filter == "")
                     {
                         myList = DB.ProductGroup.GetAll().ToList();
-                        ResetPaging(myList);
                     }
                     else
                     {
 
                         if (t.Name == "GridName")
                         {
-                            myList = DB.ProductGroup.GetAll().Where(x => x.GroupName.ToUpper().StartsWith(filter.ToUpper())).ToList();
-                            ResetPaging(myList);
+                            myList = DB.ProductGroup.GetAll().Where(x => x.GroupName.ToUpper().Contains(filter.ToUpper())).ToList();
 
                         }
                     }
-
-
+                    ResetPaging(myList);
                 }
             }
         }
@@ -126,6 +123,31 @@ namespace EZYPOS.UserControls.Define.List
         {
             DAL.DBMODEL.ProductGroup ProductGroup = (DAL.DBMODEL.ProductGroup)GroupGrid.SelectedItem;
             ActiveSession.CloseDisplayuserControlMethod(new UserControlGroupCrud(ProductGroup));
+        }
+
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            DAL.DBMODEL.ProductGroup ProductGroup = (DAL.DBMODEL.ProductGroup)GroupGrid.SelectedItem;
+            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete This Record?", "Yes", "No");
+            if (Isconfirm)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    try
+                    {
+                        DB.ProductGroup.Delete(ProductGroup.Id);
+                        DB.ProductGroup.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        Refresh();
+                    }
+                    catch
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Selected Record Can't be Deleted", "Status", "OK");
+                    }
+
+                }
+            }
+
         }
     }
 }

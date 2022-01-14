@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EZYPOS.UserControls.Report"
         mc:Ignorable="d"
+        Language="en-OM"
         Style="{DynamicResource winDialogue2}"
         Title="WindowPurchaseOrderDetail" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -46,6 +47,7 @@
             </Setter>
             <Setter Property="Height" Value="40"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5" />
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="{x:Null}"/>
@@ -78,13 +80,13 @@
         </Style>
 
     </Window.Resources>
-    <Grid>
+    <Grid Margin="20,20,20,20" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Border x:Name="label" Grid.Row="1" >
+        <Border x:Name="label" Grid.Row="1" Margin="15,0,15,0">
             <DataGrid Name="SaleOrderDetailGrid" 
                       RowHeaderWidth="0"
                       HorizontalGridLinesBrush="{DynamicResource Gray}"
@@ -106,7 +108,7 @@
                         </DataGridTextColumn.HeaderTemplate>
 
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Item Name" Binding="{Binding ItemName}" Width="150" IsReadOnly="True">
+                    <DataGridTextColumn Header="Item Name" Binding="{Binding ItemName}" Width="120" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -116,7 +118,27 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Item Price" Binding="{Binding PurchasePrice}" IsReadOnly="True">
+                    <DataGridTextColumn Header="Item Price" Binding="{Binding PurchasePrice}" Width="120" IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Content, RelativeSource=
+                                         {RelativeSource Mode=TemplatedParent}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Quantity" Binding="{Binding Qty}" Width="120" IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Content, RelativeSource=
+                                         {RelativeSource Mode=TemplatedParent}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="TotalPrice" Binding="{Binding Total}" Width="120" IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -127,14 +149,14 @@
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
 
-                    
+
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
 
-        <Border Background="{DynamicResource DarkBlue}"/>
-        <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Purchase Order Detail" HorizontalAlignment="Left" Margin="10,10,0,10"/>
-        <Button x:Name="btnClose" Click="btnClose_Click"  Content="X" Style="{DynamicResource btnDanger}" Margin="0,5,10,0" HorizontalAlignment="Right" Width="50" Height="40" VerticalAlignment="Top"/>
+        <Border Background="{DynamicResource DarkBlue}" Margin="15,10,15,0"/>
+        <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Purchase Order Detail" HorizontalAlignment="Left" Margin="15,10,0,10"/>
+        <Button x:Name="btnClose" Click="btnClose_Click"  Content="X" Style="{DynamicResource btnDanger}" Margin="0,15,30,0" HorizontalAlignment="Right" Width="50" Height="30" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

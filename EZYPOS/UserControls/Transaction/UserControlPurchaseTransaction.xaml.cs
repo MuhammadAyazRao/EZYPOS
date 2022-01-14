@@ -33,9 +33,9 @@ namespace EZYPOS.UserControls.Transaction
             BusyIndicator.ShowBusy();
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                List<SubCategoryDTO> CategoryList = DB.ProductSubcategory.GetAll().Select(x => new SubCategoryDTO { SubcategoryName = x.SubcategoryName, Id = x.Id }).ToList();
-                CategoryList.Insert(0, new SubCategoryDTO { Id = 0, SubcategoryName = "ALL" });
+                List<DAL.DBMODEL.ProductCategory> CategoryList = DB.ProductCategory.GetAll().Select(x => new DAL.DBMODEL.ProductCategory { Name = x.Name, Id = x.Id }).ToList();
                 DDCategory.ItemsSource = CategoryList;
+
             }
 
             listKitchenLineItems.ItemsSource = GetProducts();
@@ -397,6 +397,7 @@ namespace EZYPOS.UserControls.Transaction
             {
                 CheckOutForm Checkout = new CheckOutForm(order);
                 Checkout.ScreenType = Common.ScreenType.Purchase;
+                Checkout.Refresh();
                 if (Checkout.ShowDialog() == true)
                 {
                     EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Sucess", "Ok");
@@ -693,14 +694,14 @@ namespace EZYPOS.UserControls.Transaction
                 UpdateBillSummary();
             }
         }
-        public List<ProductDTO> GetProducts(int CategoryId = 0)
+        public List<ProductDTO> GetProducts(int SubCategoryId = 0)
         {
             List<ProductDTO> Products = new List<ProductDTO>();
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                if (CategoryId != 0)
+                if (SubCategoryId != 0)
                 {
-                    Products = Db.Product.GetAll().Where(x => x.Id == CategoryId).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.SubcategoryId == SubCategoryId).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
                 }
                 else
                 {
@@ -786,10 +787,20 @@ namespace EZYPOS.UserControls.Transaction
 
         private void DDCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            BusyIndicator.ShowBusy();
-            if (DDCategory.SelectedValue != null)
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                listKitchenLineItems.ItemsSource = GetProducts(Convert.ToInt16(DDCategory.SelectedValue));
+                List<SubCategoryDTO> SubCategoryList = DB.ProductSubcategory.GetAll().Where(x=> x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue)).Select(x => new SubCategoryDTO { SubcategoryName = x.SubcategoryName, Id = x.Id }).ToList();
+                SubCategoryList.Insert(0, new SubCategoryDTO { Id = 0, SubcategoryName = "ALL" });
+                DDSubCategory.ItemsSource = SubCategoryList;
+            }
+            
+        }
+        private void DDSubCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            BusyIndicator.ShowBusy();
+            if (DDSubCategory.SelectedValue != null)
+            {
+                listKitchenLineItems.ItemsSource = GetProducts(Convert.ToInt16(DDSubCategory.SelectedValue));
             }
             BusyIndicator.CloseBusy();
         }

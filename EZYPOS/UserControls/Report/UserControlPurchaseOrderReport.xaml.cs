@@ -25,11 +25,14 @@ namespace EZYPOS.UserControls.Report
     /// </summary>
     public partial class UserControlPurchaseOrderReport : UserControl
     {
-        List<PurchaseOrderReportDTO> myList { get; set; }
+        List<PurchaseOrderReportDTO> myList = new List<PurchaseOrderReportDTO>();
         Pager<PurchaseOrderReportDTO> Pager = new Helper.Pager<PurchaseOrderReportDTO>();
         public UserControlPurchaseOrderReport()
         {
             InitializeComponent();
+            StartDate.SelectedDate = DateTime.Today;
+            EndDate.SelectedDate = DateTime.Today;
+
             Refresh();
 
         }
@@ -37,58 +40,34 @@ namespace EZYPOS.UserControls.Report
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                myList = DB.PurchaseOrder.GetAll().Select(x => new PurchaseOrderReportDTO
+                DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
+                DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
+                var Items = DB.PurchaseOrder.GetAll().Where(x => x.Date >= Sdate && x.Date <= Edate).ToList();
+                string SupplierName = "";
+                string EmployeeName = "";
+                int? GrandTotal = 0;
+                myList.Clear();
+                foreach(var item in Items)
                 {
-                    id = x.Id,
-                    SupplierId = x.Supplier.Name,
-                    Date = x.Date,
-                    PaymentStatus = x.PaymentStatus,
-                    PaymentMode = x.PaymentMode,
-                    TotalAmount = x.TotalAmount,
-                }).ToList();
-
+                    SupplierName = DB.Supplier.Get(item.SupplierId).Name;
+                    EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
+                    GrandTotal += item.TotalAmount;
+                    myList.Add(new PurchaseOrderReportDTO { id= item.Id, Supplier = SupplierName, Employee = EmployeeName, PaymentMode = item.PaymentMode, PaymentStatus = item.PaymentStatus, Date = Convert.ToString(item.Date), TotalAmount = Convert.ToString(item.TotalAmount) });
+                }
+                myList.Add(new PurchaseOrderReportDTO {Supplier = "-", Employee = "-", PaymentMode = "Total", PaymentStatus = "-", Date = "-", TotalAmount = Convert.ToString(GrandTotal) });
                 ResetPaging(myList);
             }
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {
-                if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
-                {
-                    myList = DB.PurchaseOrder.GetAll().Select(x => new PurchaseOrderReportDTO
-                    {
-                        id = x.Id,
-                        SupplierId = x.Supplier.Name,
-                        Date = x.Date,
-                        PaymentStatus = x.PaymentStatus,
-                        PaymentMode = x.PaymentMode,
-                        TotalAmount = x.TotalAmount,
-                    }).ToList();
-                }
-                else
-                {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    myList = DB.PurchaseOrder.GetAll().Where(x => x.Date >= Sdate && x.Date <= Edate).Select(x => new PurchaseOrderReportDTO
-                    {
-                        id = x.Id,
-                        SupplierId = x.Supplier.Name,
-                        Date = x.Date,
-                        PaymentStatus = x.PaymentStatus,
-                        PaymentMode = x.PaymentMode,
-                        TotalAmount = x.TotalAmount,
-                    }).ToList();
-                }
-
-                ResetPaging(myList);
-
-            }
+            Refresh();
         }
 
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
+            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
+            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
             if (e.Key == Key.Enter)
             {
                 TextBox t = (TextBox)sender;
@@ -98,93 +77,101 @@ namespace EZYPOS.UserControls.Report
                 {
                     if (filter == "")
                     {
-                        myList = DB.PurchaseOrder.GetAll().Select(x => new PurchaseOrderReportDTO
-                        {
-                            id = x.Id,
-                            SupplierId = x.Supplier.Name,
-                            Date = x.Date,
-                            PaymentStatus = x.PaymentStatus,
-                            PaymentMode = x.PaymentMode,
-                            TotalAmount = x.TotalAmount,
-                        }).ToList();
-
+                        Refresh();
                     }
                     else
                     {
+                        if (t.Name == "GridSupplier")
+                        {
+                            var Items = DB.PurchaseOrder.GetAll().Where(x => x.Date >= Sdate && x.Date <= Edate).ToList();
+                            string SupplierName = "";
+                            string EmployeeName = "";
+                            int? GrandTotal = 0;
+                            myList.Clear();
+                            foreach (var item in Items)
+                            {
+                                SupplierName = DB.Supplier.Get(item.SupplierId).Name;
+                                EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
+                                if(SupplierName.ToUpper().Contains(filter.ToUpper()))
+                                {
+                                    GrandTotal += item.TotalAmount;
+                                    myList.Add(new PurchaseOrderReportDTO { id = item.Id, Supplier = SupplierName, Employee = EmployeeName, PaymentMode = item.PaymentMode, PaymentStatus = item.PaymentStatus, Date = Convert.ToString(item.Date), TotalAmount = Convert.ToString(item.TotalAmount) });
+                                }
+                                
+                            }
+                            myList.Add(new PurchaseOrderReportDTO { Supplier = "-", Employee = "-", PaymentMode = "Total", PaymentStatus = "-", Date = "-", TotalAmount = Convert.ToString(GrandTotal) });
+                        }
+                        if (t.Name == "GridEmployee")
+                        {
+                            var Items = DB.PurchaseOrder.GetAll().Where(x => x.Date >= Sdate && x.Date <= Edate).ToList();
+                            string SupplierName = "";
+                            string EmployeeName = "";
+                            int? GrandTotal = 0;
+                            myList.Clear();
+                            foreach (var item in Items)
+                            {
+                                SupplierName = DB.Supplier.Get(item.SupplierId).Name;
+                                EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
+                                if (EmployeeName.ToUpper().Contains(filter.ToUpper()))
+                                {
+                                    GrandTotal += item.TotalAmount;
+                                    myList.Add(new PurchaseOrderReportDTO { id = item.Id, Supplier = SupplierName, Employee = EmployeeName, PaymentMode = item.PaymentMode, PaymentStatus = item.PaymentStatus, Date = Convert.ToString(item.Date), TotalAmount = Convert.ToString(item.TotalAmount) });
+                                }
 
+                            }
+                            myList.Add(new PurchaseOrderReportDTO { Supplier = "-", Employee = "-", PaymentMode = "Total", PaymentStatus = "-", Date = "-", TotalAmount = Convert.ToString(GrandTotal) });
+                        }
+                        if (t.Name == "GridDate")
                         {
 
-                            if (t.Name == "GridSName")
+                        }
+                        if (t.Name == "GridPaymentStatus")
+                        {
+                            var Items = DB.PurchaseOrder.GetAll().Where(x => x.Date >= Sdate && x.Date <= Edate).ToList();
+                            string SupplierName = "";
+                            string EmployeeName = "";
+                            int? GrandTotal = 0;
+                            myList.Clear();
+                            foreach (var item in Items)
                             {
-                                myList = DB.PurchaseOrder.GetAll().Where(x => x.Supplier.Name.ToUpper().Contains(filter.ToUpper())).Select(x => new PurchaseOrderReportDTO
+                                SupplierName = DB.Supplier.Get(item.SupplierId).Name;
+                                EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
+                                if (item.PaymentStatus.ToUpper().Contains(filter.ToUpper()))
                                 {
-                                    id = x.Id,
-                                    SupplierId = x.Supplier.Name,
-                                    Date = x.Date,
-                                    PaymentStatus = x.PaymentStatus,
-                                    PaymentMode = x.PaymentMode,
-                                    TotalAmount = x.TotalAmount,
-                                }).ToList(); ;
-                            }
-                            if (t.Name == "GridDate")
-                            {
-                                myList = DB.PurchaseOrder.GetAll().Where(x => x.Date.ToString().Contains(filter)).Select(x => new PurchaseOrderReportDTO
-                                {
-                                    id = x.Id,
-                                    SupplierId = x.Supplier.Name,
-                                    Date = x.Date,
-                                    PaymentStatus = x.PaymentStatus,
-                                    PaymentMode = x.PaymentMode,
-                                    TotalAmount = x.TotalAmount,
-                                }).ToList(); ;
-
+                                    GrandTotal += item.TotalAmount;
+                                    myList.Add(new PurchaseOrderReportDTO { id = item.Id, Supplier = SupplierName, Employee = EmployeeName, PaymentMode = item.PaymentMode, PaymentStatus = item.PaymentStatus, Date = Convert.ToString(item.Date), TotalAmount = Convert.ToString(item.TotalAmount) });
+                                }
 
                             }
-                            if (t.Name == "GridPaymentStatus")
+                            myList.Add(new PurchaseOrderReportDTO { Supplier = "-", Employee = "-", PaymentMode = "Total", PaymentStatus = "-", Date = "-", TotalAmount = Convert.ToString(GrandTotal) });
+                        }
+                        if (t.Name == "GridPaymentMode")
+                        {
+                            var Items = DB.PurchaseOrder.GetAll().Where(x => x.Date >= Sdate && x.Date <= Edate).ToList();
+                            string SupplierName = "";
+                            string EmployeeName = "";
+                            int? GrandTotal = 0;
+                            myList.Clear();
+                            foreach (var item in Items)
                             {
-                                myList = DB.PurchaseOrder.GetAll().Where(x => x.PaymentStatus.ToUpper().Contains(filter.ToUpper())).Select(x => new PurchaseOrderReportDTO
+                                SupplierName = DB.Supplier.Get(item.SupplierId).Name;
+                                EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
+                                if (item.PaymentMode.ToUpper().Contains(filter.ToUpper()))
                                 {
-                                    id = x.Id,
-                                    SupplierId = x.Supplier.Name,
-                                    Date = x.Date,
-                                    PaymentStatus = x.PaymentStatus,
-                                    PaymentMode = x.PaymentMode,
-                                    TotalAmount = x.TotalAmount,
-                                }).ToList(); ;
-
+                                    GrandTotal += item.TotalAmount;
+                                    myList.Add(new PurchaseOrderReportDTO { id = item.Id, Supplier = SupplierName, Employee = EmployeeName, PaymentMode = item.PaymentMode, PaymentStatus = item.PaymentStatus, Date = Convert.ToString(item.Date), TotalAmount = Convert.ToString(item.TotalAmount) });
+                                }
 
                             }
-                            if (t.Name == "GridPaymentMode")
-                            {
-                                myList = DB.PurchaseOrder.GetAll().Where(x => x.PaymentMode.ToString().ToUpper().StartsWith(filter.ToUpper())).Select(x => new PurchaseOrderReportDTO
-                                {
-                                    id = x.Id,
-                                    SupplierId = x.Supplier.Name,
-                                    Date = x.Date,
-                                    PaymentStatus = x.PaymentStatus,
-                                    PaymentMode = x.PaymentMode,
-                                    TotalAmount = x.TotalAmount,
-                                }).ToList(); ;
+                            myList.Add(new PurchaseOrderReportDTO { Supplier = "-", Employee = "-", PaymentMode = "Total", PaymentStatus = "-", Date = "-", TotalAmount = Convert.ToString(GrandTotal) });
+                        }
+                        if (t.Name == "GridTotalAmount")
+                        {
 
-
-                            }
-                            if (t.Name == "GridTotalAmount")
-                            {
-                                myList = DB.PurchaseOrder.GetAll().Where(x => x.TotalAmount.ToString().Contains(filter)).Select(x => new PurchaseOrderReportDTO
-                                {
-                                    id = x.Id,
-                                    SupplierId = x.Supplier.Name,
-                                    Date = x.Date,
-                                    PaymentStatus = x.PaymentStatus,
-                                    PaymentMode = x.PaymentMode,
-                                    TotalAmount = x.TotalAmount,
-                                }).ToList(); ;
-
-                            }
-
-                        };
+                        }
+                        ResetPaging(myList);
                     }
-                    ResetPaging(myList);
+                    
                 }
             }
 

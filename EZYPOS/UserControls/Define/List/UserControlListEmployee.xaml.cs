@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -46,28 +47,28 @@ namespace EZYPOS.UserControls
        
         private async  void Add_Click(object sender, RoutedEventArgs e)
         {
-                ActiveSession.CloseDisplayuserControlMethod(new UserControlEmployeeCrud());  
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlEmployeeCrud());  
         }
 
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {
-                if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
-                {
-                    myList = DB.Employee.GetAll().Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
-                }
-                else
-                {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    myList = DB.Employee.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
-                }
+        //private void Search_Click(object sender, RoutedEventArgs e)
+        //{
+        //    using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+        //    {
+        //        if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
+        //        {
+        //            myList = DB.Employee.GetAll().Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+        //        }
+        //        else
+        //        {
+        //            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+        //            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+        //            myList = DB.Employee.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+        //        }
 
-                ResetPaging(myList);
+        //        ResetPaging(myList);
                
-            }
-        }
+        //    }
+        //}
 
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
@@ -81,56 +82,37 @@ namespace EZYPOS.UserControls
                     if (filter == "")
                     {
                         myList = DB.Employee.GetAll().Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
-                       
                     }
                     else
                     {
-                        
+                        if (t.Name == "GridName")
                         {
-                           
-                            if (t.Name == "GridName")
-                            {
-                               myList= DB.Employee.GetAll().Where(x=>x.UserName.ToUpper().StartsWith(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList(); ;
-                            }
-                            if (t.Name == "GridCity")
-                            {
-                                myList = DB.Employee.GetAll().Where(x => x.CityNavigation.CityName.ToUpper().StartsWith(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList(); ;
-
-
-                            }
-                            if (t.Name == "GridAdress")
-                            {
-                                myList = DB.Employee.GetAll().Where(x => x.Adress.ToUpper().StartsWith(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList(); ;
-
-
-                            }
-                            if (t.Name == "GridRole")
-                            {
-                                myList = DB.Employee.GetAll().Where(x => x.RoleNavigation.Name.ToUpper().StartsWith(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList(); ;
-
-
-                            }
-                            if (t.Name == "GridSalary")
-                            {
-                                myList = DB.Employee.GetAll().Where(x => x.Salary.ToString().ToUpper().StartsWith(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList(); ;
-
-
-                            }
-                            if (t.Name == "GridPhone")
-                            {
-                                //myList = DB.Employee.GetAll().Where(x => x.Phone.ToString().ToUpper().StartsWith(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList(); ;
-
-                            }
-                            if (t.Name == "GridCnic")
-                            {
-                                myList = DB.Employee.GetAll().Where(x => x.Cnic.ToUpper().StartsWith(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList(); ;
-
-                            }
-                           
-
-
-
-                        };
+                            myList = DB.Employee.GetAll().Where(x => x.UserName.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList(); ;
+                        }
+                        if (t.Name == "GridCity")
+                        {
+                            myList = DB.Employee.GetAll().Where(x => x.CityNavigation.CityName.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                        }
+                        if (t.Name == "GridAdress")
+                        {
+                            myList = DB.Employee.GetAll().Where(x => x.Adress.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                        }
+                        if (t.Name == "GridRole")
+                        {
+                            myList = DB.Employee.GetAll().Where(x => x.RoleNavigation.Name.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                        }
+                        if (t.Name == "GridSalary")
+                        {
+                            myList = DB.Employee.GetAll().Where(x => x.Salary.ToString().Contains(filter)).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                        }
+                        if (t.Name == "GridPhone")
+                        {
+                            myList = DB.Employee.GetAll().Where(x => x.Phone.Contains(filter)).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                        }
+                        if (t.Name == "GridCnic")
+                        {
+                            myList = DB.Employee.GetAll().Where(x => x.Cnic.Contains(filter)).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                        }
                     }
                     ResetPaging(myList);
                 }
@@ -189,8 +171,35 @@ namespace EZYPOS.UserControls
             EmployeeGrid.ItemsSource = Pager.Last(myList);
             PageInfo.Content = Pager.PageNumberDisplay(myList);
         }
-
-       
         #endregion
+        private void NumberOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            EZYPOS.DTO.EmployeeDTO EmployeeDTO = (EZYPOS.DTO.EmployeeDTO)EmployeeGrid.SelectedItem;
+            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete This Record?", "Yes", "No");
+            if (Isconfirm)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    try
+                    {
+                        DB.Employee.Delete(EmployeeDTO.Id);
+                        DB.Employee.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        Refresh();
+                    }
+                    catch
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Selected Record Can't be Deleted", "Status", "OK");
+                    }
+
+                }
+            }
+        }
     }
 }

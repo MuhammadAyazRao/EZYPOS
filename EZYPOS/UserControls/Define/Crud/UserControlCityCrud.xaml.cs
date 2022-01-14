@@ -1,4 +1,6 @@
-﻿using DAL.Repository;
+﻿using Common.Session;
+using DAL.Repository;
+using EZYPOS.UserControls.Define.List;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,32 +100,27 @@ namespace EZYPOS.UserControls.Define.Crud
         }
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Alert", "Do You Want To Update This Record", "Yes", "No");
-            if (isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    if (txtId.Text != "" && txtId.Text != "0")
+                    int ID = Convert.ToInt32(txtId.Text);
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        int ID = Convert.ToInt32(txtId.Text);
-                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                        var city = Db.City.GetAll().Where(x => x.Id == ID).FirstOrDefault();
+                        if (city != null)
                         {
-                            var city = Db.City.GetAll().Where(x=> x.Id==ID).FirstOrDefault();
-                            if (city != null)
+                            if (!string.IsNullOrEmpty(txtFName.Text))
                             {
-                                if (!string.IsNullOrEmpty(txtFName.Text))
-                                {
-                                    city.CityName = txtFName.Text;
-                                }
-                                Db.Complete();
-                                EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
-                                RefreshPage();
+                                city.CityName = txtFName.Text;
                             }
+                            Db.Complete();
+                            EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
+                            RefreshPage();
                         }
                     }
                 }
             }
-            
         }
         private bool Validate()
         {
@@ -156,24 +153,23 @@ namespace EZYPOS.UserControls.Define.Crud
         }
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Save Record?", "Yes", "No");
-            if (Isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-                    {
-                        DAL.DBMODEL.City City = new DAL.DBMODEL.City();
-                        City.CityName = txtFName.Text;
-                        City.Createdon = DateTime.Now;
-                        Db.City.Add(City);
-                        Db.Complete();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
-                        RefreshPage();
-                    }
+                    DAL.DBMODEL.City City = new DAL.DBMODEL.City();
+                    City.CityName = txtFName.Text;
+                    City.Createdon = DateTime.Now;
+                    Db.City.Add(City);
+                    Db.Complete();
+                    EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                    RefreshPage();
                 }
             }
         }
-
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlListCity());
+        }
     }
 }

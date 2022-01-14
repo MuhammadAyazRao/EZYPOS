@@ -101,9 +101,7 @@ namespace EZYPOS.UserControls
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirmed = EZYPOS.View.MessageYesNo.ShowCustom("Refresh", "Do you want to refresh page?", "Yes", "No");
-            if (Isconfirmed)
-            { RefreshPage(); }
+            RefreshPage();
         }
 
         private void txt_GotFocus(object sender, RoutedEventArgs e)
@@ -170,51 +168,46 @@ namespace EZYPOS.UserControls
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do You Want To Update", "Yes", "No");
-            if (isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    if (txtId.Text != "" && txtId.Text != "0")
+                    int Id = Convert.ToInt32(txtId.Text);
+                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                     {
-                        int Id = Convert.ToInt32(txtId.Text);
-                        using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                        var UpdateSupplier = DB.Supplier.GetAll().Where(x => x.Id == Id).FirstOrDefault();
+                        if (UpdateSupplier != null)
                         {
-                            var UpdateSupplier = DB.Supplier.GetAll().Where(x => x.Id == Id).FirstOrDefault();
-                            if (UpdateSupplier != null)
+                            if (!string.IsNullOrEmpty(txtFName.Text))
                             {
-                                if (!string.IsNullOrEmpty(txtFName.Text))
-                                {
-                                    UpdateSupplier.Name = txtFName.Text;
-                                }
-                                if (!string.IsNullOrEmpty(txtPhone.Text))
-                                {
-                                    UpdateSupplier.PhoneNo = txtPhone.Text;
-                                }
-                                if (!string.IsNullOrEmpty(txtMobile.Text))
-                                {
-                                    UpdateSupplier.MobileNo = txtMobile.Text;
-                                }
-
-                                if (!string.IsNullOrEmpty(txtAddress.Text))
-
-                                {
-                                    UpdateSupplier.Adress = txtAddress.Text;
-                                }
-                                int CityId = Convert.ToInt32(ddCity.SelectedValue);
-                                if (CityId != 0)
-                                {
-                                    UpdateSupplier.City = CityId;
-                                }
-                                DB.Complete();
-                                EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
-                                RefreshPage();
+                                UpdateSupplier.Name = txtFName.Text;
                             }
+                            if (!string.IsNullOrEmpty(txtPhone.Text))
+                            {
+                                UpdateSupplier.PhoneNo = txtPhone.Text;
+                            }
+                            if (!string.IsNullOrEmpty(txtMobile.Text))
+                            {
+                                UpdateSupplier.MobileNo = txtMobile.Text;
+                            }
+
+                            if (!string.IsNullOrEmpty(txtAddress.Text))
+
+                            {
+                                UpdateSupplier.Adress = txtAddress.Text;
+                            }
+                            int CityId = Convert.ToInt32(ddCity.SelectedValue);
+                            if (CityId != 0)
+                            {
+                                UpdateSupplier.City = CityId;
+                            }
+                            DB.Complete();
+                            EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
+                            RefreshPage();
                         }
                     }
                 }
             }
-            
         }
         private bool Validate()
         {
@@ -249,25 +242,21 @@ namespace EZYPOS.UserControls
         }
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Save Record?", "Yes", "No");
-            if (Isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                 {
-                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
-                    {
-                        Supplier NewSupplier = new Supplier();
-                        NewSupplier.Name = txtFName.Text;
-                        NewSupplier.PhoneNo = txtPhone.Text;
-                        NewSupplier.MobileNo = txtMobile.Text;
-                        NewSupplier.Adress = txtAddress.Text;
-                        NewSupplier.City = Convert.ToInt32(ddCity.SelectedValue);
-                        NewSupplier.Createdon = DateTime.Now;
-                        DB.Supplier.Add(NewSupplier);
-                        DB.Complete();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
-                        RefreshPage();
-                    }
+                    Supplier NewSupplier = new Supplier();
+                    NewSupplier.Name = txtFName.Text;
+                    NewSupplier.PhoneNo = txtPhone.Text;
+                    NewSupplier.MobileNo = txtMobile.Text;
+                    NewSupplier.Adress = txtAddress.Text;
+                    NewSupplier.City = Convert.ToInt32(ddCity.SelectedValue);
+                    NewSupplier.Createdon = DateTime.Today;
+                    DB.Supplier.Add(NewSupplier);
+                    DB.Complete();
+                    EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                    RefreshPage();
                 }
             }
         }
@@ -298,6 +287,9 @@ namespace EZYPOS.UserControls
             e.Handled = regex.IsMatch(e.Text);
         }
 
-
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlListSupplier());
+        }
     }
 }

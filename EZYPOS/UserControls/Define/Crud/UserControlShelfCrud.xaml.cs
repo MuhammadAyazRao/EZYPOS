@@ -16,6 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DAL.DBMODEL;
+using Common.Session;
+using EZYPOS.UserControls.Define.List;
 
 namespace EZYPOS.UserControls.Define.Crud
 {
@@ -131,60 +133,57 @@ namespace EZYPOS.UserControls.Define.Crud
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do You Want to Update Record", "Yes", "No");
-            if (isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                using (UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
                 {
-                    using (UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
-                    {
-                        int id = Convert.ToInt32(txtId.Text);
-                        var sh = uw.Shelf.Get(id);
-                        sh.ShelfName = txtShelfName.Text;
-                        sh.ShelfCode = txtShelfCode.Text;
-                        uw.Shelf.Save();
-                        EZYPOS.View.MessageBox.ShowCustom("Your Record Updated Succesfully", "Status", "OK");
-                        RefreshPage();
-                    }
+                    int id = Convert.ToInt32(txtId.Text);
+                    var sh = uw.Shelf.Get(id);
+                    sh.ShelfName = txtShelfName.Text;
+                    sh.ShelfCode = txtShelfCode.Text;
+                    uw.Shelf.Save();
+                    EZYPOS.View.MessageBox.ShowCustom("Your Record Updated Succesfully", "Status", "OK");
+                    RefreshPage();
                 }
-                
-                 
             }
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-            using(UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
+            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do You Want to Delete This Record", "Yes", "No");
+            if (isconfirm)
             {
-                uw.Shelf.Delete(Convert.ToInt32(txtId.Text));
-                uw.Complete();
-                EZYPOS.View.MessageBox.ShowCustom("Record Deleted Succesfully", "Status", "Ok");
+                using (UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
+                {
+                    uw.Shelf.Delete(Convert.ToInt32(txtId.Text));
+                    uw.Complete();
+                    EZYPOS.View.MessageBox.ShowCustom("Record Deleted Succesfully", "Status", "Ok");
+                }
+                RefreshPage();
             }
-            RefreshPage();
+                
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do You Want To Save Record", "Yes", "No");
-            if (isconfirm)
+            if (Validate())
             {
-                if (Validate())
-                { 
-                    using (UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
-                    {
-                        TblShelf ts = new TblShelf();
-                        ts.ShelfName = txtShelfName.Text;
-                        ts.ShelfCode = txtShelfCode.Text;
-                        uw.Shelf.Add(ts);
-                        uw.Shelf.Save();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Saved Succesfully", "Status", "OK");
-                        RefreshPage();
-                    }
+                using (UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
+                {
+                    TblShelf ts = new TblShelf();
+                    ts.ShelfName = txtShelfName.Text;
+                    ts.ShelfCode = txtShelfCode.Text;
+                    uw.Shelf.Add(ts);
+                    uw.Shelf.Save();
+                    EZYPOS.View.MessageBox.ShowCustom("Record Saved Succesfully", "Status", "OK");
+                    RefreshPage();
                 }
-                
             }
-            
-            
+        }
+
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlShelfList());
         }
     }
 }

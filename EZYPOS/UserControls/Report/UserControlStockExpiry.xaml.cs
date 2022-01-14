@@ -33,6 +33,8 @@ namespace EZYPOS.UserControls.Report
         public UserControlStockExpiry()
         {
             InitializeComponent();
+            StartDate.SelectedDate = DateTime.Today;
+            EndDate.SelectedDate = DateTime.Today;
             Refresh();
 
         }
@@ -40,30 +42,30 @@ namespace EZYPOS.UserControls.Report
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                 myList = DB.Stock.GetStockDetail().ToList();
+                myList = DB.Stock.GetStockDetail().ToList();
                 ResetPaging(myList);
             }
         }
 
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {
-                if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
-                {
+        //private void Search_Click(object sender, RoutedEventArgs e)
+        //{
+        //    using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+        //    {
+        //        if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
+        //        {
                     
-                }
-                else
-                {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+        //        }
+        //        else
+        //        {
+        //            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+        //            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
                     
-                }
+        //        }
 
-                //ResetPaging(myList);
+        //        ResetPaging(myList);
 
-            }
-        }
+        //    }
+        //}
 
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
@@ -81,34 +83,28 @@ namespace EZYPOS.UserControls.Report
                     }
                     else
                     {
-
+                        if (t.Name == "GridProductName")
                         {
 
-                            if (t.Name == "GridProductName")
-                            {
-                                
-                                List<StockDetailDTO> myList = DB.Stock.GetStockDetail().Where(x=> x.ProductName.ToUpper().Contains(filter.ToUpper())).ToList();
-                                ResetPaging(myList);
-                                
-                            }
-                            if (t.Name == "GridAvailableQty")
-                            {
-                                List<StockDetailDTO> myList = DB.Stock.GetStockDetail().Where(x => x.AvailableQty.ToString().Contains(filter)).ToList();
-                                ResetPaging(myList);
-                            }
-                            if (t.Name == "GridStartDate")
-                            {
-                                List<StockDetailDTO> myList = DB.Stock.GetStockDetail().Where(x => x.StartDate.ToString().Contains(filter)).ToList();
-                                ResetPaging(myList);
-                            }
-                            if (t.Name == "ExpirationDate")
-                            {
-                                List<StockDetailDTO> myList = DB.Stock.GetStockDetail().Where(x => x.ExpirationDate.ToString().Contains(filter)).ToList();
-                                ResetPaging(myList);
-                            }
-                            
+                            myList = DB.Stock.GetStockDetail().Where(x => x.ProductName.ToUpper().Contains(filter.ToUpper())).ToList();
 
-                        };
+                        }
+                        if (t.Name == "GridAvailableQty")
+                        {
+                            myList = DB.Stock.GetStockDetail().Where(x => x.AvailableQty.ToString().Contains(filter)).ToList();
+
+                        }
+                        if (t.Name == "GridStartDate")
+                        {
+                            myList = DB.Stock.GetStockDetail().Where(x => x.StartDate.ToString().Contains(filter)).ToList();
+
+                        }
+                        if (t.Name == "ExpirationDate")
+                        {
+                            myList = DB.Stock.GetStockDetail().Where(x => x.ExpirationDate.ToString().Contains(filter)).ToList();
+                            
+                        }
+                        ResetPaging(myList);
                     }
                     
                 }

@@ -1,4 +1,6 @@
-﻿using DAL.Repository;
+﻿using Common.Session;
+using DAL.Repository;
+using EZYPOS.UserControls.Define.List;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -123,20 +125,16 @@ namespace EZYPOS.UserControls.Define.Crud
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Save Record?", "Yes", "No");
-            if (Isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-                    {
-                        DAL.DBMODEL.ProductCategory Category = new DAL.DBMODEL.ProductCategory();
-                        Category.Name = txtFName.Text;                      
-                        Db.ProductCategory.Add(Category);
-                        Db.Complete();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
-                        RefreshPage();
-                    }
+                    DAL.DBMODEL.ProductCategory Category = new DAL.DBMODEL.ProductCategory();
+                    Category.Name = txtFName.Text;
+                    Db.ProductCategory.Add(Category);
+                    Db.Complete();
+                    EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                    RefreshPage();
                 }
             }
         }
@@ -168,6 +166,12 @@ namespace EZYPOS.UserControls.Define.Crud
                 return false;
             }
             return true;
+        }
+
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlListCategory());
+
         }
 
     }

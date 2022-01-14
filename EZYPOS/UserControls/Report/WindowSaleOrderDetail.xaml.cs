@@ -38,7 +38,21 @@ namespace EZYPOS.UserControls.Report
 
             using (UnitOfWork Db = new UnitOfWork(new EPOSDBContext()))
             {
-                var SaleOrderDetail = Db.SaleOrderDetail.GetAll().Where(x => x.OrderId == SaleOrder.id).ToList();
+                //Note PurchaseOrderDetailDTO is used in both SaleOrderDetail and PurchaseOrderDetail
+
+                List<PurchaseOrderDetailDTO> SaleOrderDetail = new List<PurchaseOrderDetailDTO>();
+                var Items = Db.SaleOrderDetail.GetAll().Where(x => x.OrderId == SaleOrder.id).ToList();
+                string ItemName = "";
+                long? ItemTotal = 0;
+                long? OrderTotal = 0;
+                foreach (var item in Items)
+                {
+                    ItemName = Db.Product.Get(item.ItemId).ProductName;
+                    ItemTotal = item.ItemQty * item.ItemPrice;
+                    OrderTotal += ItemTotal;
+                    SaleOrderDetail.Add(new PurchaseOrderDetailDTO { ItemName = ItemName, PurchasePrice = Convert.ToString(item.ItemPrice), Qty = Convert.ToString(item.ItemQty), Total = Convert.ToString(ItemTotal) });
+                }
+                SaleOrderDetail.Add(new PurchaseOrderDetailDTO { ItemName = "-", PurchasePrice = "-", Qty = "Total", Total = Convert.ToString(OrderTotal) });
                 SaleOrderDetailGrid.ItemsSource = SaleOrderDetail;
 
                 

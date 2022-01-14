@@ -44,6 +44,7 @@
             </Setter>
             <Setter Property="Height" Value="40"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5" />
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="{x:Null}"/>
@@ -77,27 +78,26 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="125"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <!--<RowDefinition Height="*"/>-->
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <!--<ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>-->
             </Grid.ColumnDefinitions>
-            <Label Content="Product Wise Stock Report" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Grid.Row="0" Grid.Column="0" Margin="10,15,0,0"/>
-            <TextBox Name="txtSearch"   GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Search Product" Foreground="Gray" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{Binding txtInput}"  />
-            <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click"  Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="20,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="1" />
+            <Label Content="Product Wise Stock Report" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Grid.Row="0" Grid.Column="0" Margin="20,15,0,0"/>
+            <!--<TextBox Name="txtSearch"   GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Search Product" Foreground="Gray" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{Binding txtInput}"  />
+            <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click"  Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="20,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="1" />-->
         </Grid>
-        <Border x:Name="label" Grid.Row="1">
-            <DataGrid Name="EmployeeGrid"                     
-                      Margin="5,0,5,0"
+        <Border x:Name="label" Grid.Row="1" Margin="20,0,20,0">
+            <DataGrid Name="EmployeeGrid"
                       RowHeaderWidth="0"
                       HorizontalGridLinesBrush="{DynamicResource Gray}"
                       AutoGenerateColumns="False"

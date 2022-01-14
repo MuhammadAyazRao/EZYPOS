@@ -1,4 +1,5 @@
 ﻿using Common.Session;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.Helper;
 using EZYPOS.Helper.Session;
@@ -46,26 +47,26 @@ namespace EZYPOS.UserControls.Define.List
             }
         }
 
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
+        //private void Search_Click(object sender, RoutedEventArgs e)
+        //{
 
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {
-                if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
-                {
-                    myList = DB.ProductCategory.GetAll().ToList();
-                }
-                else
-                {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                   // myList = DB.ProductCategory.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
-                }
+        //    using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+        //    {
+        //        if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
+        //        {
+        //            myList = DB.ProductCategory.GetAll().ToList();
+        //        }
+        //        else
+        //        {
+        //            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+        //            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+        //           // myList = DB.ProductCategory.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
+        //        }
 
-                CategoryGrid.ItemsSource = myList;
-            }
+        //        CategoryGrid.ItemsSource = myList;
+        //    }
 
-        }
+        //}
 
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
@@ -79,21 +80,16 @@ namespace EZYPOS.UserControls.Define.List
                 {
                     if (filter == "")
                     {
-                        myList = DB.ProductCategory.GetAll().ToList();
-                        ResetPaging(myList);
+                        myList = DB.ProductCategory.GetAll().ToList();   
                     }
                     else
                     {
                         if (t.Name == "GridName")
                         {
-                            myList = DB.ProductCategory.GetAll().Where(x => x.Name.ToUpper().StartsWith(filter.ToUpper())).ToList();
-                            ResetPaging(myList);
+                            myList = DB.ProductCategory.GetAll().Where(x => x.Name.ToUpper().Contains(filter.ToUpper())).ToList();
                         }
                     }
-
-                      
-
-
+                    ResetPaging(myList);
                 }
             }
         }
@@ -130,6 +126,30 @@ namespace EZYPOS.UserControls.Define.List
         {
             DAL.DBMODEL.ProductCategory ProductCategory = (DAL.DBMODEL.ProductCategory)CategoryGrid.SelectedItem;
             ActiveSession.CloseDisplayuserControlMethod(new UserControlCategoryCrud(ProductCategory));
+        }
+
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            DAL.DBMODEL.ProductCategory ProductCategory = (DAL.DBMODEL.ProductCategory)CategoryGrid.SelectedItem;
+            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete This Record?", "Yes", "No");
+            if (Isconfirm)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                {
+                    try
+                    {
+                        DB.ProductCategory.Delete(ProductCategory.Id);
+                        DB.ProductCategory.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        Refresh();
+                    }
+                    catch
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Selected Record Can't be Deleted", "Status", "OK");
+                    }
+
+                }
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,11 +27,13 @@ namespace EZYPOS.UserControls.Report
     
     public partial class UserControlSaleOrderReport : UserControl
     {
-        List<SaleOrderDTO> myList { get; set; }
+        List<SaleOrderDTO> myList = new List<SaleOrderDTO>();
         Pager<SaleOrderDTO> Pager = new Helper.Pager<SaleOrderDTO>();
         public UserControlSaleOrderReport()
         {
             InitializeComponent();
+            StartDate.SelectedDate = DateTime.Today;
+            EndDate.SelectedDate = DateTime.Today;
             Refresh();
 
         }
@@ -38,116 +41,28 @@ namespace EZYPOS.UserControls.Report
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                myList = DB.SaleOrder.GetAll().Select(x => new SaleOrderDTO
-                {
-                    id = x.Id,
-                    restaurant_id = x.RestaurantId,
-                    user_id = x.User.UserName,
-                    order_count = x.OrderCount,
-                    total = x.Total,
-                    date = x.Date,
-                    order_date = x.OrderDate,
-                    description = x.Description,
-                    coupon = x.Coupon,
-                    coupon_value = x.CouponValue,
-                    coupon_type = x.CouponType,
-                    coupon_applies_to = x.CouponAppliesTo,
-                    coupon_categories = x.CouponCategories,
-                    discount_amount = x.DiscountAmount,
-                    discount_desc = x.DiscountDesc,
-                    payment_mode = x.PaymentMode,
-                    payment_status = x.PaymentStatus,
-                    addby = x.Addby,
-                    addon = x.Addon,
-                    customer_id = x.Customer.Name,
-                    customer_phone = x.CustomerPhone,
-                    is_updated = x.IsUpdated,
-                    is_deleted = x.IsDeleted,
-                    Cash_Amount = x.CashAmount,
-                    Online_Amount = x.OnlineAmount,
-                    Is_Printed = x.IsPrinted,
-                    Service_Charge = x.ServiceCharge,
-                }).ToList();
+                DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
+                DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
 
+                var Items = DB.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate).ToList();
+                string CustomerName = "";
+                string EmployeeName = "";
+                long GrandTotal = 0;
+                myList.Clear();
+                foreach(var item in Items)
+                {
+                    GrandTotal += item.Total;
+                    CustomerName = DB.Customers.Get(Convert.ToInt32(item.CustomerId)).Name;
+                    EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
+                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = Convert.ToString(item.OrderDate), PaymentMode = item.PaymentMode, TotalAmount = Convert.ToString(item.Total) });
+                }
+                myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "Total", PaymentMode = "-", TotalAmount = Convert.ToString(GrandTotal) });
                 ResetPaging(myList);
             }
         }
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {
-                if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
-                {
-                    myList = DB.SaleOrder.GetAll().Select(x => new SaleOrderDTO
-                    {
-                        id = x.Id,
-                        restaurant_id = x.RestaurantId,
-                        user_id = x.User.UserName,
-                        order_count = x.OrderCount,
-                        total = x.Total,
-                        date = x.Date,
-                        order_date = x.OrderDate,
-                        description = x.Description,
-                        coupon = x.Coupon,
-                        coupon_value = x.CouponValue,
-                        coupon_type = x.CouponType,
-                        coupon_applies_to = x.CouponAppliesTo,
-                        coupon_categories = x.CouponCategories,
-                        discount_amount = x.DiscountAmount,
-                        discount_desc = x.DiscountDesc,
-                        payment_mode = x.PaymentMode,
-                        payment_status = x.PaymentStatus,
-                        addby = x.Addby,
-                        addon = x.Addon,
-                        customer_id = x.Customer.Name,
-                        customer_phone = x.CustomerPhone,
-                        is_updated = x.IsUpdated,
-                        is_deleted = x.IsDeleted,
-                        Cash_Amount = x.CashAmount,
-                        Online_Amount = x.OnlineAmount,
-                        Is_Printed = x.IsPrinted,
-                        Service_Charge = x.ServiceCharge,
-                    }).ToList();
-                }
-                else
-                {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    myList = DB.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate).Select(x => new SaleOrderDTO
-                    {
-                        id = x.Id,
-                        restaurant_id = x.RestaurantId,
-                        user_id = x.User.UserName,
-                        order_count = x.OrderCount,
-                        total = x.Total,
-                        date = x.Date,
-                        order_date = x.OrderDate,
-                        description = x.Description,
-                        coupon = x.Coupon,
-                        coupon_value = x.CouponValue,
-                        coupon_type = x.CouponType,
-                        coupon_applies_to = x.CouponAppliesTo,
-                        coupon_categories = x.CouponCategories,
-                        discount_amount = x.DiscountAmount,
-                        discount_desc = x.DiscountDesc,
-                        payment_mode = x.PaymentMode,
-                        payment_status = x.PaymentStatus,
-                        addby = x.Addby,
-                        addon = x.Addon,
-                        customer_id = x.Customer.Name,
-                        customer_phone = x.CustomerPhone,
-                        is_updated = x.IsUpdated,
-                        is_deleted = x.IsDeleted,
-                        Cash_Amount = x.CashAmount,
-                        Online_Amount = x.OnlineAmount,
-                        Is_Printed = x.IsPrinted,
-                        Service_Charge = x.ServiceCharge,
-                    }).ToList();
-                }
-
-                ResetPaging(myList);
-
-            }
+            Refresh();
         }
 
         private void GridName_KeyDown(object sender, KeyEventArgs e)
@@ -161,217 +76,90 @@ namespace EZYPOS.UserControls.Report
                 {
                     if (filter == "")
                     {
-                        myList = DB.SaleOrder.GetAll().Select(x => new SaleOrderDTO
-                        {
-                            id = x.Id,
-                            restaurant_id = x.RestaurantId,
-                            user_id = x.User.UserName,
-                            order_count = x.OrderCount,
-                            total = x.Total,
-                            date = x.Date,
-                            order_date = x.OrderDate,
-                            description = x.Description,
-                            coupon = x.Coupon,
-                            coupon_value = x.CouponValue,
-                            coupon_type = x.CouponType,
-                            coupon_applies_to = x.CouponAppliesTo,
-                            coupon_categories = x.CouponCategories,
-                            discount_amount = x.DiscountAmount,
-                            discount_desc = x.DiscountDesc,
-                            payment_mode = x.PaymentMode,
-                            payment_status = x.PaymentStatus,
-                            addby = x.Addby,
-                            addon = x.Addon,
-                            customer_id = x.Customer.Name,
-                            customer_phone = x.CustomerPhone,
-                            is_updated = x.IsUpdated,
-                            is_deleted = x.IsDeleted,
-                            Cash_Amount = x.CashAmount,
-                            Online_Amount = x.OnlineAmount,
-                            Is_Printed = x.IsPrinted,
-                            Service_Charge = x.ServiceCharge,
-                        }).ToList();
-
+                        Refresh();
                     }
                     else
                     {
+                        if (t.Name == "GridCName")
+                        {
+                            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
+                            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
 
+                            var Items = DB.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate).ToList();
+                            string CustomerName = "";
+                            string EmployeeName = "";
+                            long GrandTotal = 0;
+                            myList.Clear();
+                            foreach (var item in Items)
+                            {
+                                CustomerName = DB.Customers.Get(Convert.ToInt32(item.CustomerId)).Name;
+                                if (CustomerName.ToUpper().Contains(filter.ToUpper()))
+                                {
+                                    EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
+                                    GrandTotal += item.Total;
+                                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = Convert.ToString(item.OrderDate), PaymentMode = item.PaymentMode, TotalAmount = Convert.ToString(item.Total) });
+                                }
+                                
+                            }
+                            myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "Total", PaymentMode = "-", TotalAmount = Convert.ToString(GrandTotal) });
+                            ResetPaging(myList);
+                        }
+                        if (t.Name == "GridEmployee")
+                        {
+                            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
+                            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
+
+                            var Items = DB.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate).ToList();
+                            string CustomerName = "";
+                            string EmployeeName = "";
+                            long GrandTotal = 0;
+                            myList.Clear();
+                            foreach (var item in Items)
+                            {
+                                CustomerName = DB.Customers.Get(Convert.ToInt32(item.CustomerId)).Name;
+                                EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
+                                if (EmployeeName.ToUpper().Contains(filter.ToUpper()))
+                                {
+                                    GrandTotal += item.Total;
+                                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = Convert.ToString(item.OrderDate), PaymentMode = item.PaymentMode, TotalAmount = Convert.ToString(item.Total) });
+                                }
+                            }
+                            myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "Total", PaymentMode = "-", TotalAmount = Convert.ToString(GrandTotal) });
+                            ResetPaging(myList);
+                        }
+                        if (t.Name == "GridOrderDate")
                         {
 
-                            if (t.Name == "GridCName")
+                        }
+                        if (t.Name == "GridOrderAmount")
+                        {
+
+                        }
+                        if (t.Name == "GridPaymentMode")
+                        {
+                            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
+                            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
+
+                            var Items = DB.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate).ToList();
+                            string CustomerName = "";
+                            string EmployeeName = "";
+                            string PaymentMode = "";
+                            long GrandTotal = 0;
+                            myList.Clear();
+                            foreach (var item in Items)
                             {
-                                myList = DB.SaleOrder.GetAll().Where(x => x.Customer.Name.ToUpper().StartsWith(filter.ToUpper())).Select(x => new SaleOrderDTO
+                                CustomerName = DB.Customers.Get(Convert.ToInt32(item.CustomerId)).Name;
+                                EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
+                                PaymentMode = item.PaymentMode;
+                                if (PaymentMode.ToUpper().Contains(filter.ToUpper()))
                                 {
-                                    id = x.Id,
-                                    restaurant_id = x.RestaurantId,
-                                    user_id = x.User.UserName,
-                                    order_count = x.OrderCount,
-                                    total = x.Total,
-                                    date = x.Date,
-                                    order_date = x.OrderDate,
-                                    description = x.Description,
-                                    coupon = x.Coupon,
-                                    coupon_value = x.CouponValue,
-                                    coupon_type = x.CouponType,
-                                    coupon_applies_to = x.CouponAppliesTo,
-                                    coupon_categories = x.CouponCategories,
-                                    discount_amount = x.DiscountAmount,
-                                    discount_desc = x.DiscountDesc,
-                                    payment_mode = x.PaymentMode,
-                                    payment_status = x.PaymentStatus,
-                                    addby = x.Addby,
-                                    addon = x.Addon,
-                                    customer_id = x.Customer.Name,
-                                    customer_phone = x.CustomerPhone,
-                                    is_updated = x.IsUpdated,
-                                    is_deleted = x.IsDeleted,
-                                    Cash_Amount = x.CashAmount,
-                                    Online_Amount = x.OnlineAmount,
-                                    Is_Printed = x.IsPrinted,
-                                    Service_Charge = x.ServiceCharge,
-                                }).ToList(); ;
+                                    GrandTotal += item.Total;
+                                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = Convert.ToString(item.OrderDate), PaymentMode = item.PaymentMode, TotalAmount = Convert.ToString(item.Total) });
+                                }
                             }
-                            if (t.Name == "GridPhone")
-                            {
-                                myList = DB.SaleOrder.GetAll().Where(x => x.CustomerPhone.ToUpper().StartsWith(filter.ToUpper())).Select(x => new SaleOrderDTO
-                                {
-                                    id = x.Id,
-                                    restaurant_id = x.RestaurantId,
-                                    user_id = x.User.UserName,
-                                    order_count = x.OrderCount,
-                                    total = x.Total,
-                                    date = x.Date,
-                                    order_date = x.OrderDate,
-                                    description = x.Description,
-                                    coupon = x.Coupon,
-                                    coupon_value = x.CouponValue,
-                                    coupon_type = x.CouponType,
-                                    coupon_applies_to = x.CouponAppliesTo,
-                                    coupon_categories = x.CouponCategories,
-                                    discount_amount = x.DiscountAmount,
-                                    discount_desc = x.DiscountDesc,
-                                    payment_mode = x.PaymentMode,
-                                    payment_status = x.PaymentStatus,
-                                    addby = x.Addby,
-                                    addon = x.Addon,
-                                    customer_id = x.Customer.Name,
-                                    customer_phone = x.CustomerPhone,
-                                    is_updated = x.IsUpdated,
-                                    is_deleted = x.IsDeleted,
-                                    Cash_Amount = x.CashAmount,
-                                    Online_Amount = x.OnlineAmount,
-                                    Is_Printed = x.IsPrinted,
-                                    Service_Charge = x.ServiceCharge,
-                                }).ToList(); ;
-
-
-                            }
-                            if (t.Name == "GridOrderDate")
-                            {
-                                myList = DB.SaleOrder.GetAll().Where(x => x.OrderDate.ToString().ToUpper().StartsWith(filter.ToUpper())).Select(x => new SaleOrderDTO
-                                {
-                                    id = x.Id,
-                                    restaurant_id = x.RestaurantId,
-                                    user_id = x.User.UserName,
-                                    order_count = x.OrderCount,
-                                    total = x.Total,
-                                    date = x.Date,
-                                    order_date = x.OrderDate,
-                                    description = x.Description,
-                                    coupon = x.Coupon,
-                                    coupon_value = x.CouponValue,
-                                    coupon_type = x.CouponType,
-                                    coupon_applies_to = x.CouponAppliesTo,
-                                    coupon_categories = x.CouponCategories,
-                                    discount_amount = x.DiscountAmount,
-                                    discount_desc = x.DiscountDesc,
-                                    payment_mode = x.PaymentMode,
-                                    payment_status = x.PaymentStatus,
-                                    addby = x.Addby,
-                                    addon = x.Addon,
-                                    customer_id = x.Customer.Name,
-                                    customer_phone = x.CustomerPhone,
-                                    is_updated = x.IsUpdated,
-                                    is_deleted = x.IsDeleted,
-                                    Cash_Amount = x.CashAmount,
-                                    Online_Amount = x.OnlineAmount,
-                                    Is_Printed = x.IsPrinted,
-                                    Service_Charge = x.ServiceCharge,
-                                }).ToList(); ;
-
-
-                            }
-                            if (t.Name == "GridOrderAmount")
-                            {
-                                myList = DB.SaleOrder.GetAll().Where(x => x.CashAmount.ToString().ToUpper().StartsWith(filter.ToUpper())).Select(x => new SaleOrderDTO
-                                {
-                                    id = x.Id,
-                                    restaurant_id = x.RestaurantId,
-                                    user_id = x.User.UserName,
-                                    order_count = x.OrderCount,
-                                    total = x.Total,
-                                    date = x.Date,
-                                    order_date = x.OrderDate,
-                                    description = x.Description,
-                                    coupon = x.Coupon,
-                                    coupon_value = x.CouponValue,
-                                    coupon_type = x.CouponType,
-                                    coupon_applies_to = x.CouponAppliesTo,
-                                    coupon_categories = x.CouponCategories,
-                                    discount_amount = x.DiscountAmount,
-                                    discount_desc = x.DiscountDesc,
-                                    payment_mode = x.PaymentMode,
-                                    payment_status = x.PaymentStatus,
-                                    addby = x.Addby,
-                                    addon = x.Addon,
-                                    customer_id = x.Customer.Name,
-                                    customer_phone = x.CustomerPhone,
-                                    is_updated = x.IsUpdated,
-                                    is_deleted = x.IsDeleted,
-                                    Cash_Amount = x.CashAmount,
-                                    Online_Amount = x.OnlineAmount,
-                                    Is_Printed = x.IsPrinted,
-                                    Service_Charge = x.ServiceCharge,
-                                }).ToList(); ;
-
-
-                            }
-                            if (t.Name == "GridUser")
-                            {
-                                myList = DB.SaleOrder.GetAll().Where(x => x.User.Name.ToUpper().StartsWith(filter.ToUpper())).Select(x => new SaleOrderDTO
-                                {
-                                    id = x.Id,
-                                    restaurant_id = x.RestaurantId,
-                                    user_id = x.User.UserName,
-                                    order_count = x.OrderCount,
-                                    total = x.Total,
-                                    date = x.Date,
-                                    order_date = x.OrderDate,
-                                    description = x.Description,
-                                    coupon = x.Coupon,
-                                    coupon_value = x.CouponValue,
-                                    coupon_type = x.CouponType,
-                                    coupon_applies_to = x.CouponAppliesTo,
-                                    coupon_categories = x.CouponCategories,
-                                    discount_amount = x.DiscountAmount,
-                                    discount_desc = x.DiscountDesc,
-                                    payment_mode = x.PaymentMode,
-                                    payment_status = x.PaymentStatus,
-                                    addby = x.Addby,
-                                    addon = x.Addon,
-                                    customer_id = x.Customer.Name,
-                                    customer_phone = x.CustomerPhone,
-                                    is_updated = x.IsUpdated,
-                                    is_deleted = x.IsDeleted,
-                                    Cash_Amount = x.CashAmount,
-                                    Online_Amount = x.OnlineAmount,
-                                    Is_Printed = x.IsPrinted,
-                                    Service_Charge = x.ServiceCharge,
-                                }).ToList(); ;
-
-                            }
-                            
-                        };
+                            myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "Total", PaymentMode = "-", TotalAmount = Convert.ToString(GrandTotal) });
+                            ResetPaging(myList);
+                        }
                     }
                     ResetPaging(myList);
                 }
@@ -387,10 +175,6 @@ namespace EZYPOS.UserControls.Report
             SaleOrderDetail.Show();
         }
 
-        private void btnClose_Click(object sender, RoutedEventArgs e)
-        {
-            ActiveSession.NavigateToHome("");
-        }
 
         #region Pagination
 
@@ -430,5 +214,10 @@ namespace EZYPOS.UserControls.Report
 
 
         #endregion
+        private void NumberOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
     }
 }

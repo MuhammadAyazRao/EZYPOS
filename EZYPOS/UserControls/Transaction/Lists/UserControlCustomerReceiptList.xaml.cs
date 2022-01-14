@@ -38,7 +38,7 @@ namespace EZYPOS.UserControls.Transaction.Lists
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                myList = DB.CustomerReceipt.GetAll().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, CustomerID = x.Customer.Name }).ToList();
+                myList = DB.CustomerReceipt.GetAll().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, Employee = x.Employee == null ? null : x.Employee.UserName , Customer = x.Customer == null? null : x.Customer.Name }).ToList();
                 ResetPaging(myList);
             }
         }
@@ -58,25 +58,25 @@ namespace EZYPOS.UserControls.Transaction.Lists
             ActiveSession.CloseDisplayuserControlMethod(new UserControlCutomerReceipt());
         }
 
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {
-                if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
-                {
-                   myList = DB.CustomerReceipt.GetAll().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name,}).ToList();
-                }
-                else
-                {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    myList = DB.CustomerReceipt.GetAll().Where(x => x.TransactionDate >= Sdate && x.TransactionDate <= Edate).Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, }).ToList();
-                }
+        //private void Search_Click(object sender, RoutedEventArgs e)
+        //{
+        //    using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+        //    {
+        //        if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
+        //        {
+        //           myList = DB.CustomerReceipt.GetAll().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name,}).ToList();
+        //        }
+        //        else
+        //        {
+        //            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+        //            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+        //            myList = DB.CustomerReceipt.GetAll().Where(x => x.TransactionDate >= Sdate && x.TransactionDate <= Edate).Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, }).ToList();
+        //        }
 
-                ResetPaging(myList);
+        //        ResetPaging(myList);
 
-            }
-        }
+        //    }
+        //}
 
         private void Id_KeyDown(object sender, KeyEventArgs e)
         {
@@ -93,42 +93,32 @@ namespace EZYPOS.UserControls.Transaction.Lists
                 {
                     if (filter == "")
                     {
-                        myList = DB.CustomerReceipt.GetAll().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, CustomerID = x.Customer.Name }).ToList();
-                        ResetPaging(myList);
+                        Refresh();
                     }
                     else
                     {
+                        myList = DB.CustomerReceipt.GetAll().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, Employee = x.Employee == null ? null : x.Employee.UserName, Customer = x.Customer == null ? null : x.Customer.Name }).ToList();
+                        if (t.Name == "GridAmount")
                         {
-                            {
-
-                                if (t.Name == "GridAmount")
-                                {
-                                    myList = DB.CustomerReceipt.GetAll().Where(x => x.ReceiptAmount.ToString().Contains(filter)).ToList().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, CustomerID = x.Customer.Name }).ToList();
-                                    ResetPaging(myList);
-                                }
-                                if (t.Name == "GridDiscription")
-                                {
-                                    myList = DB.CustomerReceipt.GetAll().Where(x => x.Discription.ToUpper().Contains(filter.ToUpper())).Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, CustomerID = x.Customer.Name }).ToList();
-                                    ResetPaging(myList);
-                                }
-                                if (t.Name == "GridTdate")
-                                {
-                                    myList = DB.CustomerReceipt.GetAll().Where(x => x.TransactionDate.ToString().ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, CustomerID = x.Customer.Name }).ToList();
-                                    ResetPaging(myList);
-                                }
-                                if (t.Name == "GridRecievedBy")
-                                {
-                                    myList = DB.CustomerReceipt.GetAll().Where(x => x.ReceivedByNavigation.Name.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, CustomerID = x.Customer.Name }).ToList();
-                                    ResetPaging(myList);
-                                }
-                                if (t.Name == "GridCustomer")
-                                {
-                                    myList = DB.CustomerReceipt.GetAll().Where(x => x.Customer.Name.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.Name, CustomerID = x.Customer.Name }).ToList();
-                                    ResetPaging(myList);
-                                }
-
-                            }
-                        };
+                            myList = myList.Where(x => x.Amount.ToString().Contains(filter)).ToList();
+                        }
+                        if (t.Name == "GridDiscription")
+                        {
+                            myList = myList.Where(x => x.Discription.ToUpper().Contains(filter.ToUpper())).ToList();
+                        }
+                        if (t.Name == "GridTdate")
+                        {
+                            myList = myList.Where(x => x.TransactionDate.ToString().Contains(filter)).ToList();
+                        }
+                        if (t.Name == "GridRecievedBy")
+                        {
+                            myList = myList.Where(x => x.Employee.ToUpper().Contains(filter.ToUpper())).ToList();
+                        }
+                        if (t.Name == "GridCustomer")
+                        {
+                            myList = myList.Where(x => x.Customer.ToUpper().Contains(filter.ToUpper())).ToList();
+                        }
+                        ResetPaging(myList);
                     }
                 }
             }
@@ -178,6 +168,30 @@ namespace EZYPOS.UserControls.Transaction.Lists
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            EZYPOS.DTO.CustomerReceiptDTO CRDTO = (EZYPOS.DTO.CustomerReceiptDTO)CustomerReceiptGrid.SelectedItem;
+            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete This Record?", "Yes", "No");
+            if (Isconfirm)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    try
+                    {
+                        DB.CustomerReceipt.Delete(CRDTO.Id);
+                        DB.CustomerReceipt.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deleted Successfully", "Status", "OK");
+                        Refresh();
+                    }
+                    catch
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Selected Record Can't be Deleted", "Status", "OK");
+                    }
+
+                }
+            }
         }
     }
 }

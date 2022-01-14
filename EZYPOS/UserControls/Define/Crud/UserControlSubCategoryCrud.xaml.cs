@@ -1,4 +1,6 @@
-﻿using DAL.Repository;
+﻿using Common.Session;
+using DAL.Repository;
+using EZYPOS.UserControls.Define.List;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,9 +70,7 @@ namespace EZYPOS.UserControls.Define.Crud
         }
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirmed = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to refresh page?", "Yes", "No");
-            if (Isconfirmed)
-            { RefreshPage(); }
+            RefreshPage();
         }
 
         private void txt_GotFocus(object sender, RoutedEventArgs e)
@@ -103,52 +103,43 @@ namespace EZYPOS.UserControls.Define.Crud
         }
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do You Want To Update This Record", "Yes", "NO");
-            if (isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    if (txtId.Text != "" && txtId.Text != "0")
+                    int Id = Convert.ToInt32(txtId.Text);
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        int Id = Convert.ToInt32(txtId.Text);
-                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                        var SubCategory = Db.ProductSubcategory.GetAll().Where(x => x.Id == Id).FirstOrDefault();
+                        if (SubCategory != null)
                         {
-                            var SubCategory = Db.ProductSubcategory.GetAll().Where(x => x.Id == Id).FirstOrDefault();
-                            if (SubCategory != null)
+                            if (!string.IsNullOrEmpty(txtFName.Text))
                             {
-                                if (!string.IsNullOrEmpty(txtFName.Text))
-                                {
-                                    SubCategory.SubcategoryName = txtFName.Text;
-                                    SubCategory.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
-                                }
-                                Db.Complete();
-                                EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
-                                RefreshPage();
+                                SubCategory.SubcategoryName = txtFName.Text;
+                                SubCategory.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
                             }
+                            Db.Complete();
+                            EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
+                            RefreshPage();
                         }
                     }
                 }
             }
-            
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Save Record?", "Yes", "No");
-            if (Isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-                    {
-                        DAL.DBMODEL.ProductSubcategory ProductSubcategory = new DAL.DBMODEL.ProductSubcategory();
-                        ProductSubcategory.SubcategoryName = txtFName.Text;
-                        ProductSubcategory.CategoryId =Convert.ToInt32(DDCategory.SelectedValue);
-                        Db.ProductSubcategory.Add(ProductSubcategory);
-                        Db.Complete();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
-                        RefreshPage();
-                    }
+                    DAL.DBMODEL.ProductSubcategory ProductSubcategory = new DAL.DBMODEL.ProductSubcategory();
+                    ProductSubcategory.SubcategoryName = txtFName.Text;
+                    ProductSubcategory.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
+                    Db.ProductSubcategory.Add(ProductSubcategory);
+                    Db.Complete();
+                    EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                    RefreshPage();
                 }
             }
         }
@@ -184,6 +175,11 @@ namespace EZYPOS.UserControls.Define.Crud
                 return false;
             }
             return true;
+        }
+
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlListSubCategory());
         }
     }
 }

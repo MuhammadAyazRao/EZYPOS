@@ -54,26 +54,26 @@ namespace EZYPOS.UserControls
             ActiveSession.NavigateToHome("");
         }
 
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
+        //private void Search_Click(object sender, RoutedEventArgs e)
+        //{
 
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {
-                if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
-                {
-                    myList = DB.ExpenceType.GetAll().ToList();
-                }
-                else
-                {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    myList = DB.ExpenceType.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
-                }
+        //    using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+        //    {
+        //        if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
+        //        {
+        //            myList = DB.ExpenceType.GetAll().ToList();
+        //        }
+        //        else
+        //        {
+        //            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+        //            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+        //            myList = DB.ExpenceType.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
+        //        }
 
-                ExpenceHeadGrid.ItemsSource = myList;
-            }
+        //        ExpenceHeadGrid.ItemsSource = myList;
+        //    }
 
-        }
+        //}
 
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
@@ -88,18 +88,17 @@ namespace EZYPOS.UserControls
                     if (filter == "")
                     {
                         myList = DB.ExpenceType.GetAll().ToList();
-                        ResetPaging(myList);
+                        
                     }
                     else
                     {
 
                         if (t.Name == "GridName")
                         {
-                            myList = DB.ExpenceType.GetAll().Where(x => x.ExpenceName.ToUpper().StartsWith(filter.ToUpper())).ToList();
-                            ResetPaging(myList);
+                            myList = DB.ExpenceType.GetAll().Where(x => x.ExpenceName.ToUpper().Contains(filter.ToUpper())).ToList();
                         }
                     }
-
+                    ResetPaging(myList);
                 }
             }
         }
@@ -135,6 +134,30 @@ namespace EZYPOS.UserControls
         {
             DAL.DBMODEL.ExpenceType ExpenceType = (DAL.DBMODEL.ExpenceType)ExpenceHeadGrid.SelectedItem;
             ActiveSession.CloseDisplayuserControlMethod(new UserControlExpenceHeadCrud(ExpenceType));
+        }
+
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            DAL.DBMODEL.ExpenceType ExpenceType = (DAL.DBMODEL.ExpenceType)ExpenceHeadGrid.SelectedItem;
+            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete This Record?", "Yes", "No");
+            if (Isconfirm)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    try
+                    {
+                        DB.ExpenceType.Delete(ExpenceType.Id);
+                        DB.ExpenceType.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        Refresh();
+                    }
+                    catch
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Selected Record Can't be Deleted", "Status", "OK");
+                    }
+
+                }
+            }
         }
     }
 }

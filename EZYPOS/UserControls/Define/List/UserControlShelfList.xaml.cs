@@ -65,25 +65,19 @@ namespace EZYPOS.UserControls.Define.List
                     if (filter == "")
                     {
                         myList = DB.Shelf.GetAll().ToList();
-                        ResetPaging(myList);
                     }
                     else
                     {
+                        if (t.Name == "GridName")
                         {
-                            {
-                                if (t.Name == "GridName")
-                                {
-                                    myList = DB.Shelf.GetAll().Where(x => x.ShelfName.ToUpper().StartsWith(filter.ToUpper())).ToList();
-                                    ResetPaging(myList);
-                                }
-                                if (t.Name == "GridCode")
-                                {
-                                    myList = DB.Shelf.GetAll().Where(x => x.ShelfCode.StartsWith(filter)).ToList();
-                                    ResetPaging(myList);
-                                }
-                                                            }
-                        };
+                            myList = DB.Shelf.GetAll().Where(x => x.ShelfName.ToUpper().Contains(filter.ToUpper())).ToList();
+                        }
+                        if (t.Name == "GridCode")
+                        {
+                            myList = DB.Shelf.GetAll().Where(x => x.ShelfCode.Contains(filter)).ToList();
+                        }
                     }
+                    ResetPaging(myList);
                 }
             }
 
@@ -128,5 +122,28 @@ namespace EZYPOS.UserControls.Define.List
             ActiveSession.CloseDisplayuserControlMethod(new UserControlShelfCrud(shlf));
         }
 
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            TblShelf shlf = (TblShelf)ShelfGrid.SelectedItem;
+            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete This Record?", "Yes", "No");
+            if (Isconfirm)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                {
+                    try
+                    {
+                        DB.Shelf.Delete(shlf.Id);
+                        DB.Shelf.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        Refresh();
+                    }
+                    catch
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Selected Record Can't be Deleted", "Status", "OK");
+                    }
+
+                }
+            }
+        }
     }
 }

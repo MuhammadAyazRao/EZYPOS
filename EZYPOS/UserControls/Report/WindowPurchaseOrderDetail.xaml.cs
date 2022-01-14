@@ -36,10 +36,18 @@ namespace EZYPOS.UserControls.Report
 
             using (UnitOfWork Db = new UnitOfWork(new EPOSDBContext()))
             {
-                var PurchaseOrderDetail = Db.PurchaseOrderDetail.GetAll().Where(x => x.PurchaseOrderId == PurchaseOrder.id).ToList();
+                List<PurchaseOrderDetailDTO> PurchaseOrderDetail = new List<PurchaseOrderDetailDTO>();
+                var Items = Db.PurchaseOrderDetail.GetAll().Where(x => x.PurchaseOrderId == PurchaseOrder.id).ToList();
+                string ItemName = "";
+                int? OrderTotal = 0;
+                foreach(var item in Items)
+                {
+                    ItemName = Db.Product.Get(item.ProductId).ProductName;
+                    OrderTotal += item.Total;
+                    PurchaseOrderDetail.Add(new PurchaseOrderDetailDTO { ItemName = ItemName, PurchasePrice = Convert.ToString(item.PurchasePrice), Qty = Convert.ToString(item.Qty), Total = Convert.ToString(item.Total) });
+                }
+                PurchaseOrderDetail.Add(new PurchaseOrderDetailDTO { ItemName = "-", PurchasePrice = "-", Qty = "Total", Total = Convert.ToString(OrderTotal) });
                 SaleOrderDetailGrid.ItemsSource = PurchaseOrderDetail;
-
-
             }
 
         }

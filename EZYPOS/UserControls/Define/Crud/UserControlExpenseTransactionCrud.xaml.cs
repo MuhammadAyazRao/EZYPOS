@@ -13,9 +13,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Common.Session;
 using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
+using EZYPOS.UserControls.Define.List;
+
 namespace EZYPOS.UserControls.Define.Crud
 {
     /// <summary>
@@ -56,12 +59,11 @@ namespace EZYPOS.UserControls.Define.Crud
             Delete.IsEnabled = false;
             Update.IsEnabled = false;
             Save.IsEnabled = true;
+            TransactionDate.SelectedDate = DateTime.Today;
             using (UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
             {
-                var expt = uw.ExpenceType.GetAll().ToList();
-                ddEType.ItemsSource = expt;
-                var user = uw.User.GetAll().ToList();
-                ddUser.ItemsSource = user;
+                ddEType.ItemsSource = uw.ExpenceType.GetAll().ToList();
+                ddEmployee.ItemsSource = uw.Employee.GetAll().ToList();
 
             }
             txtDescription.Text = "Description";
@@ -99,7 +101,7 @@ namespace EZYPOS.UserControls.Define.Crud
 
         }
 
-        private void ddUser_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ddEmployee_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
@@ -158,23 +160,19 @@ namespace EZYPOS.UserControls.Define.Crud
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Alert", "Do You Want To Update Record", "Yes", "No");
-            if (isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                using (UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
                 {
-                    using(UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
-                    {
-                        var ex= uw.expt.GetAll().Where(x=> x.Id == Convert.ToInt32(txtId.Text)).FirstOrDefault();
-                        ex.Discription = txtDescription.Text;
-                        ex.Amount = Convert.ToInt32(txtAmount.Text);
-                        ex.ExpenceType = Convert.ToInt32(ddEType.SelectedValue);
-                        ex.ExpenceDate = Convert.ToDateTime(TransactionDate.Text);
-                        uw.expt.Save();
-                        EZYPOS.View.MessageBox.ShowCustom("Your Record Updated Succesfully", "Message", "Ok");
-                        RefreshPage();
+                    var ex = uw.expt.GetAll().Where(x => x.Id == Convert.ToInt32(txtId.Text)).FirstOrDefault();
+                    ex.Discription = txtDescription.Text;
+                    ex.Amount = Convert.ToInt32(txtAmount.Text);
+                    ex.ExpenceType = Convert.ToInt32(ddEType.SelectedValue);
+                    ex.ExpenceDate = Convert.ToDateTime(TransactionDate.Text);
+                    uw.expt.Save();
+                    EZYPOS.View.MessageBox.ShowCustom("Your Record Updated Succesfully", "Message", "Ok");
+                    RefreshPage();
 
-                    }
                 }
             }
         }
@@ -196,25 +194,27 @@ namespace EZYPOS.UserControls.Define.Crud
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Alert", "Do You Want to Save Record", "Yes", "No");
-            if (isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                using (UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
                 {
-                    using(UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
-                    {
-                        ExpenceTransaction expt = new ExpenceTransaction();
-                        expt.Discription = txtDescription.Text;
-                        expt.Amount = Convert.ToInt32(txtAmount.Text);
-                        expt.ExpenceType = Convert.ToInt32(ddEType.SelectedValue);
-                        expt.ExpenceDate = Convert.ToDateTime(TransactionDate.Text);
-                        uw.expt.Add(expt);
-                        uw.expt.Save();
-                    }
-                    EZYPOS.View.MessageBox.ShowCustom("Your Record Saved Succesfully", "Message", "Ok");
-                    RefreshPage();
+                    ExpenceTransaction expt = new ExpenceTransaction();
+                    expt.Discription = txtDescription.Text;
+                    expt.Amount = Convert.ToInt32(txtAmount.Text);
+                    expt.ExpenceType = Convert.ToInt32(ddEType.SelectedValue);
+                    expt.EmployeeId = Convert.ToInt32(ddEmployee.SelectedValue);
+                    expt.ExpenceDate = Convert.ToDateTime(TransactionDate.Text);
+                    uw.expt.Add(expt);
+                    uw.expt.Save();
                 }
+                EZYPOS.View.MessageBox.ShowCustom("Your Record Saved Succesfully", "Message", "Ok");
+                RefreshPage();
             }
+        }
+
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlListExpenseTransaction());
         }
     }
 }

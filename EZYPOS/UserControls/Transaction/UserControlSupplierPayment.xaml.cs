@@ -1,4 +1,5 @@
-﻿using DAL.DBMODEL;
+﻿using Common.Session;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
 using System;
@@ -38,10 +39,11 @@ namespace EZYPOS.UserControls.Transaction
             Delete.IsEnabled = false;
             Update.IsEnabled = false;
             Save.IsEnabled = true;
+            TransactionDate.SelectedDate = DateTime.Today;
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 DDSupplier.ItemsSource = Db.Supplier.GetAll().ToList();
-                DDPayedBy.ItemsSource = Db.User.GetAll().ToList();
+                DDPayedBy.ItemsSource = Db.Employee.GetAll().ToList();
             }
             txtDiscription.Text = "Discription";
             txtDiscription.Foreground = Brushes.Gray;
@@ -74,13 +76,13 @@ namespace EZYPOS.UserControls.Transaction
                     TransactionDate.Text = Convert.ToString(SupplierPaymentData?.TransactionDate);
                     
                 }
-                if (!string.IsNullOrEmpty(Convert.ToString(SupplierPaymentData?.PayedBy)))
+                if (!string.IsNullOrEmpty(Convert.ToString(SupplierPaymentData?.EmployeeId)))
                 {
-                    DDPayedBy.SelectedValue = SupplierPaymentData?.PayedBy;
+                    DDPayedBy.SelectedValue = SupplierPaymentData?.EmployeeId;
                 }
-                if (!string.IsNullOrEmpty(Convert.ToString(SupplierPaymentData?.Supplier)))
+                if (!string.IsNullOrEmpty(Convert.ToString(SupplierPaymentData?.SupplierId)))
                 {
-                    DDSupplier.SelectedValue = SupplierPaymentData?.Supplier;
+                    DDSupplier.SelectedValue = SupplierPaymentData?.SupplierId;
                 }
 
                 txtId.Text = SupplierPaymentData.Id.ToString();
@@ -196,58 +198,48 @@ namespace EZYPOS.UserControls.Transaction
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Update Record?", "Yes", "No");
-            if (Isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    if (txtId.Text != "" && txtId.Text != "0")
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        using(UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-                        {
-                            SupplierPayment sp = Db.SupplierPayment.Get(Convert.ToInt32(txtId.Text));
-                            sp.Amount = Convert.ToInt32(txtAmount.Text);
-                            sp.Discription = txtDiscription.Text;
-                            sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
-                            sp.PayedBy = Convert.ToInt32(DDPayedBy.SelectedValue);
-                            sp.Supplier = Convert.ToInt32(DDSupplier.SelectedValue);
-                            Db.SupplierPayment.Save();
-                            EZYPOS.View.MessageBox.ShowCustom("Your Record Updated Succesfully", "Message", "Ok");
-                            RefreshPage();
-                        }
+                        SupplierPayment sp = Db.SupplierPayment.Get(Convert.ToInt32(txtId.Text));
+                        sp.Amount = Convert.ToInt32(txtAmount.Text);
+                        sp.Discription = txtDiscription.Text;
+                        sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
+                        sp.EmployeeId = Convert.ToInt32(DDPayedBy.SelectedValue);
+                        sp.SupplierId = Convert.ToInt32(DDSupplier.SelectedValue);
+                        Db.SupplierPayment.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Your Record Updated Succesfully", "Message", "Ok");
+                        RefreshPage();
                     }
                 }
             }
-
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Save Record?", "Yes", "No");
-            if (Isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                 {
-                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
-                    {
-                        SupplierPayment sp = new SupplierPayment();
-                        sp.Discription = txtDiscription.Text;
-                        sp.Amount = Convert.ToInt32(txtAmount.Text);
-                        sp.PayedBy = Convert.ToInt32(DDPayedBy.SelectedValue);
-                        sp.Supplier = Convert.ToInt32(DDSupplier.SelectedValue);
-                        sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
-                        sp.CreatedOn = DateTime.Now;
-                        DB.SupplierPayment.Add(sp);
-                        DB.SupplierPayment.Save();
+                    SupplierPayment sp = new SupplierPayment();
+                    sp.Discription = txtDiscription.Text;
+                    sp.Amount = Convert.ToInt32(txtAmount.Text);
+                    sp.EmployeeId = Convert.ToInt32(DDPayedBy.SelectedValue);
+                    sp.SupplierId = Convert.ToInt32(DDSupplier.SelectedValue);
+                    sp.TransactionDate = TransactionDate.SelectedDate;
+                    sp.CreatedOn = DateTime.Today;
+                    DB.SupplierPayment.Add(sp);
+                    DB.SupplierPayment.Save();
 
-                        EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
-                        RefreshPage();
-
-                    }
+                    EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                    RefreshPage();
 
                 }
-            }
 
+            }
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
@@ -299,6 +291,11 @@ namespace EZYPOS.UserControls.Transaction
             
 
             return true;
+        }
+
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveSession.CloseDisplayuserControlMethod(new SupplierPaymentList());
         }
     }
 }

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EZYPOS.UserControls.Transaction"
              mc:Ignorable="d" 
+             Language="en-OM"
                     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              Name="odr" d:DesignWidth="927.063" d:DesignHeight="571.643">
     <UserControl.Resources>
@@ -96,8 +97,8 @@
         <DataTemplate x:Key="ExpenderHeaderTemp" DataType="Expander">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
                     <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="60"/>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="100"/>
@@ -107,28 +108,32 @@
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="0"/>
                 </Grid.RowDefinitions>
-                <Label Grid.Column="0" Margin="5 0 0 0" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" Foreground="White" Name="lblOrderType" Content="{Binding PaymentType}" FontSize="12">
+                <Label Grid.Column="0" Grid.Row="0" Margin="5 0 0 0" Height="30" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontWeight="Bold" Foreground="White" Name="lblOrderType" Content="{Binding ShopName}" FontSize="12">
                     <Label.Style>
                         <Style TargetType="Label">
                             <Setter Property="Background" Value="{DynamicResource Info}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding PaymentType}" Value="Cash">
+                            <!--<Style.Triggers>
+                                <DataTrigger Binding="{Binding PaymentType}" Value="CASH">
                                     <Setter Property="Background" Value="Salmon"/>
                                 </DataTrigger>
-                                <!--<DataTrigger Binding="{Binding delivery_type}" Value="waiting">
+                                -->
+                            <!--<DataTrigger Binding="{Binding delivery_type}" Value="waiting">
                                     <Setter Property="Background" Value="{DynamicResource Success}"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding delivery_type}" Value="eatinn">
                                     <Setter Property="Background" Value="{DynamicResource DarkBlue}"/>
                                 </DataTrigger>-->
-                            </Style.Triggers>
+                            <!--
+                            </Style.Triggers>-->
                         </Style>
                     </Label.Style>
                 </Label>
-                <Label Grid.Column="1" Grid.Row="0" Margin="0 10 0 0" ContentStringFormat="C" FontWeight="Bold" HorizontalContentAlignment="Left" Content="{Binding OrderCount}" FontSize="12">
+                <Label Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" Margin="0 10 0 0" ContentStringFormat="C" FontWeight="Bold" HorizontalContentAlignment="Left" Content="{Binding Discount}" FontSize="12">
                 </Label>
-                <Label Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="0" Margin="0 10 0 0" Content="{Binding OrderCount}" FontWeight="Bold" Foreground="Gray"  HorizontalContentAlignment="Left" FontSize="10"/>
+                <Label Grid.Column="1"  Grid.Row="0" Margin="0 10 0 0" Content="{Binding OrderId}" FontWeight="Bold" Foreground="Gray"  HorizontalContentAlignment="Left" FontSize="10"/>
                 <Label Grid.Column="3" Grid.ColumnSpan="2" Grid.Row="0" Margin="0 10 0 0" Content="{Binding OrderDate}" FontWeight="Bold" Foreground="Gray" ContentStringFormat="dd/MM/yyyy hh:mm tt" HorizontalContentAlignment="Left" FontSize="10"/>
+
+                <Label Grid.Column="5" Grid.ColumnSpan="1" Grid.Row="0" Margin="0 10 0 0" Content="{Binding payment_status}" FontWeight="Bold" Foreground="Gray"  HorizontalContentAlignment="Left" FontSize="10"/>
                 <!--<Image Margin="10 0 0 0" Grid.Column="0" Grid.Row="1" Width="20" HorizontalAlignment="Left" Source="icons\chronometer.png"/>
                 <Label Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Name="lblPreOrder" HorizontalContentAlignment="Left" HorizontalAlignment="Right" VerticalContentAlignment="Center" Width="95">
                     <Label.Style>
@@ -297,90 +302,48 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <!--ListBox Hold-->
-            <ListBox Visibility="Collapsed" ItemsSource="{Binding Hold}" SelectedValue="{Binding SelectedQueue}" ItemContainerStyle="{DynamicResource queueStyle}" x:Name="listOrderHold" BorderThickness="0" Background="{DynamicResource Gray}" Grid.ColumnSpan="3">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Expander Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Header="{Binding}" HeaderTemplate="{DynamicResource ExpenderHeaderTemp}">
-                            <StackPanel>
-                                <Grid>
-                                    <Button Content="Delete" Style="{DynamicResource btnDanger}" Margin="0 0 10 5" Height="40" Width="110" HorizontalAlignment="Right"/>
-                                    <Button Content="Resume" Click="btnResume_Click" Style="{DynamicResource btnInfo}" Height="40" Width="110" Margin="0 -3 130 0" HorizontalAlignment="Right"/>
-                                </Grid>
-                            </StackPanel>
-                        </Expander>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
 
-            <!--listBox order complete-->
-            <ListBox Visibility="Collapsed" ItemsSource="{Binding Complete}" SelectedValue="{Binding SelectedQueue}" ItemContainerStyle="{DynamicResource queueStyle}" x:Name="listOrderCompleted" BorderThickness="0" Background="{DynamicResource Gray}" Grid.ColumnSpan="3">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Expander Margin="10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Header="{Binding}" HeaderTemplate="{DynamicResource ExpenderHeaderTemp}">
-                            <StackPanel>
-                            </StackPanel>
-                        </Expander>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
 
             <Grid Height="135" VerticalAlignment="Top" Background="{DynamicResource Gray}" Margin="0.5,-53,0,0" Grid.ColumnSpan="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="15*"/>
-                    <ColumnDefinition Width="150*"/>
-                    <ColumnDefinition Width="110*"/>
-                    <ColumnDefinition Width="135*"/>
-                    <ColumnDefinition Width="128*"/>
-                    <ColumnDefinition Width="131*"/>
-                    <ColumnDefinition Width="134*"/>
-                    <ColumnDefinition Width="104*"/>
+                    <ColumnDefinition Width="130*"/>
+                    <ColumnDefinition Width="130*"/>
+                    <ColumnDefinition Width="130*"/>
+                    <ColumnDefinition Width="130*"/>
+                    <ColumnDefinition Width="130*"/>
+                    <ColumnDefinition Width="130*"/>
                     <ColumnDefinition Width="15*"/>
                 </Grid.ColumnDefinitions>
-                <ComboBox 
-                    SelectedValue="{Binding OrderType}"
-                    Padding="10"
-                    SelectedIndex="0"
-                    FontSize="15"
-                    FontWeight="Bold" 
-                    VerticalAlignment="Top"
-                    Margin="5,10,5,0"
-                    Height="50" Grid.Row="0"
-                    Grid.Column="1">
-                    <ComboBoxItem Content="Type"/>
-                    <ComboBoxItem Content="Collected"/>
-                    <ComboBoxItem Content="Waiting"/>
-                    <ComboBoxItem Content="Delivery"/>
-                    <ComboBoxItem Content="Eat-In"/>
-                </ComboBox>
-                <Button Command="{Binding ShowDaySummaryCommand}" Style="{DynamicResource btnPrimery}" FontSize="10" Margin="5,80,5,0" VerticalAlignment="Top" Width="Auto" Height="50" Grid.Row="1" Grid.Column="1">
-                    <TextBlock Text="Day Summary" TextAlignment="Center" TextWrapping="Wrap"/>
-                </Button>
-                <ComboBox  Name="cbxOrderTaker" SelectedItem="{Binding OdrTaker}" ItemsSource="{Binding OrderTaker}" SelectedIndex="0" Padding="10" DisplayMemberPath="username" FontSize="15" FontWeight="Bold" VerticalAlignment="Top" Margin="5,10,5,0" Height="50" Grid.Row="0" Grid.Column="2"/>
-                <ComboBox Name="cbtables" SelectedItem="{Binding flor_tables}" ItemsSource="{Binding floortable}" SelectedIndex="0" Padding="10" DisplayMemberPath="name"  FontSize="15" FontWeight="Bold" VerticalAlignment="Top" Margin="5,10,5,0" Height="50" Grid.Column="3" />
-                <TextBox Name="txtPhostcode" FontSize="12" VerticalContentAlignment="Center" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Padding="8" Template="{DynamicResource TextBoxBaseControlTemplate}" Height="50" Margin="5,80,5,0" Text="{Binding Postcode, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" Grid.Row="1" Grid.Column="3" VerticalAlignment="Top"/>
-                <ComboBox SelectedItem="{Binding CashType}" FontSize="15" Padding="10" FontWeight="Bold" SelectedIndex="0" VerticalAlignment="Top" Margin="5,10,5,0" Height="50" Grid.Column="5">
+
+                <ComboBox  Name="ddSupplier" DisplayMemberPath="Name" SelectedValuePath="Id" Grid.Row="0" Grid.Column="1" Margin="10,10,10,10" materialDesign:HintAssist.Hint="Search Supplier" materialDesign:HintAssist.HintOpacity=".26" IsEditable="True"/>
+                <ComboBox  Name="ddPaymentStatus" Margin="10,10,10,10" Grid.Row="0" Grid.Column="2" materialDesign:HintAssist.Hint="Search Payment Status" materialDesign:HintAssist.HintOpacity=".26">
                     <ComboBoxItem Content="All"/>
                     <ComboBoxItem Content="Paid"/>
+                    
+                </ComboBox>
+                <ComboBox Name="ddPaymentMode" Margin="10,10,10,10"  Grid.Column="3" materialDesign:HintAssist.Hint="Search PaymentMode" materialDesign:HintAssist.HintOpacity=".26">
+                    <ComboBoxItem Content="All"/>
+                    <ComboBoxItem Content="Credit"/>
                     <ComboBoxItem Content="Cash"/>
                 </ComboBox>
-                <TextBox PreviewTextInput="txtOrderNum_PreviewTextInput" x:Name="txtOrderNum" Text="{Binding OrderNo, UpdateSourceTrigger=PropertyChanged}" FontSize="12" VerticalContentAlignment="Center" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Padding="8" Template="{DynamicResource TextBoxBaseControlTemplate}" Height="50" Margin="5,80,5,0"  Foreground="Gray" VerticalAlignment="Top" Grid.Row="1" Grid.Column="2"/>
-                <Button Content="Search" Command="{Binding SearchCommand}" Width="Auto" Margin="5,10,5,0" Style="{DynamicResource btnPrimery}" Height="50" VerticalAlignment="Top" Grid.Column="6" Grid.ColumnSpan="2"/>
-                <TextBox Name="txtPhone" VerticalContentAlignment="Center" KeyDown="txtPhone_KeyDown" FontSize="12" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Padding="8" Template="{DynamicResource TextBoxBaseControlTemplate}" Height="50" Margin="5,10,5,0" TextWrapping="Wrap" Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" VerticalAlignment="Top" Grid.Column="4" />
-                <!-- My system <TextBox Name="txtPhone" KeyDown="txtPhone_KeyDown" FontSize="16" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Padding="8" Template="{DynamicResource TextBoxBaseControlTemplate}" Height="50" Margin="91,10,74.8,0" TextWrapping="Wrap" Text="{Binding Phone, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" VerticalAlignment="Top" Grid.Column="4" Grid.ColumnSpan="2"/>-->
-                <ComboBox SelectedItem="{Binding Inshop_online_Type}" FontSize="15" Padding="5" FontWeight="Bold" SelectedIndex="0" VerticalAlignment="Top" Margin="5,80,5,0" Height="50" Grid.Column="4" >
-                    <ComboBoxItem Content="All"/>
-                    <ComboBoxItem Content="offline"/>
-                    <ComboBoxItem Content="online"/>
-                </ComboBox>
-                <!--<ToggleButton Margin="15,80,0,0" Content="In-Shop" Template="{DynamicResource btnToggle}" Command="{Binding offlineordercommand}"  Style="{DynamicResource btnToggleStyle}" Height="40" VerticalAlignment="Top" Grid.Column="4"/>
-                <ToggleButton Margin="9,80,5,0" Content="Online" Command="{Binding Onlineordercommand}" Template="{DynamicResource btnToggle}" Style="{DynamicResource btnToggleStyle}" Height="40" VerticalAlignment="Top" Grid.Column="5"/>-->
-                <Button Command="{Binding HideOrdersCommand}" Content="Hide All Orders" Style="{DynamicResource btnPrimery}" FontSize="10" Margin="5,80,5,0" VerticalAlignment="Top" Width="Auto" Height="50" Grid.Column="6" Grid.ColumnSpan="2" Click="Button_Click"/>
-                <Button Command="{Binding ShowOrderCommand}" Style="{DynamicResource btnPrimery}" FontSize="10" Margin="5,80,5,0" VerticalAlignment="Top" Width="Auto" Height="50" Grid.Column="5">
+
+
+                <DatePicker Name="StartDate" Grid.Row="0"  DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"   Grid.Column="4"  materialDesign:HintAssist.Hint="Start Date" Margin="5,30,5,0" VerticalAlignment="Top"  Style="{StaticResource MaterialDesignDatePicker}" />
+                <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="0" Grid.Column="5"  materialDesign:HintAssist.Hint="End Date" Margin="5,30,0,0" VerticalAlignment="Top"  Style="{StaticResource MaterialDesignDatePicker}" />
+                <TextBox PreviewTextInput="txtOrderNum_PreviewTextInput" x:Name="txtOrderNum" Text="Order No" FontSize="12" VerticalContentAlignment="Center" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Padding="8" Template="{DynamicResource TextBoxBaseControlTemplate}" Height="50" Margin="5,10,5,0"  Foreground="Gray" VerticalAlignment="Top" Grid.Row="0" Grid.Column="6"/>
+                <Button Name="Search" Content="Search" Click="Search_Click"  Width="Auto" Margin="5,10,5,0" Style="{DynamicResource btnPrimery}" Height="50" VerticalAlignment="Top" Grid.Row="1" Grid.Column="5" Grid.ColumnSpan="2" />
+                <Button Name="btnRefresh" Content="Refresh" Click="btnRefresh_Click"  Width="Auto" Margin="5,10,5,0" Style="{DynamicResource btnPrimery}" Height="50" VerticalAlignment="Top" Grid.Row="1" Grid.Column="3" />
+                <Button Name="btnShowTodaysOrders" Click="btnShowTodaysOrders_Click"  Style="{DynamicResource btnPrimery}" FontSize="10" Margin="5,10,5,0" VerticalAlignment="Top" Width="Auto" Height="50" Grid.Row="1" Grid.Column="4">
                     <Button.Content>
                         <TextBlock Text="Show Today's Orders" TextAlignment="Center" TextWrapping="Wrap"/>
                     </Button.Content>
                 </Button>
+
             </Grid>
         </Grid>
         <Border HorizontalAlignment="Right"  VerticalAlignment="Top" Visibility="{Binding LoaderVisibility}" Width="52" Height="48"/>

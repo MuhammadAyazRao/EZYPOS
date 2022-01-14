@@ -38,41 +38,7 @@ namespace EZYPOS.UserControls.Report
             ResetPaging(myList);
            
         }
-        private void txt_GotFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox tb = sender as TextBox;
-            switch (tb.Text)
-            {
-                case "Search Product":
-                    tb.Text = string.Empty;
-                    tb.Foreground = Brushes.Black;
-                    break;
-                
-
-            }
-        }
-
-        private void txt_LostFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox tb = sender as TextBox;
-            switch (tb.Name)
-            {
-                case "txtSearch":
-                    if (tb.Text == string.Empty)
-                    {
-                        tb.Text = "Search Product";
-                        tb.Foreground = Brushes.Gray;
-                    }
-                    break;
-                
-
-            }
-        }
-
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
         #region Pagination
 

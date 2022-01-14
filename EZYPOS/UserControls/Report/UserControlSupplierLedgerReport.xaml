@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EZYPOS.UserControls.Report" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-              d:DesignHeight="1024" Name="SupplierLedgerReport" d:DesignWidth="768">
+              d:DesignHeight="1024" Name="SupplierLedger" d:DesignWidth="768">
     <UserControl.Resources>
         <Style TargetType="{x:Type DataGrid}">
             <Setter Property="AlternationCount" Value="2" />
@@ -44,6 +44,7 @@
             </Setter>
             <Setter Property="Height" Value="40"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5" />
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="{x:Null}"/>
@@ -94,11 +95,10 @@
             <DatePicker Name="StartDate" Grid.Row="1"  DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"   Grid.Column="0"  materialDesign:HintAssist.Hint="Start Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="1" Grid.Column="1"  materialDesign:HintAssist.Hint="End Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click"  Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />
-            <Label Content="Supplier Ledger Report" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Grid.Row="0" Grid.Column="0" Margin="10,15,0,0"/>
+            <Label Content="Supplier Ledger Report" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Grid.Row="0" Grid.Column="0" Margin="20,15,0,0"/>
         </Grid>
-        <Border x:Name="label" Grid.Row="1">
-            <DataGrid Name="SupplierLedgerGrid"                     
-                      Margin="5,0,5,0"
+        <Border x:Name="label" Grid.Row="1" Margin="20,0,20,0">
+            <DataGrid Name="SupplierLedgerGrid"
                       RowHeaderWidth="0"
                       HorizontalGridLinesBrush="{DynamicResource Gray}"
                       AutoGenerateColumns="False"
@@ -135,7 +135,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox materialDesign:HintAssist.Hint="Date"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridDate" Width="100"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" IsReadOnly="True" x:Name="GridDate" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
@@ -145,7 +145,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox materialDesign:HintAssist.Hint="Transaction Type"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridTransactionType" Width="100"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" IsReadOnly="True" x:Name="GridTransactionType" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
@@ -155,7 +155,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox materialDesign:HintAssist.Hint="Detail"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridDetail" Width="100"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" IsReadOnly="True" x:Name="GridDetail" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
@@ -165,7 +165,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox materialDesign:HintAssist.Hint="CR"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridCR" Width="100"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" IsReadOnly="True" x:Name="GridCR" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
@@ -176,7 +176,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox materialDesign:HintAssist.Hint="DR"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridDR" Width="100"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" IsReadOnly="True" x:Name="GridDR" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
@@ -187,7 +187,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox materialDesign:HintAssist.Hint="Balance"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridBalance" Width="100"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" IsReadOnly="True" x:Name="GridBalance" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>

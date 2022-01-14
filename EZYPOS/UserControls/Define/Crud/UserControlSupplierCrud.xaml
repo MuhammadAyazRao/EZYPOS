@@ -89,10 +89,11 @@
                 </ComboBox>
             </Grid>
         </Border>
-        <Button  Content="{materialDesign:PackIcon Kind=Refresh,Size=50}" Name="Refresh" Click="Refresh_Click"  Style="{DynamicResource btnTile}" Grid.Row="1" Margin="50,0,0,0" HorizontalAlignment="Left" Width="100" ToolTip="Refresh" />
-        <Button  Content="{materialDesign:PackIcon Kind=Pencil,Size=50}" Name="Update" Click="Update_Click" Style="{DynamicResource btnInfo}" HorizontalAlignment="Left" Grid.Row="1" Margin="300,0,0,0" Width="100"   ToolTip="Edit"  />
-        <Button  Content="{materialDesign:PackIcon Kind=Delete,Size=50}" Name="Delete" Click="Delete_Click" BorderThickness="0"  Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Grid.Row="1" Margin="175,0,0,0" Width="100"  ToolTip="Delete" />
-        <Button  Content="{materialDesign:PackIcon Kind=ContentSave,Size=50}" Name="Save" Click="Save_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left" Grid.Row="1" Margin="430,0,0,0" Width="100"  ToolTip="Save" />
+        <Button  Content="{materialDesign:PackIcon Kind=FormatListNumbers,Size=50}" Name="List" Click="List_Click"  Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Left" Grid.Row="1" Margin="50,0,0,0" Width="100"  ToolTip="Back to List" />
+        <Button  Content="{materialDesign:PackIcon Kind=Refresh,Size=50}" Name="Refresh" Click="Refresh_Click"  Style="{DynamicResource btnTile}" Grid.Row="1" Margin="175,0,0,0" HorizontalAlignment="Left" Width="100" ToolTip="Refresh" />
+        <Button  Content="{materialDesign:PackIcon Kind=Pencil,Size=50}" Name="Update" Click="Update_Click" Style="{DynamicResource btnInfo}" HorizontalAlignment="Left" Grid.Row="1" Margin="430,0,0,0" Width="100"   ToolTip="Edit"  />
+        <Button  Content="{materialDesign:PackIcon Kind=Delete,Size=50}" Name="Delete" Click="Delete_Click" BorderThickness="0"  Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Grid.Row="1" Margin="300,0,0,0" Width="100"  ToolTip="Delete" />
+        <Button  Content="{materialDesign:PackIcon Kind=ContentSave,Size=50}" Name="Save" Click="Save_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left" Grid.Row="1" Margin="560,0,0,0" Width="100"  ToolTip="Save" />
         <Label x:Name="lblTitleDetails" Content="Supplier Details" Foreground="{DynamicResource DarkBlue}" HorizontalAlignment="Left" Margin="18,26,0,0" Grid.Row="0" VerticalAlignment="Top" Width="245" Height="24"/>
         
 

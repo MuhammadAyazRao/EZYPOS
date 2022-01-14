@@ -274,7 +274,11 @@ namespace EZYPOS
             UserControlPurchaseOrderReport PurchaseOrderReport = new UserControlPurchaseOrderReport();
             ActiveSession.DisplayuserControlMethod(PurchaseOrderReport);
         }
-
+        private void ExpenseReport_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlExpenseReport ExpenseReport = new UserControlExpenseReport();
+            ActiveSession.DisplayuserControlMethod(ExpenseReport);
+        }
         private void Backup_Click(object sender, RoutedEventArgs e)
         {
             UserControlDatabaseBackup Backup = new UserControlDatabaseBackup();
@@ -362,6 +366,30 @@ namespace EZYPOS
         {
             UserControlProductLedgerReport ProductLedgerReport = new UserControlProductLedgerReport();
             ActiveSession.DisplayuserControlMethod(ProductLedgerReport);
+        }
+
+        private void CustomerBalance_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlCustomerBalanceReport CustomerBalance = new UserControlCustomerBalanceReport();
+            ActiveSession.DisplayuserControlMethod(CustomerBalance);
+        }
+
+        private void SupplierBalance_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlSupplierBalanceReport SupplierBalance = new UserControlSupplierBalanceReport();
+            ActiveSession.DisplayuserControlMethod(SupplierBalance);
+        }
+
+        private void ItemWiseSale_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlItemWiseSaleReport ItemWiseSale = new UserControlItemWiseSaleReport();
+            ActiveSession.DisplayuserControlMethod(ItemWiseSale);
+        }
+
+        private void EmployeeWiseSaleReport_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlEmployeeWiseSaleReport EmployeeWiseSale = new UserControlEmployeeWiseSaleReport();
+            ActiveSession.DisplayuserControlMethod(EmployeeWiseSale);
         }
     }
 }

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,7 +39,7 @@ namespace EZYPOS.UserControls.Define.List
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                myList = DB.Product.GetAll().Select(x => new ProductDTO { Id = x.Id, ProductName = x.ProductName, Barcode=x.Barcode, RetailPrice=x.RetailPrice,Wholesaleprice=x.Wholesaleprice,PurchasePrice=x.PurchasePrice,CategoryName=x.Category.Name,SubcategoryName=x.Subcategory.SubcategoryName}).ToList();                
+                myList = DB.Product.GetAll().Select(x => new ProductDTO { Id = x.Id, ProductName = x.ProductName, Size= x.Size.ToString(), Unit=x.UnitNavigation.Name, Barcode=x.Barcode, RetailPrice=x.RetailPrice,Wholesaleprice=x.Wholesaleprice,PurchasePrice=x.PurchasePrice,CategoryName=x.Category.Name,SubcategoryName=x.Subcategory.SubcategoryName}).ToList();                
                 ResetPaging(myList);
             }
         }     
@@ -48,22 +49,22 @@ namespace EZYPOS.UserControls.Define.List
             ActiveSession.CloseDisplayuserControlMethod(new UserControlProductCrud());
 
         }
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
-            using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
-            {
-                myList = DB.Product.GetAll().Select(x => new ProductDTO { Id = x.Id, ProductName = x.ProductName, Barcode = x.Barcode, RetailPrice = x.RetailPrice, Wholesaleprice = x.Wholesaleprice, PurchasePrice = x.PurchasePrice, CategoryName = x.Category.Name, SubcategoryName = x.Subcategory.SubcategoryName }).ToList();
+        //private void Search_Click(object sender, RoutedEventArgs e)
+        //{
+        //    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+        //    {
+        //        myList = DB.Product.GetAll().Select(x => new ProductDTO { Id = x.Id, ProductName = x.ProductName, Barcode = x.Barcode, RetailPrice = x.RetailPrice, Wholesaleprice = x.Wholesaleprice, PurchasePrice = x.PurchasePrice, CategoryName = x.Category.Name, SubcategoryName = x.Subcategory.SubcategoryName }).ToList();
 
-                if (StartDate.SelectedDate != null && EndDate.SelectedDate != null)
-                {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    myList = myList.Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
-                }
-                MainGrid.ItemsSource = myList;
-            }
+        //        if (StartDate.SelectedDate != null && EndDate.SelectedDate != null)
+        //        {
+        //            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+        //            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+        //            myList = myList.Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
+        //        }
+        //        MainGrid.ItemsSource = myList;
+        //    }
 
-        }
+        //}
 
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
@@ -73,11 +74,10 @@ namespace EZYPOS.UserControls.Define.List
                 string filter = t.Text;
                 using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-                    myList = DB.Product.GetAll().Select(x => new ProductDTO { Id = x.Id, ProductName = x.ProductName, Barcode = x.Barcode, RetailPrice = x.RetailPrice, Wholesaleprice = x.Wholesaleprice, PurchasePrice = x.PurchasePrice, CategoryName = x.Category.Name, SubcategoryName = x.Subcategory.SubcategoryName }).ToList();
+                    myList = DB.Product.GetAll().Select(x => new ProductDTO { Id = x.Id, ProductName = x.ProductName, Size = x.Size.ToString(), Unit = x.UnitNavigation.Name, Barcode = x.Barcode, RetailPrice = x.RetailPrice, Wholesaleprice = x.Wholesaleprice, PurchasePrice = x.PurchasePrice, CategoryName = x.Category.Name, SubcategoryName = x.Subcategory.SubcategoryName }).ToList();
 
                     if (filter == "")
                     {
-
                         ResetPaging(myList);
                     }
                     else
@@ -89,6 +89,14 @@ namespace EZYPOS.UserControls.Define.List
                         if (t.Name == "GridProductName")
                         {
                             myList = myList.Where(x => x.ProductName.ToUpper().Contains(filter.ToUpper())).ToList();                          
+                        }
+                        if (t.Name == "GridSize")
+                        {
+                            myList = myList.Where(x => x.Size.Contains(filter)).ToList();
+                        }
+                        if (t.Name == "GridUnit")
+                        {
+                            myList = myList.Where(x => x.Unit.ToUpper().Contains(filter.ToUpper())).ToList();
                         }
 
                         if (t.Name == "GridRetailPrice")
@@ -158,7 +166,36 @@ namespace EZYPOS.UserControls.Define.List
             PageInfo.Content = Pager.PageNumberDisplay(myList);
         }
 
-        
+
         #endregion
+        private void txtNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            EZYPOS.DTO.ProductDTO Product = (EZYPOS.DTO.ProductDTO)MainGrid.SelectedItem;
+            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete This Record?", "Yes", "No");
+            if (Isconfirm)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                {
+                    try
+                    {
+                        DB.Product.Delete(Product.Id);
+                        DB.Product.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        Refresh();
+                    }
+                    catch
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Selected Record Can't be Deleted", "Status", "OK");
+                    }
+
+                }
+            }
+        }
     }
 }

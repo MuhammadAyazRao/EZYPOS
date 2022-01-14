@@ -58,23 +58,23 @@ namespace EZYPOS.UserControls
             ActiveSession.NavigateToHome("");
         }
 
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
+        //private void Search_Click(object sender, RoutedEventArgs e)
+        //{
 
-            using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
-            {
-                myList = DB.Supplier.GetAll().Select(x => new SupplierDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress, Createdon = x.Createdon }).ToList();
+        //    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+        //    {
+        //        myList = DB.Supplier.GetAll().Select(x => new SupplierDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress, Createdon = x.Createdon }).ToList();
 
-                if (StartDate.SelectedDate != null && EndDate.SelectedDate != null)
-                {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    myList = myList.Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
-                }
-                SupplierGrid.ItemsSource = myList;
-            }
+        //        if (StartDate.SelectedDate != null && EndDate.SelectedDate != null)
+        //        {
+        //            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+        //            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+        //            myList = myList.Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
+        //        }
+        //        SupplierGrid.ItemsSource = myList;
+        //    }
 
-        }
+        //}
       
 
         private void edit_Click(object sender, RoutedEventArgs e)
@@ -100,34 +100,25 @@ namespace EZYPOS.UserControls
 
                         if (t.Name == "GridName")
                         {
-                            return List.Name.ToUpper().StartsWith(filter.ToUpper());
-                            // return (p.bill_name.ToUpper().StartsWith(filter.ToUpper()) || p.bill_surname.ToUpper().StartsWith(filter.ToUpper()));
+                            return List.Name.ToUpper().Contains(filter.ToUpper());
                         }
                         if (t.Name == "GridContact")
                         {
-                            return List.PhoneNo.ToUpper().StartsWith(filter.ToUpper());
-                            // return (p.bill_name.ToUpper().StartsWith(filter.ToUpper()) || p.bill_surname.ToUpper().StartsWith(filter.ToUpper()));
+                            return List.PhoneNo.ToUpper().Contains(filter.ToUpper());
                         }
                         if (t.Name == "GridCity")
                         {
-                            return List.City.ToUpper().StartsWith(filter.ToUpper());
-                            // return (p.bill_name.ToUpper().StartsWith(filter.ToUpper()) || p.bill_surname.ToUpper().StartsWith(filter.ToUpper()));
+                            return List.City.ToUpper().Contains(filter.ToUpper());
                         }
                         if (t.Name == "GridAdress")
                         {
-                            return List.Adress.ToUpper().StartsWith(filter.ToUpper());
-                            // return (p.bill_name.ToUpper().StartsWith(filter.ToUpper()) || p.bill_surname.ToUpper().StartsWith(filter.ToUpper()));
+                            return List.Adress.ToUpper().Contains(filter.ToUpper());
                         }
                         else
                         {
                             return true;
                         }
-                        //else if (t.Name == "GridContact")
-                        //{
-                        //   // return (p.bill_phone.ToUpper().StartsWith(filter.ToUpper()));
-                        //}
-
-
+                        
                     };
                 }
             }
@@ -164,8 +155,31 @@ namespace EZYPOS.UserControls
             PageInfo.Content = Pager.PageNumberDisplay(myList);
         }
 
-       
+
         #endregion
 
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            EZYPOS.DTO.SupplierDTO SupplierDTO = (EZYPOS.DTO.SupplierDTO)SupplierGrid.SelectedItem;
+            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete This Record?", "Yes", "No");
+            if (Isconfirm)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                {
+                    try
+                    {
+                        DB.Supplier.Delete(SupplierDTO.Id);
+                        DB.Supplier.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        Refresh();
+                    }
+                    catch
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Selected Record Can't be Deleted", "Status", "OK");
+                    }
+
+                }
+            }
+        }
     }
 }

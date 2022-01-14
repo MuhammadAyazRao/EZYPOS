@@ -12,7 +12,7 @@ namespace EZYPOS.DTO
         public int Amount { get; set; }
         public string Discription { get; set; }
         public DateTime TransactionDate { get; set; }
-        public string CustomerID { get; set; }
-        public string ReceivedBy { get; set; }
+        public string Customer { get; set; }
+        public string Employee { get; set; }
     }
 }

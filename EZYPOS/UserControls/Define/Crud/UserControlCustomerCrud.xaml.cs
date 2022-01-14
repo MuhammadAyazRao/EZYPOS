@@ -215,28 +215,24 @@ namespace EZYPOS.UserControls
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Save Record?", "Yes", "No");
-            if (Isconfirm)
-           {
-                if (Validate())
+            if (Validate())
+            {
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                 {
-                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
-                    {
-                        Customer NewCustomer = new Customer();
-                        NewCustomer.Name = txtFName.Text;
-                        NewCustomer.PhoneNo = txtPhone.Text;
-                        NewCustomer.MobileNo = txtMobile.Text;
-                        NewCustomer.Adress = txtAddress.Text;
-                        NewCustomer.City = Convert.ToInt32(ddCity.SelectedValue);
-                        NewCustomer.Createdon = DateTime.Now;
-                        DB.Customers.Add(NewCustomer);
-                        DB.Customers.Save();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
-                        RefreshPage();
-                        ActiveSession.NavigateToRefreshMenu("");
-                    }
+                    Customer NewCustomer = new Customer();
+                    NewCustomer.Name = txtFName.Text;
+                    NewCustomer.PhoneNo = txtPhone.Text;
+                    NewCustomer.MobileNo = txtMobile.Text;
+                    NewCustomer.Adress = txtAddress.Text;
+                    NewCustomer.City = Convert.ToInt32(ddCity.SelectedValue);
+                    NewCustomer.Createdon = DateTime.Now;
+                    DB.Customers.Add(NewCustomer);
+                    DB.Customers.Save();
+                    EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                    RefreshPage();
+                    ActiveSession.NavigateToRefreshMenu("");
                 }
-           }
+            }
         }
 
         private bool Validate()
@@ -298,7 +294,7 @@ namespace EZYPOS.UserControls
 
         private void List_Click(object sender, RoutedEventArgs e)
         {
-
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlListCustomer());
         }
     }
 }

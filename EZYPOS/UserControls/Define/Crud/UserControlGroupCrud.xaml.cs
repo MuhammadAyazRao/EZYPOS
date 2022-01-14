@@ -1,4 +1,6 @@
-﻿using DAL.Repository;
+﻿using Common.Session;
+using DAL.Repository;
+using EZYPOS.UserControls.Define.List;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,55 +90,44 @@ namespace EZYPOS.UserControls.Define.Crud
         }
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Alert", "Do You Want To Update This Record", "Yes", "NO");
-            if (isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    if (txtId.Text != "" && txtId.Text != "0")
+                    int Id = Convert.ToInt32(txtId.Text);
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        int Id = Convert.ToInt32(txtId.Text);
-                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                        var ProductGroup = Db.ProductGroup.Get(Id);
+                        if (ProductGroup != null)
                         {
-                            var ProductGroup = Db.ProductGroup.Get(Id);
-                            if (ProductGroup != null)
+                            if (!string.IsNullOrEmpty(txtFName.Text))
                             {
-                                if (!string.IsNullOrEmpty(txtFName.Text))
-                                {
-                                    ProductGroup.GroupName = txtFName.Text;
-                                }
-                                Db.Complete();
-                                EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
-                                RefreshPage();
+                                ProductGroup.GroupName = txtFName.Text;
                             }
+                            Db.Complete();
+                            EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
+                            RefreshPage();
                         }
                     }
                 }
             }
-            
         }
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirmed = EZYPOS.View.MessageYesNo.ShowCustom("Alert", "Do you want to refresh page?", "Yes", "No");
-            if (Isconfirmed)
-            { RefreshPage(); }
+            RefreshPage();
         }
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Save Record?", "Yes", "No");
-            if (Isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-                    {
-                        DAL.DBMODEL.ProductGroup ProductGroup = new DAL.DBMODEL.ProductGroup();
-                        ProductGroup.GroupName = txtFName.Text;
-                        Db.ProductGroup.Add(ProductGroup);
-                        Db.Complete();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
-                        RefreshPage();
-                    }
+                    DAL.DBMODEL.ProductGroup ProductGroup = new DAL.DBMODEL.ProductGroup();
+                    ProductGroup.GroupName = txtFName.Text;
+                    Db.ProductGroup.Add(ProductGroup);
+                    Db.Complete();
+                    EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                    RefreshPage();
                 }
             }
         }
@@ -167,6 +158,11 @@ namespace EZYPOS.UserControls.Define.Crud
                 return false;
             }
             return true;
+        }
+
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlListGroup());
         }
     }
 }

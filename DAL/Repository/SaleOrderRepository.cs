@@ -45,7 +45,7 @@ namespace DAL.Repository
                     SaleOrder NewOrder = new SaleOrder();
                     NewOrder.CashAmount = (long)CartOrderToProcess.GetNetTotal();
                     NewOrder.DiscountAmount = (long)CartOrderToProcess.GetTotalDiscount();
-                    NewOrder.Date = DateTime.Now;
+                    NewOrder.Date = DateTime.Today;
                     NewOrder.PaymentMode = CartOrderToProcess.PaymentType;
                     NewOrder.OrderDate = CartOrderToProcess.OrderDate;
                     NewOrder.PaymentStatus = "Paid";
@@ -54,6 +54,8 @@ namespace DAL.Repository
                     NewOrder.RestaurantId = 1;
                     NewOrder.UserId = 1;
                     NewOrder.OrderCount = 1;
+                    NewOrder.CustomerId = CartOrderToProcess.CustId;
+                    NewOrder.EmployeeId = CartOrderToProcess.EmployeeId;
                     NewOrder.Total = (long)CartOrderToProcess.GetTotal();
                     Add(NewOrder);
                     //var id = NewOrder.Id;

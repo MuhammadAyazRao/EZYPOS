@@ -11,7 +11,7 @@ namespace DAL.IRepository
     public interface IPurchaseRepository : IRepository<PurchaseOrder>
     {
         bool SaveOrder(PurchaseOrderDTO CartOrderToProcess);
-        List<PurchaseOrderDTO> GetMappedOrder(int id);
+        List<PurchaseOrderDTO> GetMappedOrder(int id=0);
         bool DeleteOrder(int id);
     }
 }

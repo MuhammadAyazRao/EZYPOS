@@ -147,24 +147,27 @@ namespace DAL.DBMODEL
             {
                 entity.ToTable("CustomerReceipt");
 
-                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+                entity.Property(e => e.CreatedOn).HasColumnType("date");
 
                 entity.Property(e => e.Discription)
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.TransactionDate).HasColumnType("datetime");
+                entity.Property(e => e.TransactionDate).HasColumnType("date");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.CustomerReceipts)
                     .HasForeignKey(d => d.CustomerId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_CustomerReceipt_Customer");
 
-                entity.HasOne(d => d.ReceivedByNavigation)
+                entity.HasOne(d => d.Employee)
                     .WithMany(p => p.CustomerReceipts)
-                    .HasForeignKey(d => d.ReceivedBy)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .HasConstraintName("FK_CustomerReceipt_Emplyee");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.CustomerReceipts)
+                    .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_CustomerReceipt_User");
             });
 
@@ -194,6 +197,16 @@ namespace DAL.DBMODEL
                 entity.ToTable("ExpenceTransaction");
 
                 entity.Property(e => e.ExpenceDate).HasColumnType("datetime");
+
+                entity.HasOne(d => d.CreatedByNavigation)
+                    .WithMany(p => p.ExpenceTransactions)
+                    .HasForeignKey(d => d.CreatedBy)
+                    .HasConstraintName("FK_ExpenceTransaction_User");
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.ExpenceTransactions)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .HasConstraintName("FK_ExpenceTransaction_Emplyee");
 
                 entity.HasOne(d => d.ExpenceTypeNavigation)
                     .WithMany(p => p.ExpenceTransactions)
@@ -297,11 +310,21 @@ namespace DAL.DBMODEL
 
                 entity.Property(e => e.PaymentStatus).HasMaxLength(50);
 
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.PurchaseOrders)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .HasConstraintName("FK_PurchaseOrder_Emplyee");
+
                 entity.HasOne(d => d.Supplier)
                     .WithMany(p => p.PurchaseOrders)
                     .HasForeignKey(d => d.SupplierId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PurchaseOrder_Supplier");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.PurchaseOrders)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_PurchaseOrder_Unit");
             });
 
             modelBuilder.Entity<PurchaseOrderDetail>(entity =>
@@ -369,7 +392,7 @@ namespace DAL.DBMODEL
                     .HasColumnName("customer_phone");
 
                 entity.Property(e => e.Date)
-                    .HasColumnType("datetime")
+                    .HasColumnType("date")
                     .HasColumnName("date");
 
                 entity.Property(e => e.Description)
@@ -433,6 +456,11 @@ namespace DAL.DBMODEL
                     .WithMany(p => p.SaleOrders)
                     .HasForeignKey(d => d.CustomerId)
                     .HasConstraintName("FK_Sale_Orders_Customer");
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.SaleOrders)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .HasConstraintName("FK_Sale_Orders_Emplyee");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.SaleOrders)
@@ -541,12 +569,14 @@ namespace DAL.DBMODEL
                     .HasColumnType("numeric(18, 2)")
                     .HasColumnName("DR_qty");
 
+                entity.Property(e => e.PaymentMode).HasMaxLength(50);
+
                 entity.Property(e => e.PosId).HasColumnName("POS_id");
 
                 entity.Property(e => e.ProductId).HasColumnName("Product_id");
 
                 entity.Property(e => e.TransactionDate)
-                    .HasColumnType("datetime")
+                    .HasColumnType("date")
                     .HasColumnName("Transaction_date");
 
                 entity.Property(e => e.TransactionDetail).HasColumnName("Transaction_detail");
@@ -641,23 +671,28 @@ namespace DAL.DBMODEL
             {
                 entity.ToTable("SupplierPayment");
 
-                entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+                entity.Property(e => e.CreatedOn).HasColumnType("date");
 
                 entity.Property(e => e.Discription)
                     .HasMaxLength(500)
                     .IsUnicode(false);
 
-                entity.Property(e => e.TransactionDate).HasColumnType("datetime");
+                entity.Property(e => e.TransactionDate).HasColumnType("date");
 
-                entity.HasOne(d => d.PayedByNavigation)
+                entity.HasOne(d => d.Employee)
                     .WithMany(p => p.SupplierPayments)
-                    .HasForeignKey(d => d.PayedBy)
-                    .HasConstraintName("FK_SupplierPayment_User");
+                    .HasForeignKey(d => d.EmployeeId)
+                    .HasConstraintName("FK_SupplierPayment_Emplyee");
 
-                entity.HasOne(d => d.SupplierNavigation)
+                entity.HasOne(d => d.Supplier)
                     .WithMany(p => p.SupplierPayments)
-                    .HasForeignKey(d => d.Supplier)
+                    .HasForeignKey(d => d.SupplierId)
                     .HasConstraintName("FK_SupplierPayment_Supplier");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.SupplierPayments)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK_SupplierPayment_User");
             });
 
             modelBuilder.Entity<TblShelf>(entity =>

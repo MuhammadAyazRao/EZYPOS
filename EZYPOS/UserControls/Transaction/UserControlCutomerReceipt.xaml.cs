@@ -1,6 +1,8 @@
-﻿using DAL.DBMODEL;
+﻿using Common.Session;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
+using EZYPOS.UserControls.Transaction.Lists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,10 +41,11 @@ namespace EZYPOS.UserControls.Transaction
             Delete.IsEnabled = false;
             Update.IsEnabled = false;
             Save.IsEnabled = true;
+            TransactionDate.SelectedDate = DateTime.Today;
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 DDCustomer.ItemsSource = Db.Customers.GetAll().ToList();
-                DDReceivedBy.ItemsSource = Db.User.GetAll().ToList();
+                DDReceivedBy.ItemsSource = Db.Employee.GetAll().ToList();
             }
             txtDiscription.Text = "Discription";
             txtDiscription.Foreground = Brushes.Gray;
@@ -75,9 +78,9 @@ namespace EZYPOS.UserControls.Transaction
                     TransactionDate.Text = Convert.ToString(CustomerReceiptData?.TransactionDate);
 
                 }
-                if (!string.IsNullOrEmpty(Convert.ToString(CustomerReceiptData?.ReceivedBy)))
+                if (!string.IsNullOrEmpty(Convert.ToString(CustomerReceiptData?.EmployeeId)))
                 {
-                    DDReceivedBy.SelectedValue = CustomerReceiptData?.ReceivedBy;
+                    DDReceivedBy.SelectedValue = CustomerReceiptData?.EmployeeId;
                 }
                 if (!string.IsNullOrEmpty(Convert.ToString(CustomerReceiptData?.CustomerId)))
                 {
@@ -197,58 +200,48 @@ namespace EZYPOS.UserControls.Transaction
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Update Record?", "Yes", "No");
-            if (Isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    if (txtId.Text != "" && txtId.Text != "0")
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-                        {
-                            CustomerReceipt sp = Db.CustomerReceipt.Get(Convert.ToInt32(txtId.Text));
-                            sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
-                            sp.Discription = txtDiscription.Text;
-                            sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
-                            sp.ReceivedBy = Convert.ToInt32(DDReceivedBy.SelectedValue);
-                            sp.CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
-                            Db.CustomerReceipt.Save();
-                            EZYPOS.View.MessageBox.ShowCustom("Your Record Updated Succesfully", "Message", "Ok");
-                            RefreshPage();
-                        }
+                        CustomerReceipt sp = Db.CustomerReceipt.Get(Convert.ToInt32(txtId.Text));
+                        sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
+                        sp.Discription = txtDiscription.Text;
+                        sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
+                        sp.EmployeeId = Convert.ToInt32(DDReceivedBy.SelectedValue);
+                        sp.CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
+                        Db.CustomerReceipt.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Your Record Updated Succesfully", "Message", "Ok");
+                        RefreshPage();
                     }
                 }
             }
-
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Save Record?", "Yes", "No");
-            if (Isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                 {
-                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
-                    {
-                        CustomerReceipt sp = new CustomerReceipt();
-                        sp.Discription = txtDiscription.Text;
-                        sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
-                        sp.ReceivedBy = Convert.ToInt32(DDReceivedBy.SelectedValue);
-                        sp.CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
-                        sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
-                        sp.CreatedOn = DateTime.Now;
-                        DB.CustomerReceipt.Add(sp);
-                        DB.CustomerReceipt.Save();
+                    CustomerReceipt sp = new CustomerReceipt();
+                    sp.Discription = txtDiscription.Text;
+                    sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
+                    sp.EmployeeId = Convert.ToInt32(DDReceivedBy.SelectedValue);
+                    sp.CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
+                    sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
+                    sp.CreatedOn = DateTime.Now;
+                    DB.CustomerReceipt.Add(sp);
+                    DB.CustomerReceipt.Save();
 
-                        EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
-                        RefreshPage();
-
-                    }
+                    EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                    RefreshPage();
 
                 }
-            }
 
+            }
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
@@ -300,6 +293,11 @@ namespace EZYPOS.UserControls.Transaction
 
 
             return true;
+        }
+
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlCustomerReceiptList());
         }
     }
 }

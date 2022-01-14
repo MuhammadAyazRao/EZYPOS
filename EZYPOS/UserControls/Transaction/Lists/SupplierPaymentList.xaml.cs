@@ -38,7 +38,7 @@ namespace EZYPOS.UserControls.Transaction
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                myList = DB.SupplierPayment.GetAll().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription=x.Discription, TransactionDate=x.TransactionDate, PayedBy = x.PayedByNavigation==null? null: x.PayedByNavigation.Name, Supplier = x.SupplierNavigation ==null?null : x.SupplierNavigation.Name,}).ToList();
+                myList = DB.SupplierPayment.GetAll().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription=x.Discription, TransactionDate= x.TransactionDate, Employee = x.Employee==null? null: x.Employee.UserName, Supplier = x.Supplier ==null?null : x.Supplier.Name,}).ToList();
                 ResetPaging(myList);
             }
         }
@@ -58,25 +58,25 @@ namespace EZYPOS.UserControls.Transaction
             ActiveSession.CloseDisplayuserControlMethod(new UserControlSupplierPayment());
         }
 
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {
-                if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
-                {
-                    myList = DB.SupplierPayment.GetAll().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
-                }
-                else
-                {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    myList = DB.SupplierPayment.GetAll().Where(x => x.TransactionDate >= Sdate && x.TransactionDate <= Edate).Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
-                }
+        //private void Search_Click(object sender, RoutedEventArgs e)
+        //{
+        //    using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+        //    {
+        //        if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
+        //        {
+        //            myList = DB.SupplierPayment.GetAll().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
+        //        }
+        //        else
+        //        {
+        //            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+        //            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+        //            myList = DB.SupplierPayment.GetAll().Where(x => x.TransactionDate >= Sdate && x.TransactionDate <= Edate).Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
+        //        }
 
-                ResetPaging(myList);
+        //        ResetPaging(myList);
 
-            }
-        }
+        //    }
+        //}
 
         private void Id_KeyDown(object sender, KeyEventArgs e)
         {
@@ -93,43 +93,36 @@ namespace EZYPOS.UserControls.Transaction
                 {
                     if (filter == "")
                     {
-                        myList = DB.SupplierPayment.GetAll().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
-                        ResetPaging(myList);
+                        Refresh();
                     }
                     else
                     {
+                        myList = DB.SupplierPayment.GetAll().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, Employee = x.Employee == null ? null : x.Employee.UserName, Supplier = x.Supplier == null ? null : x.Supplier.Name, }).ToList();
+
+                        if (t.Name == "GridAmount")
                         {
-                            {
+                            myList = myList.Where(x => x.Amount.ToString().Contains(filter)).ToList();
+                        }
+                        if (t.Name == "GridDiscription")
+                        {
+                            myList = myList.Where(x => x.Discription.ToUpper().ToString().Contains(filter.ToUpper())).ToList();
+                        }
+                        if (t.Name == "GridTdate")
+                        {
+                            myList = myList.Where(x => x.TransactionDate.ToString().Contains(filter)).ToList();
 
-                                if (t.Name == "GridAmount")
-                                {
-                                    myList = DB.SupplierPayment.GetAll().Where(x => x.Amount.ToString().Contains(filter)).ToList().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
-                                    ResetPaging(myList);
-                                }
-                                if (t.Name == "GridDiscription")
-                                {
-                                    myList = DB.SupplierPayment.GetAll().Where(x => x.Discription.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
-                                    ResetPaging(myList);
-                                }
-                                if (t.Name == "GridTdate")
-                                {
-                                    myList = DB.SupplierPayment.GetAll().Where(x => x.TransactionDate.ToString().Contains(filter)).ToList().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
-                                    ResetPaging(myList);
-                                }
-                                if (t.Name == "GridPayedBy")
-                                {
-                                    myList = DB.SupplierPayment.GetAll().Where(x => x.PayedByNavigation.Name.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
-                                    ResetPaging(myList);
-                                }
-                                if (t.Name == "GridSupplier")
-                                {
-                                    myList = DB.SupplierPayment.GetAll().Where(x => x.SupplierNavigation.Name.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.Name, Supplier = x.SupplierNavigation == null ? null : x.SupplierNavigation.Name, }).ToList();
-                                    ResetPaging(myList);
-                                }
-
-                            }
-                        };
+                        }
+                        if (t.Name == "GridPayedBy")
+                        {
+                            myList = myList.Where(x => x.Employee.ToUpper().ToString().Contains(filter.ToUpper())).ToList();
+                        }
+                        if (t.Name == "GridSupplier")
+                        {
+                            myList = myList.Where(x => x.Supplier.ToUpper().ToString().Contains(filter.ToUpper())).ToList();
+                        }
+                        ResetPaging(myList);
                     }
+                    
                 }
             }
 
@@ -179,6 +172,30 @@ namespace EZYPOS.UserControls.Transaction
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            EZYPOS.DTO.SupplierPaymentDTO SupplierPaymentDTO = (EZYPOS.DTO.SupplierPaymentDTO)SupplierPaymentGrid.SelectedItem;
+            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete This Record?", "Yes", "No");
+            if (Isconfirm)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    try
+                    {
+                        DB.SupplierPayment.Delete(SupplierPaymentDTO.Id);
+                        DB.SupplierPayment.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deleted Successfully", "Status", "OK");
+                        Refresh();
+                    }
+                    catch
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Selected Record Can't be Deleted", "Status", "OK");
+                    }
+
+                }
+            }
         }
     }
 }

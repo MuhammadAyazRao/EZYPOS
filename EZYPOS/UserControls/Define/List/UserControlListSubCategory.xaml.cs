@@ -51,26 +51,26 @@ namespace EZYPOS.UserControls.Define.List
             //ActiveSession.NavigateToSwitchScreen(new UserControlCustomerCrud(CustomerObj));
 
         }
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {
+        //private void Search_Click(object sender, RoutedEventArgs e)
+        //{
+        //    using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+        //    {
                
-                if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
-                {
-                    myList = DB.ProductSubcategory.GetAll().Select(x => new SubCategoryDTO { Id = x.Id, SubcategoryName = x.SubcategoryName, CategoryName = x.Category.Name == null ? null : x.Category.Name }).ToList();
-                }
-                else
-                {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    myList = DB.ProductSubcategory.GetAll().Select(x => new SubCategoryDTO { Id = x.Id, SubcategoryName = x.SubcategoryName, CategoryName = x.Category.Name == null ? null : x.Category.Name }).ToList();
-                }
-                SubCategoryGrid.ItemsSource = myList;
-                ResetPaging(myList);
-            }
+        //        if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
+        //        {
+        //            myList = DB.ProductSubcategory.GetAll().Select(x => new SubCategoryDTO { Id = x.Id, SubcategoryName = x.SubcategoryName, CategoryName = x.Category.Name == null ? null : x.Category.Name }).ToList();
+        //        }
+        //        else
+        //        {
+        //            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+        //            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+        //            myList = DB.ProductSubcategory.GetAll().Select(x => new SubCategoryDTO { Id = x.Id, SubcategoryName = x.SubcategoryName, CategoryName = x.Category.Name == null ? null : x.Category.Name }).ToList();
+        //        }
+        //        SubCategoryGrid.ItemsSource = myList;
+        //        ResetPaging(myList);
+        //    }
 
-        }
+        //}
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -144,7 +144,31 @@ namespace EZYPOS.UserControls.Define.List
         {
             SubCategoryGrid.ItemsSource = Pager.Last(myList);
             PageInfo.Content = Pager.PageNumberDisplay(myList);
-        }        
+        }
         #endregion
+
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            EZYPOS.DTO.SubCategoryDTO Subcategory = (EZYPOS.DTO.SubCategoryDTO)SubCategoryGrid.SelectedItem;
+            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete This Record?", "Yes", "No");
+            if (Isconfirm)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    try
+                    {
+                        DB.ProductSubcategory.Delete(Subcategory.Id);
+                        DB.ProductSubcategory.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        Refresh();
+                    }
+                    catch
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Selected Record Can't be Deleted", "Status", "OK");
+                    }
+
+                }
+            }
+        }
     }
 }

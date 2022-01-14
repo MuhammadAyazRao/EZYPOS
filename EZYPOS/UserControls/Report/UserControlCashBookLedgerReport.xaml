@@ -44,6 +44,7 @@
             </Setter>
             <Setter Property="Height" Value="40"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5"/>
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="{x:Null}"/>
@@ -94,11 +95,10 @@
             <DatePicker Name="StartDate" Grid.Row="1"  DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"   Grid.Column="0"  materialDesign:HintAssist.Hint="Start Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="1" Grid.Column="1"  materialDesign:HintAssist.Hint="End Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click"  Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />
-            <Label Content="CashBook Ledger Report" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Grid.Row="0" Grid.Column="0" Margin="10,15,0,0"/>
+            <Label Content="CashBook Ledger Report" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Grid.Row="0" Grid.Column="0" Margin="20,15,0,0"/>
         </Grid>
-        <Border x:Name="label" Grid.Row="1">
-            <DataGrid Name="CashBookLedgerGrid"                     
-                      Margin="5,0,5,0"
+        <Border x:Name="label" Grid.Row="1" Margin="20,0,20,0">
+            <DataGrid Name="CashBookLedgerGrid"
                       RowHeaderWidth="0"
                       HorizontalGridLinesBrush="{DynamicResource Gray}"
                       AutoGenerateColumns="False"

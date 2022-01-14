@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Common.Session;
 
 namespace EZYPOS.UserControls
 {
@@ -62,9 +63,7 @@ namespace EZYPOS.UserControls
        
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirmed = EZYPOS.View.MessageYesNo.ShowCustom("Refresh", "Do you want to refresh page?", "Yes", "No");
-            if (Isconfirmed)
-            { RefreshPage(); }
+            RefreshPage();
         }
 
         private void txt_GotFocus(object sender, RoutedEventArgs e)
@@ -100,50 +99,41 @@ namespace EZYPOS.UserControls
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Alert", "Do You Want To Update This Record", "Yes", "NO");
-            if (isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                if (txtId.Text != "" && txtId.Text != "0")
                 {
-                    if (txtId.Text != "" && txtId.Text != "0")
+                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                        var Expence = Db.ExpenceType.Get(Convert.ToInt32(txtId.Text));
+                        if (Expence != null)
                         {
-                            var Expence = Db.ExpenceType.Get(Convert.ToInt32(txtId.Text));
-                            if (Expence != null)
+                            if (!string.IsNullOrEmpty(txtFName.Text))
                             {
-                                if (!string.IsNullOrEmpty(txtFName.Text))
-                                {
-                                    Expence.ExpenceName = txtFName.Text;
-                                }
-                                Db.Complete();
-                                EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
-                                RefreshPage();
+                                Expence.ExpenceName = txtFName.Text;
                             }
+                            Db.Complete();
+                            EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
+                            RefreshPage();
                         }
                     }
                 }
             }
-            
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Save Record?", "Yes", "No");
-            if (Isconfirm)
+            if (Validate())
             {
-                if (Validate())
+                using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-                    using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-                    {
-                        DAL.DBMODEL.ExpenceType Expence = new DAL.DBMODEL.ExpenceType();
-                        Expence.ExpenceName = txtFName.Text;
-                        Expence.Createdon = DateTime.Now;
-                        Db.ExpenceType.Add(Expence);
-                        Db.Complete();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
-                        RefreshPage();
-                    }
+                    DAL.DBMODEL.ExpenceType Expence = new DAL.DBMODEL.ExpenceType();
+                    Expence.ExpenceName = txtFName.Text;
+                    Expence.Createdon = DateTime.Now;
+                    Db.ExpenceType.Add(Expence);
+                    Db.Complete();
+                    EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                    RefreshPage();
                 }
             }
         }
@@ -176,6 +166,10 @@ namespace EZYPOS.UserControls
             }
         }
 
+        private void List_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlExpenceHeadList());
+        }
     }
 }
 

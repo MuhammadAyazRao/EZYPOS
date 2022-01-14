@@ -43,10 +43,18 @@ namespace EZYPOS.UserControls.Transaction
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
+                ddCustomer.ItemsSource = DB.Customers.GetAll().ToList();
+                ddCustomer.SelectedValue = null;
+                ddPaymentStatus.SelectedValue = null;
+                ddPaymentMode.SelectedValue = null;
+                StartDate.SelectedDate = null;
+                EndDate.SelectedDate = null;
+                txtOrderNum.Text = "Order No";
+                txtOrderNum.Foreground = Brushes.Gray;
                 listOrderAccepted.Items.Clear();
-               foreach (var item in DB.SaleOrder.GetMappedOrder(0))
+                foreach (var item in DB.SaleOrder.GetMappedOrder(0))
                 {
-                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, payment_status = item.payment_status, PaymentType = item.PaymentType, OrderCount = (int) item.GetNetTotal(), OrderDate = item.OrderDate }); ;
+                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, payment_status = item.payment_status, Instrictions = item.PaymentType, OrderCount = (int) item.GetNetTotal(), OrderDate = item.OrderDate }); ;
 
                 }                
             }           
@@ -81,15 +89,8 @@ namespace EZYPOS.UserControls.Transaction
 
             switch (tb.Text)
             {
-                case "Phone":
-                    tb.Text = "";
-                    tb.Foreground = Brushes.Black;
-                    break;
-                case "Postcode":
-                    tb.Text = "";
-                    tb.Foreground = Brushes.Black;
-                    break;
-                case "OrderNo":
+                
+                case "Order No":
                     tb.Text = "";
                     tb.Foreground = Brushes.Black;
                     break;
@@ -102,24 +103,11 @@ namespace EZYPOS.UserControls.Transaction
 
             switch (tb.Name)
             {
-                case "txtPhone":
-                    if (txtPhone.Text == "")
-                    {
-                        tb.Text = "Phone";
-                        tb.Foreground = Brushes.Gray;
-                    }
-                    break;
-                case "txtPhostcode":
-                    if (txtPhostcode.Text == "")
-                    {
-                        tb.Text = "Postcode";
-                        tb.Foreground = Brushes.Gray;
-                    }
-                    break;
+                
                 case "txtOrderNum":
                     if (txtOrderNum.Text == "")
                     {
-                        tb.Text = "OrderNo";
+                        tb.Text = "Order No";
                         tb.Foreground = Brushes.Gray;
                     }
                     break;
@@ -241,6 +229,97 @@ namespace EZYPOS.UserControls.Transaction
                 }               
             }
             
+        }
+
+        private void Search_Click(object sender, RoutedEventArgs e)
+        {
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                
+                int SelectedCustomer = 0;
+                if (ddCustomer.SelectedValue != null)
+                {
+                    SelectedCustomer = Convert.ToInt32(ddCustomer.SelectedValue);
+                }
+                string SelectedPaymentStatus = "";
+                if (ddPaymentStatus.SelectedValue != null)
+                {
+                    SelectedPaymentStatus = Convert.ToString(ddPaymentStatus.Text);
+                    SelectedPaymentStatus = SelectedPaymentStatus.ToUpper();
+                }
+
+                string SelectedPaymentMode = "";
+                if (ddPaymentMode.SelectedValue != null)
+                {
+                    SelectedPaymentMode = Convert.ToString(ddPaymentMode.Text);
+                    SelectedPaymentMode = SelectedPaymentMode.ToUpper();
+                }
+                listOrderAccepted.Items.Clear();
+
+
+                List<Order> Allorders = DB.SaleOrder.GetMappedOrder();
+                if(StartDate.SelectedDate != null && EndDate.SelectedDate != null)
+                {
+                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+                    Allorders = Allorders.Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate).ToList();
+                }
+                
+                if (SelectedCustomer != 0)
+                {
+                    Allorders = Allorders.Where(x => x.CustId == SelectedCustomer).ToList();
+                }
+
+                if (SelectedPaymentStatus != "ALL" && SelectedPaymentStatus != "")
+                {
+                    Allorders = Allorders.Where(x => x.payment_status == SelectedPaymentStatus).ToList();
+                }
+
+                if (SelectedPaymentMode != "ALL" && SelectedPaymentMode != "")
+                {
+                    Allorders = Allorders.Where(x => x.PaymentType == SelectedPaymentMode).ToList();
+                }
+
+
+                if (txtOrderNum.Text != "" && txtOrderNum.Text != "Order No")
+                {
+                    int ordernum = Convert.ToInt32(txtOrderNum.Text);
+                    Allorders = Allorders.Where(x => x.OrderId == ordernum).ToList();
+                }
+
+                foreach (var item in Allorders)
+                {
+                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, payment_status = item.PaymentType, Instrictions = item.PaymentType, Discount = item.GetNetTotal(), OrderDate = item.OrderDate,});
+
+                }
+
+            }
+
+        }
+        private void btnShowTodaysOrders_Click(object sender, RoutedEventArgs e)
+        {
+            ddCustomer.SelectedValue = null;
+            ddPaymentMode.SelectedValue = null;
+            StartDate.SelectedDate = DateTime.Today;
+            EndDate.SelectedDate = DateTime.Today;
+            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+            listOrderAccepted.Items.Clear();
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                List<Order> Allorders = DB.SaleOrder.GetMappedOrder();
+                Allorders = Allorders.Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate).ToList();
+                foreach (var item in Allorders)
+                {
+                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, payment_status = item.PaymentType, Instrictions = item.PaymentType, Discount = item.GetNetTotal(), OrderDate = item.OrderDate,});
+
+                }
+            }
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            Refresh();
         }
     }
 }

@@ -24,11 +24,13 @@ namespace EZYPOS.UserControls.Report
     /// </summary>
     public partial class UserControlSupplierLedgerReport : UserControl
     {
-        List<SupplierLedgerDTO> myList { get; set; }
+        List<SupplierLedgerDTO> myList = new List<SupplierLedgerDTO>();
         Pager<SupplierLedgerDTO> Pager = new Helper.Pager<SupplierLedgerDTO>();
         public UserControlSupplierLedgerReport()
         {
             InitializeComponent();
+            StartDate.SelectedDate = DateTime.Today;
+            EndDate.SelectedDate = DateTime.Today;
             Refresh();
         }
        
@@ -38,13 +40,13 @@ namespace EZYPOS.UserControls.Report
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var Suppliers = Db.Supplier.GetAll().ToList();
-                List<SupplierLedgerDTO> myList = new List<SupplierLedgerDTO>();
+                myList.Clear();
                 foreach (var Supplier in Suppliers)
                 {
                     string SupplierName = Db.Supplier.Get(Supplier.Id).Name;
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    var items = Db.SupplierLead.GetAll().Where(X => X.SuplierId == Supplier.Id).ToList();
+                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
+                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
+                    var items = Db.SupplierLead.GetAll().Where(X => X.SuplierId == Supplier.Id && X.TransactionDate >= Sdate && X.TransactionDate <= Edate).ToList();
 
                     decimal? TotalDR = 0;
                     decimal? TotalCR = 0;
@@ -62,10 +64,12 @@ namespace EZYPOS.UserControls.Report
                     }
 
                 }
-
                 ResetPaging(myList);
-
             }
+        }
+        private void Search_Click(object sender, RoutedEventArgs e)
+        {
+            Refresh();
         }
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
@@ -82,48 +86,38 @@ namespace EZYPOS.UserControls.Report
                     }
                     else
                     {
-
+                        if (t.Name == "GridSName")
                         {
-
-                            if (t.Name == "GridSName")
+                            var Suppliers = Db.Supplier.GetAll().Where(x => x.Name.ToUpper().Contains(filter.ToUpper())).ToList();
+                            myList.Clear();
+                            foreach (var Supplier in Suppliers)
                             {
-                                
-                                var Suppliers = Db.Supplier.GetAll().Where(x=> x.Name.ToUpper().Contains(filter.ToUpper())).ToList();
-                                List<SupplierLedgerDTO> myList = new List<SupplierLedgerDTO>();
-                                foreach (var Supplier in Suppliers)
+
+                                string SupplierName = Db.Supplier.Get(Supplier.Id).Name;
+                                DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
+                                DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
+                                var items = Db.SupplierLead.GetAll().Where(X => X.SuplierId == Supplier.Id && X.TransactionDate >= Sdate && X.TransactionDate <= Edate).ToList();
+
+                                decimal? TotalDR = 0;
+                                decimal? TotalCR = 0;
+                                decimal? TotalBalance = 0;
+                                foreach (var item in items)
                                 {
+                                    item.Dr = item.Dr == null ? 0 : item.Dr;
+                                    item.Cr = item.Cr == null ? 0 : item.Cr;
 
-                                    string SupplierName = Db.Supplier.Get(Supplier.Id).Name;
-                                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                                    var items = Db.SupplierLead.GetAll().Where(X => X.SuplierId == Supplier.Id).ToList();
-
-                                    decimal? TotalDR = 0;
-                                    decimal? TotalCR = 0;
-                                    decimal? TotalBalance = 0;
-                                    foreach (var item in items)
-                                    {
-                                        item.Dr = item.Dr == null ? 0 : item.Dr;
-                                        item.Cr = item.Cr == null ? 0 : item.Cr;
-
-                                        TotalDR += item.Dr;
-                                        TotalCR += item.Cr;
-                                        TotalBalance = TotalDR - TotalCR;
-                                        SupplierLedgerDTO data = new SupplierLedgerDTO();
-                                        myList.Add(new SupplierLedgerDTO { SupplierName = SupplierName, Date = Convert.ToDateTime(item.TransactionDate), TransactionType = item.TransactionType, Detail = item.TransactionDet, CR = item.Cr, DR = item.Dr, Balance = TotalBalance });
-                                    }
-
+                                    TotalDR += item.Dr;
+                                    TotalCR += item.Cr;
+                                    TotalBalance = TotalDR - TotalCR;
+                                    SupplierLedgerDTO data = new SupplierLedgerDTO();
+                                    myList.Add(new SupplierLedgerDTO { SupplierName = SupplierName, Date = Convert.ToDateTime(item.TransactionDate), TransactionType = item.TransactionType, Detail = item.TransactionDet, CR = item.Cr, DR = item.Dr, Balance = TotalBalance });
                                 }
 
-                                ResetPaging(myList);
-
-                                
                             }
-                            
-
-                        };
+                        }
+                        ResetPaging(myList);
                     }
-                    ResetPaging(myList);
+                    
                 }
             }
 
@@ -168,43 +162,5 @@ namespace EZYPOS.UserControls.Report
 
 
         #endregion
-
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
-            string exePath = Directory.GetCurrentDirectory();
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {
-                var Suppliers = Db.Supplier.GetAll().ToList();
-                List<SupplierLedgerDTO> myList = new List<SupplierLedgerDTO>();
-                foreach (var Supplier in Suppliers)
-                {
-
-                    string SupplierName = Db.Supplier.Get(Supplier.Id).Name;
-
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
-                    var items = Db.SupplierLead.GetAll().Where(X => X.SuplierId == Supplier.Id && X.TransactionDate >= Sdate && X.TransactionDate <= Edate).ToList();
-
-                    decimal? TotalDR = 0;
-                    decimal? TotalCR = 0;
-                    decimal? TotalBalance = 0;
-                    foreach (var item in items)
-                    {
-                        item.Dr = item.Dr == null ? 0 : item.Dr;
-                        item.Cr = item.Cr == null ? 0 : item.Cr;
-
-                        TotalDR += item.Dr;
-                        TotalCR += item.Cr;
-                        TotalBalance = TotalDR - TotalCR;
-                        SupplierLedgerDTO data = new SupplierLedgerDTO();
-                        myList.Add(new SupplierLedgerDTO { SupplierName = SupplierName, Date = Convert.ToDateTime(item.TransactionDate), TransactionType = item.TransactionType, Detail = item.TransactionDet, CR = item.Cr, DR = item.Dr, Balance = TotalBalance });
-                    }
-
-                }
-
-                ResetPaging(myList);
-
-            }
-        }
     }
 }

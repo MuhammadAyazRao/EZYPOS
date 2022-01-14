@@ -27,6 +27,34 @@ namespace EZYPOS.View
         PurchaseOrderDTO PurchaseOrder { get; set; }
         public string ScreenType { get; set; }
         public double CustPay { get; set; }
+        public void Refresh()
+        {
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+
+
+
+                // DDShop.ItemsSource = Db.Shop.GetAll().ToList().Select(x => new { Name = x.Name, Id = x.Id }).ToList(); 
+                TransactionDate.SelectedDate = DateTime.Today;
+
+                if (ScreenType == Common.ScreenType.Sale)
+                {
+                    DDCustomer.ItemsSource = Db.Customers.GetAll().OrderBy(x => x.Name).ToList().Select(x => new { Name = x.Name, Id = x.Id }).ToList();
+                    DDEmployee.ItemsSource = Db.Employee.GetAll().OrderBy(x => x.UserName).ToList().Select(x => new { Name = x.UserName, Id = x.Id }).ToList();
+                    DDCustomer.Visibility = Visibility.Visible;
+                    DDSupplier.Visibility = Visibility.Collapsed;
+                    //txtDeliveryCharge.Visibility = Visibility.Visible;
+                }
+                else if (ScreenType == Common.ScreenType.Purchase)
+                {
+                    DDSupplier.ItemsSource = Db.Supplier.GetAll().ToList().Select(x => new { Name = x.Name, Id = x.Id }).ToList();
+                    DDEmployee.ItemsSource = Db.Employee.GetAll().OrderBy(x => x.UserName).ToList().Select(x => new { Name = x.UserName, Id = x.Id }).ToList();
+                    DDSupplier.Visibility = Visibility.Visible;
+                    DDCustomer.Visibility = Visibility.Collapsed;
+                    //txtDeliveryCharge.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
         public CheckOutForm(Order odr)
         {
             InitializeComponent();
@@ -121,11 +149,26 @@ namespace EZYPOS.View
                         EZYPOS.View.MessageBox.ShowCustom("Please Collect Payment", "Notification", "Ok");
                         return;
                     }
+                    if (DDCustomer.SelectedValue == null || DDEmployee.SelectedValue == null)
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Please Select Customer & Employee", "Error", "Ok");
+                        return;
+                    }
                     else
                     {
                         using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                         {
+                            if (DDCustomer.SelectedValue != null)
+                            {
+                                Order.CustId = Convert.ToInt32(DDCustomer.SelectedValue);
+                                Order.OrderDate = Convert.ToDateTime(TransactionDate.SelectedDate);
+                            }
 
+                            if (DDEmployee.SelectedValue != null)
+                            {
+                                Order.EmployeeId = Convert.ToInt32(DDEmployee.SelectedValue);
+
+                            }
                             this.DialogResult = Db.SaleOrder.SaveOrder(Order);
                         }
                     }
@@ -137,11 +180,26 @@ namespace EZYPOS.View
                         EZYPOS.View.MessageBox.ShowCustom("Please Collect Payment", "Notification", "Ok");
                         return;
                     }
+                    if (DDSupplier.SelectedValue == null || DDEmployee.SelectedValue == null)
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Please Select Supplier & Employee", "Error", "Ok");
+                        return;
+                    }
                     else
                     {
                         using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                         {
+                            if (DDSupplier.SelectedValue != null)
+                            {
+                                PurchaseOrder.SupplierId = Convert.ToInt32(DDSupplier.SelectedValue);
+                                PurchaseOrder.OrderDate = Convert.ToDateTime(TransactionDate.SelectedDate);
+                            }
 
+                            if (DDEmployee.SelectedValue != null)
+                            {
+                                PurchaseOrder.EmployeeId = Convert.ToInt32(DDEmployee.SelectedValue);
+
+                            }
                             this.DialogResult = Db.PurchaseOrder.SaveOrder(PurchaseOrder);
                         }
                     }

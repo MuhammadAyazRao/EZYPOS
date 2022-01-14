@@ -10,6 +10,7 @@ namespace EZYPOS.DTO
     {
         public int Id { get; set; }
         public string ProductName { get; set; }
+        public string Unit { get; set; }
         public string Size { get; set; }
         public string Barcode { get; set; }
         public string CategoryName{ get; set; }

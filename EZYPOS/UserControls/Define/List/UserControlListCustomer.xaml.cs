@@ -43,25 +43,13 @@ namespace EZYPOS.UserControls
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.Customers.GetAll().Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation.CityName == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
-                //customerGrid.ItemsSource = First(myList, numberOfRecPerPage).DefaultView; //Fill a DataTable with the First set based on the numberOfRecPerPage                 
                 ResetPaging(myList);
             }
         }        
 
         private void btnAddCustomer_Click(object sender, RoutedEventArgs e)
         {
-            //Application.Current.Dispatcher.Invoke((Action)delegate {
-                ActiveSession.CloseDisplayuserControlMethod(new UserControlCustomerCrud());
-
-            //});
-            //Task.Run(() => ActiveSession.CloseDisplayuserControlMethod(new UserControlCustomerCrud()));
-           // ActiveSession.CloseDisplayuserControlMethod(new UserControlCustomerCrud());
-           
-        }
-
-        private void btnClose_Click(object sender, RoutedEventArgs e)
-        {
-            ActiveSession.NavigateToHome("");
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlCustomerCrud()); 
         }
 
         private void textBox_KeyUp(object sender, KeyEventArgs e)
@@ -174,36 +162,51 @@ namespace EZYPOS.UserControls
         {            
           
             EZYPOS.DTO.CustomerDTO CustomerObj = (EZYPOS.DTO.CustomerDTO)customerGrid.SelectedItem;
-            ActiveSession.CloseDisplayuserControlMethod(new UserControlCustomerCrud(CustomerObj));
-            //ActiveSession.NavigateToSwitchScreen(new UserControlCustomerCrud(CustomerObj));
-           
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlCustomerCrud(CustomerObj));           
         }
-
         private void delete_Click(object sender, RoutedEventArgs e)
-        {          
-            
-        }
-       
-
-        private void Search_Click(object sender, RoutedEventArgs e)
         {
-            using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+            EZYPOS.DTO.CustomerDTO CustomerObj = (EZYPOS.DTO.CustomerDTO)customerGrid.SelectedItem;
+            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete This Customer?", "Yes", "No");
+            if (Isconfirm)
             {
-                List<Customer> CustomerData;
-                if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                 {
-                    CustomerData = DB.Customers.GetAll().ToList();
+                    try
+                    {
+                        DB.Customers.Delete(CustomerObj.Id);
+                        DB.Customers.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        Refresh();
+                    }
+                    catch
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Selected Customer Can't be Deleted", "Status", "OK");
+                    }
+
                 }
-                else
-                {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    CustomerData = DB.Customers.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
-                }
-                customerGrid.ItemsSource = CustomerData;
             }
-            
-        }       
+            //ActiveSession.CloseDisplayuserControlMethod(new UserControlCustomerCrud(CustomerObj));
+        }
+        //private void Search_Click(object sender, RoutedEventArgs e)
+        //{
+        //    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+        //    {
+        //        List<Customer> CustomerData;
+        //        if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
+        //        {
+        //            CustomerData = DB.Customers.GetAll().ToList();
+        //        }
+        //        else
+        //        {
+        //            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+        //            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+        //            CustomerData = DB.Customers.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
+        //        }
+        //        customerGrid.ItemsSource = CustomerData;
+        //    }
+
+        //}       
 
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
@@ -216,48 +219,27 @@ namespace EZYPOS.UserControls
                     if (filter == "")
                     {
                         myList = DB.Customers.GetAll().Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
-                        ResetPaging(myList);
                     }
                     else
                     {
-                        //cv.Filter = o =>
+                        if (t.Name == "GridName")
                         {
-                            //using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
-                            {
-                                // myList = DB.Customers.GetAll().Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
-
-                                if (t.Name == "GridName")
-                                {
-                                    myList = DB.Customers.GetAll().Where(x => x.Name.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
-                                    ResetPaging(myList);
-                                   // ResetPaging(myList.Where(x => x.Name.ToUpper().Contains(filter.ToUpper())).ToList());
-                                }
-                                if (t.Name == "GridContact")
-                                {
-                                    myList = DB.Customers.GetAll().Where(x => x.PhoneNo.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
-                                    ResetPaging(myList);
-                                    //ResetPaging(myList.Where(x => x.PhoneNo.ToUpper().Contains(filter.ToUpper())).ToList());
-                                }
-                                if (t.Name == "GridCity")
-                                {
-                                    myList = DB.Customers.GetAll().Where(x => x.CityNavigation.CityName.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
-                                    ResetPaging(myList);
-                                   // ResetPaging(myList.Where(x => x.City.ToUpper().Contains(filter.ToUpper())).ToList());
-                                }
-                                if (t.Name == "GridAdress")
-                                {
-                                    myList = DB.Customers.GetAll().Where(x => x.Adress.ToUpper().Contains(filter.ToUpper())).ToList().Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
-                                    ResetPaging(myList);
-                                   // ResetPaging(myList.Where(x => x.Adress.ToUpper().Contains(filter.ToUpper())).ToList());
-                                }
-                                //else
-                                //{
-                                //    ResetPaging(myList);
-                                //}
-                                //ResetPaging(myList);
-                            }
-                        };
+                            myList = DB.Customers.GetAll().Where(x => x.Name.ToUpper().Contains(filter.ToUpper())).Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
+                        }
+                        if (t.Name == "GridContact")
+                        {
+                            myList = DB.Customers.GetAll().Where(x => x.PhoneNo.ToUpper().Contains(filter.ToUpper())).Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
+                        }
+                        if (t.Name == "GridCity")
+                        {
+                            myList = DB.Customers.GetAll().Where(x => x.CityNavigation.CityName.ToUpper().Contains(filter.ToUpper())).Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
+                        }
+                        if (t.Name == "GridAdress")
+                        {
+                            myList = DB.Customers.GetAll().Where(x => x.Adress.ToUpper().Contains(filter.ToUpper())).Select(x => new CustomerDTO { Id = x.Id, Name = x.Name, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, PhoneNo = x.PhoneNo, Adress = x.Adress }).ToList();
+                        }
                     }
+                    ResetPaging(myList);
                 }
             }
 
@@ -385,5 +367,6 @@ namespace EZYPOS.UserControls
         //}
         #endregion
 
+       
     }
 }

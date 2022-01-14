@@ -1,4 +1,5 @@
 ﻿using Common.Session;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.Helper;
@@ -44,32 +45,31 @@ namespace EZYPOS.UserControls.Define.List
             PageInfo.Content = Pager.PageNumberDisplay(ListTopagenate);
         }
 
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {
-                List<DAL.DBMODEL.City> myList;
-                if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
-                {
-                    myList = DB.City.GetAll().ToList();
-                }
-                else
-                {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    myList = DB.City.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
-                }
+        //private void Search_Click(object sender, RoutedEventArgs e)
+        //{
+        //    using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+        //    {
+        //        List<DAL.DBMODEL.City> myList;
+        //        if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
+        //        {
+        //            myList = DB.City.GetAll().ToList();
+        //        }
+        //        else
+        //        {
+        //            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+        //            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+        //            myList = DB.City.GetAll().Where(x => x.Createdon >= Sdate && x.Createdon <= Edate).ToList();
+        //        }
 
-                CityGrid.ItemsSource = myList;
-            }
-        }
+        //        CityGrid.ItemsSource = myList;
+        //    }
+        //}
 
         private void Refresh(object sender = null)
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 myList = DB.City.GetAll().ToList();
-                CityGrid.ItemsSource = myList;
                 ResetPaging(myList);
             }
         }
@@ -86,29 +86,20 @@ namespace EZYPOS.UserControls.Define.List
             {
                 TextBox t = (TextBox)sender;
                 string filter = t.Text;
-                //var cv = CollectionViewSource.GetDefaultView(CityGrid.ItemsSource);
-
                 using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
                     if (filter == "")
                     {
                         myList = DB.City.GetAll().ToList();
-                        ResetPaging(myList);
                     }
                     else
                     {
                         if (t.Name == "GridName")
                         {
                             myList = DB.City.GetAll().Where(x => x.CityName.ToUpper().StartsWith(filter.ToUpper())).ToList();
-                            ResetPaging(myList);
                         }
                     }
-
-                    
-
-                    //CityGrid.ItemsSource = myList;
-
-
+                    ResetPaging(myList);
                 }
             }
         }
@@ -132,6 +123,30 @@ namespace EZYPOS.UserControls.Define.List
         {
             CityGrid.ItemsSource = Pager.Next(myList);
             PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            DAL.DBMODEL.City City = (DAL.DBMODEL.City)CityGrid.SelectedItem;
+            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete This City?", "Yes", "No");
+            if (Isconfirm)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                {
+                    try
+                    {
+                        DB.City.Delete(City.Id);
+                        DB.City.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        Refresh();
+                    }
+                    catch
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Selected City Can't be Deleted", "Status", "OK");
+                    }
+
+                }
+            }
         }
     }
 }

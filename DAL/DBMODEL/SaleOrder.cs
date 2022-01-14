@@ -31,6 +31,7 @@ namespace DAL.DBMODEL
         public string PaymentStatus { get; set; }
         public string Addby { get; set; }
         public string Addon { get; set; }
+        public int? EmployeeId { get; set; }
         public int? CustomerId { get; set; }
         public string CustomerPhone { get; set; }
         public string IsUpdated { get; set; }
@@ -41,6 +42,7 @@ namespace DAL.DBMODEL
         public long? ServiceCharge { get; set; }
 
         public virtual Customer Customer { get; set; }
+        public virtual Emplyee Employee { get; set; }
         public virtual User User { get; set; }
         public virtual ICollection<SaleOrderDetail> SaleOrderDetails { get; set; }
     }
