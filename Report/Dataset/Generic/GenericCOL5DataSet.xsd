@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="GenericCOL5DataSet" targetNamespace="http://tempuri.org/GenericCOL5DataSet.xsd" xmlns:mstns="http://tempuri.org/GenericCOL5DataSet.xsd" xmlns="http://tempuri.org/GenericCOL5DataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="GenericCOL5DataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="GenericCOL5DataSet" msprop:Generator_UserDSName="GenericCOL5DataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="GenericCOL5" msprop:Generator_TableClassName="GenericCOL5DataTable" msprop:Generator_TableVarName="tableGenericCOL5" msprop:Generator_TablePropName="GenericCOL5" msprop:Generator_RowDeletingName="GenericCOL5RowDeleting" msprop:Generator_RowChangingName="GenericCOL5RowChanging" msprop:Generator_RowEvHandlerName="GenericCOL5RowChangeEventHandler" msprop:Generator_RowDeletedName="GenericCOL5RowDeleted" msprop:Generator_UserTableName="GenericCOL5" msprop:Generator_RowChangedName="GenericCOL5RowChanged" msprop:Generator_RowEvArgName="GenericCOL5RowChangeEvent" msprop:Generator_RowClassName="GenericCOL5Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="COLA" msprop:Generator_ColumnVarNameInTable="columnCOLA" msprop:Generator_ColumnPropNameInRow="COLA" msprop:Generator_ColumnPropNameInTable="COLAColumn" msprop:Generator_UserColumnName="COLA" type="xs:string" minOccurs="0" />
+              <xs:element name="COLB" msprop:Generator_ColumnVarNameInTable="columnCOLB" msprop:Generator_ColumnPropNameInRow="COLB" msprop:Generator_ColumnPropNameInTable="COLBColumn" msprop:Generator_UserColumnName="COLB" type="xs:string" minOccurs="0" />
+              <xs:element name="COLC" msprop:Generator_ColumnVarNameInTable="columnCOLC" msprop:Generator_ColumnPropNameInRow="COLC" msprop:Generator_ColumnPropNameInTable="COLCColumn" msprop:Generator_UserColumnName="COLC" type="xs:string" minOccurs="0" />
+              <xs:element name="COLD" msprop:Generator_ColumnVarNameInTable="columnCOLD" msprop:Generator_ColumnPropNameInRow="COLD" msprop:Generator_ColumnPropNameInTable="COLDColumn" msprop:Generator_UserColumnName="COLD" type="xs:string" minOccurs="0" />
+              <xs:element name="COLE" msprop:Generator_ColumnVarNameInTable="columnCOLE" msprop:Generator_ColumnPropNameInRow="COLE" msprop:Generator_ColumnPropNameInTable="COLEColumn" msprop:Generator_UserColumnName="COLE" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

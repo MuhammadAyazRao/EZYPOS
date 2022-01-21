@@ -28,9 +28,10 @@ namespace EZYPOS.UserControls.Report
         public UserControlCashBookLedgerReport()
         {
             InitializeComponent();
-            Refresh();
             StartDate.SelectedDate = DateTime.Today;
             EndDate.SelectedDate = DateTime.Today;
+            Refresh();
+            
 
         }
 

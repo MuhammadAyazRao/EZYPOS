@@ -1,4 +1,5 @@
-﻿using DAL.Repository;
+﻿using DAL.DBMODEL;
+using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.Helper;
 using System;
@@ -29,6 +30,12 @@ namespace EZYPOS.UserControls.Report
         public UserControlSupplierLedgerReport()
         {
             InitializeComponent();
+            using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+            {
+                var SupplierList = DB.Supplier.GetAll().Select(x => new { Name = x.Name, Id = x.Id }).ToList();
+                SupplierList.Insert(0, new { Name = "All", Id = 0 });
+                ddSupplier.ItemsSource = SupplierList;
+            }
             StartDate.SelectedDate = DateTime.Today;
             EndDate.SelectedDate = DateTime.Today;
             Refresh();
@@ -39,7 +46,15 @@ namespace EZYPOS.UserControls.Report
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                var Suppliers = Db.Supplier.GetAll().ToList();
+                List<Supplier> Suppliers = new List<Supplier>();
+                if (ddSupplier.SelectedItem == null || Convert.ToInt32(ddSupplier.SelectedValue) == 0)
+                {
+                    Suppliers = Db.Supplier.GetAll().ToList();
+                }
+                else
+                {
+                    Suppliers = Db.Supplier.GetAll().Where(x => x.Id == Convert.ToInt32(ddSupplier.SelectedValue)).ToList();
+                }
                 myList.Clear();
                 foreach (var Supplier in Suppliers)
                 {
@@ -88,7 +103,16 @@ namespace EZYPOS.UserControls.Report
                     {
                         if (t.Name == "GridSName")
                         {
-                            var Suppliers = Db.Supplier.GetAll().Where(x => x.Name.ToUpper().Contains(filter.ToUpper())).ToList();
+                            List<Supplier> Suppliers = new List<Supplier>();
+                            if (ddSupplier.SelectedItem == null || Convert.ToInt32(ddSupplier.SelectedValue) == 0)
+                            {
+                                Suppliers = Db.Supplier.GetAll().ToList();
+                            }
+                            else
+                            {
+                                Suppliers = Db.Supplier.GetAll().Where(x => x.Id == Convert.ToInt32(ddSupplier.SelectedValue)).ToList();
+                            }
+                            Suppliers = Suppliers.Where(x => x.Name.ToUpper().Contains(filter.ToUpper())).ToList();
                             myList.Clear();
                             foreach (var Supplier in Suppliers)
                             {

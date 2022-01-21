@@ -64,6 +64,7 @@ namespace EZYPOS.UserControls
             ddRole.SelectedValue = null;
             JoiningDate.Text ="";
             txtId.Text = "";
+            JoiningDate.SelectedDate = DateTime.Today;
             SetImage(Environment.CurrentDirectory + @"\Assets\EmployeeImages\No_Image.jpg");
             //ActiveSession.NavigateToRefreshEmployeeList("");
         }
@@ -132,9 +133,7 @@ namespace EZYPOS.UserControls
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
-            bool Isconfirmed = EZYPOS.View.MessageYesNo.ShowCustom("Refresh", "Do you want to refresh page?", "Yes", "No");
-            if (Isconfirmed)
-            { RefreshPage(); }
+            RefreshPage();
         }
 
         private void txt_GotFocus(object sender, RoutedEventArgs e)

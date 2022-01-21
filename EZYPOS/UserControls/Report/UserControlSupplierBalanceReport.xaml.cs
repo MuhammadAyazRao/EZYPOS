@@ -44,12 +44,13 @@ namespace EZYPOS.UserControls.Report
                 var items = Db.SupplierLead.GetAll().Where(X => X.TransactionDate >= Sdate && X.TransactionDate <= Edate).GroupBy(x => x.SuplierId).Select(x => new { SuppId = x.Key, TotalDr = x.Sum(v => v.Dr), TotalCr = x.Sum(v => v.Cr), Balance = x.Sum(v => v.Dr) - x.Sum(v => v.Cr) }).ToList();
                 decimal Balance = 0;
                 myList.Clear();
+                string SupplierName = "";
                 foreach (var item in items)
                 {
                     Balance += (decimal)item.Balance;
+                    SupplierName = Db.Supplier.Get((int)item.SuppId).Name;
 
-
-                    myList.Add(new SupplierBalanceDTO { SupplierName = Db.Supplier.Get((int)item.SuppId).Name, CR = item.TotalCr.ToString(), DR = item.TotalDr?.ToString(), Balance = item.Balance?.ToString() });
+                    myList.Add(new SupplierBalanceDTO { SupplierName = SupplierName, CR = item.TotalCr.ToString(), DR = item.TotalDr?.ToString(), Balance = item.Balance?.ToString() });
                 }
                 myList.Add(new SupplierBalanceDTO { SupplierName = "Total", Date = DateTime.Now.ToString("dd/MM/yyyy"), TransactionType = "", Detail = "Total Credit Balance in Market", CR = "", DR = "", Balance = Balance.ToString() });
                 ResetPaging(myList);

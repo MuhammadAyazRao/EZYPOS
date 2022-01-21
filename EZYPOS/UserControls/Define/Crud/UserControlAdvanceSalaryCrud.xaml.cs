@@ -43,7 +43,6 @@ namespace EZYPOS.UserControls.Define.Crud
             Save.IsEnabled = true;
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                //EmployeeList.Insert(0, new { Name = "All", Id = 0 });
                 var EmployeeList = DB.Employee.GetAll().Select(x => new { Name = x.UserName, Id = x.Id }).ToList();
                 ddEmployee.ItemsSource = EmployeeList;
                 ddPayedBy.ItemsSource = EmployeeList;
@@ -51,10 +50,13 @@ namespace EZYPOS.UserControls.Define.Crud
                 ddMonth.ItemsSource = Months;
 
             }
+            ddEmployee.SelectedValue = null;
+            ddPayedBy.SelectedValue = null;
+            ddMonth.SelectedValue = null;
             txtSalary.Text = "Salary";
             txtSalary.Foreground = Brushes.Gray;
+            SalaryDate.SelectedDate = DateTime.Today;
             txtId.Text = "";
-             //ActiveSession.NavigateToRefreshEmployeeList("");
         }
 
         private void InitializePage(AdvanceSalaryDTO AdvanceSalary)
@@ -132,24 +134,40 @@ namespace EZYPOS.UserControls.Define.Crud
         {
             if (Validate())
             {
-                if (txtId.Text != "" && txtId.Text != "0")
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                 {
-                    int Id = Convert.ToInt32(txtId.Text);
-                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                    int? Id = Convert.ToInt32(ddEmployee.SelectedValue);
+                    int MonthlySalary = Convert.ToInt32(DB.Employee.Get(Convert.ToInt32(ddEmployee.SelectedValue)).Salary);
+                    int AdvSalary = Convert.ToInt32(txtSalary.Text);
+                    AdvancedSalary UpdateAdvanceSalary = DB.AdvanceSalary.GetAll().Where(x => x.EmployeeId == Id).FirstOrDefault();
+                    if (UpdateAdvanceSalary != null)
                     {
-                        var UpdateAdvanceSalary = DB.AdvanceSalary.GetAll().Where(x => x.Id == Id).FirstOrDefault();
-                        if (UpdateAdvanceSalary != null)
+                        if (AdvSalary > MonthlySalary)
                         {
-                            UpdateAdvanceSalary.EmployeeId = Convert.ToInt32(ddEmployee.SelectedValue);
+                            bool Isconfirm2 = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Advance Salary Exceeds. Want to Proceed?", "Yes", "No");
+                            if (Isconfirm2)
+                            {
+                                UpdateAdvanceSalary.PayedBy = Convert.ToInt32(ddPayedBy.SelectedValue);
+                                UpdateAdvanceSalary.Month = Convert.ToInt32(ddMonth.SelectedValue);
+                                UpdateAdvanceSalary.Date = SalaryDate.SelectedDate;
+                                UpdateAdvanceSalary.Amount = AdvSalary;
+                                DB.AdvanceSalary.Save();
+                                EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                                RefreshPage();
+                            }
+                        }
+                        else
+                        {
                             UpdateAdvanceSalary.PayedBy = Convert.ToInt32(ddPayedBy.SelectedValue);
                             UpdateAdvanceSalary.Month = Convert.ToInt32(ddMonth.SelectedValue);
                             UpdateAdvanceSalary.Date = SalaryDate.SelectedDate;
-                            UpdateAdvanceSalary.Amount = Convert.ToInt32(txtSalary.Text);
+                            UpdateAdvanceSalary.Amount = AdvSalary;
                             DB.AdvanceSalary.Save();
-                            EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
+                            EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
                             RefreshPage();
                         }
                     }
+                    
                 }
             }
         }
@@ -191,19 +209,76 @@ namespace EZYPOS.UserControls.Define.Crud
             {
                 using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                 {
-                    AdvancedSalary AddAdvanceSalary = new AdvancedSalary();
-
-                    AddAdvanceSalary.EmployeeId = Convert.ToInt32(ddEmployee.SelectedValue);
-                    AddAdvanceSalary.PayedBy = Convert.ToInt32(ddPayedBy.SelectedValue);
-                    AddAdvanceSalary.Month = Convert.ToInt32(ddMonth.SelectedValue);
-                    AddAdvanceSalary.Date = SalaryDate.SelectedDate;
-                    AddAdvanceSalary.Amount = Convert.ToInt32(txtSalary.Text);
-                    DB.AdvanceSalary.Add(AddAdvanceSalary);
-                    DB.AdvanceSalary.Save();
-                    EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
-                    RefreshPage();
-
-
+                    int? Id = Convert.ToInt32(ddEmployee.SelectedValue);
+                    int MonthlySalary = Convert.ToInt32(DB.Employee.Get(Convert.ToInt32(ddEmployee.SelectedValue)).Salary);
+                    int AdvSalary = Convert.ToInt32(txtSalary.Text);
+                    AdvancedSalary ExistingEmployee = DB.AdvanceSalary.GetAll().Where(x => x.EmployeeId == Id).FirstOrDefault();
+                    if(ExistingEmployee != null)
+                    {
+                        int SalaryTaken = Convert.ToInt32(ExistingEmployee.Amount);
+                        bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Already Taken .Want to Proceed?", "Yes", "No");
+                        if (Isconfirm)
+                        {
+                            if (AdvSalary+SalaryTaken > MonthlySalary)
+                            {
+                                bool Isconfirm2 = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Advance Salary Exceeds. Want to Proceed?", "Yes", "No");
+                                if (Isconfirm2)
+                                {
+                                    ExistingEmployee.PayedBy = Convert.ToInt32(ddPayedBy.SelectedValue);
+                                    ExistingEmployee.Month = Convert.ToInt32(ddMonth.SelectedValue);
+                                    ExistingEmployee.Date = SalaryDate.SelectedDate;
+                                    ExistingEmployee.Amount = AdvSalary + SalaryTaken;
+                                    ExistingEmployee.IsAdvance = true;
+                                    DB.AdvanceSalary.Save();
+                                    EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                                    RefreshPage();
+                                }
+                            }
+                            else
+                            {
+                                ExistingEmployee.PayedBy = Convert.ToInt32(ddPayedBy.SelectedValue);
+                                ExistingEmployee.Month = Convert.ToInt32(ddMonth.SelectedValue);
+                                ExistingEmployee.Date = SalaryDate.SelectedDate;
+                                ExistingEmployee.Amount = AdvSalary + SalaryTaken;
+                                ExistingEmployee.IsAdvance = true;
+                                DB.AdvanceSalary.Save();
+                                EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                                RefreshPage();
+                            }
+                        }
+                    }
+                    else if (AdvSalary > MonthlySalary)
+                    {
+                        bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Advance Salary Exceeds. Want to Proceed?", "Yes", "No");
+                        if (Isconfirm)
+                        {
+                            AdvancedSalary AddAdvanceSalary = new AdvancedSalary();
+                            AddAdvanceSalary.EmployeeId = Convert.ToInt32(ddEmployee.SelectedValue);
+                            AddAdvanceSalary.PayedBy = Convert.ToInt32(ddPayedBy.SelectedValue);
+                            AddAdvanceSalary.Month = Convert.ToInt32(ddMonth.SelectedValue);
+                            AddAdvanceSalary.Date = SalaryDate.SelectedDate;
+                            AddAdvanceSalary.Amount = AdvSalary;
+                            AddAdvanceSalary.IsAdvance = true;
+                            DB.AdvanceSalary.Add(AddAdvanceSalary);
+                            DB.AdvanceSalary.Save();
+                            EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                            RefreshPage();
+                        }
+                    }
+                    else
+                    {
+                        AdvancedSalary AddAdvanceSalary = new AdvancedSalary();
+                        AddAdvanceSalary.EmployeeId = Convert.ToInt32(ddEmployee.SelectedValue);
+                        AddAdvanceSalary.PayedBy = Convert.ToInt32(ddPayedBy.SelectedValue);
+                        AddAdvanceSalary.Month = Convert.ToInt32(ddMonth.SelectedValue);
+                        AddAdvanceSalary.Date = SalaryDate.SelectedDate;
+                        AddAdvanceSalary.Amount = AdvSalary;
+                        AddAdvanceSalary.IsAdvance = true;
+                        DB.AdvanceSalary.Add(AddAdvanceSalary);
+                        DB.AdvanceSalary.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                        RefreshPage();
+                    }
                 }
             }
         }

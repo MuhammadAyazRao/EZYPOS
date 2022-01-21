@@ -169,7 +169,7 @@
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
                                     <TextBox materialDesign:HintAssist.Hint="Month"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" PreviewTextInput="NumberOnly_PreviewTextInput"  x:Name="GridMonth" Width="110"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridMonth" Width="110"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>

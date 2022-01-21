@@ -229,7 +229,7 @@ namespace EZYPOS.UserControls.Transaction
                     sp.Amount = Convert.ToInt32(txtAmount.Text);
                     sp.EmployeeId = Convert.ToInt32(DDPayedBy.SelectedValue);
                     sp.SupplierId = Convert.ToInt32(DDSupplier.SelectedValue);
-                    sp.TransactionDate = TransactionDate.SelectedDate;
+                    sp.TransactionDate = Convert.ToDateTime(TransactionDate.SelectedDate);
                     sp.CreatedOn = DateTime.Today;
                     DB.SupplierPayment.Add(sp);
                     DB.SupplierPayment.Save();

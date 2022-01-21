@@ -20,6 +20,26 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DataSet1.xsd</DependentUpon>
     </Compile>
+    <Compile Update="Dataset\Generic\DataSetGeneric.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DataSetGeneric.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Dataset\Generic\GenericCOL4DataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GenericCOL4DataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Dataset\Generic\GenericCOL5DataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GenericCOL5DataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Update="Dataset\Generic\GenericCOL6DataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GenericCOL6DataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Update="Dataset\Product\ProductStockExpiryDataset.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -37,6 +57,22 @@
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
     </None>
+    <None Update="Dataset\Generic\DataSetGeneric.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetGeneric.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Dataset\Generic\GenericCOL4DataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GenericCOL4DataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Dataset\Generic\GenericCOL5DataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GenericCOL5DataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="Dataset\Generic\GenericCOL6DataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GenericCOL6DataSet.Designer.cs</LastGenOutput>
+    </None>
     <None Update="Dataset\Product\ProductStockExpiryDataset.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>ProductStockExpiryDataset.Designer.cs</LastGenOutput>
@@ -44,6 +80,15 @@
     <None Update="Dataset\Purchase\PurchaseOrderDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>PurchaseOrderDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="RDLC\Generic\GenericCOL4Report.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="RDLC\Generic\GenericCOL6Report.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="RDLC\Generic\ReportGenericCol6.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="RDLC\Purchase\PurchaseOrderReport.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

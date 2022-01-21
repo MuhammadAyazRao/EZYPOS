@@ -99,6 +99,24 @@ namespace EZYPOS.UserControls.Report
                     }
                     else
                     {
+                        if(t.Name == "GridOrderNumber")
+                        {
+                            var Items = GetSaleOrders();
+                            Items = Items.Where(x => x.Id == Convert.ToInt32(filter)).ToList();
+                            string CustomerName = "";
+                            string EmployeeName = "";
+                            long GrandTotal = 0;
+                            myList.Clear();
+                            foreach (var item in Items)
+                            {
+                                GrandTotal += item.Total;
+                                CustomerName = DB.Customers.Get(Convert.ToInt32(item.CustomerId)).Name;
+                                EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
+                                myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = Convert.ToString(item.OrderDate), PaymentMode = item.PaymentMode, TotalAmount = Convert.ToString(item.Total) });
+                            }
+                            myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "-", PaymentMode = "Total", TotalAmount = Convert.ToString(GrandTotal) });
+                            ResetPaging(myList);
+                        }
                         if (t.Name == "GridCName")
                         {
                             var Items = GetSaleOrders();

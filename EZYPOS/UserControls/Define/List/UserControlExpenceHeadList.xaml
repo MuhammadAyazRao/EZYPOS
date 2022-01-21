@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
             Background="White"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="1024" Name="ExpenceHeadList" d:DesignWidth="768">
+             d:DesignHeight="1024" Name="ExpenceTypeList" d:DesignWidth="768">
     <UserControl.Resources>
         <Style TargetType="{x:Type DataGrid}">
             <Setter Property="AlternationCount" Value="2" />

@@ -33,8 +33,6 @@ namespace EZYPOS.UserControls.Report
         public UserControlStockExpiry()
         {
             InitializeComponent();
-            StartDate.SelectedDate = DateTime.Today;
-            EndDate.SelectedDate = DateTime.Today;
             Refresh();
 
         }

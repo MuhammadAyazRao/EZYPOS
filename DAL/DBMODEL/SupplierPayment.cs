@@ -10,7 +10,7 @@ namespace DAL.DBMODEL
         public int Id { get; set; }
         public int? Amount { get; set; }
         public string Discription { get; set; }
-        public DateTime? TransactionDate { get; set; }
+        public DateTime TransactionDate { get; set; }
         public DateTime? CreatedOn { get; set; }
         public int? SupplierId { get; set; }
         public int? EmployeeId { get; set; }

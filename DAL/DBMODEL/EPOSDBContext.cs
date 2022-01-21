@@ -79,8 +79,6 @@ namespace DAL.DBMODEL
 
                 entity.Property(e => e.Date).HasColumnType("date");
 
-                entity.Property(e => e.Month).HasMaxLength(50);
-
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.AdvancedSalaryEmployees)
                     .HasForeignKey(d => d.EmployeeId)

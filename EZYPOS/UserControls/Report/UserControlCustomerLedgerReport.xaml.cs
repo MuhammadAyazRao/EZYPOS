@@ -1,4 +1,5 @@
-﻿using DAL.Repository;
+﻿using DAL.DBMODEL;
+using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.Helper;
 using System;
@@ -28,6 +29,12 @@ namespace EZYPOS.UserControls.Report
         public UserControlCustomerLedgerReport()
         {
             InitializeComponent();
+            using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+            {
+                var CustomerList = DB.Customers.GetAll().Select(x => new { Name = x.Name, Id = x.Id }).ToList();
+                CustomerList.Insert(0, new { Name = "All", Id = 0 });
+                ddCustomer.ItemsSource = CustomerList;
+            }
             StartDate.SelectedDate = DateTime.Today;
             EndDate.SelectedDate = DateTime.Today;
             Refresh();
@@ -36,9 +43,17 @@ namespace EZYPOS.UserControls.Report
 
         void Refresh()
         {
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            using (UnitOfWork Db = new UnitOfWork(new EPOSDBContext()))
             {
-                var Customers = Db.Customers.GetAll().ToList();
+                List<Customer> Customers = new List<Customer>();
+                if (ddCustomer.SelectedItem == null || Convert.ToInt32(ddCustomer.SelectedValue) == 0)
+                {
+                    Customers = Db.Customers.GetAll().ToList();
+                }
+                else
+                {
+                    Customers = Db.Customers.GetAll().Where(x=> x.Id == Convert.ToInt32(ddCustomer.SelectedValue)).ToList();
+                }
                 myList.Clear();
                 foreach (var Customer in Customers)
                 {
@@ -70,6 +85,7 @@ namespace EZYPOS.UserControls.Report
             }
 
         }
+       
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -91,7 +107,16 @@ namespace EZYPOS.UserControls.Report
                             if (t.Name == "GridCName")
                             {
                                 myList.Clear();
-                                var Customers = Db.Customers.GetAll().Where(x => x.Name.ToUpper().Contains(filter.ToUpper())).ToList();
+                                List<Customer> Customers = new List<Customer>();
+                                if (ddCustomer.SelectedItem == null || Convert.ToInt32(ddCustomer.SelectedValue) == 0)
+                                {
+                                    Customers = Db.Customers.GetAll().ToList();
+                                }
+                                else
+                                {
+                                    Customers = Db.Customers.GetAll().Where(x => x.Id == Convert.ToInt32(ddCustomer.SelectedValue)).ToList();
+                                }
+                                Customers = Customers.Where(x => x.Name.ToUpper().Contains(filter.ToUpper())).ToList();
                                 foreach (var Customer in Customers)
                                 {
 

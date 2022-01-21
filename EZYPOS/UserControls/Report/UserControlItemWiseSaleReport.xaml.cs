@@ -28,8 +28,7 @@ namespace EZYPOS.UserControls.Report
         public UserControlItemWiseSaleReport()
         {
             InitializeComponent();
-            StartDate.SelectedDate = DateTime.Today;
-            EndDate.SelectedDate = DateTime.Today;
+            
             Refresh();
         }
 
@@ -38,8 +37,8 @@ namespace EZYPOS.UserControls.Report
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+                //DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+                //DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
 
                 var items = Db.SaleOrderDetail.GetAll().GroupBy(x => x.ItemId).Select(x => new { ItemId = x.Key, ItemQty = x.Sum(v => v.ItemQty), ItemPrice = x.Sum(v => v.ItemPrice)}).ToList();
                 decimal TotalQty = 0;
@@ -73,8 +72,8 @@ namespace EZYPOS.UserControls.Report
                     {
                         if (t.Name == "GridItemName")
                         {
-                            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+                            //DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
+                            //DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
 
                             var items = Db.SaleOrderDetail.GetAll().GroupBy(x => x.ItemId).Select(x => new { ItemId = x.Key, ItemQty = x.Sum(v => v.ItemQty), ItemPrice = x.Sum(v => v.ItemPrice) }).ToList();
                             decimal TotalQty = 0;
@@ -141,9 +140,9 @@ namespace EZYPOS.UserControls.Report
 
         #endregion
 
-        private void Search_Click(object sender, RoutedEventArgs e)
-        {
-            Refresh();
-        }
+        //private void Search_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Refresh();
+        //}
     }
 }

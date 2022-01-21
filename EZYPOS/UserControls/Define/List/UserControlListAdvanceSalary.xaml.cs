@@ -38,7 +38,7 @@ namespace EZYPOS.UserControls.Define.List
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                myList = DB.AdvanceSalary.GetAll().Select(x => new AdvanceSalaryDTO { Id = x.Id, Employee = x.Employee == null ? null : x.Employee.UserName, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.UserName, Date = x.Date, Month = Month.GetMonthName(x.Month), Amount = x.Amount }).ToList();
+                myList = DB.AdvanceSalary.GetAll().Select(x => new AdvanceSalaryDTO { Id = x.Id, Employee = x.Employee == null ? null : x.Employee.UserName, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.UserName, Date = x.Date, Month = Month.GetMonthName(Convert.ToInt32(x.Month)), Amount = x.Amount }).ToList();
                 ResetPaging(myList);
             }
         }
@@ -84,34 +84,28 @@ namespace EZYPOS.UserControls.Define.List
                     }
                     else
                     {
-                        if (t.Name == "GridName")
+                        myList = DB.AdvanceSalary.GetAll().Select(x => new AdvanceSalaryDTO { Id = x.Id, Employee = x.Employee == null ? null : x.Employee.UserName, PayedBy = x.PayedByNavigation == null ? null : x.PayedByNavigation.UserName, Date = x.Date, Month = Month.GetMonthName(Convert.ToInt32(x.Month)), Amount = x.Amount }).ToList();
+                        if (t.Name == "GridEmployee")
                         {
-                            //myList = DB.Employee.GetAll().Where(x => x.UserName.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList(); ;
+                            myList = myList.Where(x => x.Employee.ToUpper().Contains(filter.ToUpper())).ToList();
                         }
-                        if (t.Name == "GridCity")
+                        if (t.Name == "GridPayedBy")
                         {
-                            //myList = DB.Employee.GetAll().Where(x => x.CityNavigation.CityName.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                            myList = myList.Where(x => x.PayedBy.ToUpper().Contains(filter.ToUpper())).ToList();
                         }
-                        if (t.Name == "GridAdress")
+                        if (t.Name == "GridDate")
                         {
-                            //myList = DB.Employee.GetAll().Where(x => x.Adress.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                            myList = myList.Where(x => x.Date.ToString().Contains(filter)).ToList();
                         }
-                        if (t.Name == "GridRole")
+                        if (t.Name == "GridMonth")
                         {
-                            //myList = DB.Employee.GetAll().Where(x => x.RoleNavigation.Name.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                            myList = myList.Where(x => x.Month.ToUpper().Contains(filter.ToUpper())).ToList();
                         }
-                        if (t.Name == "GridSalary")
+                        if (t.Name == "GridAmount")
                         {
-                            //myList = DB.Employee.GetAll().Where(x => x.Salary.ToString().Contains(filter)).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                            myList = myList.Where(x => x.Amount.ToString().Contains(filter)).ToList();
                         }
-                        if (t.Name == "GridPhone")
-                        {
-                            //myList = DB.Employee.GetAll().Where(x => x.Phone.Contains(filter)).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
-                        }
-                        if (t.Name == "GridCnic")
-                        {
-                            //myList = DB.Employee.GetAll().Where(x => x.Cnic.Contains(filter)).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
-                        }
+
                         ResetPaging(myList);
                     }
                     

@@ -1,10 +1,14 @@
 ﻿using Common.Session;
 using DAL.Repository;
 using EZYPOS.DTO;
+using EZYPOS.DTO.ReportsDTO;
 using EZYPOS.Helper;
 using EZYPOS.UserControls.Define.Crud;
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -31,6 +35,8 @@ namespace EZYPOS.UserControls.Report
         public UserControlExpenseReport()
         {
             InitializeComponent();
+            StartDate.SelectedDate = DateTime.Today;
+            EndDate.SelectedDate = DateTime.Today;
             Refresh();
         }
         private void Refresh(object sender = null)
@@ -41,8 +47,8 @@ namespace EZYPOS.UserControls.Report
                 var items = DB.expt.GetAll().ToList();
                 if (StartDate.SelectedDate != null && EndDate.SelectedDate != null)
                 {
-                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
+                    DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
+                    DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
                     items = items.Where(x => x.ExpenceDate >= Sdate && x.ExpenceDate <= Edate).ToList();
                 }
                 decimal? TotalAmount = 0;
@@ -53,10 +59,10 @@ namespace EZYPOS.UserControls.Report
                     
                     expensename = DB.ExpenceType.Get(Convert.ToInt32(item.ExpenceType)).ExpenceName;
                     TotalAmount += item.Amount;
-                    myList.Add( new ExpenseReportDTO { ExpenseDate = Convert.ToString(item.ExpenceDate), CreateBy = Convert.ToString(item.CreatedBy), Discription = item.Discription, Amount = Convert.ToString(item.Amount),  ExpenseType = expensename, });
+                    myList.Add( new ExpenseReportDTO { ExpenseDate = item.ExpenceDate?.ToString("dd/MM/yyyy"), CreateBy = Convert.ToString(item.CreatedBy), Discription = item.Discription, Amount = item.Amount?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")),  ExpenseType = expensename, });
 
                 }
-                myList.Add( new ExpenseReportDTO { ExpenseDate = "", CreateBy = "", Discription = "", Amount = Convert.ToString(TotalAmount), ExpenseType = "Total" });
+                myList.Add( new ExpenseReportDTO { ExpenseDate = "Total", CreateBy = "", Discription = "", Amount = TotalAmount?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")), ExpenseType = "" });
                 
                 ResetPaging(myList);
 
@@ -172,6 +178,53 @@ namespace EZYPOS.UserControls.Report
         private void Search_Click(object sender, RoutedEventArgs e)
         {
             Refresh();
+        }
+
+        private void Print_Click(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.ExpenseType, COLB = x.Discription, COLC = x.ExpenseDate, COLD = x.Amount, COLE="",COLF="" }).ToList();
+            ReportDataSource rds = new ReportDataSource();
+            rds.Name = "GenericCOL4DataSet";
+            rds.Value = RptData;
+            string exePath = Directory.GetCurrentDirectory();
+            ReportViewer.LocalReport.ReportPath = exePath + @"\RDLC\Generic\GenericCOL4Report.rdlc";
+            this.ReportViewer.LocalReport.DataSources.Add(rds);
+            this.ReportViewer.LocalReport.EnableExternalImages = true;
+            string imagePath = new Uri(exePath + @"\Assets\logo.png").AbsoluteUri;
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ImagePath", imagePath));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ReportName", "Expence Report"));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderA", "Expense Type"));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderB", "Description"));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderC", "Date"));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderD", "Amount"));
+            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderE", "H"));
+            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderF", "H"));
+            string Dis = "From: " + StartDate.SelectedDate?.ToString("MM/dd/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("MM/dd/yyyy");
+            string PrintDate = "Printed On: " + DateTime.Now.ToString("MM/dd/yyyy");
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ReportDiscription", Dis));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("PrintDate", PrintDate));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderDiscription", "House No 36, Street No 3, Liaqt Colony, PAF Road, 49 Tail, Sargodha, Pakistan"));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("FooterDiscription", "House No 36, Street No 3, Liaqt Colony, PAF Road, 49 Tail, Sargodha, Pakistan"));
+            this.ReportViewer.RefreshReport();
+            this.ReportViewer.LocalReport.Print();
+
+            //List<GenericCOL4DTO> RptData = myList.Select(x => new GenericCOL4DTO { COLA=x.ExpenseType,COLB=x.Discription,COLC=x.ExpenseDate, COLD= x.Amount}).ToList();
+            //ReportDataSource rds = new ReportDataSource();
+            //rds.Name = "GenericCOL4DataSet";
+            //rds.Value = RptData;
+            //string exePath = Directory.GetCurrentDirectory();
+            //ReportViewer.LocalReport.ReportPath = exePath + @"\RDLC\Generic\GenericCOL4Report.rdlc";
+            //this.ReportViewer.LocalReport.DataSources.Add(rds);
+            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ReportName", "Expence Report"));
+            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderA", "Expense Type"));
+            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderB", "Discription"));
+            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderC", "Date"));
+            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderD", "Amount"));
+            //string Dis = "From: " + StartDate.SelectedDate?.ToString("MM/dd/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("MM/dd/yyyy");
+            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ReportDiscription", Dis));
+            //this.ReportViewer.RefreshReport();
+            //this.ReportViewer.LocalReport.Print();
         }
     }
 }
