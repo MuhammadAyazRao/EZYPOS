@@ -4,6 +4,8 @@ using EZYPOS.DTO;
 using EZYPOS.Helper;
 using System;
 using System.Collections.Generic;
+using Microsoft.Reporting.WinForms;
+using EZYPOS.DTO.ReportsDTO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +18,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using System.Globalization;
 
 namespace EZYPOS.UserControls.Report
 {
@@ -198,6 +202,38 @@ namespace EZYPOS.UserControls.Report
         private void Search_Click(object sender, RoutedEventArgs e)
         {
             Refresh();
+        }
+
+        private void Print_Click(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.CustomerName, COLB = x.TransactionType, COLC = x.Date.ToString("dd/MM/yyyy"), COLD = x.DR?.ToString(), COLE = x.CR?.ToString(), COLF = x.Balance?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) }).ToList();
+            ReportDataSource rds = new ReportDataSource();
+            rds.Name = "GenericCOL6DataSet";
+            rds.Value = RptData;
+            string exePath = Directory.GetCurrentDirectory();
+            ReportViewer.LocalReport.ReportPath = exePath + @"\RDLC\Generic\GenericCOL6Report.rdlc";
+            this.ReportViewer.LocalReport.DataSources.Add(rds);
+            this.ReportViewer.LocalReport.EnableExternalImages = true;
+            string imagePath = new Uri(exePath + @"\Assets\logo.png").AbsoluteUri;
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ImagePath", imagePath));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ReportName", "Customer Ledger Report"));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderA", "Customer Name"));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderB", "Transaction Type"));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderC", "Date"));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderD", "DR"));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderE", "CR"));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderF", "Balance"));
+            string Dis = "From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
+            string PrintDate = "Printed On: " + DateTime.Now.ToString("dd/MM/yyyy");
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ReportDescription", Dis));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("PrintDate", PrintDate));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderDescription", "House No 36, Street No 3, Liaqt Colony, PAF Road, 49 Tail, Sargodha, Pakistan"));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("FooterDescription", "House No 36, Street No 3, Liaqt Colony, PAF Road, 49 Tail, Sargodha, Pakistan"));
+            this.ReportViewer.RefreshReport();
+            this.ReportViewer.LocalReport.Print();
+
+            
         }
     }
 }

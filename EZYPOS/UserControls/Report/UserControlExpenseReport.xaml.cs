@@ -202,10 +202,10 @@ namespace EZYPOS.UserControls.Report
             //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderF", "H"));
             string Dis = "From: " + StartDate.SelectedDate?.ToString("MM/dd/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("MM/dd/yyyy");
             string PrintDate = "Printed On: " + DateTime.Now.ToString("MM/dd/yyyy");
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ReportDiscription", Dis));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ReportDescription", Dis));
             this.ReportViewer.LocalReport.SetParameters(new ReportParameter("PrintDate", PrintDate));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderDiscription", "House No 36, Street No 3, Liaqt Colony, PAF Road, 49 Tail, Sargodha, Pakistan"));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("FooterDiscription", "House No 36, Street No 3, Liaqt Colony, PAF Road, 49 Tail, Sargodha, Pakistan"));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderDescription", "House No 36, Street No 3, Liaqt Colony, PAF Road, 49 Tail, Sargodha, Pakistan"));
+            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("FooterDescription", "House No 36, Street No 3, Liaqt Colony, PAF Road, 49 Tail, Sargodha, Pakistan"));
             this.ReportViewer.RefreshReport();
             this.ReportViewer.LocalReport.Print();
 

@@ -84,10 +84,10 @@
     <None Update="RDLC\Generic\GenericCOL4Report.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="RDLC\Generic\GenericCOL6Report.rdlc">
+    <None Update="RDLC\Generic\GenericCOL5Report.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="RDLC\Generic\ReportGenericCol6.rdlc">
+    <None Update="RDLC\Generic\GenericCOL6Report.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="RDLC\Purchase\PurchaseOrderReport.rdlc">

@@ -98,7 +98,7 @@ namespace DAL.Repository
                     CustomerLed.TransactionId = NewOrder.Id;
                     CustomerLed.TransactionType = Common.InvoiceType.SaleInvoice;
                     CustomerLed.TransactionDetail = "Sale Transaction against Invoice Number # " + NewOrder.Id;
-                    CustomerLed.CustomerId = 1;
+                    CustomerLed.CustomerId = CartOrderToProcess.CustId;
                     CustomerLead.Add(CustomerLed);
                     if (CartOrderToProcess.PaymentType.ToUpper() == OrderEnums.PaymentType.CASH)
                     {

@@ -98,7 +98,7 @@ namespace DAL.Repository
                     SupplierLead.TransactionId = NewOrder.Id;
                     SupplierLead.TransactionType = Common.InvoiceType.PurchaseInvoice;
                     SupplierLead.TransactionDet = CartOrderToProcess.PaymentType + " Purchase Order No: " + NewOrder.Id + Environment.NewLine + Odrdetforledger;
-                    SupplierLead.SuplierId = 5;//CartOrderToProcess.CustId;
+                    SupplierLead.SuplierId = CartOrderToProcess.SupplierId;
                     SupplierLeader.Add(SupplierLead);
 
 

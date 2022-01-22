@@ -2,18 +2,18 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="GenericCOL6DataSet">
+    <DataSource Name="GenericCOL5DataSet">
       <ConnectionProperties>
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>92dd89b7-294e-4e20-90fd-2dedd3871b34</rd:DataSourceID>
+      <rd:DataSourceID>dc5a6273-0fa1-480d-b440-55afbc1c4eb1</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="GenericCOL6DataSet">
+    <DataSet Name="GenericCOL5DataSet">
       <Query>
-        <DataSourceName>GenericCOL6DataSet</DataSourceName>
+        <DataSourceName>GenericCOL5DataSet</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
@@ -37,15 +37,11 @@
           <DataField>COLE</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="COLF">
-          <DataField>COLF</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
       </Fields>
       <rd:DataSetInfo>
-        <rd:DataSetName>GenericCOL6DataSet</rd:DataSetName>
-        <rd:SchemaPath>G:\EZYPOS\EZYPOS\Report\Dataset\Generic\GenericCOL6DataSet.xsd</rd:SchemaPath>
-        <rd:TableName>GenericCOL6</rd:TableName>
+        <rd:DataSetName>GenericCOL5DataSet</rd:DataSetName>
+        <rd:SchemaPath>G:\EZYPOS\EZYPOS\Report\Dataset\Generic\GenericCOL5DataSet.xsd</rd:SchemaPath>
+        <rd:TableName>GenericCOL5</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />
@@ -76,8 +72,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
-            <Top>0.3496cm</Top>
-            <Left>0.69892cm</Left>
+            <Top>0.03528cm</Top>
+            <Left>0.73436cm</Left>
             <Height>0.6cm</Height>
             <Width>11.71202cm</Width>
             <Style>
@@ -94,22 +90,19 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>2.5157cm</Width>
+                  <Width>3.01883cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5157cm</Width>
+                  <Width>3.01883cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5157cm</Width>
+                  <Width>3.01883cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5157cm</Width>
+                  <Width>3.01883cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>2.5157cm</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>2.5157cm</Width>
+                  <Width>3.01883cm</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -341,51 +334,6 @@
                         </Textbox>
                       </CellContents>
                     </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox12">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Parameters!HeaderF.Value</Value>
-                                  <Style>
-                                    <FontWeight>Bold</FontWeight>
-                                    <Color>White</Color>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox12</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                            </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Black</Color>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Black</Color>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Black</Color>
-                            </RightBorder>
-                            <BackgroundColor>#0175a8</BackgroundColor>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                            <PaddingTop>5pt</PaddingTop>
-                            <PaddingBottom>5pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
@@ -414,7 +362,7 @@
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>= IIF(RowNumber("GenericCOL6DataSet") Mod 2 = 0, "White", "LightGrey")</BackgroundColor>
+                            <BackgroundColor>= IIF(RowNumber("GenericCOL5DataSet") Mod 2 = 0, "White", "LightGrey")</BackgroundColor>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
                             <PaddingTop>5pt</PaddingTop>
@@ -446,7 +394,7 @@
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>= IIF(RowNumber("GenericCOL6DataSet") Mod 2 = 0, "White", "LightGrey")</BackgroundColor>
+                            <BackgroundColor>= IIF(RowNumber("GenericCOL5DataSet") Mod 2 = 0, "White", "LightGrey")</BackgroundColor>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
                             <PaddingTop>5pt</PaddingTop>
@@ -478,7 +426,7 @@
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>= IIF(RowNumber("GenericCOL6DataSet") Mod 2 = 0, "White", "LightGrey")</BackgroundColor>
+                            <BackgroundColor>= IIF(RowNumber("GenericCOL5DataSet") Mod 2 = 0, "White", "LightGrey")</BackgroundColor>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
                             <PaddingTop>5pt</PaddingTop>
@@ -510,7 +458,7 @@
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>= IIF(RowNumber("GenericCOL6DataSet") Mod 2 = 0, "White", "LightGrey")</BackgroundColor>
+                            <BackgroundColor>= IIF(RowNumber("GenericCOL5DataSet") Mod 2 = 0, "White", "LightGrey")</BackgroundColor>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
                             <PaddingTop>5pt</PaddingTop>
@@ -542,39 +490,7 @@
                             <Border>
                               <Style>Solid</Style>
                             </Border>
-                            <BackgroundColor>= IIF(RowNumber("GenericCOL6DataSet") Mod 2 = 0, "White", "LightGrey")</BackgroundColor>
-                            <PaddingLeft>5pt</PaddingLeft>
-                            <PaddingRight>5pt</PaddingRight>
-                            <PaddingTop>5pt</PaddingTop>
-                            <PaddingBottom>5pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="COLF">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value>=Fields!COLF.Value</Value>
-                                  <Style>
-                                    <FontWeight>=IIf(Fields!COLC.Value="Total","Bold","Normal")</FontWeight>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style />
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>COLF</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Style>Solid</Style>
-                            </Border>
-                            <BackgroundColor>= IIF(RowNumber("GenericCOL6DataSet") Mod 2 = 0, "White", "LightGrey")</BackgroundColor>
+                            <BackgroundColor>= IIF(RowNumber("GenericCOL5DataSet") Mod 2 = 0, "White", "LightGrey")</BackgroundColor>
                             <PaddingLeft>5pt</PaddingLeft>
                             <PaddingRight>5pt</PaddingRight>
                             <PaddingTop>5pt</PaddingTop>
@@ -614,11 +530,6 @@
                     <Hidden>=iif(Parameters!HeaderE.Value = "H", true, false)</Hidden>
                   </Visibility>
                 </TablixMember>
-                <TablixMember>
-                  <Visibility>
-                    <Hidden>=iif(Parameters!HeaderF.Value = "H", true, false)</Hidden>
-                  </Visibility>
-                </TablixMember>
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -636,11 +547,11 @@
             <RepeatRowHeaders>true</RepeatRowHeaders>
             <FixedColumnHeaders>true</FixedColumnHeaders>
             <FixedRowHeaders>true</FixedRowHeaders>
-            <DataSetName>GenericCOL6DataSet</DataSetName>
-            <Top>2.77495cm</Top>
-            <Left>0.69892cm</Left>
+            <DataSetName>GenericCOL5DataSet</DataSetName>
+            <Top>2.46063cm</Top>
+            <Left>0.7079cm</Left>
             <Height>1.82563cm</Height>
-            <Width>15.0942cm</Width>
+            <Width>15.09415cm</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -675,8 +586,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox14</rd:DefaultName>
-            <Top>1.84891cm</Top>
-            <Left>0.72538cm</Left>
+            <Top>1.53459cm</Top>
+            <Left>0.73436cm</Left>
             <Height>0.6cm</Height>
             <Width>11.71202cm</Width>
             <ZIndex>2</ZIndex>
@@ -705,8 +616,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox5</rd:DefaultName>
-            <Top>1.09071cm</Top>
-            <Left>0.69892cm</Left>
+            <Top>0.77639cm</Top>
+            <Left>0.7079cm</Left>
             <Height>0.6cm</Height>
             <Width>11.71202cm</Width>
             <ZIndex>3</ZIndex>
@@ -735,8 +646,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>5.50016cm</Top>
-            <Left>0.69892cm</Left>
+            <Top>5.18584cm</Top>
+            <Left>0.7079cm</Left>
             <Height>0.6cm</Height>
             <Width>11.71202cm</Width>
             <ZIndex>4</ZIndex>
@@ -754,8 +665,7 @@
             <Source>External</Source>
             <Value>=Parameters!ImagePath.Value</Value>
             <Sizing>Fit</Sizing>
-            <Top>0.31432cm</Top>
-            <Left>13.53316cm</Left>
+            <Left>13.54214cm</Left>
             <Height>2.13459cm</Height>
             <Width>2.25993cm</Width>
             <ZIndex>5</ZIndex>
@@ -785,8 +695,8 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox3</rd:DefaultName>
-            <Top>5.4737cm</Top>
-            <Left>12.71101cm</Left>
+            <Top>5.15938cm</Top>
+            <Left>12.71999cm</Left>
             <Height>0.6cm</Height>
             <Width>3.08208cm</Width>
             <ZIndex>6</ZIndex>
@@ -801,8 +711,8 @@
             </Style>
           </Textbox>
           <Line Name="Line2">
-            <Top>5.05037cm</Top>
-            <Left>15.71308cm</Left>
+            <Top>4.73605cm</Top>
+            <Left>15.72206cm</Left>
             <Height>0cm</Height>
             <Width>-14.9877cm</Width>
             <ZIndex>7</ZIndex>
@@ -815,26 +725,14 @@
             </Style>
           </Line>
         </ReportItems>
-        <Height>2.51622in</Height>
+        <Height>2.42372in</Height>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
-          <TopBorder>
-            <Color>Black</Color>
-          </TopBorder>
-          <BottomBorder>
-            <Color>Black</Color>
-          </BottomBorder>
-          <LeftBorder>
-            <Color>Black</Color>
-          </LeftBorder>
-          <RightBorder>
-            <Color>Black</Color>
-          </RightBorder>
         </Style>
       </Body>
-      <Width>6.51376in</Width>
+      <Width>6.54167in</Width>
       <Page>
         <PageHeight>29.7cm</PageHeight>
         <PageWidth>21cm</PageWidth>
@@ -870,13 +768,10 @@
     </ReportParameter>
     <ReportParameter Name="HeaderD">
       <DataType>String</DataType>
+      <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="HeaderE">
-      <DataType>String</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="HeaderF">
       <DataType>String</DataType>
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
@@ -945,30 +840,25 @@
         <CellDefinition>
           <ColumnIndex>2</ColumnIndex>
           <RowIndex>1</RowIndex>
-          <ParameterName>HeaderF</ParameterName>
+          <ParameterName>ReportDescription</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>3</ColumnIndex>
           <RowIndex>1</RowIndex>
-          <ParameterName>ReportDescription</ParameterName>
+          <ParameterName>HeaderDescription</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>2</RowIndex>
-          <ParameterName>HeaderDescription</ParameterName>
+          <ParameterName>FooterDescription</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>2</RowIndex>
-          <ParameterName>FooterDescription</ParameterName>
-        </CellDefinition>
-        <CellDefinition>
-          <ColumnIndex>2</ColumnIndex>
-          <RowIndex>2</RowIndex>
           <ParameterName>ImagePath</ParameterName>
         </CellDefinition>
         <CellDefinition>
-          <ColumnIndex>3</ColumnIndex>
+          <ColumnIndex>2</ColumnIndex>
           <RowIndex>2</RowIndex>
           <ParameterName>PrintDate</ParameterName>
         </CellDefinition>
@@ -976,5 +866,5 @@
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportID>e2ce84e2-72dc-43e3-ad09-ec4df46f08d4</rd:ReportID>
+  <rd:ReportID>ceb36a90-85bb-4846-9358-18d7f4a798f1</rd:ReportID>
 </Report>
