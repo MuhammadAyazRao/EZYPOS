@@ -16,7 +16,7 @@ namespace EZYPOS.Helper
         public static string Stripekey = "sk_test_pcw8sFas7RNEdD2x2ddMur7X";
         public static string StripeCurrency = "GBP";
         public static string WaitingLogopath = @"\logo\waiting.gif";
-        public static string RestaurantLogopath = @"\Assets\logo.png";
+        public static string Logopath = @"\Assets\logo.png";
         public static string NewOnlineOrder = "https://clickeatrepeat.com/api/partner_api/all_new_orders";
         public static string DriverScreenMapURL = "https://www.google.co.in/maps/dir/";
         public static string GeoCodeGoogleURL = "https://maps.googleapis.com/maps/api/geocode/json?address=";

@@ -14,12 +14,12 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
 using Report;
-using Microsoft.Reporting.NETCore;
 using Microsoft.Reporting.WinForms;
 using System.IO;
 using DAL.Repository;
 using Common.DTO;
 using EZYPOS.Helper;
+using EZYPOS.DTO.ReportsDTO;
 
 namespace EZYPOS.UserControls.Report
 {
@@ -149,5 +149,14 @@ namespace EZYPOS.UserControls.Report
 
 
         #endregion
+
+        private void Print_Click(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.ProductName, COLB = x.AvailableQty.ToString(), COLC = x.StartDate.ToString("dd/MM/yyyy"), COLD = x.ExpirationDate.ToString("dd/MM/yyyy"), COLE = "", COLF = "" }).ToList();
+            string Discription = ""; //"From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
+            ReportPrintHelper.PrintCOL4Report(ref ReportViewer, "Stock Expiry Report", "Product Name", "Available Quantity", "Start Date", "Expiry Date", Discription, RptData);
+
+        }
     }
 }

@@ -1,5 +1,7 @@
-﻿using Common.DTO;
+﻿using Common;
+using Common.DTO;
 using Common.Session;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.Helper;
@@ -394,7 +396,17 @@ namespace EZYPOS.UserControls.Transaction
             if (Checkout.ShowDialog() == true)
             {
                 EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Sucess", "Ok");
+                var inv_print = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.PrintInvoice).FirstOrDefault().AppValue;
+                if (inv_print.ToLower() == "true")
+                {
+                    if (order.OrdersDetails != null)
+                    {
+                        Invoice inv = new Invoice();
+                        inv.DoPrintJob(order);
+                    }
+                }
                 EmptyCart();
+
             }
             //try
             //{

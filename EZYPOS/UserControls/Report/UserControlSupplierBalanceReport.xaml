@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:EZYPOS.UserControls.Report" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:EZYPOS.UserControls.Report" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms"
              mc:Ignorable="d" 
              d:DesignHeight="1024" Name="S_Balance" d:DesignWidth="768">
     <UserControl.Resources>
@@ -95,6 +95,7 @@
             <DatePicker Name="StartDate" Grid.Row="1"  DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"   Grid.Column="0"  materialDesign:HintAssist.Hint="Start Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="1" Grid.Column="1"  materialDesign:HintAssist.Hint="End Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click"  Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />
+            <Button  Content="{materialDesign:PackIcon Kind=Printer,Size=25}" Name="Print" Click="Print_Click"  Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Left"   Margin="160,10,0,10" Width="100" ToolTip="Print" Grid.Row="1" Grid.Column="2" />
             <Label Content="Supplier Balance Report" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Grid.Row="0" Grid.Column="0" Margin="20,15,0,0"/>
         </Grid>
         <Border x:Name="label" Grid.Row="1" Margin="20,0,20,0">
@@ -129,22 +130,22 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="CR" Binding="{Binding CR}"  IsReadOnly="True">
-                        <DataGridTextColumn.HeaderTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBox materialDesign:HintAssist.Hint="CR"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" IsReadOnly="True" x:Name="GridCR" Width="100"  KeyDown="GridName_KeyDown"   />
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTextColumn.HeaderTemplate>
-                    </DataGridTextColumn>
                     <DataGridTextColumn Header="DR" Binding="{Binding DR}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBox materialDesign:HintAssist.Hint="DR"
   Style="{StaticResource MaterialDesignFloatingHintTextBox}" IsReadOnly="True" x:Name="GridDR" Width="100"  KeyDown="GridName_KeyDown"   />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="CR" Binding="{Binding CR}"  IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox materialDesign:HintAssist.Hint="CR"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" IsReadOnly="True" x:Name="GridCR" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
@@ -201,7 +202,9 @@
                         Margin='6'
                         Click='Forward_Click'></Button>
         </StackPanel>
-
+        <WindowsFormsHost Visibility="Collapsed">
+            <rv:ReportViewer BorderStyle="None" ZoomMode="PageWidth" x:Name="ReportViewer" />
+        </WindowsFormsHost>
 
     </Grid>
 </UserControl>

@@ -397,5 +397,11 @@ namespace EZYPOS
             UserControlListAdvanceSalary ListAdvanceSalary = new UserControlListAdvanceSalary();
             ActiveSession.DisplayuserControlMethod(ListAdvanceSalary);
         }
+
+        private void Setting_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlSettings Settings = new UserControlSettings();
+            ActiveSession.DisplayuserControlMethod(Settings);
+        }
     }
 }

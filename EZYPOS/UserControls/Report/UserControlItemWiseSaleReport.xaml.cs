@@ -1,8 +1,12 @@
 ﻿using DAL.Repository;
 using EZYPOS.DTO;
+using EZYPOS.DTO.ReportsDTO;
 using EZYPOS.Helper;
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,9 +53,9 @@ namespace EZYPOS.UserControls.Report
                     TotalQty += (decimal)item.ItemQty;
                     TotalPrice += (decimal)item.ItemPrice;
 
-                    myList.Add(new ItemWiseSaleDTO { ItemName = Db.Product.Get((int)item.ItemId).ProductName, ItemQty = item.ItemQty.ToString(), ItemPrice = item.ItemPrice?.ToString()});
+                    myList.Add(new ItemWiseSaleDTO { ItemName = Db.Product.Get((int)item.ItemId).ProductName, ItemQty = item.ItemQty.ToString(), ItemPrice = item.ItemPrice?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) });
                 }
-                myList.Add(new ItemWiseSaleDTO { ItemName = "Total", ItemQty = TotalQty.ToString(), ItemPrice = TotalPrice.ToString() });
+                myList.Add(new ItemWiseSaleDTO { ItemName = "Total", ItemQty = TotalQty.ToString(), ItemPrice = TotalPrice.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) });
                 ResetPaging(myList);
             }
         }
@@ -135,6 +139,14 @@ namespace EZYPOS.UserControls.Report
         {
             ItemWiseSaleGrid.ItemsSource = Pager.Last(myList);
             PageInfo.Content = Pager.PageNumberDisplay(myList);
+        }
+
+        private void Print_Click(object sender, RoutedEventArgs e)
+        {
+            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.ItemName, COLB = x.ItemQty, COLC = x.ItemPrice, COLD = "", COLE = "", COLF = "" }).ToList();
+            string Discription = "";
+            ReportPrintHelper.PrintCOL3Report(ref ReportViewer, "Item Wise Sale Report", "Item Name", "Item Qty", "Item Price", Discription, RptData);
+            
         }
 
 

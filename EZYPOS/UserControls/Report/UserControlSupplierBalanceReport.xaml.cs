@@ -1,8 +1,12 @@
 ﻿using DAL.Repository;
 using EZYPOS.DTO;
+using EZYPOS.DTO.ReportsDTO;
 using EZYPOS.Helper;
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,9 +54,9 @@ namespace EZYPOS.UserControls.Report
                     Balance += (decimal)item.Balance;
                     SupplierName = Db.Supplier.Get((int)item.SuppId).Name;
 
-                    myList.Add(new SupplierBalanceDTO { SupplierName = SupplierName, CR = item.TotalCr.ToString(), DR = item.TotalDr?.ToString(), Balance = item.Balance?.ToString() });
+                    myList.Add(new SupplierBalanceDTO { SupplierName = SupplierName, CR = item.TotalCr.ToString(), DR = item.TotalDr?.ToString(), Balance = item.Balance? .ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) });
                 }
-                myList.Add(new SupplierBalanceDTO { SupplierName = "Total", Date = DateTime.Now.ToString("dd/MM/yyyy"), TransactionType = "", Detail = "Total Credit Balance in Market", CR = "", DR = "", Balance = Balance.ToString() });
+                myList.Add(new SupplierBalanceDTO { SupplierName = "", Date = DateTime.Now.ToString("dd/MM/yyyy"), TransactionType = "", Detail = "Total Credit Balance in Market", CR = "Total", DR = "", Balance = Balance.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) });
                 ResetPaging(myList);
             }
         }
@@ -62,7 +66,6 @@ namespace EZYPOS.UserControls.Report
             {
                 TextBox t = (TextBox)sender;
                 string filter = t.Text;
-
                 using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
                     if (filter == "")
@@ -90,7 +93,7 @@ namespace EZYPOS.UserControls.Report
                                 }
 
                             }
-                            myList.Add(new SupplierBalanceDTO { SupplierName = "Total", Date = DateTime.Now.ToString("dd/MM/yyyy"), TransactionType = "", Detail = "Total Credit Balance in Market", CR = "", DR = "", Balance = Balance.ToString() });
+                            myList.Add(new SupplierBalanceDTO { SupplierName = "", Date = DateTime.Now.ToString("dd/MM/yyyy"), TransactionType = "", Detail = "Total Credit Balance in Market", CR = "Total", DR = "", Balance = Balance.ToString() });
                             ResetPaging(myList);
                         }
                         
@@ -144,6 +147,14 @@ namespace EZYPOS.UserControls.Report
         private void Search_Click(object sender, RoutedEventArgs e)
         {
             Refresh();
+        }
+
+        private void Print_Click(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.SupplierName, COLB = x.DR, COLC = x.CR, COLD = x.Balance, COLE = "", COLF = "" }).ToList();
+            string Discription = "From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
+            ReportPrintHelper.PrintCOL4Report(ref ReportViewer, "Supplier Balance Report", "Supplier Name", "DR", "CR", "Balance", Discription, RptData);
         }
     }
 }

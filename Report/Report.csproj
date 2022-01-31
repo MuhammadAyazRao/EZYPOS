@@ -25,6 +25,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DataSetGeneric.xsd</DependentUpon>
     </Compile>
+    <Compile Update="Dataset\Generic\GenericCOL3DataSet.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GenericCOL3DataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Update="Dataset\Generic\GenericCOL4DataSet.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -61,6 +66,10 @@
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>DataSetGeneric.Designer.cs</LastGenOutput>
     </None>
+    <None Update="Dataset\Generic\GenericCOL3DataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>GenericCOL3DataSet.Designer.cs</LastGenOutput>
+    </None>
     <None Update="Dataset\Generic\GenericCOL4DataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>GenericCOL4DataSet.Designer.cs</LastGenOutput>
@@ -80,6 +89,9 @@
     <None Update="Dataset\Purchase\PurchaseOrderDataSet.xsd">
       <Generator>MSDataSetGenerator</Generator>
       <LastGenOutput>PurchaseOrderDataSet.Designer.cs</LastGenOutput>
+    </None>
+    <None Update="RDLC\Generic\GenericCOL3Report.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="RDLC\Generic\GenericCOL4Report.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

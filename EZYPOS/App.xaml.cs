@@ -1,4 +1,5 @@
-﻿using DAL.Repository;
+﻿using Common.Session;
+using DAL.Repository;
 using Microsoft.Extensions.Logging;
 using NLog;
 using System;
@@ -26,6 +27,7 @@ namespace EZYPOS
             await Task.Run(() => SetupExceptionHandling());
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
+                ActiveSession.Setting = DB.Setting.GetAll().ToList();
             }
 
             EZYPOS.View.SplashScreen Splash = new EZYPOS.View.SplashScreen();

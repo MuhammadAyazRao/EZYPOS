@@ -1,9 +1,12 @@
 ﻿using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
+using EZYPOS.DTO.ReportsDTO;
 using EZYPOS.Helper;
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -186,5 +189,14 @@ namespace EZYPOS.UserControls.Report
 
 
         #endregion
+
+        private void Print_Click(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.SupplierName, COLB = x.Date.ToString("dd/MM/yyyy"), COLC = x.TransactionType, COLD = x.DR.ToString(), COLE = x.CR.ToString(), COLF = x.Balance?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) }).ToList();
+            string Discription = "From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
+            ReportPrintHelper.PrintCOL6Report(ref ReportViewer, "Supplier Ledger Report", "Supplier Name", "Date", "Transaction Type", "DR", "CR", "Balance", Discription, RptData);
+
+        }
     }
 }

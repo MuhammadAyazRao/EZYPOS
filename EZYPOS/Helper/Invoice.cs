@@ -56,7 +56,7 @@ namespace EZYPOS.Helper
 
                     try
                     {
-                        ReslogoImg.Source = new BitmapImage(new Uri(imgPath + Constants.RestaurantLogopath));
+                        ReslogoImg.Source = new BitmapImage(new Uri(imgPath + Constants.Logopath));
                     }
                     catch (FileNotFoundException ex)
                     {

@@ -184,47 +184,9 @@ namespace EZYPOS.UserControls.Report
         {
             Refresh();
             List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.ExpenseType, COLB = x.Discription, COLC = x.ExpenseDate, COLD = x.Amount, COLE="",COLF="" }).ToList();
-            ReportDataSource rds = new ReportDataSource();
-            rds.Name = "GenericCOL4DataSet";
-            rds.Value = RptData;
-            string exePath = Directory.GetCurrentDirectory();
-            ReportViewer.LocalReport.ReportPath = exePath + @"\RDLC\Generic\GenericCOL4Report.rdlc";
-            this.ReportViewer.LocalReport.DataSources.Add(rds);
-            this.ReportViewer.LocalReport.EnableExternalImages = true;
-            string imagePath = new Uri(exePath + @"\Assets\logo.png").AbsoluteUri;
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ImagePath", imagePath));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ReportName", "Expence Report"));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderA", "Expense Type"));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderB", "Description"));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderC", "Date"));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderD", "Amount"));
-            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderE", "H"));
-            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderF", "H"));
-            string Dis = "From: " + StartDate.SelectedDate?.ToString("MM/dd/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("MM/dd/yyyy");
-            string PrintDate = "Printed On: " + DateTime.Now.ToString("MM/dd/yyyy");
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ReportDescription", Dis));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("PrintDate", PrintDate));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderDescription", "House No 36, Street No 3, Liaqt Colony, PAF Road, 49 Tail, Sargodha, Pakistan"));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("FooterDescription", "House No 36, Street No 3, Liaqt Colony, PAF Road, 49 Tail, Sargodha, Pakistan"));
-            this.ReportViewer.RefreshReport();
-            this.ReportViewer.LocalReport.Print();
+            string Discription = "From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
+            ReportPrintHelper.PrintCOL4Report(ref ReportViewer, "Expense Report", "Expense Type", "Description", "Date", "Amount", Discription, RptData);
 
-            //List<GenericCOL4DTO> RptData = myList.Select(x => new GenericCOL4DTO { COLA=x.ExpenseType,COLB=x.Discription,COLC=x.ExpenseDate, COLD= x.Amount}).ToList();
-            //ReportDataSource rds = new ReportDataSource();
-            //rds.Name = "GenericCOL4DataSet";
-            //rds.Value = RptData;
-            //string exePath = Directory.GetCurrentDirectory();
-            //ReportViewer.LocalReport.ReportPath = exePath + @"\RDLC\Generic\GenericCOL4Report.rdlc";
-            //this.ReportViewer.LocalReport.DataSources.Add(rds);
-            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ReportName", "Expence Report"));
-            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderA", "Expense Type"));
-            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderB", "Discription"));
-            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderC", "Date"));
-            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderD", "Amount"));
-            //string Dis = "From: " + StartDate.SelectedDate?.ToString("MM/dd/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("MM/dd/yyyy");
-            //this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ReportDiscription", Dis));
-            //this.ReportViewer.RefreshReport();
-            //this.ReportViewer.LocalReport.Print();
         }
     }
 }

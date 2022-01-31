@@ -20,6 +20,19 @@ namespace Common
         public static string PurchaseInvoice { get { return nameof(PurchaseInvoice); } }
     }
 
+    public static class SettingKey
+    {
+        public static string PrintLogo { get { return nameof(PrintLogo); } }
+        public static string PrintInvoice { get { return nameof(PrintInvoice); } }
+        public static string PrintReport { get { return nameof(PrintReport); } }
+        public static string ReportPrinter { get { return nameof(ReportPrinter); } }
+        public static string InvoicePrinter { get { return nameof(InvoicePrinter); } }
+        public static string ReportFooter { get { return nameof(ReportFooter); } }
+        public static string ReportHeader { get { return nameof(ReportHeader); } }
+        public static string ShopName { get { return nameof(ShopName); } }
+
+    }
+
     public static class ScreenType
     {
         public static string Sale { get { return nameof(Sale); } }

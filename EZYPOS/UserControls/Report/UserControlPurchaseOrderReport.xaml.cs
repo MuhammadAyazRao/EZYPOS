@@ -1,9 +1,12 @@
 ﻿using Common.Session;
 using DAL.Repository;
 using EZYPOS.DTO;
+using EZYPOS.DTO.ReportsDTO;
 using EZYPOS.Helper;
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -52,9 +55,9 @@ namespace EZYPOS.UserControls.Report
                     SupplierName = DB.Supplier.Get(item.SupplierId).Name;
                     EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
                     GrandTotal += item.TotalAmount;
-                    myList.Add(new PurchaseOrderReportDTO { id= item.Id, Supplier = SupplierName, Employee = EmployeeName, PaymentMode = item.PaymentMode, PaymentStatus = item.PaymentStatus, Date = Convert.ToString(item.Date), TotalAmount = Convert.ToString(item.TotalAmount) });
+                    myList.Add(new PurchaseOrderReportDTO { id= item.Id, Supplier = SupplierName, Employee = EmployeeName, PaymentMode = item.PaymentMode, PaymentStatus = item.PaymentStatus, Date = item.Date.ToString("dd,MM,yyyy"), TotalAmount = item.TotalAmount?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) });
                 }
-                myList.Add(new PurchaseOrderReportDTO {Supplier = "-", Employee = "-", PaymentMode = "Total", PaymentStatus = "-", Date = "-", TotalAmount = Convert.ToString(GrandTotal) });
+                myList.Add(new PurchaseOrderReportDTO {Supplier = "-", Employee = "-", PaymentMode = "Total", PaymentStatus = "-", Date = "-", TotalAmount = GrandTotal?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) });
                 ResetPaging(myList);
             }
         }
@@ -95,11 +98,11 @@ namespace EZYPOS.UserControls.Report
                                 if(SupplierName.ToUpper().Contains(filter.ToUpper()))
                                 {
                                     GrandTotal += item.TotalAmount;
-                                    myList.Add(new PurchaseOrderReportDTO { id = item.Id, Supplier = SupplierName, Employee = EmployeeName, PaymentMode = item.PaymentMode, PaymentStatus = item.PaymentStatus, Date = Convert.ToString(item.Date), TotalAmount = Convert.ToString(item.TotalAmount) });
+                                    myList.Add(new PurchaseOrderReportDTO { id = item.Id, Supplier = SupplierName, Employee = EmployeeName, PaymentMode = item.PaymentMode, PaymentStatus = item.PaymentStatus, Date = item.Date.ToString("dd,MM,yyyy"), TotalAmount = item.TotalAmount?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) });
                                 }
                                 
                             }
-                            myList.Add(new PurchaseOrderReportDTO { Supplier = "-", Employee = "-", PaymentMode = "Total", PaymentStatus = "-", Date = "-", TotalAmount = Convert.ToString(GrandTotal) });
+                            myList.Add(new PurchaseOrderReportDTO { Supplier = "-", Employee = "-", PaymentMode = "Total", PaymentStatus = "-", Date = "-", TotalAmount = GrandTotal?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) });
                         }
                         if (t.Name == "GridEmployee")
                         {
@@ -228,5 +231,14 @@ namespace EZYPOS.UserControls.Report
 
 
         #endregion
+
+        private void Print_Click(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.Supplier, COLB = x.Employee, COLC = x.Date, COLD = x.PaymentStatus, COLE = x.PaymentMode, COLF = x.TotalAmount }).ToList();
+            string Discription = "From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
+            ReportPrintHelper.PrintCOL6Report(ref ReportViewer, "Purchase Order Report", "Supplier Name", "Employee Name", "Date", "Payment Status", "Payment Mode", "Amount", Discription, RptData);
+
+        }
     }
 }

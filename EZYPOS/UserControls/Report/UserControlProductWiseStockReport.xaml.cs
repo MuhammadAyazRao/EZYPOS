@@ -1,5 +1,6 @@
 ﻿using DAL.Repository;
 using EZYPOS.DTO;
+using EZYPOS.DTO.ReportsDTO;
 using EZYPOS.Helper;
 using System;
 using System.Collections.Generic;
@@ -117,5 +118,13 @@ namespace EZYPOS.UserControls.Report
             }
 
         }
+
+        private void Print_Click(object sender, RoutedEventArgs e)
+        {
+            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.ProductName, COLB = x.ProductStock.ToString(), COLC = "", COLD = "", COLE = "", COLF = "" }).ToList();
+            string Discription = ""; //"From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
+            ReportPrintHelper.PrintCOL3Report(ref ReportViewer, "Product Wise Stock", "Product Name", "Product Stock", "", Discription, RptData);
+        }
+
     }
 }

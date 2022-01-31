@@ -1,9 +1,12 @@
 ﻿using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
+using EZYPOS.DTO.ReportsDTO;
 using EZYPOS.Helper;
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -55,7 +58,7 @@ namespace EZYPOS.UserControls.Report
                     GrandTotal += item.Total;
                     CustomerName = DB.Customers.Get(Convert.ToInt32(item.CustomerId)).Name;
                     EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
-                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = Convert.ToString(item.OrderDate), PaymentMode = item.PaymentMode, TotalAmount = Convert.ToString(item.Total) });
+                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, TotalAmount = Convert.ToString(item.Total) });
                 }
                 myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "-", PaymentMode = "Total", TotalAmount = Convert.ToString(GrandTotal) });
                 ResetPaging(myList);
@@ -256,6 +259,14 @@ namespace EZYPOS.UserControls.Report
             StartDate.SelectedDate = DateTime.Today;
             EndDate.SelectedDate = DateTime.Today;
             Refresh();
+        }
+
+        private void Print_Click(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.id.ToString(), COLB = x.Customer, COLC = x.Date , COLD = x.PaymentMode, COLE = x.TotalAmount, COLF = "" }).ToList();
+            string Discription = "From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
+            ReportPrintHelper.PrintCOL5Report(ref ReportViewer, "Employee Wise Sale Report", "Order Number", "Customer Name", "Date", "Transaction Type", "Amount",  Discription, RptData);
         }
     }
 }

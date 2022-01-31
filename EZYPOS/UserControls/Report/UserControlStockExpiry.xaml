@@ -97,6 +97,7 @@
             <!--<DatePicker Name="StartDate" Grid.Row="1"  DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"   Grid.Column="0"  materialDesign:HintAssist.Hint="Start Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="1" Grid.Column="1"  materialDesign:HintAssist.Hint="End Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />-->
+            <Button  Content="{materialDesign:PackIcon Kind=Printer,Size=25}" Name="Print" Click="Print_Click"  Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Right"   Margin="0,10,20,10" Width="100" ToolTip="Print" Grid.Column="2" />
             <Label Content="Stock Expiry Report" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Grid.Row="0" Grid.Column="0" Margin="20,15,0,0"/>
         </Grid>
         <Border x:Name="label" Grid.Row="1" Margin="20,0,20,0">
@@ -203,7 +204,9 @@
                         Margin='6'
                         Click='Forward_Click'></Button>
         </StackPanel>
-
+        <WindowsFormsHost Visibility="Collapsed">
+            <rv:ReportViewer BorderStyle="None" ZoomMode="PageWidth" x:Name="ReportViewer" />
+        </WindowsFormsHost>
 
     </Grid>
 </UserControl>

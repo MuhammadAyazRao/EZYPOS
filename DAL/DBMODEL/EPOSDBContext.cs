@@ -37,6 +37,7 @@ namespace DAL.DBMODEL
         public virtual DbSet<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
         public virtual DbSet<SaleOrder> SaleOrders { get; set; }
         public virtual DbSet<SaleOrderDetail> SaleOrderDetails { get; set; }
+        public virtual DbSet<Setting> Settings { get; set; }
         public virtual DbSet<ShopSetting> ShopSettings { get; set; }
         public virtual DbSet<StockLead> StockLeads { get; set; }
         public virtual DbSet<StockOderDetail> StockOderDetails { get; set; }
@@ -564,6 +565,17 @@ namespace DAL.DBMODEL
                     .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Sale_OrderDetail_Sale_Orders");
+            });
+
+            modelBuilder.Entity<Setting>(entity =>
+            {
+                entity.ToTable("Setting");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.AppKey).HasMaxLength(100);
+
+                entity.Property(e => e.AppValue).HasMaxLength(500);
             });
 
             modelBuilder.Entity<ShopSetting>(entity =>

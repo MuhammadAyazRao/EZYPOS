@@ -33,6 +33,12 @@ namespace EZYPOS.UserControls.Report
         public UserControlProductLedgerReport()
         {
             InitializeComponent();
+            using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+            {
+                var ProductList = DB.Product.GetAll().Select(x => new { Name = x.ProductName, Id = x.Id }).ToList();
+                ProductList.Insert(0, new { Name = "All", Id = 0 });
+                ddProduct.ItemsSource = ProductList;
+            }
             StartDate.SelectedDate = DateTime.Today;
             EndDate.SelectedDate = DateTime.Today;
             Refresh();
@@ -46,15 +52,22 @@ namespace EZYPOS.UserControls.Report
                 String ProductName = "";
                 DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
                 DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
-                var items = Db.StockLeader.GetAll().Where((x => x.TransactionDate >= Sdate && x.TransactionDate <= Edate)).ToList();
-                
+                List<StockLead> items = new List<StockLead>();
+                if (ddProduct.SelectedValue == null || ddProduct.SelectedIndex == 0)
+                {
+                    items = Db.StockLeader.GetAll().Where((x => x.TransactionDate >= Sdate && x.TransactionDate <= Edate)).ToList();
+                }
+                else
+                {
+                    items = Db.StockLeader.GetAll().Where((x => x.TransactionDate >= Sdate && x.TransactionDate <= Edate && x.ProductId == Convert.ToInt32(ddProduct.SelectedValue))).ToList();
+                }
                 myList.Clear();
                 foreach (var item in items)
                 {
                     item.DrQty = item.DrQty == null ? 0 : item.DrQty;
                     item.CrQty = item.CrQty == null ? 0 : item.CrQty;
                     ProductName = Db.Product.Get(item.ProductId).ProductName;
-                    myList.Add(new ProductLedgerDTO { TransactionDate = item.TransactionDate, TransactionType = item.TransactionType, TransactionDetail = item.TransactionDetail, ProductN = ProductName, DR = item.DrQty, CR = item.CrQty});
+                    myList.Add(new ProductLedgerDTO { TransactionDate = item.TransactionDate, TransactionType = item.TransactionType, TransactionDetail = item.TransactionDetail, ProductN = ProductName, DR = item.DrQty, CR = item.CrQty });
                 }
                 ResetPaging(myList);
 
@@ -81,28 +94,28 @@ namespace EZYPOS.UserControls.Report
                             DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
                             DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
                             List<StockLead> items = new List<StockLead>();
-                            var Products = Db.Product.GetAll().Where(x => x.ProductName.ToUpper().Contains(filter.ToUpper())).ToList();
-                            foreach(var Product in Products)
+                            if (ddProduct.SelectedValue == null || ddProduct.SelectedIndex == 0)
                             {
-                                var stockleads = Db.StockLeader.GetAll().Where(x => x.ProductId == Product.Id).ToList();
-                                foreach(var lead in stockleads)
-                                {
-                                    items.Add(lead);
-                                }
-                                
+                                items = Db.StockLeader.GetAll().Where((x => x.TransactionDate >= Sdate && x.TransactionDate <= Edate)).ToList();
                             }
-                            items = items.Where(x => x.TransactionDate >= Sdate && x.TransactionDate <= Edate).ToList();
-
+                            else
+                            {
+                                items = Db.StockLeader.GetAll().Where((x => x.TransactionDate >= Sdate && x.TransactionDate <= Edate && x.ProductId == Convert.ToInt32(ddProduct.SelectedValue))).ToList();
+                            }
                             myList.Clear();
                             foreach (var item in items)
                             {
                                 item.DrQty = item.DrQty == null ? 0 : item.DrQty;
                                 item.CrQty = item.CrQty == null ? 0 : item.CrQty;
                                 ProductName = Db.Product.Get(item.ProductId).ProductName;
-                                myList.Add(new ProductLedgerDTO { TransactionDate = item.TransactionDate, TransactionType = item.TransactionType, TransactionDetail = item.TransactionDetail, ProductN = ProductName, DR = item.DrQty, CR = item.CrQty });
+                                if (ProductName.ToUpper().Contains(filter.ToUpper()))
+                                {
+                                    myList.Add(new ProductLedgerDTO { TransactionDate = item.TransactionDate, TransactionType = item.TransactionType, TransactionDetail = item.TransactionDetail, ProductN = ProductName, DR = item.DrQty, CR = item.CrQty });
+                                }
                             }
+                            ResetPaging(myList);
                         }
-                        ResetPaging(myList);
+                            
                     }
                     
                 }
@@ -159,29 +172,8 @@ namespace EZYPOS.UserControls.Report
         {
             Refresh();
             List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.ProductN, COLB = x.TransactionType, COLC = x.TransactionDate?.ToString("dd/MM/yyyy"), COLD = x.DR?.ToString(), COLE = x.CR?.ToString(), COLF="" }).ToList();
-            ReportDataSource rds = new ReportDataSource();
-            rds.Name = "GenericCOL5DataSet";
-            rds.Value = RptData;
-            string exePath = Directory.GetCurrentDirectory(); 
-            ReportViewer.LocalReport.ReportPath = exePath + @"\RDLC\Generic\GenericCOL5Report.rdlc";
-            this.ReportViewer.LocalReport.DataSources.Add(rds);
-            this.ReportViewer.LocalReport.EnableExternalImages = true;
-            string imagePath = new Uri(exePath + @"\Assets\logo.png").AbsoluteUri;
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ImagePath", imagePath));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ReportName", "Product Ledger Report"));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderA", "Product Name"));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderB", "Transaction Type"));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderC", "Date"));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderD", "DR"));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderE", "CR"));
-            string Dis = "From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
-            string PrintDate = "Printed On: " + DateTime.Now.ToString("dd/MM/yyyy");
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("ReportDescription", Dis));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("PrintDate", PrintDate));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("HeaderDescription", "House No 36, Street No 3, Liaqt Colony, PAF Road, 49 Tail, Sargodha, Pakistan"));
-            this.ReportViewer.LocalReport.SetParameters(new ReportParameter("FooterDescription", "House No 36, Street No 3, Liaqt Colony, PAF Road, 49 Tail, Sargodha, Pakistan"));
-            this.ReportViewer.RefreshReport();
-            this.ReportViewer.LocalReport.Print();
+            string Discription = "From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
+            ReportPrintHelper.PrintCOL5Report(ref ReportViewer, "Product Ledger Report", "Product Name", "Transaction Type", "Date", "DR", "CR", Discription, RptData);
         }
     }
 }
