@@ -42,5 +42,10 @@ namespace EZYPOS.Helper
             return Months.Where(x => x.Id == Id).FirstOrDefault().Name;
            
         }
+
+        internal static object GetMonthName()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

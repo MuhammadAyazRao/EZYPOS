@@ -403,5 +403,11 @@ namespace EZYPOS
             UserControlSettings Settings = new UserControlSettings();
             ActiveSession.DisplayuserControlMethod(Settings);
         }
+
+        private void AdvanceSalaryReport_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlAdvanceSalaryReport AdvanceSalaryReport = new UserControlAdvanceSalaryReport();
+            ActiveSession.DisplayuserControlMethod(AdvanceSalaryReport);
+        }
     }
 }

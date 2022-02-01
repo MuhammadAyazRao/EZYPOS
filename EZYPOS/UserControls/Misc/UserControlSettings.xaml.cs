@@ -56,7 +56,7 @@ namespace EZYPOS.UserControls.Misc
                     ckPrintLogo.IsChecked = false;
                 }
                 var rpt_prnt = SettingData.Where(x => x.AppKey == SettingKey.PrintReport).FirstOrDefault().AppValue;
-                if (Logo_prnt.ToLower() == "true")
+                if (rpt_prnt.ToLower() == "true")
                 {
                     ckPrintReport.IsChecked = true;
                 }

@@ -171,8 +171,8 @@
                         <MenuItem Header="_Loss Statement"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />-->
                     </MenuItem>
                     <MenuItem Header="_Salary Report" Template="{StaticResource VsMenuSub}">
-                        <MenuItem Header="_Advance Salary Report"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
-                        <MenuItem Header="_Salary Disbursement Report"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
+                        <MenuItem Header="_Salary Report" Click="AdvanceSalaryReport_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
+                        <!--<MenuItem Header="_Salary Disbursement Report"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />-->
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="_Utilities" Template="{StaticResource VsMenuTop}">                  

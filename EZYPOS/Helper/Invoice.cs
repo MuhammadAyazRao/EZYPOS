@@ -1,5 +1,6 @@
 ﻿using Common.DTO;
 using Common.Session;
+using DAL.DBMODEL;
 using EZYPOS.DTO;
 using EZYPOS.Helper.Session;
 using System;
@@ -45,7 +46,9 @@ namespace EZYPOS.Helper
                 //flowDocument.FontSize = Convert.ToDouble(ActiveSession.Client_Preferences.print_font.ToString()),//14
                 //flowDocument.FontWeight = ActiveSession.Client_Preferences.print_bold.ToLower().ToString() == "yes" ? FontWeights.Bold : FontWeights.Normal,
                 Paragraph p = new Paragraph();
-                if (ActiveSession.PrintLogo)
+                var Logo_print = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == Common.SettingKey.PrintLogo).FirstOrDefault().AppValue;
+
+                if (Logo_print.ToLower() == "true")
                 {
 
                     Image ReslogoImg = new Image();
