@@ -51,7 +51,7 @@
     <Grid>
         <Grid.RowDefinitions>
 
-            <RowDefinition Height="170" />
+            <RowDefinition Height="230" />
             <RowDefinition Height="61"/>
         </Grid.RowDefinitions>
         <Border ScrollViewer.CanContentScroll="True" ScrollViewer.PanningMode="VerticalFirst" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="LightGray" BorderThickness="2" Margin="50,50,50,50" Grid.Row="0">
@@ -63,22 +63,24 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="8*"></ColumnDefinition>
                     <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
 
-                <Button Content="Destination" Name="Destination" Click="Destination_Click"  BorderThickness="0"  Style="{DynamicResource btnInfo}" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="2" Margin="0,10,0,10" ToolTip="Pat" Width="100" />
-                <TextBox Grid.Row="0" IsEnabled="False" Grid.Column="0"  Name="txtDestination" Margin="10,10,10,10" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Center" Height="Auto" AcceptsReturn="True" TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Path"  />
+                <Button Content="Destination" Name="Destination" Click="Destination_Click"  BorderThickness="0"  Style="{DynamicResource btnInfo}" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Margin="0,10,0,10" ToolTip="Path" Width="100" />
+                <TextBox Grid.Row="0" IsEnabled="False" Grid.Column="0"  Name="txtDestination" Margin="10,10,10,10" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Center" Height="Auto" AcceptsReturn="True" TextWrapping="Wrap"  materialDesign:HintAssist.Hint="BackUp Path"  />
+                <Button Grid.Column="2" Grid.Row="0"  Content="Save" Name="Save" Click="Save_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Center"  Margin="0,10,0,10" Width="100" ToolTip="Save" />
 
+
+                <Button Content="Destination" Name="ResDestination" Click="ResDestination_Click"  BorderThickness="0"  Style="{DynamicResource btnInfo}" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="1" Margin="0,10,0,10" ToolTip="Path" Width="100" />
+                <TextBox Grid.Row="1" IsEnabled="False" Grid.Column="0"  Name="txtResDestination" Margin="10,10,10,10" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Center" Height="Auto" AcceptsReturn="True" TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Restore File Path"  />
+                <Button  Content="Restore" Name="Restore" Click="Restore_Click" Visibility="Visible" BorderThickness="0"  Style="{DynamicResource btnDanger}" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="2" Margin="0,10,0,10" Width="100"  ToolTip="Delete" />
             </Grid>
 
 
         </Border>
 
-        <Button
-  Content="Cancel" Name="Cancel" Click="Cancel_Click" Visibility="Collapsed" BorderThickness="0"  Style="{DynamicResource btnDanger}" HorizontalAlignment="Right" Grid.Row="2" Margin="0,0,160,0" Width="100"
-  ToolTip="Delete" />
-        <Button
-  Content="Save" Name="Save" Click="Save_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="right" Grid.Row="2" Margin="0,0,50,0" Width="100"
-  ToolTip="Save" />
+      
+       
         <Label x:Name="lblTitleDetails" Content="Database Backup" Foreground="{DynamicResource DarkBlue}" HorizontalAlignment="Left" Margin="18,26,0,0" Grid.Row="0" VerticalAlignment="Top" Width="245" Height="24"/>
 
 

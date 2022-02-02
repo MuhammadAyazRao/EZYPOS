@@ -13,7 +13,7 @@ namespace Common.Session
         public static string Database = "Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;";
         public static string ServerName = "HAIER-PC\\SQLEXPRESS";
         public static string UserName = "admin";
-        public static string Password = "A722713yaz";
+        public static string Password = "A722713yaz@";
         public static string DatabaseName = "EPOS-DB";
         public static  object Setting = null;
         #endregion

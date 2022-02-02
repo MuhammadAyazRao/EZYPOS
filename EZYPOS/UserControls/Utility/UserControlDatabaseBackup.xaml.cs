@@ -30,6 +30,8 @@ namespace EZYPOS.UserControls.Utility
         public UserControlDatabaseBackup()
         {
             InitializeComponent();
+            Save.IsEnabled = false;
+            Restore.IsEnabled = false;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
@@ -39,7 +41,7 @@ namespace EZYPOS.UserControls.Utility
                 EZYPOS.View.MessageBox.ShowCustom("Please Select Destination", "Path Error", "ok");
                 return;
             }
-            if(DatabaseBackup.Backup(txtDestination.Text))
+            if(DatabaseBackup.Backlupnew(txtDestination.Text))
             { 
                 EZYPOS.View.MessageBox.ShowCustom("Backup has Completed Successfully", "Successfull", "ok"); 
             }
@@ -50,10 +52,7 @@ namespace EZYPOS.UserControls.Utility
            
         }
 
-        private void Cancel_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+       
 
         private void Destination_Click(object sender, RoutedEventArgs e)
         {
@@ -65,7 +64,38 @@ namespace EZYPOS.UserControls.Utility
             {
                 string folderName = FolderDialog.SelectedPath;
                 txtDestination.Text = folderName;
+                Save.IsEnabled = true;
 
+            }
+        }
+
+        private void Restore_Click(object sender, RoutedEventArgs e)
+        {
+            if (txtResDestination.Text == "" || txtResDestination.Text == null)
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Please Select Destination", "Path Error", "ok");
+                return;
+            }
+            if (DatabaseBackup.Restore(txtResDestination.Text))
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Restoration has Completed Successfully", "Successfull", "ok");
+            }
+            else
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Restoration Process failed", "Error", "ok");
+            }
+           
+        }
+
+        private void ResDestination_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "SQL SERVER database backup files|*.bak";
+            dlg.Title = "Database restore";
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                txtResDestination.Text = dlg.FileName;
+                Restore.IsEnabled = true;
             }
         }
     }

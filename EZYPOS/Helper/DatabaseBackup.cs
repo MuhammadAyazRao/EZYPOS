@@ -3,6 +3,8 @@ using Microsoft.SqlServer.Management.Common;
 using Microsoft.SqlServer.Management.Smo;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,5 +66,69 @@ namespace EZYPOS.Helper
                 return false;
             }
         }
+
+        public static bool Backlupnew(string path)
+        {
+            SqlConnection con = new SqlConnection(ActiveSession.Database);
+            string database = con.Database.ToString();
+            try
+            {
+                
+               
+                
+                    string cmd = "BACKUP DATABASE [" + database + "] TO DISK='" + path + "\\" + "database" + "-" + DateTime.Now.ToString("yyyy-MM-dd--HH-mm-ss") + ".bak'";
+
+                    using (SqlCommand command = new SqlCommand(cmd, con))
+                    {
+                        if (con.State != ConnectionState.Open)
+                        {
+                            con.Open();
+                        }
+                        command.ExecuteNonQuery();
+                        con.Close();
+                      //  EZYPOS.View.MessageBox.ShowCustom("database backup done successefully","Information","Ok");
+                        return true;
+                    }
+                
+
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static bool Restore(string Path)
+        {
+            SqlConnection con = new SqlConnection(ActiveSession.Database);
+            string database = con.Database.ToString();
+            if (con.State != ConnectionState.Open)
+            {
+                con.Open();
+            }
+            try
+            {
+                string sqlStmt2 = string.Format("ALTER DATABASE [" + database + "] SET SINGLE_USER WITH ROLLBACK IMMEDIATE");
+                SqlCommand bu2 = new SqlCommand(sqlStmt2, con);
+                bu2.ExecuteNonQuery();
+
+                string sqlStmt3 = "USE MASTER RESTORE DATABASE [" + database + "] FROM DISK='" + Path + "'WITH REPLACE;";
+                SqlCommand bu3 = new SqlCommand(sqlStmt3, con);
+                bu3.ExecuteNonQuery();
+
+                string sqlStmt4 = string.Format("ALTER DATABASE [" + database + "] SET MULTI_USER");
+                SqlCommand bu4 = new SqlCommand(sqlStmt4, con);
+                bu4.ExecuteNonQuery();
+               // EZYPOS.View.MessageBox.ShowCustom("database restoration done successefully", "Information", "Ok");              
+                con.Close();
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
     }
 }
