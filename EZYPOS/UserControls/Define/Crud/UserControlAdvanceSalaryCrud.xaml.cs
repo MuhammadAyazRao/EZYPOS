@@ -1,4 +1,5 @@
-﻿using Common.Session;
+﻿using Common;
+using Common.Session;
 using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
@@ -44,19 +45,29 @@ namespace EZYPOS.UserControls.Define.Crud
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var EmployeeList = DB.Employee.GetAll().Select(x => new { Name = x.UserName, Id = x.Id }).ToList();
-                ddEmployee.ItemsSource = EmployeeList;
                 ddPayedBy.ItemsSource = EmployeeList;
+                EmployeeList.Insert(0, new  { Name = "All", Id = 0 });
+                ddEmployee.ItemsSource = EmployeeList;
+               
                 var Months = Month.GetMonths().Select(x=> new { Name = x.Name , Id = x.Id});
                 ddMonth.ItemsSource = Months;
+                List<Months> StatusList = new List<Months>();
+                StatusList.Insert(0,new Months { Name = "Advance", Id = 1 });
+                StatusList.Insert(0,new Months { Name = "Disbursment", Id = 2 });
+                ddSalaryType.ItemsSource = StatusList.Select(x => new { Name = x.Name, Id = x.Id });
+                ddSalaryType.SelectedIndex = 0;
 
             }
-            ddEmployee.SelectedValue = null;
+            ddSalaryType.SelectedIndex = 0;
+            ddEmployee.SelectedIndex = 0;
             ddPayedBy.SelectedValue = null;
             ddMonth.SelectedValue = null;
             txtSalary.Text = "Salary";
             txtSalary.Foreground = Brushes.Gray;
             SalaryDate.SelectedDate = DateTime.Today;
             txtId.Text = "";
+            txtSalary.Visibility = Visibility.Collapsed;
+            //ddSalaryType.SelectedItem = "Advance";
         }
 
         private void InitializePage(AdvanceSalaryDTO AdvanceSalary)
@@ -90,6 +101,11 @@ namespace EZYPOS.UserControls.Define.Crud
                 if(AdvanceSalaryobj?.Date != null)
                 {
                     SalaryDate.SelectedDate = AdvanceSalaryobj.Date;
+                }
+                if(AdvanceSalaryobj.IsAdvance==true)
+                {
+                    txtSalary.Visibility = Visibility.Visible;
+                    ddSalaryType.SelectedIndex = (int)SalaryType.Advance;
                 }
                 txtId.Text = AdvanceSalaryobj.Id.ToString();
             }
@@ -174,32 +190,53 @@ namespace EZYPOS.UserControls.Define.Crud
         private bool Validate()
         {
             
-            if (ddEmployee.SelectedValue == null)
-            {
-                EZYPOS.View.MessageBox.ShowCustom("Please Select an Employee.", "Error", "OK");
-                return false;
-            }
+            
           
+         
+            if (Convert.ToInt32(ddSalaryType.SelectedValue) == (int)SalaryType.Advance)
+            {
+                if (txtSalary.Text == "" || txtSalary.Text == "Salary")
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("Please Provide Salary Amount.", "Error", "OK");
+                    return false;
+                }
+                if (ddEmployee.SelectedValue == null)
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("Please Select an Employee.", "Error", "OK");
+                    return false;
+                }
+                if (Convert.ToInt32(ddEmployee.SelectedValue) == 0)
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("Advance can not be given to all Employees.", "Error", "OK");
+                    return false;
+                }
+            }
+            else
+            {
+                //if (Convert.ToInt32(ddEmployee.SelectedValue) != 0)
+                //{
+                //    EZYPOS.View.MessageBox.ShowCustom("Salary Disbursment can not be for specific Employee.", "Error", "OK");
+                //    return false;
+                //}
+
+            }
+
             if (ddPayedBy.SelectedValue == null)
             {
                 EZYPOS.View.MessageBox.ShowCustom("Please select Payed By.", "Error", "OK");
                 return false;
             }
-            if(ddEmployee.SelectedValue.ToString() == ddPayedBy.SelectedValue.ToString())
+            if (ddEmployee.SelectedValue.ToString() == ddPayedBy.SelectedValue.ToString())
             {
                 EZYPOS.View.MessageBox.ShowCustom("Employee and Payed By could't be Same.", "Error", "OK");
                 return false;
             }
-            if(txtSalary.Text == "" || txtSalary.Text == "Salary")
-            {
-                EZYPOS.View.MessageBox.ShowCustom("Please Provide Salary Amount.", "Error", "OK");
-                return false;
-            }
-            if(SalaryDate.SelectedDate == null)
+            if (SalaryDate.SelectedDate == null)
             {
                 EZYPOS.View.MessageBox.ShowCustom("Please select Date.", "Error", "OK");
                 return false;
             }
+
             return true;
 
         }
@@ -207,19 +244,115 @@ namespace EZYPOS.UserControls.Define.Crud
         {
             if (Validate())
             {
-                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                if (Convert.ToInt32(ddSalaryType.SelectedValue) == (int)SalaryType.Advance)
                 {
+                    AdvanceSalary();
+                }
+                else
+                {
+                    DisburseSalary();
+                }
+            }
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete Record?", "Yes", "No");
+            if (Isconfirm)
+            {
+
+                if (txtId.Text != "" && txtId.Text != "0")
+                {
+
+                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                    {
+
+                        DB.AdvanceSalary.Delete(Convert.ToInt32(txtId.Text));
+                        DB.AdvanceSalary.Save();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deleted Successfully", "Status", "OK");
+                        RefreshPage();
+                    }
+                }
+            }
+
+        }
+
+        private void NumberOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void DisburseSalary()
+        {
+
+            using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+            {
+                List<Emplyee> AllEmployees = DB.Employee.GetAll().ToList();
+                if (Convert.ToInt32(ddEmployee.SelectedValue) != 0)
+                {
+                    AllEmployees.RemoveAll(x => x.Id != Convert.ToInt32(ddEmployee.SelectedValue));
+                }
+                
+
+                foreach (var emp in AllEmployees)
+                {
+
+                    int? Id = emp.Id;
+                    int MonthlySalary = Convert.ToInt32(DB.Employee.Get(Convert.ToInt32(Id)).Salary);
+                   // int AdvSalary = Convert.ToInt32(txtSalary.Text);
+                    var Advances = DB.AdvanceSalary.GetAll().Where(x => x.EmployeeId == Id && x.Month== Convert.ToInt32(ddMonth.SelectedValue)).ToList();
+                    if (Advances != null)
+                    {
+                        int TotalAdvanceAmount = Convert.ToInt32(Advances.Sum(x=>x.Amount));
+                        //bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Already Taken .Want to Proceed?", "Yes", "No");
+                       // if (Isconfirm)
+                        {
+                            if (TotalAdvanceAmount < MonthlySalary && (MonthlySalary - TotalAdvanceAmount)>0)
+                            {
+                                AdvancedSalary sal = new AdvancedSalary();
+                                sal.PayedBy = Convert.ToInt32(ddPayedBy.SelectedValue);
+                                sal.Month = Convert.ToInt32(ddMonth.SelectedValue);
+                                sal.Date = SalaryDate.SelectedDate;
+                                sal.Amount = MonthlySalary- TotalAdvanceAmount;
+                                sal.IsAdvance = false;
+                                sal.EmployeeId = Id;
+                                DB.AdvanceSalary.Add(sal);
+                                DB.AdvanceSalary.Save();
+                            }
+                            //else
+                            //{
+                               
+                            //    EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
+                            //    RefreshPage();
+                            //}
+                        }
+                    }
+                   
+                }
+                EZYPOS.View.MessageBox.ShowCustom("Salary Disbursed Successfully", "Status", "OK");
+                RefreshPage();
+
+            }
+        }
+
+        private void AdvanceSalary()
+        {
+
+            using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+            {
+                
                     int? Id = Convert.ToInt32(ddEmployee.SelectedValue);
                     int MonthlySalary = Convert.ToInt32(DB.Employee.Get(Convert.ToInt32(ddEmployee.SelectedValue)).Salary);
                     int AdvSalary = Convert.ToInt32(txtSalary.Text);
                     AdvancedSalary ExistingEmployee = DB.AdvanceSalary.GetAll().Where(x => x.EmployeeId == Id).FirstOrDefault();
-                    if(ExistingEmployee != null)
+                    if (ExistingEmployee != null)
                     {
                         int SalaryTaken = Convert.ToInt32(ExistingEmployee.Amount);
                         bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Already Taken .Want to Proceed?", "Yes", "No");
                         if (Isconfirm)
                         {
-                            if (AdvSalary+SalaryTaken > MonthlySalary)
+                            if (AdvSalary + SalaryTaken > MonthlySalary)
                             {
                                 bool Isconfirm2 = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Advance Salary Exceeds. Want to Proceed?", "Yes", "No");
                                 if (Isconfirm2)
@@ -279,41 +412,12 @@ namespace EZYPOS.UserControls.Define.Crud
                         EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
                         RefreshPage();
                     }
-                }
+                
+                
             }
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
-        {
-            bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do you want to Delete Record?", "Yes", "No");
-            if (Isconfirm)
-            {
 
-                if (txtId.Text != "" && txtId.Text != "0")
-                {
-
-                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
-                    {
-
-                        DB.AdvanceSalary.Delete(Convert.ToInt32(txtId.Text));
-                        DB.AdvanceSalary.Save();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Deleted Successfully", "Status", "OK");
-                        RefreshPage();
-                    }
-                }
-            }
-
-        }
-
-        private void NumberOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
-        }
-
-
-
-        
         private void ddCity_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             
@@ -322,6 +426,23 @@ namespace EZYPOS.UserControls.Define.Crud
         private void List_Click(object sender, RoutedEventArgs e)
         {
             ActiveSession.CloseDisplayuserControlMethod(new UserControlListAdvanceSalary());
+        }
+
+        private void ddSalaryType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ddSalaryType.SelectedValue != null)
+            {
+              // string SalaryType = Convert.ToString(ddSalaryType.SelectedValue);
+                if ( Convert.ToInt32(ddSalaryType.SelectedValue) == (int)SalaryType.Advance)
+                {
+                    txtSalary.Visibility = Visibility.Visible;
+                }
+                else 
+                {
+                    txtSalary.Visibility = Visibility.Collapsed;
+                }
+            }
+
         }
     }
 }

@@ -96,7 +96,7 @@
             <!--<DatePicker Name="StartDate" Grid.Row="1"  DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"   Grid.Column="0"  materialDesign:HintAssist.Hint="Start Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="1" Grid.Column="1"  materialDesign:HintAssist.Hint="End Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
             <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />-->
-            <Button x:Name="Add"  Click="Add_Click" Content="Add Advance Salary" Margin="20,20,0,0" Style="{DynamicResource btnInfo}" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="35"/>
+            <Button x:Name="Add"  Click="Add_Click" Content="Add Salary" Margin="20,20,0,0" Style="{DynamicResource btnInfo}" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="35"/>
         </Grid>
         <Border x:Name="label" Grid.Row="1" Margin="20,0,20,0">
             <DataGrid Name="AdvanceSalaryGrid"

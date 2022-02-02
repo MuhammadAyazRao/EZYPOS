@@ -13,6 +13,11 @@ namespace Common
         KG=1,
         G=2
     }
+    public enum SalaryType
+    {
+        Advance = 1,
+        Disbursment = 2
+    }
     public static class InvoiceType
     {
         public static string SaleInvoice { get { return nameof(SaleInvoice); } }        

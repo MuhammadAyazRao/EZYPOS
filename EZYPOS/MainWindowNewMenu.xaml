@@ -135,7 +135,7 @@
                     <MenuItem Header="_Stock Adjustment" Name="StockAdjustment" Click="StockAdjustment_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <!--<MenuItem Header="_Stock Conversion" Name="StockConversion" Click="StockConversion_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />-->
                     <MenuItem Header="_Expence Transaction" Click="ExpenseTransation_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
-                    <MenuItem Header="_Advance Salary" Name="AdvanceSalary" Click="AdvanceSalary_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
+                    <MenuItem Header="_Salary" Name="AdvanceSalary" Click="AdvanceSalary_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                     <MenuItem Header="_View Orders" Template="{StaticResource VsMenuSub}">
                         <MenuItem Header="_Sale Orders" Name="SaleOrder" Click="ViewOrder_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
                         <MenuItem Header="_Purchase Orders" Name="PurchaseOrder" Click="PurchaseOrder_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_bug.png" />
