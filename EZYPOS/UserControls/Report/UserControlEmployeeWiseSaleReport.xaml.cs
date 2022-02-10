@@ -1,4 +1,5 @@
-﻿using DAL.DBMODEL;
+﻿using Common;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.DTO.ReportsDTO;
@@ -6,6 +7,7 @@ using EZYPOS.Helper;
 using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -44,6 +46,13 @@ namespace EZYPOS.UserControls.Report
             Refresh();
 
         }
+        public string GetCurrency()
+        {
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                return Db.Setting.GetAll().Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue;
+            }
+        }
         private void Refresh(object sender = null)
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
@@ -58,9 +67,9 @@ namespace EZYPOS.UserControls.Report
                     GrandTotal += item.Total;
                     CustomerName = DB.Customers.Get(Convert.ToInt32(item.CustomerId)).Name;
                     EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
-                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, TotalAmount = Convert.ToString(item.Total) });
+                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, TotalAmount = item.Total.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                 }
-                myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "-", PaymentMode = "Total", TotalAmount = Convert.ToString(GrandTotal) });
+                myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "-", PaymentMode = "Total", TotalAmount = GrandTotal.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                 ResetPaging(myList);
             }
         }
@@ -115,9 +124,9 @@ namespace EZYPOS.UserControls.Report
                                 GrandTotal += item.Total;
                                 CustomerName = DB.Customers.Get(Convert.ToInt32(item.CustomerId)).Name;
                                 EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
-                                myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = Convert.ToString(item.OrderDate), PaymentMode = item.PaymentMode, TotalAmount = Convert.ToString(item.Total) });
+                                myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, TotalAmount = item.Total.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                             }
-                            myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "-", PaymentMode = "Total", TotalAmount = Convert.ToString(GrandTotal) });
+                            myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "-", PaymentMode = "Total", TotalAmount = GrandTotal.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                             ResetPaging(myList);
                         }
                         if (t.Name == "GridCName")
@@ -134,11 +143,11 @@ namespace EZYPOS.UserControls.Report
                                 {
                                     EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
                                     GrandTotal += item.Total;
-                                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = Convert.ToString(item.OrderDate), PaymentMode = item.PaymentMode, TotalAmount = Convert.ToString(item.Total) });
+                                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, TotalAmount = item.Total.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                                 }
 
                             }
-                            myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "-", PaymentMode = "Total", TotalAmount = Convert.ToString(GrandTotal) });
+                            myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "-", PaymentMode = "Total", TotalAmount = GrandTotal.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                             ResetPaging(myList);
                         }
                         //if (t.Name == "GridEmployee")
@@ -188,10 +197,10 @@ namespace EZYPOS.UserControls.Report
                                 if (PaymentMode.ToUpper().Contains(filter.ToUpper()))
                                 {
                                     GrandTotal += item.Total;
-                                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = Convert.ToString(item.OrderDate), PaymentMode = item.PaymentMode, TotalAmount = Convert.ToString(item.Total) });
+                                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, TotalAmount = item.Total.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                                 }
                             }
-                            myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "-", PaymentMode = "Total", TotalAmount = Convert.ToString(GrandTotal) });
+                            myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "-", PaymentMode = "Total", TotalAmount = GrandTotal.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                             ResetPaging(myList);
                         }
                     }

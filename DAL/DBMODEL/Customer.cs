@@ -9,6 +9,7 @@ namespace DAL.DBMODEL
     {
         public Customer()
         {
+            CustomerDrnotes = new HashSet<CustomerDrnote>();
             CustomerReceipts = new HashSet<CustomerReceipt>();
             SaleOrders = new HashSet<SaleOrder>();
         }
@@ -22,6 +23,7 @@ namespace DAL.DBMODEL
         public DateTime? Createdon { get; set; }
 
         public virtual City CityNavigation { get; set; }
+        public virtual ICollection<CustomerDrnote> CustomerDrnotes { get; set; }
         public virtual ICollection<CustomerReceipt> CustomerReceipts { get; set; }
         public virtual ICollection<SaleOrder> SaleOrders { get; set; }
     }

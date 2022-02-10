@@ -18,6 +18,8 @@ namespace DAL.Repository
             City = new Repository<City>(_context);
             Shelf = new Repository<TblShelf>(_context);
             MUnit = new Repository<Unit>(_context);
+            CustomerDRNote = new Repository<CustomerDrnote>(_context);
+            SupplierCRNote = new Repository<SupplierCrnote>(_context);
             Setting = new Repository<Setting>(_context);
             AdvanceSalary = new Repository<AdvancedSalary>(_context);
             SupplierPayment = new Repository<SupplierPayment>(_context);
@@ -55,6 +57,8 @@ namespace DAL.Repository
         public IRepository<City> City { get; }
         public IRepository<TblShelf> Shelf { get; }
         public IRepository<Unit> MUnit { get; }
+        public IRepository<CustomerDrnote> CustomerDRNote { get; }
+        public IRepository<SupplierCrnote> SupplierCRNote { get; }
         public IRepository<Setting> Setting { get; }
         public IRepository<AdvancedSalary> AdvanceSalary { get; }
         public IRepository<SupplierPayment> SupplierPayment { get; }

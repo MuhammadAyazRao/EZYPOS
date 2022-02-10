@@ -20,6 +20,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Globalization;
+using Common;
 
 namespace EZYPOS.UserControls.Report
 {
@@ -44,7 +45,13 @@ namespace EZYPOS.UserControls.Report
             Refresh();
         }
 
-
+        public string GetCurrency()
+        {
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                return Db.Setting.GetAll().Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue;
+            }
+        }
         void Refresh()
         {
             using (UnitOfWork Db = new UnitOfWork(new EPOSDBContext()))
@@ -79,7 +86,7 @@ namespace EZYPOS.UserControls.Report
                         TotalDR += item.Dr;
                         TotalCR += item.Cr;
                         TotalBalance = TotalDR - TotalCR;
-                        myList.Add(new CustomerLedgerDTO { CustomerName = CustomerName, Date = Convert.ToDateTime(item.TransactionDate), TransactionType = item.TransactionType, Detail = item.TransactionDetail, CR = item.Cr, DR = item.Dr, Balance = TotalBalance });
+                        myList.Add(new CustomerLedgerDTO { CustomerName = CustomerName, Date = item.TransactionDate?.ToString("dd/MM/yyyy") , TransactionType = item.TransactionType, Detail = item.TransactionDetail, CR = item.Cr.ToString(), DR = item.Dr.ToString(), Balance = TotalBalance?.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                     }
 
                 }
@@ -141,7 +148,7 @@ namespace EZYPOS.UserControls.Report
                                         TotalDR += item.Dr;
                                         TotalCR += item.Cr;
                                         TotalBalance = TotalDR - TotalCR;
-                                        myList.Add(new CustomerLedgerDTO { CustomerName = CustomerName, Date = Convert.ToDateTime(item.TransactionDate), TransactionType = item.TransactionType, Detail = item.TransactionDetail, CR = item.Cr, DR = item.Dr, Balance = TotalBalance });
+                                        myList.Add(new CustomerLedgerDTO { CustomerName = CustomerName, Date = item.TransactionDate?.ToString("dd/MM/yyyy"), TransactionType = item.TransactionType, Detail = item.TransactionDetail, CR = item.Cr.ToString(), DR = item.Dr.ToString(), Balance = TotalBalance?.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                                     }
 
                                 }
@@ -207,9 +214,14 @@ namespace EZYPOS.UserControls.Report
         private void Print_Click(object sender, RoutedEventArgs e)
         {
             Refresh();
-            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.CustomerName, COLB = x.TransactionType, COLC = x.Date.ToString("dd/MM/yyyy"), COLD = x.DR?.ToString(), COLE = x.CR?.ToString(), COLF = x.Balance?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) }).ToList();
+            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.CustomerName, COLB = x.TransactionType, COLC = x.Date , COLD = x.DR, COLE = x.CR, COLF = x.Balance }).ToList();
             string Discription = "From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
             ReportPrintHelper.PrintCOL6Report(ref ReportViewer, "Customer Ledger Report", "Customer Name", "Transaction Type", "Date", "DR", "CR","Balance", Discription, RptData);
+
+        }
+
+        private void NumberOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
 
         }
     }

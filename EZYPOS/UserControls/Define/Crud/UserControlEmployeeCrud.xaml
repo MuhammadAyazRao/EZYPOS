@@ -55,7 +55,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <!--<RowDefinition Height="50"/>-->
-            <RowDefinition Height="450"/>
+            <RowDefinition Height="470"/>
             <RowDefinition Height="61"/>
         </Grid.RowDefinitions>
         <Border ScrollViewer.CanContentScroll="True" ScrollViewer.PanningMode="VerticalFirst" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="LightGray" BorderThickness="2" Margin="50,50,50,50" Grid.Row="0">
@@ -66,7 +66,7 @@
                     <RowDefinition Height="60"></RowDefinition>
                     <RowDefinition Height="60"></RowDefinition>
                     <RowDefinition Height="60"></RowDefinition>
-
+                    <RowDefinition Height="60"></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -75,16 +75,17 @@
                 </Grid.ColumnDefinitions>
 
 
-                <TextBox Name="txtFName"   GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Name" Foreground="Gray" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="0" Height="Auto" Style="{Binding txtInput}"  />
-                <TextBox Name="txtPhone" PreviewTextInput="NumberOnly_PreviewTextInput" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Phone" Foreground="Gray" Grid.Column="1" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="0" Height="Auto" Style="{Binding txtInput}"  />
-                <TextBox Name="txtAddress" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Address" Foreground="Gray" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{Binding txtInput}"  />
+                <TextBox Name="txtFName" TextWrapping="Wrap" Grid.Column="0" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="0" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Name"  />
+                <TextBox Name="txtPhone" PreviewTextInput="NumberOnly_PreviewTextInput" TextWrapping="Wrap" Grid.Column="1" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="0" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Phone" />
+                <TextBox Name="txtAddress" TextWrapping="Wrap" Grid.Column="0" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Address" />
                 <!--<TextBox Name="txtMobile" PreviewTextInput="txtPhone_PreviewTextInput" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Mobile" Foreground="Gray" Grid.Column="1" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{Binding txtInput}"  />-->
                 <DatePicker Name="JoiningDate" Margin="20,10,20,10" Grid.Row="1" Grid.Column="1" materialDesign:HintAssist.Hint="Joining Date"   Style="{StaticResource MaterialDesignDatePicker}" />
                 <TextBox Name="txtId" Visibility="Collapsed" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Id" Foreground="Gray" Grid.Column="1" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{Binding txtInput}"  />
-                <TextBox Name="txtSalary" PreviewTextInput="NumberOnly_PreviewTextInput"  GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Salary" Foreground="Gray" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="3" Height="Auto" Style="{Binding txtInput}"  />
-                <TextBox Name="txtCnic" PreviewTextInput="NumberOnly_PreviewTextInput"  GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="CNIC" Foreground="Gray" Grid.Column="1" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="3" Height="Auto" Style="{Binding txtInput}"  />
-
-                <materialDesign:Chip ToolTip="Select Image" Grid.Column="0" Grid.Row="4" Margin="20,10,0,10" Padding="10" Click="Image_Click" Name="ImageSelector"  Content="Employee Image">
+                <TextBox Name="txtSalary" PreviewTextInput="NumberOnly_PreviewTextInput" TextWrapping="Wrap" Grid.Column="0" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="3" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Salary"/>
+                <TextBox Name="txtCnic" PreviewTextInput="NumberOnly_PreviewTextInput" TextWrapping="Wrap" Grid.Column="0" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="4" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="CNIC"  />
+                <TextBox Name="txtUserName" TextWrapping="Wrap" Grid.Column="1" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="4" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="UserName" />
+                <TextBox Name="txtPassword" TextWrapping="Wrap" Grid.Column="1" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="5" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Password" />
+                <materialDesign:Chip ToolTip="Select Image" Grid.Column="0" Grid.Row="5" Margin="20,10,0,10" Padding="10" Click="Image_Click" Name="ImageSelector"  Content="Employee Image">
                     <materialDesign:Chip.Icon>
                         <Image Name="UserImage" />
                     </materialDesign:Chip.Icon>
@@ -113,7 +114,16 @@
 
                 </ComboBox>
 
+                <ComboBox  Name="ddSalaryType"
+                           DisplayMemberPath="Name" 
+                           SelectedValuePath="Id" 
+                           Grid.Row="3" Grid.Column="1" 
+                           Margin="20,10,20,10"
+                          materialDesign:HintAssist.Hint="Search Salary Type"                           
+                          materialDesign:HintAssist.HintOpacity=".26"                          
+                          IsEditable="True">
 
+                </ComboBox>
 
 
 

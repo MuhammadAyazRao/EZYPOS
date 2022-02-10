@@ -60,10 +60,8 @@ namespace EZYPOS.UserControls.Define.Crud
             Update.IsEnabled = false;
             Save.IsEnabled = true;
 
-            txtShelfName.Text = "Shelf Name";
-            txtShelfName.Foreground = Brushes.Gray;
-            txtShelfCode.Text = "Shelf Code";
-            txtShelfCode.Foreground = Brushes.Gray;
+            txtShelfName.Text = "";
+            txtShelfCode.Text = "";
             txtId.Text = "";
 
         }

@@ -4,6 +4,7 @@ using DAL.Repository;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -25,16 +26,38 @@ namespace EZYPOS.UserControls.Misc
     /// </summary>
     public partial class UserControlSettings : UserControl
     {
+        public List<CountryCurrencyPair> CurrencyList { get; set; }
         public UserControlSettings()
         {
             InitializeComponent();
+            CurrencyList = GetCountryList();
             Refresh();
         }
-
+        public List<CountryCurrencyPair> GetCountryList()
+        {
+            return CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+            .Select(c => new RegionInfo(c.LCID)).Distinct()
+            .Select(r => new CountryCurrencyPair()
+            {
+                Country = r.EnglishName,
+                Currency = "en-"+r.Name
+            }).ToList();
+        }
+        public class CountryCurrencyPair
+        {
+            public string Country { get; set; }
+            public string Currency { get; set; }
+        }
         public void Refresh()
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
+                foreach (string item in System.Drawing.Printing.PrinterSettings.InstalledPrinters)
+                {
+                    ddInvoicePrinter.Items.Add(item);
+                    ddReportPrinter.Items.Add(item);
+                }
+                ddCurrency.ItemsSource = CurrencyList;
                 var SettingData = Db.Setting.GetAll().ToList();
                 // Invoice Printer
                 var inv_print = SettingData.Where(x => x.AppKey == SettingKey.PrintInvoice).FirstOrDefault().AppValue;
@@ -80,13 +103,11 @@ namespace EZYPOS.UserControls.Misc
                 txtFooter.Text = SettingData.Where(x => x.AppKey == SettingKey.ReportFooter).FirstOrDefault().AppValue;
                 ddInvoicePrinter.SelectedItem = SettingData.Where(x => x.AppKey == SettingKey.InvoicePrinter).FirstOrDefault().AppValue;
                 ddReportPrinter.SelectedItem = SettingData.Where(x => x.AppKey == SettingKey.ReportPrinter).FirstOrDefault().AppValue;
+                ddCurrency.SelectedValue = SettingData.Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue;
+                
 
             }
-            foreach (string item in System.Drawing.Printing.PrinterSettings.InstalledPrinters)
-            {
-                ddInvoicePrinter.Items.Add(item);
-                ddReportPrinter.Items.Add(item);
-            }
+            
         }
         private void ck_Checked(object sender, RoutedEventArgs e)
         {
@@ -125,6 +146,10 @@ namespace EZYPOS.UserControls.Misc
                 if (ddReportPrinter.SelectedItem != null)
                 {
                     Data.Where(x => x.AppKey == SettingKey.ReportPrinter).FirstOrDefault().AppValue = ddReportPrinter.Text;
+                }
+                if (ddCurrency.SelectedItem != null)
+                {
+                    Data.Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue = ddCurrency.SelectedValue.ToString() ;
                 }
                 //if (!string.IsNullOrEmpty(UserImage.Source?.ToString()))
                 //{

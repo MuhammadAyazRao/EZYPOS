@@ -1,4 +1,5 @@
-﻿using DAL.DBMODEL;
+﻿using Common;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.DTO.ReportsDTO;
@@ -38,7 +39,13 @@ namespace EZYPOS.UserControls.Report
             Refresh();
         }
 
-
+        public string GetCurrency()
+        {
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                return Db.Setting.GetAll().Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue;
+            }
+        }
         void Refresh()
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
@@ -55,9 +62,9 @@ namespace EZYPOS.UserControls.Report
                     Balance += (decimal)item.Balance;
                     CustomerName = Db.Customers.Get((int)item.CustId).Name;
 
-                    myList.Add(new CustomerBalanceDTO { CustomerName = CustomerName, CR = item.TotalCr.ToString() , DR = item.TotalDr?.ToString(), Balance = item.Balance?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) });
+                    myList.Add(new CustomerBalanceDTO { CustomerName = CustomerName, CR = item.TotalCr.ToString() , DR = item.TotalDr?.ToString(), Balance = item.Balance?.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                 }
-                myList.Add(new CustomerBalanceDTO { CustomerName = "", Date = DateTime.Now.ToString("dd/MM/yyyy"), TransactionType = "", Detail = "Total Credit Balance in Market", CR = "Total", DR = "", Balance = Balance.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) });
+                myList.Add(new CustomerBalanceDTO { CustomerName = "", Date = DateTime.Now.ToString("dd/MM/yyyy"), TransactionType = "", Detail = "Total Credit Balance in Market", CR = "Total", DR = "", Balance = Balance.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                 ResetPaging(myList);
             }
         }
@@ -91,11 +98,11 @@ namespace EZYPOS.UserControls.Report
                                 if (customerName.ToUpper().Contains(filter.ToUpper()))
                                 {
                                     Balance += (decimal)item.Balance;
-                                    myList.Add(new CustomerBalanceDTO { CustomerName = customerName, CR = item.TotalCr.ToString(), DR = item.TotalDr?.ToString(), Balance = item.Balance?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) });
+                                    myList.Add(new CustomerBalanceDTO { CustomerName = customerName, CR = item.TotalCr.ToString(), DR = item.TotalDr?.ToString(), Balance = item.Balance?.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                                 }
 
                             }
-                            myList.Add(new CustomerBalanceDTO { CustomerName = "", Date = DateTime.Now.ToString("dd/MM/yyyy"), TransactionType = "", Detail = "Total Credit Balance in Market", CR = "Total", DR = "", Balance = Balance.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) });
+                            myList.Add(new CustomerBalanceDTO { CustomerName = "", Date = DateTime.Now.ToString("dd/MM/yyyy"), TransactionType = "", Detail = "Total Credit Balance in Market", CR = "Total", DR = "", Balance = Balance.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                             ResetPaging(myList);
                         }
                     }

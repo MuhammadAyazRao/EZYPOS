@@ -14,6 +14,8 @@ namespace DAL.IRepository
         IRepository<ExpenceTransaction> expt { get; }
         IRepository<TblShelf> Shelf { get; }
         IRepository<Unit> MUnit { get; }
+        IRepository<CustomerDrnote> CustomerDRNote { get; }
+        IRepository<SupplierCrnote> SupplierCRNote { get; }
         IRepository<Setting> Setting { get; }
         IRepository<AdvancedSalary> AdvanceSalary { get; }
         IRepository<SupplierPayment> SupplierPayment { get; }

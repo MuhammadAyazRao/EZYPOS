@@ -45,10 +45,8 @@ namespace EZYPOS.UserControls.Transaction
                 DDSupplier.ItemsSource = Db.Supplier.GetAll().ToList();
                 DDPayedBy.ItemsSource = Db.Employee.GetAll().ToList();
             }
-            txtDiscription.Text = "Discription";
-            txtDiscription.Foreground = Brushes.Gray;
-            txtAmount.Text = "Amount";
-            txtAmount.Foreground = Brushes.Gray;
+            txtDiscription.Text = "";
+            txtAmount.Text = "";
             txtId.Text = "";
         }
         private void InitializePage(SupplierPaymentDTO Sp)

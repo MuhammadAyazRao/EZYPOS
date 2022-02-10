@@ -108,7 +108,7 @@ namespace DAL.Repository
                         CustomerLedCR.TransactionId = NewOrder.Id;
                         CustomerLedCR.TransactionType = Common.InvoiceType.SaleInvoice;
                         CustomerLedCR.TransactionDetail = "Cash Sale Transaction against Invoice Number # " + NewOrder.Id;
-                        CustomerLedCR.CustomerId = 1;
+                        CustomerLedCR.CustomerId = CartOrderToProcess.CustId;
                         CustomerLead.Add(CustomerLedCR);
 
                         // CashBook Leader Transaction

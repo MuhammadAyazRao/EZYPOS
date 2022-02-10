@@ -39,7 +39,7 @@ namespace EZYPOS.UserControls
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                 myList = DB.Employee.GetAll().Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation.CityName== null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress,Salary=x.Salary,Role=x.RoleNavigation.Name==null?null:x.RoleNavigation.Name,Cnic=x.Cnic }).ToList();
+                 myList = DB.Employee.GetAll().Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation.CityName== null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress,Salary=x.Salary, SalaryType= x.SalaryType, Role=x.RoleNavigation.Name==null?null:x.RoleNavigation.Name,Cnic=x.Cnic }).ToList();
                 ResetPaging(myList);
             }
         }
@@ -81,37 +81,41 @@ namespace EZYPOS.UserControls
                 {
                     if (filter == "")
                     {
-                        myList = DB.Employee.GetAll().Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                        myList = DB.Employee.GetAll().Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, SalaryType= x.SalaryType, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
                     }
                     else
                     {
                         if (t.Name == "GridName")
                         {
-                            myList = DB.Employee.GetAll().Where(x => x.UserName.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList(); ;
+                            myList = DB.Employee.GetAll().Where(x => x.UserName.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, SalaryType = x.SalaryType, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList(); ;
                         }
                         if (t.Name == "GridCity")
                         {
-                            myList = DB.Employee.GetAll().Where(x => x.CityNavigation.CityName.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                            myList = DB.Employee.GetAll().Where(x => x.CityNavigation.CityName.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, SalaryType = x.SalaryType, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
                         }
                         if (t.Name == "GridAdress")
                         {
-                            myList = DB.Employee.GetAll().Where(x => x.Adress.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                            myList = DB.Employee.GetAll().Where(x => x.Adress.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, SalaryType = x.SalaryType, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
                         }
                         if (t.Name == "GridRole")
                         {
-                            myList = DB.Employee.GetAll().Where(x => x.RoleNavigation.Name.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                            myList = DB.Employee.GetAll().Where(x => x.RoleNavigation.Name.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, SalaryType = x.SalaryType, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
                         }
                         if (t.Name == "GridSalary")
                         {
-                            myList = DB.Employee.GetAll().Where(x => x.Salary.ToString().Contains(filter)).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                            myList = DB.Employee.GetAll().Where(x => x.Salary.ToString().Contains(filter)).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, SalaryType = x.SalaryType, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
                         }
                         if (t.Name == "GridPhone")
                         {
-                            myList = DB.Employee.GetAll().Where(x => x.Phone.Contains(filter)).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                            myList = DB.Employee.GetAll().Where(x => x.Phone.Contains(filter)).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, SalaryType = x.SalaryType, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
                         }
                         if (t.Name == "GridCnic")
                         {
-                            myList = DB.Employee.GetAll().Where(x => x.Cnic.Contains(filter)).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                            myList = DB.Employee.GetAll().Where(x => x.Cnic.Contains(filter)).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, SalaryType = x.SalaryType, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
+                        }
+                        if (t.Name == "GridSalaryType")
+                        {
+                            myList = DB.Employee.GetAll().Where(x => x.SalaryType.ToUpper().Contains(filter.ToUpper())).Select(x => new EmployeeDTO { Id = x.Id, Name = x.UserName, City = x.CityNavigation == null ? null : x.CityNavigation.CityName, Phone = x.Phone, Adress = x.Adress, Salary = x.Salary, SalaryType = x.SalaryType, Role = x.RoleNavigation == null ? null : x.RoleNavigation.Name, Cnic = x.Cnic }).ToList();
                         }
                     }
                     ResetPaging(myList);

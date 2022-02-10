@@ -125,37 +125,17 @@ namespace EZYPOS.UserControls.Define.Crud
                 DDMunit.ItemsSource = Db.MUnit.GetAll().ToList();
 
             }
-            txtPCode.Text = "Product Code";
-            txtPCode.Foreground = Brushes.Gray;
-
-            txtProductName.Text = "Product Name";
-            txtProductName.Foreground = Brushes.Gray;
-
-            txtProductUrduName.Text = "Product Urdu Name";
-            txtProductUrduName.Foreground = Brushes.Gray;
-
-            txtSalePrice.Text = "Sale Price";
-            txtSalePrice.Foreground = Brushes.Gray;
-
-            txtWholeSalePrice.Text = "WholeSale Price";
-            txtWholeSalePrice.Foreground = Brushes.Gray;
-
-            txtPurchasePrice.Text = "Purchase Price";
-            txtPurchasePrice.Foreground = Brushes.Gray;
-
-            txtStock.Text = "Current Stock";
-            txtStock.Foreground = Brushes.Gray;
-
-            txtStockMin.Text = "Minimum Stock";
-            txtStockMin.Foreground = Brushes.Gray;
-
-            txtStockMax.Text = "Maximum Stock";
-            txtStockMax.Foreground = Brushes.Gray;
-            
-            txtSize.Text = "Size";
-            txtSize.Foreground = Brushes.Gray;
-
-            DateStock.SelectedDate = DateTime.Now;
+            txtPCode.Text = "";
+            txtProductName.Text = "";
+            txtProductUrduName.Text = "";
+            txtSalePrice.Text = "";
+            txtWholeSalePrice.Text = "";
+            txtPurchasePrice.Text = "";
+            txtStock.Text = "";
+            txtStockMin.Text = "";
+            txtStockMax.Text = "";
+            txtSize.Text = "";
+            DateStock.SelectedDate = DateTime.Today;
 
             txtId.Text = "";
         }

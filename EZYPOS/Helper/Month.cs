@@ -11,6 +11,16 @@ namespace EZYPOS.Helper
         public string Name;
         public int Id;
     }
+    public class TypeOfSalary
+    {
+        public string Name;
+        public int Id;
+    }
+    public class SalaryStatus
+    {
+        public string Name;
+        public int Id;
+    }
     public class Month
     {
         public static List<Months> Months = new List<Months>();

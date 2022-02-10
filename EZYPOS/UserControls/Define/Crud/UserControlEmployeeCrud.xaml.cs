@@ -21,6 +21,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using EZYPOS.Helper;
+using Common;
 
 namespace EZYPOS.UserControls
 {
@@ -49,20 +51,21 @@ namespace EZYPOS.UserControls
                 ddCity.ItemsSource = cities;
                 var Roles = Db.UserRole.GetAll().ToList();
                 ddRole.ItemsSource = Roles;
+                List<TypeOfSalary> StatusList = new List<TypeOfSalary>();
+                StatusList.Add(new TypeOfSalary { Name = SalaryMode.Monthly, Id = 1 });
+                StatusList.Add(new TypeOfSalary { Name = SalaryMode.Hourly, Id = 2 });
+                ddSalaryType.ItemsSource = StatusList.Select(x => new { Name = x.Name, Id = x.Id });
             }
-            txtFName.Text = "Name";
-            txtFName.Foreground = Brushes.Gray;
-            txtPhone.Text = "Phone";
-            txtPhone.Foreground = Brushes.Gray;
-            txtAddress.Text = "Address";
-            txtAddress.Foreground = Brushes.Gray;
-            txtSalary.Text = "Salary";  
-            txtSalary.Foreground= Brushes.Gray;
-            txtCnic.Text = "CNIC";
-            txtCnic.Foreground = Brushes.Gray;
+            txtFName.Text = "";
+            txtPhone.Text = "";
+            txtAddress.Text = "";
+            txtSalary.Text = "";
+            txtCnic.Text = "";
+            txtUserName.Text = "";
+            txtPassword.Text = "";
             ddCity.SelectedValue = null;
             ddRole.SelectedValue = null;
-            JoiningDate.Text ="";
+            ddSalaryType.SelectedValue = 1;
             txtId.Text = "";
             JoiningDate.SelectedDate = DateTime.Today;
             SetImage(Environment.CurrentDirectory + @"\Assets\EmployeeImages\No_Image.jpg");
@@ -117,10 +120,31 @@ namespace EZYPOS.UserControls
                 {
                     ddRole.SelectedValue = EmployeeData.Role;
                 }
-
+                if (!string.IsNullOrEmpty(EmployeeData?.LoginName))
+                {
+                    txtUserName.Text = EmployeeData.LoginName;
+                    txtUserName.Foreground = Brushes.Black;
+                }
+                if (!string.IsNullOrEmpty(EmployeeData?.Password))
+                {
+                    txtPassword.Text = EmployeeData.Password;
+                    txtPassword.Foreground = Brushes.Black;
+                }
                 if (!string.IsNullOrEmpty(EmployeeData?.Image))
                 {
                     SetImage(EmployeeData.Image);
+                }
+                if (!string.IsNullOrEmpty(EmployeeData?.SalaryType))
+                {
+                    if(EmployeeData.SalaryType == SalaryMode.Monthly)
+                    {
+                        ddSalaryType.SelectedValue = 1;
+                    }
+                    else
+                    {
+                        ddSalaryType.SelectedValue = 2;
+                    }
+                    
                 }
                 txtId.Text = EmployeeData.Id.ToString();
             }
@@ -262,6 +286,18 @@ namespace EZYPOS.UserControls
                             {
                                 UpdateEmployee.Createdon = Convert.ToDateTime(JoiningDate.Text);
                             }
+                            if (ddSalaryType.SelectedValue != null)
+                            {
+                                UpdateEmployee.SalaryType = ddSalaryType.Text;
+                            }
+                            if (!string.IsNullOrEmpty(txtUserName.Text))
+                            {
+                                UpdateEmployee.LoginName = txtUserName.Text;
+                            }
+                            if (!string.IsNullOrEmpty(txtPassword.Text))
+                            {
+                                UpdateEmployee.Password = txtPassword.Text;
+                            }
                             if (!string.IsNullOrEmpty(UserImage.Source?.ToString()))
                             {
                                 UpdateEmployee.Image = UserImage.Source?.ToString();
@@ -346,6 +382,18 @@ namespace EZYPOS.UserControls
                     if (!string.IsNullOrEmpty(JoiningDate.Text))
                     {
                         AddEmployee.Createdon = Convert.ToDateTime(JoiningDate.Text);
+                    }
+                    if (ddSalaryType.SelectedValue != null)
+                    {
+                        AddEmployee.SalaryType = ddSalaryType.Text;
+                    }
+                    if (!string.IsNullOrEmpty(txtUserName.Text))
+                    {
+                        AddEmployee.LoginName = txtUserName.Text;
+                    }
+                    if (!string.IsNullOrEmpty(txtPassword.Text))
+                    {
+                        AddEmployee.Password = txtPassword.Text;
                     }
                     if (!string.IsNullOrEmpty(UserImage.Source?.ToString()))
                     {

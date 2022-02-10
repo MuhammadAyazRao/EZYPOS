@@ -43,8 +43,7 @@ namespace EZYPOS.UserControls.Transaction
                 ddSupplier.SelectedValue = null;
                 ddPaymentStatus.SelectedValue = null;
                 ddPaymentMode.SelectedValue = null;
-                txtOrderNum.Text = "Order No";
-                txtOrderNum.Foreground = Brushes.Gray;
+                txtOrderNum.Text = "";
                 listOrderAccepted.Items.Clear();
                 foreach (var item in DB.PurchaseOrder.GetMappedOrder())
                 {

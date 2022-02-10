@@ -1,5 +1,9 @@
-﻿using EZYPOS;
+﻿using Common.Session;
+using DAL.Repository;
+using EZYPOS;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,13 +21,28 @@ namespace EZYPOS.View
         }
         private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            EZYPOS.View.SplashScreen Splash = new EZYPOS.View.SplashScreen();
-            Splash.Show();
-            await Task.Run(() => Thread.Sleep(3000));           
-            MainWindowNewMenu MainUI = new MainWindowNewMenu();
-            MainUI.Show();
-            Splash.Close();
-            Close();
+            
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()) )
+            {
+                var LoginData = Db.Employee.GetAll().Where(x => x.LoginName == txtUser.Text && x.Password == Password.Password.ToString()).FirstOrDefault();
+                if (LoginData != null)
+                {
+                    EZYPOS.View.SplashScreen Splash = new EZYPOS.View.SplashScreen();
+                    Splash.Show();
+                    await Task.Run(() => Thread.Sleep(3000));
+                    MainWindowNewMenu MainUI = new MainWindowNewMenu();
+                    MainUI.Show();
+                    Splash.Close();
+                    Close();
+                    ActiveSession.ActiveUser = LoginData.Id;
+                }
+                else
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("User Name Or Password is incorrect", "Error", "Ok");
+                }
+                
+            }
+            
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)

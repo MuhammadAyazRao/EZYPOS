@@ -124,7 +124,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
-                                    <TextBox x:Name="Id" Width="100"  KeyDown="GridName_KeyDown"   />
+                                    <TextBox x:Name="Id" Width="100" KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>

@@ -1,4 +1,5 @@
-﻿using DAL.Repository;
+﻿using Common;
+using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.DTO.ReportsDTO;
 using EZYPOS.Helper;
@@ -36,7 +37,13 @@ namespace EZYPOS.UserControls.Report
             Refresh();
         }
 
-
+        public string GetCurrency()
+        {
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                return Db.Setting.GetAll().Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue;
+            }
+        }
         void Refresh()
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
@@ -53,9 +60,9 @@ namespace EZYPOS.UserControls.Report
                     TotalQty += (decimal)item.ItemQty;
                     TotalPrice += (decimal)item.ItemPrice;
 
-                    myList.Add(new ItemWiseSaleDTO { ItemName = Db.Product.Get((int)item.ItemId).ProductName, ItemQty = item.ItemQty.ToString(), ItemPrice = item.ItemPrice?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) });
+                    myList.Add(new ItemWiseSaleDTO { ItemName = Db.Product.Get((int)item.ItemId).ProductName, ItemQty = item.ItemQty.ToString(), ItemPrice = item.ItemPrice?.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                 }
-                myList.Add(new ItemWiseSaleDTO { ItemName = "Total", ItemQty = TotalQty.ToString(), ItemPrice = TotalPrice.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) });
+                myList.Add(new ItemWiseSaleDTO { ItemName = "Total", ItemQty = TotalQty.ToString(), ItemPrice = TotalPrice.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                 ResetPaging(myList);
             }
         }
@@ -91,10 +98,10 @@ namespace EZYPOS.UserControls.Report
                                 {
                                     TotalQty += (decimal)item.ItemQty;
                                     TotalPrice += (decimal)item.ItemPrice;
-                                    myList.Add(new ItemWiseSaleDTO { ItemName = itemName, ItemQty = item.ItemQty.ToString(), ItemPrice = item.ItemPrice?.ToString() });
+                                    myList.Add(new ItemWiseSaleDTO { ItemName = itemName, ItemQty = item.ItemQty.ToString(), ItemPrice = item.ItemPrice?.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                                 }
                             }
-                            myList.Add(new ItemWiseSaleDTO { ItemName = "Total", ItemQty = TotalQty.ToString(), ItemPrice = TotalPrice.ToString() });
+                            myList.Add(new ItemWiseSaleDTO { ItemName = "Total", ItemQty = TotalQty.ToString(), ItemPrice = TotalPrice.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) });
                             ResetPaging(myList);
                         }
                     }

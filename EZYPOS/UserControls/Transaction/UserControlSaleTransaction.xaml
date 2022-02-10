@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:EZYPOS.UserControls.Transaction"
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignWidth="768" Name="Sale" Language="en-GB">
+             d:DesignWidth="768" Name="Sale">
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -26,7 +26,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Row="0" Grid.Column="0" KeyDown="Barcode_KeyDown" Name="Barcode"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="40"  TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Barcode"  />
+            <TextBox Grid.Row="0" Grid.Column="0" KeyDown="Barcode_KeyDown" Name="Barcode"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Search By Barcode Or Name"  VerticalAlignment="Top" Height="40"  TextWrapping="Wrap"    />
             <ComboBox  Name="DDCategory" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name"  SelectedValuePath="Id" Margin="5,5,5,5" materialDesign:HintAssist.HintOpacity=".26" materialDesign:HintAssist.Hint="Search Category" SelectionChanged="DDCategory_SelectionChanged"    IsEditable="False"/>
             <ComboBox  Name="DDSubCategory" Grid.Row="0" Grid.Column="2" DisplayMemberPath="SubcategoryName"  SelectedValuePath="Id" Margin="5,5,5,5" materialDesign:HintAssist.HintOpacity=".26" materialDesign:HintAssist.Hint="Search Category" SelectionChanged="DDSubCategory_SelectionChanged"    IsEditable="False"/>
             <ListBox   Grid.Row="1" Grid.ColumnSpan="3"  Height="630"  BorderThickness="0" Name="listKitchenLineItems" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -154,9 +154,9 @@
                             <ContentControl MouseDoubleClick="itemname_PreviewMouseDown">
                                 <TextBlock Text="{Binding Item.name}" Name="itemname" Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" Margin="5" Width="200" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                             </ContentControl>
-                            <TextBlock Text="{Binding Qty}"   Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" TextAlignment="Center" Margin="230 5 0 0" Width="30" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                            <TextBlock Text="{Binding Item.price, StringFormat=C}" Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" TextAlignment="Center" Margin="260 5 0 0" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                            <TextBlock Text="{Binding GetTotal, StringFormat=C}" Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" TextAlignment="Right" Margin="310 5 0 0" Width="60" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <!--<TextBlock Text="{Binding Qty}"   Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" TextAlignment="Center" Margin="200 5 0 0" Width="30" HorizontalAlignment="Left" VerticalAlignment="Top"/>-->
+                            <TextBlock Text="{Binding Item.price, StringFormat=C}" Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" TextAlignment="Left" Margin="220 5 0 0" Width="90" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <TextBlock Text="{Binding GetTotal, StringFormat=C}" Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" TextAlignment="Right" Margin="290 5 0 0" Width="80" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                             <StackPanel Grid.Row="1" Margin="0">
                                 <Border Visibility="{Binding DiscVisibility}" Width="263" Margin="0 0 5 5">
                                     <TextBlock Text="{Binding GetCouponDiscount, StringFormat=C}" Foreground="Wheat" HorizontalAlignment="Right"/>
@@ -205,9 +205,9 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <StackPanel Visibility="Collapsed" Grid.Row="0" x:Name="cartHeader"  Height="25" VerticalAlignment="Top" Orientation="Horizontal">
-                <Label Content="PRODUCTS" FontSize="9" Margin="5 0 0 0" VerticalContentAlignment="Bottom" Width="230"/>
-                <Label Content="QTY" FontSize="9" VerticalContentAlignment="Bottom" Width="40" HorizontalContentAlignment="Center"/>
-                <Label HorizontalContentAlignment="Center" Content="Each" FontSize="9" VerticalContentAlignment="Bottom" Width="40"/>
+                <Label Content="PRODUCTS" FontSize="9" HorizontalAlignment="Left" Margin="5 0 0 0" VerticalContentAlignment="Bottom" Width="230"/>
+                <!--<Label Content="QTY" FontSize="9" VerticalContentAlignment="Bottom" Width="40" HorizontalContentAlignment="Center"/>-->
+                <Label HorizontalContentAlignment="left" Content="Each" FontSize="9" VerticalContentAlignment="Bottom" Width="90"/>
                 <Label HorizontalContentAlignment="Right" Content="Total" FontSize="9" VerticalContentAlignment="Bottom" Width="60"/>
             </StackPanel>
             <Expander  Collapsed="expander_Collapsed" VerticalAlignment="Bottom"  Expanded="expander_Expanded" Name="expander"    IsExpanded="True" Header="Expander">

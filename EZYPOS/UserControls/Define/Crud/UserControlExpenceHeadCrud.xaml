@@ -74,7 +74,7 @@
                 </Grid.ColumnDefinitions>
 
 
-                <TextBox Name="txtFName"  GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Name" Foreground="Gray" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="0" Height="Auto" Style="{Binding txtInput}"  />
+                <TextBox Name="txtFName" TextWrapping="Wrap" Grid.Column="0" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="0" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Name"/>
                <TextBox Name="txtId" Visibility="Collapsed" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Id" Foreground="Gray" Grid.Column="1" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{Binding txtInput}"  />
               
             </Grid>

@@ -107,8 +107,12 @@
             <Image Source="..\Assets\icons\man-user (1).png" Margin="10,0,0,0" HorizontalAlignment="Left" Width="31"/>-->
         </Grid>
         <Grid Height="42" Grid.Row="1" VerticalAlignment="Top" Margin="0,200,0,0" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="88*"/>
+                <ColumnDefinition Width="357*"/>
+            </Grid.ColumnDefinitions>
 
-            <PasswordBox  x:Name="Password"  materialDesign:HintAssist.Hint="{materialDesign:PackIcon Kind=Lock,Size=30}"  materialDesign:TextFieldAssist.HasClearButton="True"  />
+            <PasswordBox  x:Name="Password"  materialDesign:HintAssist.Hint="{materialDesign:PackIcon Kind=Lock,Size=30}"  materialDesign:TextFieldAssist.HasClearButton="True" Grid.ColumnSpan="2"  />
         </Grid>
         <Button Content="Login" Click="btnLogin_Click" HorizontalAlignment="Right" Style="{DynamicResource btnPrimery}" Margin="0,261,5,0" Grid.Row="1" VerticalAlignment="Top" Width="126" Height="47" Grid.Column="1"/>
     </Grid>

@@ -142,6 +142,7 @@
                     <Label VerticalContentAlignment="Center" FontSize="15" Content="Upload App Logo" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="2" Grid.Column="0" />
                     <Label VerticalContentAlignment="Center" FontSize="15" Content="Invoice Printer" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="3" Grid.Column="0" />
                     <Label VerticalContentAlignment="Center" FontSize="15" Content="Report Printer" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="4" Grid.Column="0" />
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Currency" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="4" Grid.Column="2" />
                     <CheckBox Checked="ck_Checked" Unchecked="ck_Checked" Name="ckPrintInvoice" Style="{DynamicResource CheckBoxStyle1}" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="45" Width="100" Grid.Row="0" Grid.Column="1"  />
                     <CheckBox Checked="ck_Checked" Unchecked="ck_Checked" Name="ckPrintReport" Style="{DynamicResource CheckBoxStyle1}" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="45" Width="100" Grid.Row="0" Grid.Column="3"  />
                     <CheckBox Checked="ck_Checked" Unchecked="ck_Checked" Name="ckPrintLogo" Style="{DynamicResource CheckBoxStyle1}" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="45" Width="100" Grid.Row="1" Grid.Column="1"  />
@@ -150,6 +151,7 @@
                     <TextBox Grid.Row="3" Grid.Column="2" Name="txtFooter"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="45"  TextWrapping="Wrap" Grid.ColumnSpan="2" materialDesign:HintAssist.Hint="Report Footer"  />
                     <ComboBox  Name="ddInvoicePrinter" Grid.Row="3" Grid.Column="1" materialDesign:HintAssist.Hint="Search Printer" Margin="0,0,20,0" materialDesign:HintAssist.HintOpacity=".26" IsEditable="True" />
                     <ComboBox  Name="ddReportPrinter" Grid.Row="4" Grid.Column="1" materialDesign:HintAssist.Hint="Search Printer" Margin="0,0,20,0" materialDesign:HintAssist.HintOpacity=".26" IsEditable="True" />
+                    <ComboBox  Name="ddCurrency" Grid.Row="4" Grid.Column="3" DisplayMemberPath="Country" SelectedValuePath="Currency" materialDesign:HintAssist.Hint="Search Currency" Margin="0,0,20,0" materialDesign:HintAssist.HintOpacity=".26" IsEditable="True" />
                     <materialDesign:Chip ToolTip="Select Image" Grid.Column="1" Grid.Row="2" Margin="20,10,0,10" Padding="10" Click="Image_Click" Name="ImageSelector"  Content="Select logo">
                         <materialDesign:Chip.Icon>
                             <Image Name="UserImage" />

@@ -18,6 +18,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -35,7 +36,8 @@ namespace EZYPOS.UserControls.Transaction
         {
             InitializeComponent();
             // this.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
-            // this.Width = System.Windows.SystemParameters.PrimaryScreenWidth;        
+            // this.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
+          this.Language = XmlLanguage.GetLanguage(HelperMethods.GetCurrency());
             listKitchenLineItems.Width = System.Windows.SystemParameters.PrimaryScreenWidth - 400;
             BusyIndicator.ShowBusy();
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
@@ -820,8 +822,14 @@ namespace EZYPOS.UserControls.Transaction
             List<ProductDTO> Products = new List<ProductDTO>();
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-
-                Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).ToList();
+                if(DDSubCategory.SelectedValue == null || DDSubCategory.Text.ToLower() == "all")
+                {
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).ToList();
+                }
+                else
+                {
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.SubcategoryId == Convert.ToInt32(DDSubCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).ToList();
+                }
 
             }
             return Products;

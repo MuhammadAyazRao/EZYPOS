@@ -38,8 +38,7 @@ namespace EZYPOS.UserControls.Define.Crud
             Update.IsEnabled = false;
             Save.IsEnabled = true;
 
-            txtFName.Text = "Name";
-            txtFName.Foreground = Brushes.Gray;
+            txtFName.Text = "";
             txtId.Text = "";
 
         }

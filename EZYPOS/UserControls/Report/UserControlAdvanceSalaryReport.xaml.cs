@@ -1,4 +1,5 @@
-﻿using DAL.DBMODEL;
+﻿using Common;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.DTO.ReportsDTO;
@@ -41,10 +42,10 @@ namespace EZYPOS.UserControls.Report
                 MonthList.Insert(0, new { Name = "All", Id = 0 });
                 ddMonth.ItemsSource = MonthList;
                 ddMonth.SelectedIndex = 0;
-                List<Months> StatusList = new List<Months>();
-                StatusList.Add(new Months { Name = "All", Id = 0 });
-                StatusList.Add(new Months { Name = "Advance", Id = 1 });
-                StatusList.Add(new Months { Name = "Disbursment", Id = 2 });
+                List<SalaryStatus> StatusList = new List<SalaryStatus>();
+                StatusList.Add(new SalaryStatus { Name = "All", Id = 0 });
+                StatusList.Add(new SalaryStatus { Name = "Advance", Id = 1 });
+                StatusList.Add(new SalaryStatus { Name = "Disbursment", Id = 2 });
                 ddSalaryStatus.ItemsSource = StatusList.Select(x=> new { Name = x.Name, Id = x.Id });
                 ddSalaryStatus.SelectedIndex = 0;
             }
@@ -52,7 +53,7 @@ namespace EZYPOS.UserControls.Report
             EndDate.SelectedDate = DateTime.Today;
             Refresh();
         }
-
+        
 
         void Refresh()
         {
@@ -100,7 +101,7 @@ namespace EZYPOS.UserControls.Report
                         }
                         EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
                         PayedByName = DB.Employee.Get(Convert.ToInt32(item.PayedBy)).UserName;
-                        myList.Add(new AdvanceSalaryReportDTO { Employee = EmployeeName, PayedBy = PayedByName, Date = item.Date?.ToString("dd/MM/yyyy"), Month = Month.GetMonthName(Convert.ToInt32(item.Month)), Amount = item.Amount?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")), Status = SalaryStatus });  
+                        myList.Add(new AdvanceSalaryReportDTO { Employee = EmployeeName, PayedBy = PayedByName, Date = item.Date?.ToString("dd/MM/yyyy"), Month = Month.GetMonthName(Convert.ToInt32(item.Month)), Amount = item.Amount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), Status = SalaryStatus });  
                     }
                     ResetPaging(myList);
                 }
@@ -164,7 +165,7 @@ namespace EZYPOS.UserControls.Report
                                 PayedByName = DB.Employee.Get(Convert.ToInt32(item.PayedBy)).UserName;
                                 if (EmployeeName.ToUpper().Contains(filter.ToUpper()))
                                 {
-                                    myList.Add(new AdvanceSalaryReportDTO { Employee = EmployeeName, PayedBy = PayedByName, Date = item.Date?.ToString("dd/MM/yyyy"), Month = Month.GetMonthName(Convert.ToInt32(item.Month)), Amount = item.Amount?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")), Status = SalaryStatus });
+                                    myList.Add(new AdvanceSalaryReportDTO { Employee = EmployeeName, PayedBy = PayedByName, Date = item.Date?.ToString("dd/MM/yyyy"), Month = Month.GetMonthName(Convert.ToInt32(item.Month)), Amount = item.Amount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), Status = SalaryStatus });
                                 }
                             }
                         }
@@ -209,7 +210,7 @@ namespace EZYPOS.UserControls.Report
                                 PayedByName = DB.Employee.Get(Convert.ToInt32(item.PayedBy)).UserName;
                                 if (PayedByName.ToUpper().Contains(filter.ToUpper()))
                                 {
-                                    myList.Add(new AdvanceSalaryReportDTO { Employee = EmployeeName, PayedBy = PayedByName, Date = item.Date?.ToString("dd/MM/yyyy"), Month = Month.GetMonthName(Convert.ToInt32(item.Month)), Amount = item.Amount?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")), Status = SalaryStatus });
+                                    myList.Add(new AdvanceSalaryReportDTO { Employee = EmployeeName, PayedBy = PayedByName, Date = item.Date?.ToString("dd/MM/yyyy"), Month = Month.GetMonthName(Convert.ToInt32(item.Month)), Amount = item.Amount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), Status = SalaryStatus });
                                 }
                             }
                         }

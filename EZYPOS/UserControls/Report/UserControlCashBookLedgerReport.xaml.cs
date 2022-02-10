@@ -1,4 +1,5 @@
-﻿using DAL.Repository;
+﻿using Common;
+using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.DTO.ReportsDTO;
 using EZYPOS.Helper;
@@ -32,6 +33,7 @@ namespace EZYPOS.UserControls.Report
         public UserControlCashBookLedgerReport()
         {
             InitializeComponent();
+            this.Language = System.Windows.Markup.XmlLanguage.GetLanguage(HelperMethods.GetCurrency());
             StartDate.SelectedDate = DateTime.Today;
             EndDate.SelectedDate = DateTime.Today;
             Refresh();
@@ -39,7 +41,13 @@ namespace EZYPOS.UserControls.Report
 
         }
 
-
+        public string GetCurrency()
+        {
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                return Db.Setting.GetAll().Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue;
+            }
+        }
         void Refresh()
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
@@ -167,7 +175,7 @@ namespace EZYPOS.UserControls.Report
             //this.ReportViewer.LocalReport.Print();
 
             string Discription = "From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
-            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.TransactionType, COLB = x.Date?.ToString("dd/MM/yyyy"), COLC = x.Detail, COLD = x.DR.ToString(), COLE = x.CR.ToString(), COLF = x.Balance?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")) }).ToList();
+            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.TransactionType, COLB = x.Date?.ToString("dd/MM/yyyy"), COLC = x.Detail, COLD = x.DR.ToString(), COLE = x.CR.ToString(), COLF = x.Balance?.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())) }).ToList();
             ReportPrintHelper.PrintCOL6Report(ref ReportViewer, "CashBook Ledger Report", "Transaction Type", "Date", "Detail", "DR", "CR", "Balance", Discription, RptData);
 
             

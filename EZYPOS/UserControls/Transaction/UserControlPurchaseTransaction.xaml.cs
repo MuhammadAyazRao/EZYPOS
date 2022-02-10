@@ -29,6 +29,7 @@ namespace EZYPOS.UserControls.Transaction
         public UserControlPurchaseTransaction(PurchaseOrderDTO EditOrder=null)
         {
             InitializeComponent();
+            this.Language = System.Windows.Markup.XmlLanguage.GetLanguage(HelperMethods.GetCurrency());
             listKitchenLineItems.Width = System.Windows.SystemParameters.PrimaryScreenWidth - 400;
             BusyIndicator.ShowBusy();
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
@@ -728,8 +729,14 @@ namespace EZYPOS.UserControls.Transaction
             List<ProductDTO> Products = new List<ProductDTO>();
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-
-                Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).ToList();
+                if(DDSubCategory.SelectedValue == null || DDSubCategory.Text.ToLower() == "all")
+                {
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).ToList();
+                }
+                else
+                {
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.SubcategoryId == Convert.ToInt32(DDSubCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).ToList();
+                }
 
             }
             return Products;

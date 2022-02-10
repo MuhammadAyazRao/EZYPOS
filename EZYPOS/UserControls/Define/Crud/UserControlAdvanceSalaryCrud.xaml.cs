@@ -62,8 +62,7 @@ namespace EZYPOS.UserControls.Define.Crud
             ddEmployee.SelectedIndex = 0;
             ddPayedBy.SelectedValue = null;
             ddMonth.SelectedValue = null;
-            txtSalary.Text = "Salary";
-            txtSalary.Foreground = Brushes.Gray;
+            txtSalary.Text = "";
             SalaryDate.SelectedDate = DateTime.Today;
             txtId.Text = "";
             txtSalary.Visibility = Visibility.Collapsed;

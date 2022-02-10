@@ -43,14 +43,10 @@ namespace EZYPOS.UserControls
             {
                 ddCity.ItemsSource = Db.City.GetAll().ToList();
             }
-            txtFName.Text = "Name";
-            txtFName.Foreground = Brushes.Gray;
-            txtPhone.Text = "Phone";
-            txtPhone.Foreground = Brushes.Gray;
-            txtAddress.Text = "Address";
-            txtAddress.Foreground = Brushes.Gray;
-            txtMobile.Text = "Mobile";
-            txtMobile.Foreground = Brushes.Gray;
+            txtFName.Text = "";
+            txtPhone.Text = "";
+            txtAddress.Text = "";
+            txtMobile.Text = "";
             txtId.Text = "";
             ActiveSession.NavigateToRefreshSupplierList("");
         }

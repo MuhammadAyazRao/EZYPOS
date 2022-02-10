@@ -66,10 +66,8 @@ namespace EZYPOS.UserControls.Define.Crud
                 ddEmployee.ItemsSource = uw.Employee.GetAll().ToList();
 
             }
-            txtDescription.Text = "Description";
-            txtDescription.Foreground = Brushes.Gray;
-            txtAmount.Text = "Amount";
-            txtAmount.Foreground = Brushes.Gray;
+            txtDescription.Text = "";
+            txtAmount.Text = "";
             txtId.Text = "";
         }
         private bool Validate()

@@ -409,5 +409,17 @@ namespace EZYPOS
             UserControlAdvanceSalaryReport AdvanceSalaryReport = new UserControlAdvanceSalaryReport();
             ActiveSession.DisplayuserControlMethod(AdvanceSalaryReport);
         }
+
+        private void CustomerDRNote_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlCustomerDRNoteList CustomerDRNoteList = new UserControlCustomerDRNoteList();
+            ActiveSession.DisplayuserControlMethod(CustomerDRNoteList);
+        }
+
+        private void SupplierCRNote_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlSupplierCRNoteList SupplierCRNoteList = new UserControlSupplierCRNoteList();
+            ActiveSession.DisplayuserControlMethod(SupplierCRNoteList);
+        }
     }
 }

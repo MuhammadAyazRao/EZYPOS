@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EZYPOS.UserControls.Report" xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="1024" Name="AdvanceSalaryReport" d:DesignWidth="768">
+             d:DesignHeight="1024" Name="SalaryReport" d:DesignWidth="768">
     <UserControl.Resources>
         <Style TargetType="{x:Type DataGrid}">
             <Setter Property="AlternationCount" Value="2" />

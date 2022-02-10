@@ -199,6 +199,19 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding SalaryType}"  IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Content, RelativeSource=
+                                         {RelativeSource Mode=TemplatedParent}}"/>
+                                    <TextBox materialDesign:HintAssist.Hint="Salary Type"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridSalaryType" Width="100"  KeyDown="GridName_KeyDown"   />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+
                     <DataGridTextColumn Binding="{Binding Adress}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>

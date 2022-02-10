@@ -23,6 +23,7 @@ namespace DAL.DBMODEL
         public virtual DbSet<CashBookLead> CashBookLeads { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<CustomerDrnote> CustomerDrnotes { get; set; }
         public virtual DbSet<CustomerLead> CustomerLeads { get; set; }
         public virtual DbSet<CustomerReceipt> CustomerReceipts { get; set; }
         public virtual DbSet<Emplyee> Emplyees { get; set; }
@@ -42,6 +43,7 @@ namespace DAL.DBMODEL
         public virtual DbSet<StockLead> StockLeads { get; set; }
         public virtual DbSet<StockOderDetail> StockOderDetails { get; set; }
         public virtual DbSet<Supplier> Suppliers { get; set; }
+        public virtual DbSet<SupplierCrnote> SupplierCrnotes { get; set; }
         public virtual DbSet<SupplierLead> SupplierLeads { get; set; }
         public virtual DbSet<SupplierPayment> SupplierPayments { get; set; }
         public virtual DbSet<TblShelf> TblShelves { get; set; }
@@ -55,7 +57,7 @@ namespace DAL.DBMODEL
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-E7Q1BER\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;");
             }
         }
 
@@ -141,6 +143,31 @@ namespace DAL.DBMODEL
                     .HasConstraintName("FK_Customer_City");
             });
 
+            modelBuilder.Entity<CustomerDrnote>(entity =>
+            {
+                entity.ToTable("CustomerDRNote");
+
+                entity.Property(e => e.CreatedOn).HasColumnType("date");
+
+                entity.Property(e => e.Discription).HasMaxLength(100);
+
+                entity.Property(e => e.ReceiptAmount).HasMaxLength(100);
+
+                entity.Property(e => e.TransactionDate).HasColumnType("date");
+
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.CustomerDrnotes)
+                    .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CustomerDRNote_Customer");
+
+                entity.HasOne(d => d.ReceivedByNavigation)
+                    .WithMany(p => p.CustomerDrnotes)
+                    .HasForeignKey(d => d.ReceivedBy)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_CustomerDRNote_Emplyee");
+            });
+
             modelBuilder.Entity<CustomerLead>(entity =>
             {
                 entity.ToTable("CustomerLead");
@@ -199,6 +226,10 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.Cnic).HasColumnName("CNIC");
 
                 entity.Property(e => e.Createdon).HasColumnType("datetime");
+
+                entity.Property(e => e.LoginName).HasMaxLength(500);
+
+                entity.Property(e => e.SalaryType).HasMaxLength(50);
 
                 entity.Property(e => e.UserName).HasMaxLength(100);
 
@@ -663,6 +694,31 @@ namespace DAL.DBMODEL
                     .WithMany(p => p.Suppliers)
                     .HasForeignKey(d => d.City)
                     .HasConstraintName("FK_Supplier_City");
+            });
+
+            modelBuilder.Entity<SupplierCrnote>(entity =>
+            {
+                entity.ToTable("SupplierCRNote");
+
+                entity.Property(e => e.CreatedOn).HasColumnType("date");
+
+                entity.Property(e => e.Discription).HasMaxLength(100);
+
+                entity.Property(e => e.ReceiptAmount).HasMaxLength(100);
+
+                entity.Property(e => e.TransactionDate).HasColumnType("date");
+
+                entity.HasOne(d => d.PayedByNavigation)
+                    .WithMany(p => p.SupplierCrnotes)
+                    .HasForeignKey(d => d.PayedBy)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SupplierCRNote_Emplyee");
+
+                entity.HasOne(d => d.Supplier)
+                    .WithMany(p => p.SupplierCrnotes)
+                    .HasForeignKey(d => d.SupplierId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SupplierCRNote_Supplier");
             });
 
             modelBuilder.Entity<SupplierLead>(entity =>

@@ -1,4 +1,5 @@
-﻿using Common.Session;
+﻿using Common;
+using Common.Session;
 using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.DTO.ReportsDTO;
@@ -32,18 +33,28 @@ namespace EZYPOS.UserControls.Report
     {
         List<ExpenseReportDTO> myList = new List<ExpenseReportDTO>();
         Pager<ExpenseReportDTO> Pager = new Helper.Pager<ExpenseReportDTO>();
+
         public UserControlExpenseReport()
         {
             InitializeComponent();
             StartDate.SelectedDate = DateTime.Today;
             EndDate.SelectedDate = DateTime.Today;
+            
             Refresh();
+        }
+        public string GetCurrency()
+        {
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                return  Db.Setting.GetAll().Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue;
+            }
         }
         private void Refresh(object sender = null)
         {
 
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
+                
                 var items = DB.expt.GetAll().ToList();
                 if (StartDate.SelectedDate != null && EndDate.SelectedDate != null)
                 {
@@ -59,10 +70,10 @@ namespace EZYPOS.UserControls.Report
                     
                     expensename = DB.ExpenceType.Get(Convert.ToInt32(item.ExpenceType)).ExpenceName;
                     TotalAmount += item.Amount;
-                    myList.Add( new ExpenseReportDTO { ExpenseDate = item.ExpenceDate?.ToString("dd/MM/yyyy"), CreateBy = Convert.ToString(item.CreatedBy), Discription = item.Discription, Amount = item.Amount?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")),  ExpenseType = expensename, });
+                    myList.Add( new ExpenseReportDTO { ExpenseDate = item.ExpenceDate?.ToString("dd/MM/yyyy"), CreateBy = Convert.ToString(item.CreatedBy), Discription = item.Discription, Amount = item.Amount?.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())),  ExpenseType = expensename, });
 
                 }
-                myList.Add( new ExpenseReportDTO { ExpenseDate = "Total", CreateBy = "", Discription = "", Amount = TotalAmount?.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")), ExpenseType = "" });
+                myList.Add( new ExpenseReportDTO { ExpenseDate = "Total", CreateBy = "", Discription = "", Amount = TotalAmount?.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())), ExpenseType = "" });
                 
                 ResetPaging(myList);
 
@@ -118,10 +129,10 @@ namespace EZYPOS.UserControls.Report
                                 if (expensename.ToUpper().Contains(filter.ToUpper()))
                                 {
                                     TotalAmount += item.Amount;
-                                    myList.Add(new ExpenseReportDTO { ExpenseDate = Convert.ToString(item.ExpenceDate), CreateBy = Convert.ToString(item.CreatedBy), Discription = item.Discription, Amount = Convert.ToString(item.Amount), ExpenseType = expensename, });
+                                    myList.Add(new ExpenseReportDTO { ExpenseDate = Convert.ToString(item.ExpenceDate), CreateBy = Convert.ToString(item.CreatedBy), Discription = item.Discription, Amount = item.Amount?.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())), ExpenseType = expensename, });
                                 }
                             }
-                            myList.Add(new ExpenseReportDTO { ExpenseDate = "Total", CreateBy = "", Discription = "", Amount = Convert.ToString(TotalAmount), ExpenseType = "" });
+                            myList.Add(new ExpenseReportDTO { ExpenseDate = "Total", CreateBy = "", Discription = "", Amount = TotalAmount?.ToString("C", CultureInfo.CreateSpecificCulture(GetCurrency())), ExpenseType = "" });
 
                             ResetPaging(myList);
 

@@ -15,6 +15,7 @@ namespace Common.Session
         public static string UserName = "admin";
         public static string Password = "A722713yaz@";
         public static string DatabaseName = "EPOS-DB";
+        public static int ActiveUser = 0;
         public static  object Setting = null;
         #endregion
         public static bool PrintLogo = true;

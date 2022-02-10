@@ -10,6 +10,7 @@ namespace DAL.DBMODEL
         public Supplier()
         {
             PurchaseOrders = new HashSet<PurchaseOrder>();
+            SupplierCrnotes = new HashSet<SupplierCrnote>();
             SupplierLeads = new HashSet<SupplierLead>();
             SupplierPayments = new HashSet<SupplierPayment>();
         }
@@ -24,6 +25,7 @@ namespace DAL.DBMODEL
 
         public virtual City CityNavigation { get; set; }
         public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; }
+        public virtual ICollection<SupplierCrnote> SupplierCrnotes { get; set; }
         public virtual ICollection<SupplierLead> SupplierLeads { get; set; }
         public virtual ICollection<SupplierPayment> SupplierPayments { get; set; }
     }

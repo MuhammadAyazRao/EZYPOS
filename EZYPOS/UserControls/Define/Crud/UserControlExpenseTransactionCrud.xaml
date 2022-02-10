@@ -73,10 +73,10 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox Name="txtDescription"   GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Description" Foreground="Gray" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{Binding txtInput}"  />
+                <TextBox Name="txtDescription" TextWrapping="Wrap" Grid.Column="0" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Description" />
                 <DatePicker Name="TransactionDate" Margin="20,10,20,10" Grid.Row="1" Grid.Column="1" materialDesign:HintAssist.Hint="Transaction Date"   Style="{StaticResource MaterialDesignDatePicker}" />
                 <TextBox Name="txtId" Visibility="Collapsed" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Id" Foreground="Gray" Grid.Column="1" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{Binding txtInput}"  />
-                <TextBox Name="txtAmount" PreviewTextInput="NumberOnly_PreviewTextInput"  GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Amount" Foreground="Gray" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="2" Height="Auto" Style="{Binding txtInput}"  />
+                <TextBox Name="txtAmount" PreviewTextInput="NumberOnly_PreviewTextInput" TextWrapping="Wrap" Grid.Column="0" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="2" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Amount"/>
 
 
                 <ComboBox  Name="ddEmployee"

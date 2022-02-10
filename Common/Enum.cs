@@ -13,6 +13,13 @@ namespace Common
         KG=1,
         G=2
     }
+
+    public static class SalaryMode
+    {
+        public static string Monthly { get { return nameof(Monthly); } }
+        public static string Hourly { get { return nameof(Hourly); } }
+        
+    }
     public enum SalaryType
     {
         Advance = 1,
@@ -20,7 +27,10 @@ namespace Common
     }
     public static class InvoiceType
     {
-        public static string SaleInvoice { get { return nameof(SaleInvoice); } }        
+        public static string SaleInvoice { get { return nameof(SaleInvoice); } }
+        public static string CustomerDrNote { get { return nameof(CustomerDrNote); } }
+        public static string SupplierCRNote { get { return nameof(SupplierCRNote); } }
+
         public static string ReturnInvoice { get { return nameof(ReturnInvoice); } }
         public static string PurchaseInvoice { get { return nameof(PurchaseInvoice); } }
     }
@@ -35,6 +45,10 @@ namespace Common
         public static string ReportFooter { get { return nameof(ReportFooter); } }
         public static string ReportHeader { get { return nameof(ReportHeader); } }
         public static string ShopName { get { return nameof(ShopName); } }
+        public static string Currency { get { return nameof(Currency); } }
+        public static string WalkingCustomer { get { return nameof(WalkingCustomer); } }
+        public static string DefaultSupplier { get { return nameof(DefaultSupplier); } }
+
 
     }
 
