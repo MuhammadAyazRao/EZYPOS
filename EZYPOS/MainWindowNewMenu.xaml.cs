@@ -421,5 +421,54 @@ namespace EZYPOS
             UserControlSupplierCRNoteList SupplierCRNoteList = new UserControlSupplierCRNoteList();
             ActiveSession.DisplayuserControlMethod(SupplierCRNoteList);
         }
+
+        //public ActionResult Menu()
+        //{
+        //    MenuVM vm = new MenuVM();
+        //    string currentUserId = User.Identity.GetUserId();
+
+        //    var pages = RoleUserPageRepository.GetList()
+        //        .Where(x => x.UserId == currentUserId && x.IsActive).ToList()
+        //        .Select(x => (x.RolePage.IsActive) ? x.RolePage.Page : new RolePage().Page).ToList();
+
+        //    if (User.IsInRole("SuperAdmin"))
+        //    {
+        //        pages = PageRepository.GetList();
+        //    }
+        //    pages.Where(x => x.IsActive).ToList().OrderBy(x => x.Ordering).ToList();
+
+        //    var parentPages = pages.Where(x => x.ParentId == 0).ToList();
+        //    vm.MenuString += ChildPages(parentPages, pages, "");
+
+
+        //    return View(vm);
+        //}
+
+        //public string ChildPages(List<Page> ParentPages, List<Page> AllPages, string data)
+        //{
+
+        //    foreach (var page in ParentPages)
+        //    {
+        //        if (page.IsClickable)
+        //        {
+        //            data += "<li>";
+        //            data += "<a href='/" + page.Area + "/" + page.Controller + "/" + page.Action + "'><i class='" + page.Icon + "'></i>" + page.Name + "</a>";
+        //            data += "</li>";
+        //        }
+        //        else
+        //        {
+        //            var childPages = AllPages.Where(x => x.ParentId == page.Id).ToList();
+        //            data += "<li class='dropdown'>";
+        //            data += "<a href = '#'>" + page.Name + "<i class='" + page.Icon + "'></i></a>";
+        //            data += "<ul class='dropdown-menu bold'>";
+        //            data += ChildPages(childPages, AllPages, "");
+        //            data += "</ul>";
+        //            data += "</li>";
+
+        //        }
+        //    }
+
+        //    return data;
+        //}
     }
 }
