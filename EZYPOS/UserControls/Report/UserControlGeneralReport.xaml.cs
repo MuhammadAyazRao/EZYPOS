@@ -97,16 +97,16 @@ namespace EZYPOS.UserControls.Report
                 }
 
                 //Formation of list 
-                myList.Add(new GeneralReportDTO { Key = "Credit Sale", Value = CreditSaleAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
-                myList.Add(new GeneralReportDTO { Key = "Cash Sale", Value = CashSaleAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
-                myList.Add(new GeneralReportDTO { Key = "Total Sale", Value = TotalSaleAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
-                myList.Add(new GeneralReportDTO { Key = "Credit Purchase", Value = CreditPurchaseAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
-                myList.Add(new GeneralReportDTO { Key = "Cash Purchase", Value = CashPurchaseAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
-                myList.Add(new GeneralReportDTO { Key = "Total Purchase", Value = TotalPurchaseAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
-                myList.Add(new GeneralReportDTO { Key = "Profit", Value = Profit?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
-                myList.Add(new GeneralReportDTO { Key = "Loss", Value = Loss?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
-                myList.Add(new GeneralReportDTO { Key = "Total Salary", Value = TotalSalary?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
-                myList.Add(new GeneralReportDTO { Key = "Expense", Value = TotalExpenses?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                myList.Add(new GeneralReportDTO { SerialNo = "1", Key = "Credit Sale", Value = CreditSaleAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                myList.Add(new GeneralReportDTO { SerialNo = "2", Key = "Cash Sale", Value = CashSaleAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                myList.Add(new GeneralReportDTO { SerialNo = "3", Key = "Total Sale", Value = TotalSaleAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                myList.Add(new GeneralReportDTO { SerialNo = "4", Key = "Credit Purchase", Value = CreditPurchaseAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                myList.Add(new GeneralReportDTO { SerialNo = "5", Key = "Cash Purchase", Value = CashPurchaseAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                myList.Add(new GeneralReportDTO { SerialNo = "6", Key = "Total Purchase", Value = TotalPurchaseAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                myList.Add(new GeneralReportDTO { SerialNo = "7", Key = "Profit", Value = Profit?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                myList.Add(new GeneralReportDTO { SerialNo = "8", Key = "Loss", Value = Loss?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                myList.Add(new GeneralReportDTO { SerialNo = "9", Key = "Total Salary", Value = TotalSalary?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                myList.Add(new GeneralReportDTO { SerialNo = "10", Key = "Expense", Value = TotalExpenses?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
                 ResetPaging(myList);
             }
 
@@ -190,9 +190,9 @@ namespace EZYPOS.UserControls.Report
         private void Print_Click(object sender, RoutedEventArgs e)
         {
             Refresh();
-            //List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.ExpenseType, COLB = x.Discription, COLC = x.ExpenseDate, COLD = x.Amount, COLE = "", COLF = "" }).ToList();
-            //string Discription = "From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
-            //ReportPrintHelper.PrintCOL4Report(ref ReportViewer, "Expense Report", "Expense Type", "Description", "Date", "Amount", Discription, RptData);
+            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.SerialNo, COLB = x.Key, COLC = x.Value, COLD = "", COLE = "", COLF = "" }).ToList();
+            string Discription = "For Month: " + ddMonth.Text + ", Year: " + ddYear.Text;
+            ReportPrintHelper.PrintCOL3Report(ref ReportViewer, "General Report", "Serial No", "Key", "Value", Discription, RptData);
 
         }
     }

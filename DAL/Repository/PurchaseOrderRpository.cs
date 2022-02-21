@@ -1,5 +1,6 @@
 ﻿using Common;
 using Common.DTO;
+using Common.Session;
 using DAL.DBMODEL;
 using DAL.IRepository;
 using System;
@@ -54,7 +55,7 @@ namespace DAL.Repository
                     //NewOrder.Addby = "Admin";
                     //NewOrder.Addon = "";
                     NewOrder.SupplierId = CartOrderToProcess.SupplierId;
-                    NewOrder.EmployeeId = CartOrderToProcess.EmployeeId;
+                    NewOrder.EmployeeId = ActiveSession.ActiveUser;
                     //NewOrder.OrderCount = 1;
                     NewOrder.TotalAmount = Convert.ToInt32(CartOrderToProcess.GetNetTotal());
                     Add(NewOrder);

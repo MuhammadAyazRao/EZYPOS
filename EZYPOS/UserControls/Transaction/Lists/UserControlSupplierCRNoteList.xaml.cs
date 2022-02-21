@@ -36,6 +36,7 @@ namespace EZYPOS.UserControls.Transaction.Lists
                 Suppliers.Insert(0, new { Name = "All", Id = 0 });
                 DDSupplier.ItemsSource = Suppliers;
             }
+            this.Language = System.Windows.Markup.XmlLanguage.GetLanguage(HelperMethods.GetCurrency());
             Refresh();
         }
 

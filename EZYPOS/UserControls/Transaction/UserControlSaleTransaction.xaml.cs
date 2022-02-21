@@ -1,4 +1,5 @@
 ﻿using Common;
+using Common;
 using Common.DTO;
 using Common.Session;
 using DAL.DBMODEL;
@@ -37,7 +38,7 @@ namespace EZYPOS.UserControls.Transaction
             InitializeComponent();
             // this.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
             // this.Width = System.Windows.SystemParameters.PrimaryScreenWidth;
-          this.Language = XmlLanguage.GetLanguage(HelperMethods.GetCurrency());
+            this.Language = XmlLanguage.GetLanguage(HelperMethods.GetCurrency());
             listKitchenLineItems.Width = System.Windows.SystemParameters.PrimaryScreenWidth - 400;
             BusyIndicator.ShowBusy();
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
@@ -59,6 +60,7 @@ namespace EZYPOS.UserControls.Transaction
                 order.PaymentType = EditOrder.PaymentType;
                 order.payment_status = EditOrder.payment_status;
                 order.OrderDate = EditOrder.OrderDate;
+                order.Discount = EditOrder.Discount;
                 Initialize(EditOrder);
             }
            

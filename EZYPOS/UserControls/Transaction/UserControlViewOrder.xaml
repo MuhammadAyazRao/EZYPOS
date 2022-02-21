@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EZYPOS.UserControls.Transaction"
-             mc:Ignorable="d" 
-             Language="en-GB"
+             mc:Ignorable="d"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              Name="SaleOrder" d:DesignWidth="927.063" d:DesignHeight="571.643">
     <UserControl.Resources>

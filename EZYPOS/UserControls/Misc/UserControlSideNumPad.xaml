@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EZYPOS.UserControls.Misc"
-             mc:Ignorable="d" Width="91.696" Height="255"
-             Language="en-GB">
+             mc:Ignorable="d" Width="91.696" Height="255">
     <Grid>
         <Button x:Name="btn5" Content="5" Click="btn_Click" Style="{DynamicResource btn}"  HorizontalAlignment="Left" ContentStringFormat="C" VerticalAlignment="Top"/>
         <Button x:Name="btn10" Content="10" Click="btn_Click" Style="{DynamicResource btn}" HorizontalAlignment="Left" Margin="0,64,0,0" ContentStringFormat="C" VerticalAlignment="Top"/>

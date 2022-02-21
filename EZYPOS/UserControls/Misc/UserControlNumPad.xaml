@@ -4,8 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EZYPOS.UserControls.Misc"
-             mc:Ignorable="d" 
-             Language="en-GB"
+             mc:Ignorable="d"
              Height="304.151" Width="274.06">
     <Grid>
         <Label x:Name="lblPin" ContentStringFormat="C" Padding="15 0 10 0" Background="{DynamicResource White}" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" FontSize="30" VerticalAlignment="Top" Height="50"/>

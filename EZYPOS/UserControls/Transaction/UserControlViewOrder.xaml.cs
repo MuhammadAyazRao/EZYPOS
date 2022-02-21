@@ -34,6 +34,7 @@ namespace EZYPOS.UserControls.Transaction
         public UserControlViewOrder()
         {
             InitializeComponent();
+            this.Language = System.Windows.Markup.XmlLanguage.GetLanguage(HelperMethods.GetCurrency());
             Refresh();
             // Preparing.Add(new Order { OrderId = 1, payment_status = "Paid" ,PaymentType="Cash"});
             //Preparing.Add(new Order { OrderId = 2, payment_status = "Paid", PaymentType = "Credit" });
