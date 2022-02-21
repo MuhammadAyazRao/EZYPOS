@@ -233,6 +233,10 @@ namespace DAL.DBMODEL
 
                 entity.Property(e => e.UserName).HasMaxLength(100);
 
+                entity.Property(e => e.WorkingHours)
+                    .HasColumnType("decimal(18, 0)")
+                    .HasColumnName("Working Hours");
+
                 entity.HasOne(d => d.CityNavigation)
                     .WithMany(p => p.Emplyees)
                     .HasForeignKey(d => d.City)

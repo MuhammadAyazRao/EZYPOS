@@ -269,7 +269,7 @@ namespace EZYPOS
 
         }
 
-        private void Test_Click(object sender, RoutedEventArgs e)
+        private void PurchaseReport_Click(object sender, RoutedEventArgs e)
         {
             UserControlPurchaseOrderReport PurchaseOrderReport = new UserControlPurchaseOrderReport();
             ActiveSession.DisplayuserControlMethod(PurchaseOrderReport);
@@ -420,6 +420,12 @@ namespace EZYPOS
         {
             UserControlSupplierCRNoteList SupplierCRNoteList = new UserControlSupplierCRNoteList();
             ActiveSession.DisplayuserControlMethod(SupplierCRNoteList);
+        }
+
+        private void GeneralReport_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlGeneralReport GeneralReport = new UserControlGeneralReport();
+            ActiveSession.DisplayuserControlMethod(GeneralReport);
         }
 
         //public ActionResult Menu()

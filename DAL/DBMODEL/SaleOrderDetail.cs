@@ -25,6 +25,7 @@ namespace DAL.DBMODEL
         public string ItemComments { get; set; }
         public int ItemQty { get; set; }
         public long? ItemPrice { get; set; }
+        public long? PurchasePrice { get; set; }
         public int ItemIndex { get; set; }
         public int? BillNo { get; set; }
         public string IsUpdated { get; set; }

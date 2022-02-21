@@ -54,6 +54,11 @@ namespace EZYPOS.UserControls.Transaction
             if (EditOrder != null)
             {
                 order.OrderId = EditOrder.OrderId;
+                order.EmployeeId = EditOrder.EmployeeId;
+                order.CustId = EditOrder.CustId;
+                order.PaymentType = EditOrder.PaymentType;
+                order.payment_status = EditOrder.payment_status;
+                order.OrderDate = EditOrder.OrderDate;
                 Initialize(EditOrder);
             }
            
@@ -66,7 +71,7 @@ namespace EZYPOS.UserControls.Transaction
             btnPay.Visibility = Visibility.Collapsed;
             foreach (var odritem in Odr?.OrdersDetails)
             {
-                AddToCart(odritem?.Item.name, (long)odritem?.Item.price,(int) odritem?.Item.id, (int)odritem?.Qty);
+                AddToCart(odritem?.Item.name, (long)odritem?.Item.price, (long)odritem?.Item.PurchasePrice, (int) odritem?.Item.id, (int)odritem?.Qty);
             }
         }
         public Order order = new Order();
@@ -743,7 +748,7 @@ namespace EZYPOS.UserControls.Transaction
             CartVisibility();
             UpdateBillSummary();
         }
-        private void AddToCart(string Name, long Price, int ProductId, int Qty = 1, int Discount = 0)
+        private void AddToCart(string Name, long Price, long PurchasePrice, int ProductId, int Qty = 1, int Discount = 0)
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {                
@@ -774,8 +779,8 @@ namespace EZYPOS.UserControls.Transaction
                 {
                     if (Db.Stock.GetProductQty(ProductId) >= 1)
                     {
-                        order.OrdersDetails.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, id = ProductId }, ItemDiscount = Discount });
-                        listBoxItemCart.Items.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, id = ProductId }, ItemDiscount = Discount });
+                        order.OrdersDetails.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, PurchasePrice = PurchasePrice, id = ProductId }, ItemDiscount = Discount });
+                        listBoxItemCart.Items.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, PurchasePrice = PurchasePrice, id = ProductId }, ItemDiscount = Discount });
                         listBoxItemCart.SelectedIndex = 0;
                     }
                     else
@@ -795,11 +800,11 @@ namespace EZYPOS.UserControls.Transaction
             {
                 if (SubCategoryId != 0)
                 {
-                    Products = Db.Product.GetAll().Where(x => x.SubcategoryId == SubCategoryId).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice}).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.SubcategoryId == SubCategoryId).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice}).ToList();
                 }
                 else
                 {
-                    Products = Db.Product.GetAll().Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).ToList();
+                    Products = Db.Product.GetAll().Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice }).ToList();
                 }
             }
             return Products;
@@ -811,7 +816,7 @@ namespace EZYPOS.UserControls.Transaction
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 
-                    Product = Db.Product.GetAll().Where(x => x.Barcode == code).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).FirstOrDefault();
+                    Product = Db.Product.GetAll().Where(x => x.Barcode == code).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice }).FirstOrDefault();
                 
             }
             return Product;
@@ -824,11 +829,11 @@ namespace EZYPOS.UserControls.Transaction
             {
                 if(DDSubCategory.SelectedValue == null || DDSubCategory.Text.ToLower() == "all")
                 {
-                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice }).ToList();
                 }
                 else
                 {
-                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.SubcategoryId == Convert.ToInt32(DDSubCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.SubcategoryId == Convert.ToInt32(DDSubCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice }).ToList();
                 }
 
             }
@@ -879,7 +884,7 @@ namespace EZYPOS.UserControls.Transaction
             ProductDTO Product = selectedItem.Content as ProductDTO;
             if (Product != null)
             {
-              AddToCart(Product.ProductName, Product.RetailPrice, Product.Id);            
+              AddToCart(Product.ProductName, Product.RetailPrice, (long)Product?.PurchasePrice, Product.Id);            
             }           
         }
 
@@ -923,7 +928,7 @@ namespace EZYPOS.UserControls.Transaction
                     var item = GetProductsbycode(Barcode.Text);
                     if (item != null)
                     {
-                        AddToCart(item.ProductName, item.RetailPrice,item.Id);
+                        AddToCart(item.ProductName, item.RetailPrice, (long)item?.PurchasePrice, item.Id);
                         listKitchenLineItems.ItemsSource = null;
                     }
                     else

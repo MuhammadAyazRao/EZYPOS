@@ -69,6 +69,7 @@ namespace DAL.Repository
                         NewOrderDetail.ItemName = item?.Item.name;                        
                         NewOrderDetail.ItemQty = (int)item?.Qty;                      
                         NewOrderDetail.ItemPrice = (long) item?.Item.price;
+                        NewOrderDetail.PurchasePrice = (long)item?.Item.PurchasePrice;
                         NewOrderDetail.ItemIndex = 1;
                         NewOrderDetail.IsUpdated = "";
                         NewOrderDetail.IsDeleted = "";
@@ -160,16 +161,19 @@ namespace DAL.Repository
                 SingleOrder.PaymentType= SingleItem.PaymentMode;
                 SingleOrder.payment_status = SingleItem.PaymentStatus;
                 SingleOrder.OrderDate =(DateTime) SingleItem.OrderDate;
+                SingleOrder.EmployeeId = (int)SingleItem.EmployeeId;
+                SingleOrder.CustId = (int)SingleItem.CustomerId;
                 foreach(var orderdetail in SaleOrderDetail.GetAll().Where(x=>x.OrderId== SingleItem.Id))
                 {
                     OrderDetail SingleOrderDetail = new OrderDetail();
                     SingleOrderDetail.OrderId = orderdetail.Id;
                     SingleOrderDetail.Qty = (int)orderdetail?.ItemQty;
-                    
+
                     item NewItem = new item();
                     NewItem.id = orderdetail.ItemId;
                     NewItem.name = orderdetail?.ItemName;                   
                     NewItem.price =(long) orderdetail?.ItemPrice;
+                    NewItem.PurchasePrice = (long)orderdetail?.PurchasePrice;
                     SingleOrderDetail.Item = NewItem;
                     if (SingleOrder.OrdersDetails == null)
                     { SingleOrder.OrdersDetails = new List<OrderDetail>(); }

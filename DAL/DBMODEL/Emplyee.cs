@@ -34,6 +34,7 @@ namespace DAL.DBMODEL
         public bool? IsLoginAllowed { get; set; }
         public long? Salary { get; set; }
         public string SalaryType { get; set; }
+        public decimal? WorkingHours { get; set; }
         public string Image { get; set; }
         public string LoginName { get; set; }
 

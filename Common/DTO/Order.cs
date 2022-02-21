@@ -332,6 +332,8 @@ namespace Common.DTO
         public string description { get; set; }
         public string fixed_items { get; set; }
         public long price { get; set; }
+        public long PurchasePrice { get; set; }
+
         public double epos_price { get; set; }
         public string days { get; set; }
         public string pic { get; set; }
