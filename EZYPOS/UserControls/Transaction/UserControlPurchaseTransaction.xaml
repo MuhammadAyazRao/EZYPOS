@@ -26,7 +26,8 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Row="0" Grid.Column="0" KeyDown="Barcode_KeyDown" Name="Barcode"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="40"  TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Search By Barcode Or Name"  />
+            <Button  Content="{materialDesign:PackIcon Kind=FormatListNumbers,Size=40}" Name="Back" Click="Back_Click"  Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Margin="50,5,0,0" Height="45" Width="100"  ToolTip="Go to View Order" />
+            <TextBox Grid.Row="0" Grid.Column="0" KeyDown="Barcode_KeyDown" Name="Barcode"   Margin="160,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="40"  TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Search By Barcode Or Name"  />
             <ComboBox  Name="DDCategory" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name"  SelectedValuePath="Id" Margin="5,5,5,5" materialDesign:HintAssist.HintOpacity=".26" materialDesign:HintAssist.Hint="Search Category" SelectionChanged="DDCategory_SelectionChanged"    IsEditable="False"/>
             <ComboBox  Name="DDSubCategory" Grid.Row="0" Grid.Column="2" DisplayMemberPath="SubcategoryName"  SelectedValuePath="Id" Margin="5,5,5,5" materialDesign:HintAssist.HintOpacity=".26" materialDesign:HintAssist.Hint="Search SubCategory" SelectionChanged="DDSubCategory_SelectionChanged"    IsEditable="False"/>
             <ListBox   Grid.Row="1" Grid.ColumnSpan="3"  Height="630"  BorderThickness="0" Name="listKitchenLineItems" ScrollViewer.HorizontalScrollBarVisibility="Disabled">

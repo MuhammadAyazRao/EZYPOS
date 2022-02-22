@@ -950,5 +950,10 @@ namespace EZYPOS.UserControls.Transaction
                 }
             }
         }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlViewOrder());
+        }
     }
 }

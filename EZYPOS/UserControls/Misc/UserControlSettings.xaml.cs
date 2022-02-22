@@ -87,6 +87,15 @@ namespace EZYPOS.UserControls.Misc
                 {
                     ckPrintReport.IsChecked = false;
                 }
+                var Print_Confirmation = SettingData.Where(x => x.AppKey == SettingKey.PrintConfirmation).FirstOrDefault().AppValue;
+                if (Print_Confirmation.ToLower() == "true")
+                {
+                    ckPrintConfirmation.IsChecked = true;
+                }
+                else
+                {
+                    ckPrintConfirmation.IsChecked = false;
+                }
                 //image
                 string imgDirPath = Environment.CurrentDirectory + @"\Assets\";
                 string ImgFullPath = imgDirPath + "logo.png";
@@ -127,6 +136,8 @@ namespace EZYPOS.UserControls.Misc
                 Data.Where(x => x.AppKey == SettingKey.PrintInvoice).FirstOrDefault().AppValue = ckPrintInvoice.IsChecked.ToString();
                 Data.Where(x => x.AppKey == SettingKey.PrintLogo).FirstOrDefault().AppValue = ckPrintLogo.IsChecked.ToString();
                 Data.Where(x => x.AppKey == SettingKey.PrintReport).FirstOrDefault().AppValue = ckPrintReport.IsChecked.ToString();
+                Data.Where(x => x.AppKey == SettingKey.PrintConfirmation).FirstOrDefault().AppValue = ckPrintConfirmation.IsChecked.ToString();
+
                 if (txtShopName.Text!= "") 
                 {
                     Data.Where(x => x.AppKey == SettingKey.ShopName).FirstOrDefault().AppValue = txtShopName.Text;

@@ -67,6 +67,9 @@ namespace EZYPOS.UserControls
             ddRole.SelectedValue = null;
             ddSalaryType.SelectedValue = 1;
             txtId.Text = "";
+            ckLogin.IsChecked = false;
+            txtUserName.Visibility = Visibility.Collapsed;
+            txtPassword.Visibility = Visibility.Collapsed;
             JoiningDate.SelectedDate = DateTime.Today;
             SetImage(Environment.CurrentDirectory + @"\Assets\EmployeeImages\No_Image.jpg");
             //ActiveSession.NavigateToRefreshEmployeeList("");
@@ -120,16 +123,7 @@ namespace EZYPOS.UserControls
                 {
                     ddRole.SelectedValue = EmployeeData.Role;
                 }
-                if (!string.IsNullOrEmpty(EmployeeData?.LoginName))
-                {
-                    txtUserName.Text = EmployeeData.LoginName;
-                    txtUserName.Foreground = Brushes.Black;
-                }
-                if (!string.IsNullOrEmpty(EmployeeData?.Password))
-                {
-                    txtPassword.Text = EmployeeData.Password;
-                    txtPassword.Foreground = Brushes.Black;
-                }
+                
                 if (!string.IsNullOrEmpty(EmployeeData?.Image))
                 {
                     SetImage(EmployeeData.Image);
@@ -143,8 +137,18 @@ namespace EZYPOS.UserControls
                     else
                     {
                         ddSalaryType.SelectedValue = 2;
+                        if (EmployeeData?.WorkingHours != null)
+                        {
+                            txtWorkingHours.Text = EmployeeData.WorkingHours.ToString();
+                        }
                     }
                     
+                }
+                if (EmployeeData?.IsLoginAllowed == true)
+                {
+                    ckLogin.IsChecked = true;
+                    txtUserName.Text = EmployeeData?.LoginName;
+                    txtPassword.Text = EmployeeData?.Password;
                 }
                 txtId.Text = EmployeeData.Id.ToString();
             }
@@ -158,86 +162,6 @@ namespace EZYPOS.UserControls
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
             RefreshPage();
-        }
-
-        private void txt_GotFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox tb = sender as TextBox;          
-            switch (tb.Text)
-            {
-                case "Name":
-                    tb.Text = string.Empty;
-                    tb.Foreground = Brushes.Black;
-                    break;
-                case "Phone":
-                    tb.Text = string.Empty;
-                    tb.Foreground = Brushes.Black;
-                    break;                
-                case "Address":
-                    tb.Text = string.Empty;
-                    tb.Foreground = Brushes.Black;
-                    break;
-                case "Salary":
-                    tb.Text = string.Empty;
-                    tb.Foreground = Brushes.Black;
-                    break;
-                case "CNIC":
-                    tb.Text = string.Empty;
-                    tb.Foreground = Brushes.Black;
-                    break;
-
-            }
-        }
-
-        private void txt_LostFocus(object sender, RoutedEventArgs e)
-        {
-            TextBox tb = sender as TextBox;
-            switch (tb.Name)
-            {
-                case "txtFName":
-                    if (tb.Text == string.Empty)
-                    {
-                        tb.Text = "Name";
-                        tb.Foreground = Brushes.Gray;
-                    }
-                    break;
-                case "txtPhone":
-                    if (tb.Text == string.Empty)
-                    {
-                        tb.Text = "Phone";
-                        tb.Foreground = Brushes.Gray;
-                    }
-                    break;
-                case "txtAddress":
-                    if (tb.Text == string.Empty)
-                    {
-                        tb.Text = "Address";
-                        tb.Foreground = Brushes.Gray;
-                    }
-                    break;
-                case "txtMobile":
-                    if (tb.Text == string.Empty)
-                    {
-                        tb.Text = "Mobile";
-                        tb.Foreground = Brushes.Gray;
-                    }
-                    break;                    
-                case "txtSalary":
-                    if (tb.Text == string.Empty)
-                    {
-                        tb.Text = "Salary";
-                        tb.Foreground = Brushes.Gray;
-                    }
-                    break;                    
-                case "txtCnic":
-                    if (tb.Text == string.Empty)
-                    {
-                        tb.Text = "CNIC";
-                        tb.Foreground = Brushes.Gray;
-                    }
-                    break;
-
-            }
         }
 
         private void Update_Click(object sender, RoutedEventArgs e)
@@ -286,17 +210,33 @@ namespace EZYPOS.UserControls
                             {
                                 UpdateEmployee.Createdon = Convert.ToDateTime(JoiningDate.Text);
                             }
-                            if (ddSalaryType.SelectedValue != null)
+                            if (Convert.ToInt32(ddSalaryType.SelectedValue) == 1)
                             {
                                 UpdateEmployee.SalaryType = ddSalaryType.Text;
+                                UpdateEmployee.WorkingHours = null;
                             }
-                            if (!string.IsNullOrEmpty(txtUserName.Text))
+                            else
                             {
-                                UpdateEmployee.LoginName = txtUserName.Text;
+                                UpdateEmployee.SalaryType = ddSalaryType.Text;
+                                UpdateEmployee.WorkingHours = Convert.ToDecimal(txtWorkingHours.Text);
                             }
-                            if (!string.IsNullOrEmpty(txtPassword.Text))
+                            if(ckLogin.IsChecked == true)
                             {
-                                UpdateEmployee.Password = txtPassword.Text;
+                                UpdateEmployee.IsLoginAllowed = true;
+                                if (!string.IsNullOrEmpty(txtUserName.Text))
+                                {
+                                    UpdateEmployee.LoginName = txtUserName.Text;
+                                }
+                                if (!string.IsNullOrEmpty(txtPassword.Text))
+                                {
+                                    UpdateEmployee.Password = txtPassword.Text;
+                                }
+                            }
+                            else
+                            {
+                                UpdateEmployee.IsLoginAllowed = false;
+                                UpdateEmployee.LoginName = null;
+                                UpdateEmployee.Password = null;
                             }
                             if (!string.IsNullOrEmpty(UserImage.Source?.ToString()))
                             {
@@ -337,7 +277,23 @@ namespace EZYPOS.UserControls
                 EZYPOS.View.MessageBox.ShowCustom("Please select City.", "Error", "OK");
                 return false;
             }
+            if (ckLogin.IsChecked == true)
+            {
+               if(txtUserName.Text == "" || txtPassword.Text =="")
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("Please Provide UserName and Password.", "Error", "OK");
+                    return false;
+                }
 
+            }
+            if(Convert.ToInt32(ddSalaryType.SelectedValue) == 2)
+            {
+                if(txtWorkingHours.Text == "")
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("Please Provide Working Hours.", "Error", "OK");
+                    return false;
+                }
+            }
             return true;
 
         }
@@ -383,16 +339,19 @@ namespace EZYPOS.UserControls
                     {
                         AddEmployee.Createdon = Convert.ToDateTime(JoiningDate.Text);
                     }
-                    if (ddSalaryType.SelectedValue != null)
+                    if (Convert.ToInt32(ddSalaryType.SelectedValue) ==1)
                     {
                         AddEmployee.SalaryType = ddSalaryType.Text;
                     }
-                    if (!string.IsNullOrEmpty(txtUserName.Text))
+                    else
                     {
-                        AddEmployee.LoginName = txtUserName.Text;
+                        AddEmployee.SalaryType = ddSalaryType.Text;
+                        AddEmployee.WorkingHours = Convert.ToDecimal(txtWorkingHours.Text);
                     }
-                    if (!string.IsNullOrEmpty(txtPassword.Text))
+                    if(ckLogin.IsChecked == true)
                     {
+                        AddEmployee.IsLoginAllowed = true;
+                        AddEmployee.LoginName = txtUserName.Text;
                         AddEmployee.Password = txtPassword.Text;
                     }
                     if (!string.IsNullOrEmpty(UserImage.Source?.ToString()))
@@ -504,6 +463,32 @@ namespace EZYPOS.UserControls
         private void List_Click(object sender, RoutedEventArgs e)
         {
             ActiveSession.CloseDisplayuserControlMethod(new UserControlListEmployee());
+        }
+
+        private void ddSalaryType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(Convert.ToInt32(ddSalaryType.SelectedValue) == 1)
+            {
+                txtWorkingHours.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                txtWorkingHours.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void ckLogin_Checked(object sender, RoutedEventArgs e)
+        {
+            if(ckLogin.IsChecked == true)
+            {
+                txtUserName.Visibility = Visibility.Visible;
+                txtPassword.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                txtUserName.Visibility = Visibility.Collapsed;
+                txtPassword.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

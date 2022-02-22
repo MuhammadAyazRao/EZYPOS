@@ -17,6 +17,63 @@
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Padding" Value="30 0 0 0"/>
         </Style>
+        <Style x:Key="CheckBoxStyle1" TargetType="{x:Type CheckBox}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <ControlTemplate.Resources>
+                            <Storyboard x:Key="OnChecking">
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="slider" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="40"/>
+                                </DoubleAnimationUsingKeyFrames>
+                            </Storyboard>
+                            <Storyboard x:Key="OnUnchecking">
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="slider" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="-2"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <ThicknessAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="slider" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+                                    <SplineThicknessKeyFrame KeyTime="00:00:00.3000000" Value="1,1,1,1"/>
+                                </ThicknessAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </ControlTemplate.Resources>
+
+                        <DockPanel x:Name="dockPanel">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}" RecognizesAccessKey="True" VerticalAlignment="Center"/>
+                            <Grid Margin="5,5,0,5" Width="70" Background="White">
+                                <TextBlock Text="ON" FontWeight="Bold" FontSize="15" HorizontalAlignment="Right" VerticalAlignment="Center" Width="22"/>
+                                <TextBlock HorizontalAlignment="Left" FontSize="15" FontWeight="Bold" Text="OFF" VerticalAlignment="Center"/>
+                                <Border Background="{DynamicResource DarkBlue}" HorizontalAlignment="Left" x:Name="slider" Width="35" CornerRadius="2" RenderTransformOrigin="0.5,0.5">
+                                    <Border.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                            <SkewTransform AngleX="0" AngleY="0"/>
+                                            <RotateTransform Angle="0"/>
+                                            <TranslateTransform X="0" Y="0"/>
+                                        </TransformGroup>
+                                    </Border.RenderTransform>
+                                </Border>
+                            </Grid>
+                        </DockPanel>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard Storyboard="{StaticResource OnUnchecking}" x:Name="OnUnchecking_BeginStoryboard"/>
+                                </Trigger.ExitActions>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard Storyboard="{StaticResource OnChecking}" x:Name="OnChecking_BeginStoryboard"/>
+                                </Trigger.EnterActions>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <ControlTemplate x:Key="TextBoxBaseControlTemplate" TargetType="{x:Type TextBoxBase}">
             <Border Background="{TemplateBinding Background}" 
                 x:Name="Bd" 
@@ -55,7 +112,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <!--<RowDefinition Height="50"/>-->
-            <RowDefinition Height="470"/>
+            <RowDefinition Height="600"/>
             <RowDefinition Height="61"/>
         </Grid.RowDefinitions>
         <Border ScrollViewer.CanContentScroll="True" ScrollViewer.PanningMode="VerticalFirst" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="LightGray" BorderThickness="2" Margin="50,50,50,50" Grid.Row="0">
@@ -67,6 +124,9 @@
                     <RowDefinition Height="60"></RowDefinition>
                     <RowDefinition Height="60"></RowDefinition>
                     <RowDefinition Height="60"></RowDefinition>
+                    <RowDefinition Height="60"></RowDefinition>
+                    <RowDefinition Height="60"></RowDefinition>
+
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -80,16 +140,19 @@
                 <TextBox Name="txtAddress" TextWrapping="Wrap" Grid.Column="0" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Address" />
                 <!--<TextBox Name="txtMobile" PreviewTextInput="txtPhone_PreviewTextInput" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Mobile" Foreground="Gray" Grid.Column="1" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{Binding txtInput}"  />-->
                 <DatePicker Name="JoiningDate" Margin="20,10,20,10" Grid.Row="1" Grid.Column="1" materialDesign:HintAssist.Hint="Joining Date"   Style="{StaticResource MaterialDesignDatePicker}" />
-                <TextBox Name="txtId" Visibility="Collapsed" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Id" Foreground="Gray" Grid.Column="1" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{Binding txtInput}"  />
+                <TextBox Name="txtId" Visibility="Collapsed" Padding="10" TextWrapping="Wrap" Text="Id" Foreground="Gray" Grid.Column="1" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{Binding txtInput}"  />
                 <TextBox Name="txtSalary" PreviewTextInput="NumberOnly_PreviewTextInput" TextWrapping="Wrap" Grid.Column="0" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="3" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Salary"/>
                 <TextBox Name="txtCnic" PreviewTextInput="NumberOnly_PreviewTextInput" TextWrapping="Wrap" Grid.Column="0" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="4" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="CNIC"  />
-                <TextBox Name="txtUserName" TextWrapping="Wrap" Grid.Column="1" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="4" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="UserName" />
-                <TextBox Name="txtPassword" TextWrapping="Wrap" Grid.Column="1" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="5" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Password" />
+                <TextBox Name="txtWorkingHours" PreviewTextInput="NumberOnly_PreviewTextInput" TextWrapping="Wrap" Grid.Column="1" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="4" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Working Hours" />
+                <TextBox Name="txtUserName" TextWrapping="Wrap" Grid.Column="1" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="5" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="UserName" />
+                <TextBox Name="txtPassword" TextWrapping="Wrap" Grid.Column="1" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="6" Height="Auto" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Password" />
                 <materialDesign:Chip ToolTip="Select Image" Grid.Column="0" Grid.Row="5" Margin="20,10,0,10" Padding="10" Click="Image_Click" Name="ImageSelector"  Content="Employee Image">
                     <materialDesign:Chip.Icon>
                         <Image Name="UserImage" />
                     </materialDesign:Chip.Icon>
                 </materialDesign:Chip>
+                <Label Foreground="{DynamicResource black}" Style="{DynamicResource lblLazeTitle}" Content="Login Allowed" HorizontalAlignment="Right" Grid.Row="5" Grid.Column="0" Margin="0,13,150,0"/>
+                <CheckBox Name="ckLogin" Checked="ckLogin_Checked" Unchecked="ckLogin_Checked" Style="{DynamicResource CheckBoxStyle1}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="45" Width="100" Grid.Row="5" Grid.Column="0" Margin="0,0,10,0"  />
                 <ComboBox  Name="ddCity"
                            DisplayMemberPath="CityName" 
                            SelectedValuePath="Id" 
@@ -119,7 +182,8 @@
                            SelectedValuePath="Id" 
                            Grid.Row="3" Grid.Column="1" 
                            Margin="20,10,20,10"
-                          materialDesign:HintAssist.Hint="Search Salary Type"                           
+                          materialDesign:HintAssist.Hint="Search Salary Type" 
+                           SelectionChanged="ddSalaryType_SelectionChanged"
                           materialDesign:HintAssist.HintOpacity=".26"                          
                           IsEditable="True">
 
