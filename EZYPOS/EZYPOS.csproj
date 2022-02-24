@@ -13,24 +13,40 @@
     <None Remove="Assets\icons\auricular-phone-symbol-in-a-circle.png" />
     <None Remove="Assets\icons\avatar.png" />
     <None Remove="Assets\icons\backspace-arrow.png" />
+    <None Remove="Assets\icons\Backup.png" />
+    <None Remove="Assets\icons\balance.png" />
+    <None Remove="Assets\icons\Barcode.png" />
     <None Remove="Assets\icons\bartill1.jpg" />
     <None Remove="Assets\icons\cancel-button.png" />
     <None Remove="Assets\icons\Cash.png" />
+    <None Remove="Assets\icons\Cash1.png" />
+    <None Remove="Assets\icons\CashbookLedger.png" />
+    <None Remove="Assets\icons\Category.png" />
+    <None Remove="Assets\icons\Category1.png" />
     <None Remove="Assets\icons\chat.png" />
     <None Remove="Assets\icons\checked.png" />
     <None Remove="Assets\icons\chronometer.png" />
+    <None Remove="Assets\icons\Cities.png" />
     <None Remove="Assets\icons\clerk-with-tie.png" />
     <None Remove="Assets\icons\cooking.png" />
     <None Remove="Assets\icons\credit-cards.png" />
     <None Remove="Assets\icons\cross-mark-on-a-black-circle-background.png" />
+    <None Remove="Assets\icons\Customer.png" />
+    <None Remove="Assets\icons\CustomerDR.png" />
     <None Remove="Assets\icons\desktop-monitor.png" />
     <None Remove="Assets\icons\dinner-table %281%29.png" />
     <None Remove="Assets\icons\dinner-table.png" />
     <None Remove="Assets\icons\dollar-symbol.png" />
     <None Remove="Assets\icons\done.png" />
+    <None Remove="Assets\icons\Employee.png" />
+    <None Remove="Assets\icons\EmployeeWiseSale.png" />
+    <None Remove="Assets\icons\Expenses.png" />
+    <None Remove="Assets\icons\ExpenseType.png" />
     <None Remove="Assets\icons\eyel.png" />
     <None Remove="Assets\icons\facebook-placeholder-for-locate-places-on-maps.png" />
+    <None Remove="Assets\icons\GeneralReport.png" />
     <None Remove="Assets\icons\grid-world.png" />
+    <None Remove="Assets\icons\Group.png" />
     <None Remove="Assets\icons\hamburger-variant-with-cheese-patty-and-lettuce.png" />
     <None Remove="Assets\icons\hierarchy.png" />
     <None Remove="Assets\icons\home.png" />
@@ -46,6 +62,8 @@
     <None Remove="Assets\icons\icon_task.png" />
     <None Remove="Assets\icons\icon_testcase.png" />
     <None Remove="Assets\icons\icon_userstory.png" />
+    <None Remove="Assets\icons\ItemWiseSale.png" />
+    <None Remove="Assets\icons\Ledger.png" />
     <None Remove="Assets\icons\left-arrow.png" />
     <None Remove="Assets\icons\line-chart.png" />
     <None Remove="Assets\icons\list.png" />
@@ -59,25 +77,43 @@
     <None Remove="Assets\icons\menu.png" />
     <None Remove="Assets\icons\minimize.png" />
     <None Remove="Assets\icons\minus.png" />
+    <None Remove="Assets\icons\MiscReport.png" />
     <None Remove="Assets\icons\New.png" />
     <None Remove="Assets\icons\notification.png" />
     <None Remove="Assets\icons\order.png" />
+    <None Remove="Assets\icons\Payment.png" />
     <None Remove="Assets\icons\pencil-with-stripes.png" />
     <None Remove="Assets\icons\pencil.png" />
     <None Remove="Assets\icons\plus.png" />
+    <None Remove="Assets\icons\preferences.png" />
     <None Remove="Assets\icons\printer-.png" />
+    <None Remove="Assets\icons\Product.png" />
+    <None Remove="Assets\icons\ProductWiseStock.png" />
     <None Remove="Assets\icons\progress-report.png" />
+    <None Remove="Assets\icons\PruductAttribute.png" />
+    <None Remove="Assets\icons\Purchase.png" />
+    <None Remove="Assets\icons\Receipt.png" />
     <None Remove="Assets\icons\remove-symbol.png" />
     <None Remove="Assets\icons\restaurant-cutlery-circular-symbol-of-a-spoon-and-a-fork-in-a-circle.png" />
     <None Remove="Assets\icons\right-chevron.png" />
     <None Remove="Assets\icons\round-add-button.png" />
+    <None Remove="Assets\icons\Salary.png" />
     <None Remove="Assets\icons\sale.png" />
+    <None Remove="Assets\icons\Sales.png" />
     <None Remove="Assets\icons\search.png" />
     <None Remove="Assets\icons\settings-work-tool.png" />
     <None Remove="Assets\icons\settings.png" />
+    <None Remove="Assets\icons\Settings1.png" />
+    <None Remove="Assets\icons\Shelf.png" />
     <None Remove="Assets\icons\shopping-cart.png" />
     <None Remove="Assets\icons\specialist-user.png" />
+    <None Remove="Assets\icons\stockadjustment.png" />
+    <None Remove="Assets\icons\SubCategory.png" />
+    <None Remove="Assets\icons\Supplier.png" />
+    <None Remove="Assets\icons\truck-icon.png" />
     <None Remove="Assets\icons\user-male-black-shape.png" />
+    <None Remove="Assets\icons\vieworders.png" />
+    <None Remove="Assets\icons\WhereHouse.png" />
     <None Remove="Cash.png" />
     <None Remove="icon_backlogs.png" />
     <None Remove="icon_bug.png" />
@@ -140,6 +176,15 @@
     <Resource Include="Assets\icons\backspace-arrow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\icons\Backup.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\balance.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Barcode.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\icons\bartill1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -149,6 +194,18 @@
     <Resource Include="Assets\icons\Cash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\icons\Cash1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\CashbookLedger.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Category.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Category1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\icons\chat.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -156,6 +213,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\icons\chronometer.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Cities.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\icons\clerk-with-tie.png">
@@ -168,6 +228,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\icons\cross-mark-on-a-black-circle-background.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Customer.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\CustomerDR.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\icons\desktop-monitor.png">
@@ -185,13 +251,31 @@
     <Resource Include="Assets\icons\done.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\icons\Employee.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\EmployeeWiseSale.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Expenses.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\ExpenseType.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\icons\eyel.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\icons\facebook-placeholder-for-locate-places-on-maps.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\icons\GeneralReport.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\icons\grid-world.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Group.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\icons\hamburger-variant-with-cheese-patty-and-lettuce.png">
@@ -239,6 +323,12 @@
     <Resource Include="Assets\icons\icon_userstory.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\icons\ItemWiseSale.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Ledger.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\icons\left-arrow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -278,6 +368,9 @@
     <Resource Include="Assets\icons\minus.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\icons\MiscReport.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\icons\New.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -285,6 +378,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\icons\order.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Payment.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\icons\pencil-with-stripes.png">
@@ -296,10 +392,28 @@
     <Resource Include="Assets\icons\plus.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\icons\preferences.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\icons\printer-.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\icons\Product.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\ProductWiseStock.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\icons\progress-report.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\PruductAttribute.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Purchase.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Receipt.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\icons\remove-symbol.png">
@@ -314,7 +428,13 @@
     <Resource Include="Assets\icons\round-add-button.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\icons\Salary.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\icons\sale.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Sales.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\icons\search.png">
@@ -326,13 +446,37 @@
     <Resource Include="Assets\icons\settings.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\icons\Settings1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Shelf.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\icons\shopping-cart.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\icons\specialist-user.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Assets\icons\stockadjustment.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\SubCategory.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\Supplier.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\truck-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Assets\icons\user-male-black-shape.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\vieworders.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\icons\WhereHouse.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
