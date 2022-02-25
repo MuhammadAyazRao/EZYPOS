@@ -446,6 +446,11 @@ namespace EZYPOS.UserControls.Define.Crud
                 EZYPOS.View.MessageBox.ShowCustom("Purchase Price is Required.", "Error", "OK");
                 return false;
             }
+            if (DDGroup.SelectedValue == null)
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Please Select Product Group.", "Error", "OK");
+                return false;
+            }
             //if (string.IsNullOrEmpty(txtStock.Text) || txtStock.Text == "Current Stock")
             //{
             //    EZYPOS.View.MessageBox.ShowCustom("Current Stock is Required.", "Error", "OK");

@@ -108,7 +108,7 @@ namespace DAL.Repository
                         // Supplier Transaction
                         SupplierLead SupplierLeadCr = new SupplierLead();
                         SupplierLeadCr.Cr = NewOrder.TotalAmount;
-                        SupplierLead.SuplierId = 5;  //CartOrderToProcess.CustId;
+                        SupplierLeadCr.SuplierId = CartOrderToProcess.SupplierId;  //CartOrderToProcess.CustId;
                         SupplierLeadCr.TransactionDate = CartOrderToProcess.OrderDate;
                         SupplierLeadCr.TransactionId = NewOrder.Id;
                         SupplierLeadCr.TransactionType = Common.InvoiceType.PurchaseInvoice;

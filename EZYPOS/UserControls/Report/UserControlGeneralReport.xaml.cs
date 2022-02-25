@@ -61,7 +61,7 @@ namespace EZYPOS.UserControls.Report
                 var CashSaleAmount = SaleOrders.Where(x => x.PaymentType == PaymentType.CASH).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
                 var CreditSaleAmount = SaleOrders.Where(x => x.PaymentType == PaymentType.CREDIT).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
                 var TotalSaleAmount = SaleOrders.Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
-                var TotalCostOfSale = SaleOrders.Select(x => new { total = x.OrdersDetails?.Sum(v => v.Item.PurchasePrice) }).Sum(x => x.total);
+                var TotalCostOfSale = SaleOrders.Select(x => new { total = x.OrdersDetails?.Sum(v => v.Item.PurchasePrice * v.Qty) }).Sum(x => x.total);
 
                 //Profit Loss
                 long? Profit = 0;
