@@ -187,7 +187,7 @@ namespace EZYPOS.UserControls.Transaction
             {
                 using (UnitOfWork db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-                    db.SupplierLead.Delete(db.SupplierLead.GetAll().Where(x => x.TransactionType == Common.InvoiceType.SupplierCRNote && x.TransactionId == Convert.ToInt32(txtId.Text)).FirstOrDefault().Id);
+                    db.SupplierLead.Delete(db.SupplierLead.GetAll().Where(x => x.TransactionType == Common.InvoiceType.SupplierDRNote && x.TransactionId == Convert.ToInt32(txtId.Text)).FirstOrDefault().Id);
                     db.SupplierCRNote.Delete(Convert.ToInt32(txtId.Text));
                     db.SupplierCRNote.Save();
                     return true;
@@ -223,7 +223,7 @@ namespace EZYPOS.UserControls.Transaction
                 SupplierLeadCR.Dr = Convert.ToInt32(txtAmount.Text);
                 SupplierLeadCR.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
                 SupplierLeadCR.TransactionId = sp.Id;
-                SupplierLeadCR.TransactionType = Common.InvoiceType.SupplierCRNote;
+                SupplierLeadCR.TransactionType = Common.InvoiceType.SupplierDRNote;
                 if (string.IsNullOrEmpty(txtDiscription.Text))
                 {
                     SupplierLeadCR.TransactionDet = "Supplier Credit Balance settlement Till Date: " + TransactionDate.SelectedDate?.ToString("dd/MM/yyyy") + " against DR Invoice Number # " + sp.Id;

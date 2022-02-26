@@ -232,6 +232,23 @@ namespace EZYPOS.UserControls.Transaction
                     DB.SupplierPayment.Add(sp);
                     DB.SupplierPayment.Save();
 
+                    //Ledger
+                    SupplierLead SupplierLeadCR = new SupplierLead();
+                    SupplierLeadCR.Cr = Convert.ToInt32(txtAmount.Text);
+                    SupplierLeadCR.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
+                    SupplierLeadCR.TransactionId = sp.Id;
+                    SupplierLeadCR.TransactionType = Common.InvoiceType.SupplierPayment;
+                    if (string.IsNullOrEmpty(txtDiscription.Text))
+                    {
+                        SupplierLeadCR.TransactionDet = "Supplier Received On Date: " + TransactionDate.SelectedDate?.ToString("dd/MM/yyyy") + " against CR Invoice Number # " + sp.Id;
+                    }
+                    else
+                    {
+                        SupplierLeadCR.TransactionDet = txtDiscription.Text + " Supplier Payment Invoice Number # " + sp.Id;
+                    }
+                    SupplierLeadCR.SuplierId = Convert.ToInt32(DDSupplier.SelectedValue);
+                    DB.SupplierLead.Add(SupplierLeadCR);
+                    DB.SupplierLead.Save();
                     EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
                     RefreshPage();
 
@@ -251,6 +268,7 @@ namespace EZYPOS.UserControls.Transaction
                     using(UnitOfWork db= new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
                         db.SupplierPayment.Delete(Convert.ToInt32(txtId.Text));
+                        db.SupplierLead.Delete(db.SupplierLead.GetAll().Where(x => x.TransactionType == Common.InvoiceType.SupplierDRNote && x.TransactionId == Convert.ToInt32(txtId.Text)).FirstOrDefault().Id);
                         db.SupplierPayment.Save();
                         RefreshPage();
                     }

@@ -21,6 +21,7 @@ namespace DAL.DBMODEL
         public int? SubcategoryId { get; set; }
         public bool? Isdeleted { get; set; }
         public int? GroupId { get; set; }
+        public int? ShelfId { get; set; }
         public long RetailPrice { get; set; }
         public long? Wholesaleprice { get; set; }
         public long PurchasePrice { get; set; }
@@ -32,6 +33,7 @@ namespace DAL.DBMODEL
 
         public virtual ProductCategory Category { get; set; }
         public virtual ProductGroup Group { get; set; }
+        public virtual TblShelf Shelf { get; set; }
         public virtual ProductSubcategory Subcategory { get; set; }
         public virtual Unit UnitNavigation { get; set; }
         public virtual ICollection<ProductStock> ProductStocks { get; set; }

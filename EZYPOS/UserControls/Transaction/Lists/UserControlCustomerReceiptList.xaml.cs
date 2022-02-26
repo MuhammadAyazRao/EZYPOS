@@ -181,6 +181,7 @@ namespace EZYPOS.UserControls.Transaction.Lists
                     try
                     {
                         DB.CustomerReceipt.Delete(CRDTO.Id);
+                        DB.CustomerLead.Delete(DB.CustomerLead.GetAll().Where(x => x.TransactionType == Common.InvoiceType.CustomerReceipt && x.TransactionId == Convert.ToInt32(CRDTO.Id)).FirstOrDefault().Id);
                         DB.CustomerReceipt.Save();
                         EZYPOS.View.MessageBox.ShowCustom("Record Deleted Successfully", "Status", "OK");
                         Refresh();

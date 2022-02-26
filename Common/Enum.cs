@@ -29,8 +29,9 @@ namespace Common
     {
         public static string SaleInvoice { get { return nameof(SaleInvoice); } }
         public static string CustomerDrNote { get { return nameof(CustomerDrNote); } }
-        public static string SupplierCRNote { get { return nameof(SupplierCRNote); } }
-
+        public static string SupplierDRNote { get { return nameof(SupplierDRNote); } }
+        public static string CustomerReceipt { get { return nameof(CustomerReceipt); } }
+        public static string SupplierPayment { get { return nameof(SupplierPayment); } }
         public static string ReturnInvoice { get { return nameof(ReturnInvoice); } }
         public static string PurchaseInvoice { get { return nameof(PurchaseInvoice); } }
     }

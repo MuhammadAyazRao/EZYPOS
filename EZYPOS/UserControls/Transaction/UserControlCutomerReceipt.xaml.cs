@@ -234,6 +234,23 @@ namespace EZYPOS.UserControls.Transaction
                     DB.CustomerReceipt.Add(sp);
                     DB.CustomerReceipt.Save();
 
+                    //Ledger
+                    CustomerLead CustomerLedCR = new CustomerLead();
+                    CustomerLedCR.Cr = Convert.ToInt32(txtAmount.Text);
+                    CustomerLedCR.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
+                    CustomerLedCR.TransactionId = sp.Id;
+                    CustomerLedCR.TransactionType = Common.InvoiceType.CustomerReceipt;
+                    if (string.IsNullOrEmpty(txtDiscription.Text))
+                    {
+                        CustomerLedCR.TransactionDetail = "Customer Paid on Date: " + TransactionDate.SelectedDate?.ToString("dd/MM/yyyy") + " against CR Invoice Number # " + sp.Id;
+                    }
+                    else
+                    {
+                        CustomerLedCR.TransactionDetail = txtDiscription.Text + " against Customer Receipt Invoice Number # " + sp.Id;
+                    }
+                    CustomerLedCR.CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
+                    DB.CustomerLead.Add(CustomerLedCR);
+
                     EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
                     RefreshPage();
 
@@ -253,6 +270,7 @@ namespace EZYPOS.UserControls.Transaction
                     using (UnitOfWork db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
                         db.CustomerReceipt.Delete(Convert.ToInt32(txtId.Text));
+                        db.CustomerLead.Delete(db.CustomerLead.GetAll().Where(x => x.TransactionType == Common.InvoiceType.CustomerReceipt && x.TransactionId == Convert.ToInt32(txtId.Text)).FirstOrDefault().Id);                            
                         db.CustomerReceipt.Save();
                         RefreshPage();
                     }

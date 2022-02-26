@@ -295,6 +295,11 @@ namespace DAL.DBMODEL
                     .HasForeignKey(d => d.GroupId)
                     .HasConstraintName("FK_Products_ProductGroup");
 
+                entity.HasOne(d => d.Shelf)
+                    .WithMany(p => p.Products)
+                    .HasForeignKey(d => d.ShelfId)
+                    .HasConstraintName("FK_Products_TblShelf");
+
                 entity.HasOne(d => d.Subcategory)
                     .WithMany(p => p.Products)
                     .HasForeignKey(d => d.SubcategoryId)

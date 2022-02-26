@@ -121,6 +121,7 @@ namespace EZYPOS.UserControls.Define.Crud
                 DDCategory.ItemsSource = Db.ProductCategory.GetAll().ToList();
                 DDSubCategory.ItemsSource = null;
                 DDGroup.ItemsSource = Db.ProductGroup.GetAll().ToList();
+                DDShelf.ItemsSource = Db.Shelf.GetAll().ToList();
                 DDSupplier.ItemsSource = Db.Supplier.GetAll().ToList();
                 DDMunit.ItemsSource = Db.MUnit.GetAll().ToList();
 
@@ -350,7 +351,14 @@ namespace EZYPOS.UserControls.Define.Crud
                         NewProduct.PurchasePrice = Convert.ToInt32(txtPurchasePrice.Text);
                         NewProduct.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
                         NewProduct.SubcategoryId = Convert.ToInt32(DDSubCategory.SelectedValue);
-                        NewProduct.GroupId = Convert.ToInt32(DDGroup.SelectedValue);
+                        if (DDGroup.SelectedValue != null) 
+                        {
+                            NewProduct.GroupId = Convert.ToInt32(DDGroup.SelectedValue);
+                        }
+                        if (DDGroup.SelectedValue != null) 
+                        {
+                            NewProduct.ShelfId = Convert.ToInt32(DDShelf.SelectedValue);
+                        }
                         //CurrentStock
                         //Supplier
                         //Maximum
@@ -385,7 +393,14 @@ namespace EZYPOS.UserControls.Define.Crud
                     NewProduct.PurchasePrice = Convert.ToInt32(txtPurchasePrice.Text);
                     NewProduct.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
                     NewProduct.SubcategoryId = Convert.ToInt32(DDSubCategory.SelectedValue);
-                    NewProduct.GroupId = Convert.ToInt32(DDGroup.SelectedValue);
+                    if(DDGroup.SelectedValue != null) 
+                    {
+                        NewProduct.GroupId = Convert.ToInt32(DDGroup.SelectedValue);
+                    }
+                    if (DDGroup.SelectedValue != null) 
+                    {
+                        NewProduct.ShelfId = Convert.ToInt32(DDShelf.SelectedValue);
+                    }
                     //CurrentStock
                     //Supplier
                     //Maximum
@@ -444,11 +459,6 @@ namespace EZYPOS.UserControls.Define.Crud
             if (string.IsNullOrEmpty(txtPurchasePrice.Text) || txtPurchasePrice.Text == "Purchase Price")
             {
                 EZYPOS.View.MessageBox.ShowCustom("Purchase Price is Required.", "Error", "OK");
-                return false;
-            }
-            if (DDGroup.SelectedValue == null)
-            {
-                EZYPOS.View.MessageBox.ShowCustom("Please Select Product Group.", "Error", "OK");
                 return false;
             }
             //if (string.IsNullOrEmpty(txtStock.Text) || txtStock.Text == "Current Stock")
