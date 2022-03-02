@@ -64,7 +64,7 @@ namespace EZYPOS.UserControls.Define.Crud
             {
                 ddEType.ItemsSource = uw.ExpenceType.GetAll().ToList();
                 ddEmployee.ItemsSource = uw.Employee.GetAll().ToList();
-
+                ddEmployee.SelectedValue = ActiveSession.ActiveUser;
             }
             txtDescription.Text = "";
             txtAmount.Text = "";

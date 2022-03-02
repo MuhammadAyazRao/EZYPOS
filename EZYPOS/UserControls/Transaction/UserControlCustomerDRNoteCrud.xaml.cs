@@ -44,12 +44,12 @@ namespace EZYPOS.UserControls.Transaction
             {
                 DDCustomer.ItemsSource = Db.Customers.GetAll().ToList();
                 DDReceivedBy.ItemsSource = Db.Employee.GetAll().Select(x=> new {Name = x.UserName, Id = x.Id }).ToList();
+                DDReceivedBy.SelectedValue = ActiveSession.ActiveUser;
             }
             txtDiscription.Text = "";
             txtAmount.Text = "";
             txtId.Text = "";
             DDCustomer.SelectedValue = null;
-            DDReceivedBy.SelectedValue = null;
             TransactionDate.SelectedDate = DateTime.Today;
         }
         private void InitializePage(CustomerDRNoteDTO Sp)

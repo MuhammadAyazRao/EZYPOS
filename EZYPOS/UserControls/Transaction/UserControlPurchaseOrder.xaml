@@ -4,9 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EZYPOS.UserControls.Transaction"
-             mc:Ignorable="d" 
-             Language="en-GB"
-                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              Name="PurchaseOrder" d:DesignWidth="927.063" d:DesignHeight="571.643">
     <UserControl.Resources>
         <Style TargetType="ListBoxItem" x:Key="queueStyle">
@@ -103,6 +102,8 @@
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="auto"/>
+
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
@@ -172,6 +173,13 @@
                     </TextBlock.Style>
                 </TextBlock>
                 <TextBlock Text="{Binding PaymentType}" Grid.Column="5" Grid.Row="0" FontSize="15" Foreground="Gray" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Height="22"/>
+                <StackPanel Grid.Column="6" Orientation="Horizontal" Margin="440,0,0,0" >
+                    <Button Content="{materialDesign:PackIcon Kind=Eye,Size=25}" Foreground="{StaticResource DarkBlue}" Name="ViewOrder" Click="ViewOrder_Click" Margin="3 0" Style="{DynamicResource MaterialDesignIconButton}"  />
+                    <Button  Content="{materialDesign:PackIcon Kind=Printer,Size=25}" Foreground="{StaticResource Success}" Name="Print" Click="Print_Click" Margin="3 0" Style="{DynamicResource MaterialDesignIconButton}"/>
+                    <Button Content="{materialDesign:PackIcon Kind=Pencil,Size=25}" Name="Edit" Click="Edit_Click" Margin="3 0" Style="{DynamicResource MaterialDesignIconButton}"/>
+                    <Button Content="{materialDesign:PackIcon Kind=Delete,Size=25}" Foreground="{StaticResource Danger}" Name="Cancel" Click="Cancel_Click" Margin="3 0" Style="{DynamicResource MaterialDesignIconButton}"/>
+                </StackPanel>
+                
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="QueueListTemplate" DataType="ListBoxItem">
@@ -262,7 +270,6 @@
                                         <TextBlock Text="{Binding payment_status}" FontSize="15" Foreground="Gray" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" Height="22"/>
                                     </StackPanel>
                                 </Border>-->
-                                <Button Content="View" Name="ViewOrder" Click="ViewOrder_Click" Margin="3 0" Style="{DynamicResource btnPrimery}" Height="40" Width="80" />
                                 <!--<Button Content="Split Bill" Command="{Binding ElementName=odr, Path=DataContext.BillSplitCommand}" CommandParameter="{Binding ElementName=listOrderAccepted, Path=SelectedItem}" Margin="3 0" Style="{DynamicResource btnDefault}" Height="40" Width="70" HorizontalAlignment="Right"/>-->
                                 <!--<Border Margin="3 0">
                                     <Border.Style>
@@ -293,9 +300,7 @@
                                         </Button.Content>
                                     </Button>
                                 </Border>-->
-                                <Button  Content="Print" Name="Print" Click="Print_Click" Margin="3 0" Style="{DynamicResource btnSuccess}" Height="40" Width="80" HorizontalAlignment="Right"/>
-                                <Button Content="Edit" Name="Edit" Click="Edit_Click" Margin="3 0" Style="{DynamicResource btnInfo}" Height="40" Width="80" HorizontalAlignment="Right"/>
-                                <Button Content="Delete" Name="Cancel" Click="Cancel_Click" Margin="3 0" Style="{DynamicResource btnDanger}" Height="40" Width="70" HorizontalAlignment="Right"/>
+                                
                             </StackPanel>
                         </Expander>
                     </DataTemplate>

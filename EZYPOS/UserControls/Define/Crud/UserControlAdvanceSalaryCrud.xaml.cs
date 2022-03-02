@@ -46,6 +46,7 @@ namespace EZYPOS.UserControls.Define.Crud
             {
                 var EmployeeList = DB.Employee.GetAll().Select(x => new { Name = x.UserName, Id = x.Id }).ToList();
                 ddPayedBy.ItemsSource = EmployeeList;
+                ddPayedBy.SelectedValue = ActiveSession.ActiveUser;
                 EmployeeList.Insert(0, new  { Name = "All", Id = 0 });
                 ddEmployee.ItemsSource = EmployeeList;
                

@@ -44,6 +44,8 @@ namespace EZYPOS.UserControls.Transaction
             {
                 DDSupplier.ItemsSource = Db.Supplier.GetAll().ToList();
                 DDPayedBy.ItemsSource = Db.Employee.GetAll().ToList();
+                DDPayedBy.SelectedValue = ActiveSession.ActiveUser;
+
             }
             txtDiscription.Text = "";
             txtAmount.Text = "";

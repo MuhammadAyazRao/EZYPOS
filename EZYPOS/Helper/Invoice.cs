@@ -1,4 +1,5 @@
-﻿using Common.DTO;
+﻿using Common;
+using Common.DTO;
 using Common.Session;
 using DAL.DBMODEL;
 using EZYPOS.DTO;
@@ -27,6 +28,7 @@ namespace EZYPOS.Helper
     {
        
         private Order order;
+        private PurchaseOrderDTO PurchaseOrder;
 
         public static FlowDocument GetFlowDocumentAsync(Order order)
         {
@@ -269,7 +271,7 @@ namespace EZYPOS.Helper
                     
                     TextBlock total = new TextBlock()
                     {
-                        Text = item.GetTotal.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")),
+                        Text = item.GetTotal.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
                         Width = 60,
                         FontSize = 14,//14
                         FontWeight = FontWeights.Bold,
@@ -422,7 +424,7 @@ namespace EZYPOS.Helper
 
                 TextBlock lblSubAmt = new TextBlock()
                 {
-                    Text = order.GetTotal().ToString("C", CultureInfo.CreateSpecificCulture("en-GB")),
+                    Text = order.GetTotal().ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
                     HorizontalAlignment = HorizontalAlignment.Right,
                     TextAlignment = TextAlignment.Right,
                     Width = 120,
@@ -438,7 +440,7 @@ namespace EZYPOS.Helper
 
                 TextBlock lblDiscAmt = new TextBlock()
                 {
-                    Text = order.Discount == null ? "0" : order.Discount.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")),
+                    Text = order.Discount == null ? "0" : order.Discount.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
                     HorizontalAlignment = HorizontalAlignment.Right,
                     TextAlignment = TextAlignment.Right,
                     Height = 20,
@@ -454,7 +456,7 @@ namespace EZYPOS.Helper
 
                 TextBlock lblTotalAmt = new TextBlock()
                 {
-                    Text = order.GetNetTotal().ToString("C", CultureInfo.CreateSpecificCulture("en-GB")),
+                    Text = order.GetNetTotal().ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
                     HorizontalAlignment = HorizontalAlignment.Right,
                     TextAlignment = TextAlignment.Right,
                     Height = 20,
@@ -614,6 +616,592 @@ namespace EZYPOS.Helper
             }
             return flowDocument;
         }
+        public static FlowDocument GetFlowDocumentAsync(PurchaseOrderDTO order)
+        {
+            FlowDocument flowDocument = null;
+            try
+            {
+                string imgPath = Environment.CurrentDirectory;
+
+
+                double pageWidth = 288;
+
+                flowDocument = new FlowDocument();
+                flowDocument.PageWidth = pageWidth;
+                flowDocument.PagePadding = new Thickness(10);
+                flowDocument.FontFamily = new FontFamily(Constants.FontFamily);
+                flowDocument.FontSize = 12;
+                //flowDocument.FontSize = Convert.ToDouble(ActiveSession.Client_Preferences.print_font.ToString()),//14
+                //flowDocument.FontWeight = ActiveSession.Client_Preferences.print_bold.ToLower().ToString() == "yes" ? FontWeights.Bold : FontWeights.Normal,
+                Paragraph p = new Paragraph();
+                var Logo_print = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == Common.SettingKey.PrintLogo).FirstOrDefault().AppValue;
+
+                if (Logo_print.ToLower() == "true")
+                {
+
+                    Image ReslogoImg = new Image();
+                    ReslogoImg.Margin = new Thickness(0, 10, 0, 10);
+                    ReslogoImg.HorizontalAlignment = HorizontalAlignment.Center;
+                    ReslogoImg.Width = pageWidth;
+                    ReslogoImg.Height = 120;
+
+                    try
+                    {
+                        ReslogoImg.Source = new BitmapImage(new Uri(imgPath + Constants.Logopath));
+                    }
+                    catch (FileNotFoundException ex)
+                    {
+                        View.MessageBox.ShowCustom(ex.FileName + " Restaurant Logo not found.", "Invoice Error", "Ok");
+                    }
+
+                    p.Inlines.Add(ReslogoImg);
+                }
+                //----status----
+
+
+
+
+                if (order.payment_status == "completed")
+                {
+                    TextBlock Paid = new TextBlock()
+                    {
+                        Text = "PAID",
+                        Width = pageWidth,
+                        Foreground = new SolidColorBrush(Color.FromArgb(0xff, 0xd9, 0x53, 0x4f)),
+                        TextAlignment = TextAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        FontWeight = FontWeights.Bold,
+                        Height = 20,
+                        FontSize = 20,
+                    };
+                    p.Inlines.Add(Paid);
+                }
+
+                flowDocument.Blocks.Add(p);
+
+                //---Info Section------
+                Grid infoGrid = new Grid();
+                infoGrid.Width = pageWidth - flowDocument.PagePadding.Right - flowDocument.PagePadding.Left;
+                infoGrid.FlowDirection = FlowDirection.LeftToRight;
+
+
+                //if (order.Customer != null)
+                //{
+                //    TextBlock lblName = new TextBlock()
+                //    {
+                //        Text = order.Customer.bill_name + " " + order.Customer.bill_surname,
+                //        HorizontalAlignment = HorizontalAlignment.Left,
+                //        TextAlignment = TextAlignment.Left,
+                //        Width = 120,
+                //        Height = 20
+                //    };
+                //    infoGrid.Children.Add(lblName);
+
+                //    TextBlock lblHouseNo = new TextBlock()
+                //    {
+                //        Text = order.Customer.bill_phone,
+                //        HorizontalAlignment = HorizontalAlignment.Left,
+                //        Height = 20,
+                //        Width = 120,
+                //        Margin = new Thickness(0, 25, 0, 0)
+                //    };
+                //    infoGrid.Children.Add(lblHouseNo);
+
+                //    if (order.delivery_type.ToLower() != "collected")
+                //    {
+                //        lblHouseNo.Text = order.Customer.bill_door_num + " " + order.Customer.bill_street;
+
+                //        TextBlock lblStreet = new TextBlock()
+                //        {
+                //            Text = order.Customer.bill_town,
+                //            HorizontalAlignment = HorizontalAlignment.Left,
+                //            Height = 20,
+                //            Width = 120,
+                //            Margin = new Thickness(0, 50, 0, 0)
+                //        };
+
+                //        TextBlock lblTown = new TextBlock()
+                //        {
+                //            Text = order.Customer.bill_zipcode,
+                //            HorizontalAlignment = HorizontalAlignment.Left,
+                //            Height = 20,
+                //            Width = 120,
+                //            Margin = new Thickness(0, 75, 0, 0)
+                //        };
+
+                //        TextBlock lblPost = new TextBlock()
+                //        {
+                //            Text = order.Customer.bill_phone,
+                //            HorizontalAlignment = HorizontalAlignment.Left,
+                //            Height = 20,
+                //            Width = 120,
+                //            Margin = new Thickness(0, 100, 0, 0)
+                //        };
+
+                //        infoGrid.Children.Add(lblStreet);
+                //        infoGrid.Children.Add(lblTown);
+                //        infoGrid.Children.Add(lblPost);
+                //    }
+
+
+
+
+                //}
+
+
+
+
+                TextBlock lblRestName = new TextBlock()
+                {
+                    Text = "EzyPos",
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    TextAlignment = TextAlignment.Right,
+                    Width = 120,
+                    Height = 20,
+                    FontSize = 16,
+                    Margin = new Thickness(0, 0, 0, 0)
+                };
+                lblRestName.SetValue(TextBlock.FontWeightProperty, FontWeights.Bold);
+                //Grid.SetColumn(lblName, 1);
+
+                TextBlock lblRestPost = new TextBlock()
+                {
+                    Text = "40100",
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    TextAlignment = TextAlignment.Right,
+                    Height = 20,
+                    Width = 120,
+                    Margin = new Thickness(0, 40, 0, 0),
+                    FontSize = 14,//14
+                    FontWeight = FontWeights.Bold
+                };
+                //Grid.SetColumn(lblHouseNo, 1);
+
+                TextBlock lblCallNow = new TextBlock()
+                {
+                    Text = "Call Now",
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    TextAlignment = TextAlignment.Right,
+                    Height = 20,
+                    Width = 120,
+                    Margin = new Thickness(0, 70, 0, 0),
+                    FontSize = 14,//14
+                    FontWeight = FontWeights.Normal
+                };
+                //Grid.SetColumn(lblStreet, 1);
+
+                TextBlock lblCall = new TextBlock()
+                {
+                    Text = "03215115527",
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    TextAlignment = TextAlignment.Right,
+                    Height = 20,
+                    Width = 120,
+                    Margin = new Thickness(0, 100, 0, 0),
+                    FontSize = 14,//14
+                    FontWeight = FontWeights.Normal
+                };
+                //Grid.SetColumn(lblTown, 1);
+
+
+                infoGrid.Children.Add(lblRestName);
+                infoGrid.Children.Add(lblRestPost);
+                infoGrid.Children.Add(lblCallNow);
+                infoGrid.Children.Add(lblCall);
+
+
+                p.Inlines.Add(infoGrid);
+                flowDocument.Blocks.Add(p);
+
+                //---Order Deteals
+
+                List<Common.DTO.PurchaseOrderDetail> items = order.OrdersDetails.ToList();
+                foreach (var item in items)
+                {
+                    StackPanel orderDetails = new StackPanel();
+                    orderDetails.Width = pageWidth - flowDocument.PagePadding.Right - flowDocument.PagePadding.Left;
+
+                    Grid lineDetails = new Grid();
+                    lineDetails.Width = pageWidth - flowDocument.PagePadding.Right - flowDocument.PagePadding.Left;
+                    lineDetails.Margin = new Thickness(0, 10, 0, 0);
+
+                    WrapPanel span = new WrapPanel();
+                    span.Orientation = Orientation.Horizontal;
+                    span.HorizontalAlignment = HorizontalAlignment.Left;
+                    span.Width = pageWidth - flowDocument.PagePadding.Right - flowDocument.PagePadding.Left - 50;
+
+                    lineDetails.Children.Add(span);
+                    TextBlock qty = new TextBlock()
+                    {
+                        Text = item.Qty.ToString(),
+                        FontSize = 14,//14
+                        FontWeight = FontWeights.Bold,
+                        FontFamily = new FontFamily(Constants.FontFamily)
+                    };
+                    span.Children.Add(qty);
+
+
+
+                    TextBlock name = new TextBlock()
+                    {
+                        Text = item.Item.name,
+                        FontSize = 14,//14
+                        FontWeight = FontWeights.Bold,
+                        TextWrapping = TextWrapping.Wrap,
+                        VerticalAlignment = VerticalAlignment.Bottom,
+                        FontFamily = new FontFamily(Constants.FontFamily)
+                    };
+
+
+
+
+                    TextBlock total = new TextBlock()
+                    {
+                        Text = item.GetTotal.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
+                        Width = 60,
+                        FontSize = 14,//14
+                        FontWeight = FontWeights.Bold,
+                        TextAlignment = TextAlignment.Right,
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                        VerticalAlignment = VerticalAlignment.Top,
+                        FontFamily = new FontFamily(Constants.FontFamily)
+                    };
+
+                    span.Children.Add(name);
+                    lineDetails.Children.Add(total);
+
+                    orderDetails.Children.Add(lineDetails);
+
+
+
+                    if (!string.IsNullOrWhiteSpace(item.Note))
+                    {
+                        TextBlock cmt = new TextBlock()
+                        {
+                            Text = item.Note,
+                            Width = pageWidth - 20,
+                            FontStyle = FontStyles.Italic,
+                            TextWrapping = TextWrapping.Wrap,
+                            Margin = new Thickness(10, 0, 0, 0)
+                        };
+                        orderDetails.Children.Add(cmt);
+                    }
+
+                    p.Inlines.Add(orderDetails);
+
+
+                    ////---line------------------------------------------
+
+                    TextBlock Line = new TextBlock()
+                    {
+                        Text = "----------------------------------------------",
+                        Width = pageWidth - 20,
+                        FontStyle = FontStyles.Italic,
+                        TextWrapping = TextWrapping.Wrap,
+                        Margin = new Thickness(0, 0, 0, 0),
+                        FontWeight = FontWeights.Bold
+                    };
+                    orderDetails.Children.Add(Line);
+                    //orderDetails.Children.Add(Line(pageWidth, new Thickness(0, 0, 0, 0)));
+
+
+
+
+
+
+                }
+
+                //if (!string.IsNullOrWhiteSpace(order.description))
+                //{
+                //    TextBlock cmt = new TextBlock()
+                //    {
+                //        Text = order.description,
+                //        Width = pageWidth - 20,
+                //        FontStyle = FontStyles.Italic,
+                //        TextWrapping = TextWrapping.Wrap,
+                //        Margin = new Thickness(10, 0, 0, 0)
+                //    };
+                //    p.Inlines.Add(cmt);
+                //}
+
+                Grid billSummery = new Grid();
+                billSummery.Width = pageWidth - flowDocument.PagePadding.Left - flowDocument.PagePadding.Right;
+                TextBlock lblSubTotal = new TextBlock()
+                {
+                    Text = "Sub Total",
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    TextAlignment = TextAlignment.Left,
+                    Width = 120,
+                    Height = 20,
+                    //Margin = new Thickness(0, 0, 0, 0),
+                    FontWeight = FontWeights.Bold,
+                    FontFamily = new FontFamily(Constants.FontFamily)
+                };
+
+                TextBlock lblDel = new TextBlock()
+                {
+                    Text = "Delivery Charges",
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Height = 20,
+                    Width = 150,
+                    // Margin = new Thickness(0, 50, 0, 0),
+                    FontWeight = FontWeights.Bold,
+                    FontFamily = new FontFamily(Constants.FontFamily)
+                };
+
+                TextBlock lblDisc = new TextBlock()
+                {
+                    Text = "Discount",
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Height = 20,
+                    Width = 120,
+                    //Margin = new Thickness(0, 100, 0, 0),
+                    FontWeight = FontWeights.Bold,
+                    FontFamily = new FontFamily(Constants.FontFamily)
+                };
+                TextBlock lblService = new TextBlock()
+                {
+                    Text = "Service Charges",
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Height = 20,
+                    Width = 150,
+                    //Margin = new Thickness(0, 150, 0, 0),
+                    FontWeight = FontWeights.Bold,
+                    FontFamily = new FontFamily(Constants.FontFamily)
+                };
+
+                TextBlock lblTotal = new TextBlock()
+                {
+                    Text = "Total",
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Height = 20,
+                    Width = 120,
+                    // Margin = new Thickness(0, 200, 0, 0),
+                    //FontSize = 17
+                    FontWeight = FontWeights.Bold,
+                    FontFamily = new FontFamily(Constants.FontFamily)
+                };
+
+                //lblTotal.SetValue(TextBlock.FontWeightProperty, FontWeights.Bold);
+                int SummaryTopmargin = 0;
+                int SummaryBlockmargin = 0;
+                if (order.GetTotal() > 0)
+                {
+                    SummaryBlockmargin += -20;
+                    lblSubTotal.Margin = new Thickness(0, SummaryTopmargin, 0, 0);
+                    billSummery.Children.Add(lblSubTotal);
+                }
+
+                if (order.Discount > 0)
+                {
+                    SummaryBlockmargin += -20;
+                    SummaryTopmargin += 50;
+                    lblDisc.Margin = new Thickness(0, SummaryTopmargin, 0, 0);
+                    billSummery.Children.Add(lblDisc);
+                }
+
+                SummaryTopmargin += 50;
+                lblTotal.Margin = new Thickness(0, SummaryTopmargin, 0, 0);
+                billSummery.Children.Add(lblTotal);
+
+                // reinitializing  SummaryTopmargin 
+
+                SummaryTopmargin = 0;
+
+                TextBlock lblSubAmt = new TextBlock()
+                {
+                    Text = order.GetTotal().ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    TextAlignment = TextAlignment.Right,
+                    Width = 120,
+                    Height = 20,
+                    //Margin = new Thickness(0, 0, 0, 0),
+                    FontWeight = FontWeights.Bold,
+                    FontFamily = new FontFamily(Constants.FontFamily)
+                };
+                //Grid.SetColumn(lblName, 1);
+
+
+                //Grid.SetColumn(lblHouseNo, 1);
+
+                TextBlock lblDiscAmt = new TextBlock()
+                {
+                    Text = order.Discount == null ? "0" : order.Discount.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    TextAlignment = TextAlignment.Right,
+                    Height = 20,
+                    Width = 120,
+                    FontSize = 14,//14
+                    FontWeight = FontWeights.Bold,
+                    FontFamily = new FontFamily(Constants.FontFamily)
+                    //Margin = new Thickness(0, 100, 0, 0)
+
+                };
+
+
+
+                TextBlock lblTotalAmt = new TextBlock()
+                {
+                    Text = order.GetNetTotal().ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    TextAlignment = TextAlignment.Right,
+                    Height = 20,
+                    Width = 120,
+                    FontSize = 16,//14
+                    FontWeight = FontWeights.Bold,
+                    FontFamily = new FontFamily(Constants.FontFamily)
+                    //Margin = new Thickness(0, 200, 0, 0)
+                };
+                //lblTotalAmt.SetValue(TextBlock.FontWeightProperty, FontWeights.Bold);
+                //Grid.SetColumn(lblStreet, 1);
+
+                if (order.GetTotal() > 0)
+                {
+                    lblSubAmt.Margin = new Thickness(0, SummaryTopmargin, 0, 0);
+                    billSummery.Children.Add(lblSubAmt);
+                }
+
+                if (order.Discount > 0)
+                {
+                    SummaryTopmargin += 50;
+                    lblDiscAmt.Margin = new Thickness(0, SummaryTopmargin, 0, 0);
+                    billSummery.Children.Add(lblDiscAmt);
+                }
+
+                SummaryTopmargin += 50;
+                lblTotalAmt.Margin = new Thickness(0, SummaryTopmargin, 0, 0);
+                billSummery.Children.Add(lblTotalAmt);
+
+                billSummery.Margin = new Thickness(0, SummaryBlockmargin, 0, 0);
+                p.Inlines.Add(billSummery);
+                TextBlock Linesecond = new TextBlock()
+                {
+                    Text = "----------------------------------------------",
+                    Width = pageWidth - 20,
+                    FontStyle = FontStyles.Italic,
+                    TextWrapping = TextWrapping.Wrap,
+                    Margin = new Thickness(0, 0, 0, 0),
+                    FontWeight = FontWeights.Bold
+                };
+                p.Inlines.Add(Linesecond);
+                //p.Inlines.Add(Line(pageWidth, new Thickness(0)));
+
+                TextBlock lblReceive = new TextBlock()
+                {
+                    Text = "Received at: " + order.OrderDate.ToString("dd/MM/yyyy hh:mm tt"),
+                    Width = pageWidth,
+                    TextAlignment = TextAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Height = 20,
+                    FontSize = 12,//14
+                    FontWeight = FontWeights.Bold,
+                    FontFamily = new FontFamily(Constants.FontFamily)
+                };
+                p.Inlines.Add(lblReceive);
+
+                TextBlock Restaurant = new TextBlock()
+                {
+                    Text = "Ezypos shop",
+                    Width = pageWidth,
+                    TextAlignment = TextAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    Height = 20,
+                    FontWeight = FontWeights.Bold,
+                    FontSize = 14,
+                    FontFamily = new FontFamily(Constants.FontFamily)
+
+
+                };
+                p.Inlines.Add(Restaurant);
+
+                //TextBlock lblOrderCount = new TextBlock()
+                //{
+                //    Text = "Order Count: " + order.order_count.ToString(),
+                //    Width = pageWidth,
+                //    TextAlignment = TextAlignment.Center,
+                //    HorizontalAlignment = HorizontalAlignment.Center,
+                //    Height = 20,
+                //    FontSize = Convert.ToDouble(ActiveSession.Client_Preferences.print_font.ToString()),
+                //    FontWeight = FontWeights.Bold
+                //};
+                //lblOrderCount.SetValue(TextBlock.FontWeightProperty, FontWeights.Bold);
+                // p.Inlines.Add(lblOrderCount);
+
+                //TextBlock lblOrderCountNo = new TextBlock()
+                //{
+                //    Text = order.order_count.ToString(),
+                //    Width = pageWidth,
+                //    TextAlignment = TextAlignment.Center,
+                //    Height = 20,
+                //    HorizontalAlignment = HorizontalAlignment.Center,
+                //    FontSize = 13,
+                //    FontWeight = FontWeights.Bold
+                //};
+
+                //lblOrderCountNo.SetValue(TextBlock.FontWeightProperty, FontWeights.Bold);
+                //p.Inlines.Add(lblOrderCountNo);
+
+
+
+                //TextBlock lblServedname = new TextBlock()
+                //{
+                //    Text =  order.addby,
+                //    Width = pageWidth,
+                //    TextAlignment = TextAlignment.Center,
+                //    HorizontalAlignment = HorizontalAlignment.Center,
+                //    FontWeight=FontWeights.Bold
+                //};
+                //p.Inlines.Add(lblServedname);
+
+                TextBlock lblTrans = new TextBlock()
+                {
+                    Text = "Transaction #",
+                    Width = pageWidth,
+                    TextAlignment = TextAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    FontSize = 14,//14
+                    FontWeight = FontWeights.Bold,
+                    FontFamily = new FontFamily(Constants.FontFamily)
+                };
+                p.Inlines.Add(lblTrans);
+
+                TextBlock lblTranNo = new TextBlock()
+                {
+                    Text = order.OrderId.ToString(),
+                    Width = pageWidth,
+                    TextAlignment = TextAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    FontWeight = FontWeights.Bold,
+                    FontSize = 14,
+                };
+                p.Inlines.Add(lblTranNo);
+
+                //TextBlock lblMessage = new TextBlock()
+                //{
+                //    Text = ActiveSession.Client_Preferences.receipt_message,
+                //    // FontSize = 12,
+                //    FontStyle = FontStyles.Italic,
+                //    TextAlignment = TextAlignment.Center,
+                //    Margin = new Thickness(0, 22, 0, 0),
+                //    Width = pageWidth - flowDocument.PagePadding.Left - flowDocument.PagePadding.Right,
+                //    TextWrapping = TextWrapping.Wrap,
+                //    FontSize = Convert.ToDouble(ActiveSession.Client_Preferences.print_font.ToString()),//14
+                //    FontWeight = ActiveSession.Client_Preferences.print_bold.ToLower().ToString() == "yes" ? FontWeights.Bold : FontWeights.Normal
+                //};
+                //p.Inlines.Add(lblMessage);
+
+
+
+
+
+
+            }
+            catch (Exception exp)
+            {
+                EZYPOS.View.MessageBox.ShowCustom(exp.Message, "Error", "Ok");
+            }
+            return flowDocument;
+        }
 
         //public static FlowDocument GetFlowDocumentFromCartAsync(Order order)
         //{
@@ -715,7 +1303,7 @@ namespace EZYPOS.Helper
 
         //            TextBlock total = new TextBlock()
         //            {
-        //                Text = item.GetTotal.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")),
+        //                Text = item.GetTotal.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
         //                Width = 60,
         //                FontSize = Convert.ToDouble(ActiveSession.Client_Preferences.print_font.ToString()),//14
         //                FontWeight = ActiveSession.Client_Preferences.print_bold.ToLower().ToString() == "yes" ? FontWeights.Bold : FontWeights.Normal,
@@ -775,7 +1363,7 @@ namespace EZYPOS.Helper
 
         //                        TextBlock addonTotal = new TextBlock()
         //                        {
-        //                            Text = item.GetAddonTotal().ToString("C", CultureInfo.CreateSpecificCulture("en-GB")),
+        //                            Text = item.GetAddonTotal().ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
         //                            Width = 60,
         //                            FontSize = Convert.ToDouble(ActiveSession.Client_Preferences.print_font.ToString()),//14
         //                            FontWeight = ActiveSession.Client_Preferences.print_bold.ToLower().ToString() == "yes" ? FontWeights.Bold : FontWeights.Normal,
@@ -910,7 +1498,7 @@ namespace EZYPOS.Helper
 
         //        TextBlock lblSubAmt = new TextBlock()
         //        {
-        //            Text = order.GetTotal().ToString("C", CultureInfo.CreateSpecificCulture("en-GB")),
+        //            Text = order.GetTotal().ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
         //            HorizontalAlignment = HorizontalAlignment.Right,
         //            TextAlignment = TextAlignment.Right,
         //            Width = 120,
@@ -923,7 +1511,7 @@ namespace EZYPOS.Helper
 
         //        TextBlock lblDelAmt = new TextBlock()
         //        {
-        //            Text = order.DeliverCharges.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")),
+        //            Text = order.DeliverCharges.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
         //            HorizontalAlignment = HorizontalAlignment.Right,
         //            TextAlignment = TextAlignment.Right,
         //            Height = 20,
@@ -936,7 +1524,7 @@ namespace EZYPOS.Helper
 
         //        TextBlock lblDiscAmt = new TextBlock()
         //        {
-        //            Text = order.Discount == null ? "0" : order.Discount.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")),
+        //            Text = order.Discount == null ? "0" : order.Discount.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
         //            HorizontalAlignment = HorizontalAlignment.Right,
         //            TextAlignment = TextAlignment.Right,
         //            Height = 20,
@@ -949,7 +1537,7 @@ namespace EZYPOS.Helper
 
         //        TextBlock lblservice = new TextBlock()
         //        {
-        //            Text = order.ServiceCharges == null ? "0" : order.ServiceCharges.ToString("C", CultureInfo.CreateSpecificCulture("en-GB")),
+        //            Text = order.ServiceCharges == null ? "0" : order.ServiceCharges.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
         //            HorizontalAlignment = HorizontalAlignment.Right,
         //            TextAlignment = TextAlignment.Right,
         //            Height = 20,
@@ -962,7 +1550,7 @@ namespace EZYPOS.Helper
 
         //        TextBlock lblTotalAmt = new TextBlock()
         //        {
-        //            Text = order.GetNetTotal().ToString("C", CultureInfo.CreateSpecificCulture("en-GB")),
+        //            Text = order.GetNetTotal().ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
         //            HorizontalAlignment = HorizontalAlignment.Right,
         //            TextAlignment = TextAlignment.Right,
         //            Height = 20,
@@ -1045,21 +1633,25 @@ namespace EZYPOS.Helper
         //}
 
 
-       
+
         public void Print(Order odr)
         {
             try
             {
-                bool isPrint = false;
+                var PrintConfirmation = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.PrintConfirmation).FirstOrDefault().AppValue;
+
+                bool isPrint = true;
                 int printcount = 1;              
 
                 if (printcount != 0)
-                {                    
+                { 
+                    if(PrintConfirmation.ToLower() == "true")
+                    {
                         Application.Current.Dispatcher.Invoke(() =>
                         {
                             isPrint = EZYPOS.View.MessageYesNo.ShowCustom("Print Invoice", "Do you want to print invoice.", "Yes", "No");
-                        });                   
-                    
+                        });
+                    }
                 }
 
                 PrintDialog print = new PrintDialog();
@@ -1089,6 +1681,51 @@ namespace EZYPOS.Helper
             }
         }
 
+        public void Print(PurchaseOrderDTO odr)
+        {
+            try
+            {
+                var PrintConfirmation = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.PrintConfirmation).FirstOrDefault().AppValue;
+                bool isPrint = true;
+                int printcount = 1;
+
+                if (printcount != 0)
+                {
+                    if(PrintConfirmation.ToLower() == "true")
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            isPrint = EZYPOS.View.MessageYesNo.ShowCustom("Print Invoice", "Do you want to print invoice.", "Yes", "No");
+                        });
+                    }
+                }
+
+                PrintDialog print = new PrintDialog();
+
+                if (isPrint)
+                {
+                    PurchaseOrder = odr;
+                    //order.BillSplit = new ObservableCollection<order_detail>(context.order_detail.Where(x => x.order_id == odr.id).ToList());
+                    //order.Customer = context.customers.FirstOrDefault(x => x.id == odr.user_id);
+
+                    foreach (FlowDocument document in GetFlowDocuments(PurchaseOrder))
+                    {
+                        for (int i = 1; i <= printcount; i++)
+                        {
+
+                            print.PrintDocument(((IDocumentPaginatorSource)document).DocumentPaginator, "Order No." + PurchaseOrder.OrderId.ToString());
+
+                        }
+                    }
+
+                }
+
+            }
+            catch (Exception exp)
+            {
+                EZYPOS.View.MessageBox.ShowCustom(exp.Message, "Error", "Ok");
+            }
+        }
         public static Line Line(double pageWidth, Thickness margin)
         {
             Line line = new Line()
@@ -1137,7 +1774,13 @@ namespace EZYPOS.Helper
             thread.IsBackground = true;
             thread.Start();
         }
-
+        public void DoPrintJob(PurchaseOrderDTO order)
+        {
+            Thread thread = new Thread(() => Print(order));
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.IsBackground = true;
+            thread.Start();
+        }
         //public void DoPrintJobFromOrderView(order order)
         //{
         //    Thread thread = new Thread(() => PrintForOrderView(order));
@@ -1170,6 +1813,21 @@ namespace EZYPOS.Helper
             List<FlowDocument> flowDocuments = new List<FlowDocument>();
             try
             {   
+                flowDocuments.Add(GetFlowDocumentAsync(order));
+            }
+            catch (Exception ex)
+            {
+                View.MessageBox.ShowCustom(ex.Message, "Error", "Ok");
+            }
+
+            return flowDocuments;
+        }
+        public static List<FlowDocument> GetFlowDocuments(PurchaseOrderDTO order)
+        {
+
+            List<FlowDocument> flowDocuments = new List<FlowDocument>();
+            try
+            {
                 flowDocuments.Add(GetFlowDocumentAsync(order));
             }
             catch (Exception ex)

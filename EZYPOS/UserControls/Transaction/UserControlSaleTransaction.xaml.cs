@@ -293,6 +293,38 @@ namespace EZYPOS.UserControls.Transaction
 
         private void btnNoteEdit_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                if (listBoxItemCart.SelectedItem != null)
+                {
+                    OrderDetail orderDetails = (OrderDetail)listBoxItemCart.SelectedItem;
+                    int INDEX = listBoxItemCart.SelectedIndex;
+                    order.OrdersDetails.RemoveAt(INDEX);
+                    listBoxItemCart.Items.RemoveAt(INDEX);
+                    EditSaleItem Edit = new EditSaleItem();
+                    Edit.txtSalePrice.Text = orderDetails.Item.price.ToString();
+                    Edit.txtQty.Text = orderDetails.Qty.ToString();
+                    Edit.txtDiscount.Text = orderDetails.ItemDiscount.ToString();
+
+
+                    if (Edit.ShowDialog() == true)
+                    {
+                        //orderDetails.Note = "03/03/2021";
+                        orderDetails.Item.price = (long)Convert.ToDouble(Edit.txtSalePrice.Text);
+                        orderDetails.Qty = Convert.ToInt16(Edit.txtQty.Text);
+                        orderDetails.ItemDiscount = Convert.ToInt32(Edit.txtDiscount.Text);
+                    }
+                    order.OrdersDetails.Insert(INDEX, orderDetails);
+                    listBoxItemCart.Items.Insert(INDEX, orderDetails);
+                    listBoxItemCart.SelectedIndex = INDEX;
+                    UpdateBillSummary();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Updating Note Failed", "Error", "ok");
+            }
             //try
             //{
             //    if (listBoxItemCart.SelectedItem != null)

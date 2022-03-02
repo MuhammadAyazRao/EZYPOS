@@ -26,8 +26,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button  Content="{materialDesign:PackIcon Kind=FormatListNumbers,Size=40}" Name="Back" Click="Back_Click"  Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" Margin="50,5,0,0" Height="45" Width="100"  ToolTip="Go to View Order" />
-            <TextBox Grid.Row="0" Grid.Column="0" KeyDown="Barcode_KeyDown" Name="Barcode"   Margin="160,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Search By Barcode Or Name"  VerticalAlignment="Top" Height="40"  TextWrapping="Wrap"    />
+            <TextBox Grid.Row="0" Grid.Column="0" KeyDown="Barcode_KeyDown" Name="Barcode"   Margin="45,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" materialDesign:HintAssist.Hint="Search By Barcode Or Name"  VerticalAlignment="Top" Height="40"  TextWrapping="Wrap"    />
             <ComboBox  Name="DDCategory" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name"  SelectedValuePath="Id" Margin="5,5,5,5" materialDesign:HintAssist.HintOpacity=".26" materialDesign:HintAssist.Hint="Search Category" SelectionChanged="DDCategory_SelectionChanged"    IsEditable="False"/>
             <ComboBox  Name="DDSubCategory" Grid.Row="0" Grid.Column="2" DisplayMemberPath="SubcategoryName"  SelectedValuePath="Id" Margin="5,5,5,5" materialDesign:HintAssist.HintOpacity=".26" materialDesign:HintAssist.Hint="Search Category" SelectionChanged="DDSubCategory_SelectionChanged"    IsEditable="False"/>
             <ListBox   Grid.Row="1" Grid.ColumnSpan="3"  Height="630"  BorderThickness="0" Name="listKitchenLineItems" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -244,7 +243,8 @@
                     <Label Content="Total Charges" Grid.Column="1" Foreground="{DynamicResource Danger}" FontWeight="Bold" VerticalAlignment="Bottom" Margin="1,0,45,86" Height="26"/>
                     <Label Name="lblTotal" Content="0.00" ContentStringFormat="C" FontWeight="Bold" Foreground="{DynamicResource Danger}"  Grid.Column="1" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="Auto" Margin="95,0,10,0" Height="26"/>
 
-                    <WrapPanel x:Name="stackBtn" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="10,62,0,0" >
+                    <WrapPanel x:Name="stackBtn" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="0,62,0,0" >
+                        <Button Content="{materialDesign:PackIcon Kind=FormatListText,Size=30}" Name="Back" ToolTip="Go to View Order" Click="Back_Click"  Style="{DynamicResource btnExpander}"/>
                         <Button Content="{materialDesign:PackIcon Kind=Discount,Size=30}" Name="orderDiscount" ToolTip="Order Discount" Click="orderDiscount_Click" Style="{DynamicResource btnExpander}"/>
                         <Button Content="{materialDesign:PackIcon Kind=Prize,Size=30}" ToolTip="Coupon"  Click="Button_Coupon" Style="{DynamicResource btnExpander}"/>
                         <!--<Button Content="Eat-IN" x:Name="btnEatIn" Click="btnEatIn_Click" Style="{DynamicResource btnExpander}">
@@ -281,7 +281,7 @@
                         </Button>-->
                         <Button Content="{materialDesign:PackIcon Kind=Plus,Size=30}" ToolTip="Manual Item"  Click="btnnew_Click" x:Name="btnnew" Style="{DynamicResource btnExpander}"/>
                         <Button Content="{materialDesign:PackIcon Kind=NoteMultiple,Size=30}" ToolTip="Summary"  Click="btmSummary_Click" x:Name="btmSummary" Style="{DynamicResource btnExpander}"/>
-                        <Button Content="{materialDesign:PackIcon Kind=Printer,Size=30}" ToolTip="Print"  Click="btnPrint_Click" x:Name="btnPrint" Style="{DynamicResource btnExpander}"/>
+                        <!--<Button Content="{materialDesign:PackIcon Kind=Printer,Size=30}" ToolTip="Print"  Click="btnPrint_Click" x:Name="btnPrint" Style="{DynamicResource btnExpander}"/>-->
 
 
 

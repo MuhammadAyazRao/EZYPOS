@@ -32,6 +32,7 @@ namespace EZYPOS.UserControls.Transaction
         public UserControlPurchaseOrder()
         {
             InitializeComponent();
+            this.Language = System.Windows.Markup.XmlLanguage.GetLanguage(HelperMethods.GetCurrency());
             Refresh();
         }
 
@@ -112,49 +113,49 @@ namespace EZYPOS.UserControls.Transaction
 
         private void ViewOrder_Click(object sender, RoutedEventArgs e)
         {
-            //ListBoxItem selectedItem = (ListBoxItem)listOrderAccepted.ItemContainerGenerator.ContainerFromItem(((Button)sender).DataContext);
-            //PurchaseOrderDTO Order = selectedItem.Content as PurchaseOrderDTO;
-            //if (Order != null)
-            //{
-            //    using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
-            //    {
+            ListBoxItem selectedItem = (ListBoxItem)listOrderAccepted.ItemContainerGenerator.ContainerFromItem(((Button)sender).DataContext);
+            PurchaseOrderDTO Order = selectedItem.Content as PurchaseOrderDTO;
+            if (Order != null)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
 
-            //        Order = DB.PurchaseOrder.GetMappedOrder(Order.OrderId).FirstOrDefault();
-            //    }
-            //    if (Order.OrdersDetails != null)
-            //    {
-            //        CartSummary OrderSummary = new CartSummary();
-            //        OrderSummary.InvoiceUC.SetFlowDoc(Invoice.GetFlowDocuments(Order));
-            //        OrderSummary.ShowDialog();
-            //    }
-            //    else
-            //    {
-            //        EZYPOS.View.MessageBox.ShowCustom("Order is Empty", "Empty Order", "Ok");
-            //    }
-            //}
+                    Order = DB.PurchaseOrder.GetMappedOrder(Order.OrderId).FirstOrDefault();
+                }
+                if (Order.OrdersDetails != null)
+                {
+                    CartSummary OrderSummary = new CartSummary();
+                    OrderSummary.InvoiceUC.SetFlowDoc(Invoice.GetFlowDocuments(Order));
+                    OrderSummary.ShowDialog();
+                }
+                else
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("Order is Empty", "Empty Order", "Ok");
+                }
+            }
         }
 
         private void Print_Click(object sender, RoutedEventArgs e)
         {
-            //ListBoxItem selectedItem = (ListBoxItem)listOrderAccepted.ItemContainerGenerator.ContainerFromItem(((Button)sender).DataContext);
-            //Order Order = selectedItem.Content as Order;
-            //if (Order != null)
-            //{
-            //    using (UnitOfWork DB = new UnitOfWork(new DAL.DBModel.EPOSDBContext()))
-            //    {
+            ListBoxItem selectedItem = (ListBoxItem)listOrderAccepted.ItemContainerGenerator.ContainerFromItem(((Button)sender).DataContext);
+            PurchaseOrderDTO Order = selectedItem.Content as PurchaseOrderDTO;
+            if (Order != null)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
 
-            //        Order = DB.SaleOrder.GetMappedOrder(Order.OrderId).FirstOrDefault();
-            //    }
-            //    if (Order.OrdersDetails != null)
-            //    {
-            //        Invoice inv = new Invoice();
-            //        inv.DoPrintJob(Order);
-            //    }
-            //    else
-            //    {
-            //        EZYPOS.View.MessageBox.ShowCustom("Order is Empty", "Empty Order", "Ok");
-            //    }
-            //}
+                    Order = DB.PurchaseOrder.GetMappedOrder(Order.OrderId).FirstOrDefault();
+                }
+                if (Order.OrdersDetails != null)
+                {
+                    Invoice inv = new Invoice();
+                    inv.DoPrintJob(Order);
+                }
+                else
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("Order is Empty", "Empty Order", "Ok");
+                }
+            }
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
