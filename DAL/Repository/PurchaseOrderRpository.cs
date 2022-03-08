@@ -57,6 +57,8 @@ namespace DAL.Repository
                     NewOrder.SupplierId = CartOrderToProcess.SupplierId;
                     NewOrder.EmployeeId = ActiveSession.ActiveUser;
                     //NewOrder.OrderCount = 1;
+                    NewOrder.Discount = Convert.ToInt32(CartOrderToProcess.Discount);
+                    NewOrder.DeliveryCharges = Convert.ToInt32(CartOrderToProcess.DeliverCharges);
                     NewOrder.TotalAmount = Convert.ToInt32(CartOrderToProcess.GetNetTotal());
                     Add(NewOrder);
 
@@ -159,12 +161,13 @@ namespace DAL.Repository
             {
                 PurchaseOrderDTO SingleOrder = new PurchaseOrderDTO();
                 SingleOrder.OrderId = SingleItem.Id;
-                //SingleOrder.Discount = (double)SingleItem.DiscountAmount;
                 SingleOrder.PaymentType = SingleItem.PaymentMode;
                 SingleOrder.payment_status = SingleItem.PaymentStatus;
                 SingleOrder.OrderDate = (DateTime)SingleItem.Date;
                 SingleOrder.SupplierId = SingleItem.SupplierId;
-               
+                SingleOrder.DeliverCharges = (double)SingleItem.DeliveryCharges;
+                SingleOrder.Discount = (double)SingleItem.Discount;
+
 
                 foreach (var orderdetail in PurchaseOrderDetail.GetAll().Where(x => x.PurchaseOrderId == SingleItem.Id))
                 {

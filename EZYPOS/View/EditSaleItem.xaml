@@ -60,7 +60,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="300"/>
+            <RowDefinition Height="600"/>
             <RowDefinition  Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -73,18 +73,43 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60"></RowDefinition>
                     <RowDefinition Height="60"></RowDefinition>
+                    <RowDefinition Height="300"></RowDefinition>
                     <RowDefinition Height="50"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Row="0"  Name="txtSalePrice" PreviewTextInput="NumberDecimal_PreviewTextInput"  Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,10,0" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Center" Height="Auto" AcceptsReturn="True" TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Price"  />
+
+                <Grid  Grid.Row="2" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Style="{DynamicResource btn}" Content="1" Margin="49,10,0,0" Click="Button_Click" Grid.ColumnSpan="2"/>
+                    <Button Style="{DynamicResource btn}" Content="5" Margin="8.794,74,0,0" Click="Button_Click" Grid.Column="1"/>
+                    <Button Style="{DynamicResource btn}" Content="6" Margin="101,74,-1,0" Click="Button_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <Button Style="{DynamicResource btn}" Content="2" Margin="8.794,10,0,0" Click="Button_Click" Grid.Column="1"/>
+                    <Button Style="{DynamicResource btn}" Content="3" Margin="101,10,-1,0" Click="Button_Click" HorizontalAlignment="Left" Width="92" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <Button Style="{DynamicResource btn}" Content="7" Margin="49,138,0,0" Click="Button_Click" Grid.ColumnSpan="2"/>
+                    <Button Style="{DynamicResource btn}" Content="4" Margin="49,74,0,0" Click="Button_Click" Grid.ColumnSpan="2"/>
+                    <Button Style="{DynamicResource btn}" Margin="49,202,0,-30" Foreground="White" Content="{materialDesign:PackIcon Kind=Refresh,Size=30}" Click="Button_Click_1" Grid.ColumnSpan="2"/>
+                    <Button Style="{DynamicResource btn}" Content="0" Margin="8.794,202,0,-30" Click="Button_Click" Grid.Column="1"/>
+                    <Button Style="{DynamicResource btn}"  Margin="101,202,-1,0" Foreground="White" Content="{materialDesign:PackIcon Kind=Close,Size=30}" x:Name="btnBackSpace" Click="btnBackSpace_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+
+
+                    <Button Style="{DynamicResource btn}" Content="8" Margin="8.794,138,0,0" Click="Button_Click" Grid.Column="1"/>
+                    <Button Style="{DynamicResource btn}" Content="9" Margin="101,138,-1,0" Click="Button_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+                </Grid>
+
+
+                <TextBox Grid.Row="0" GotFocus="txt_GotFocus"  Name="txtSalePrice" PreviewTextInput="NumberDecimal_PreviewTextInput"  Grid.Column="0" Grid.ColumnSpan="2" Margin="10,0,10,0" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Center" Height="Auto" AcceptsReturn="True" TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Price"  />
 
                 <!--<DatePicker Name="StartDate" Grid.Row="0"  DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"   Grid.Column="0"  materialDesign:HintAssist.Hint="Start Date" Margin="10,0,10,0"  Style="{StaticResource MaterialDesignDatePicker}" />
                 <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="0" Grid.Column="1"  materialDesign:HintAssist.Hint="Expire Date" Margin="10,0,10,0"  Style="{StaticResource MaterialDesignDatePicker}" />-->
-                <TextBox Grid.Row="1"  Name="txtDiscount" PreviewTextInput="NumberDecimal_PreviewTextInput"  Grid.Column="0" Margin="10,0,10,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Center" Height="Auto" AcceptsReturn="True" TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Discount"  />
-                <TextBox Grid.Row="1"  Name="txtQty" PreviewTextInput="Number_PreviewTextInput"  Grid.Column="1" Margin="10,0,10,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Center" Height="Auto" AcceptsReturn="True" TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Quantity"  />
+                <TextBox Grid.Row="1" GotFocus="txt_GotFocus"  Name="txtDiscount" PreviewTextInput="NumberDecimal_PreviewTextInput"  Grid.Column="0" Margin="10,0,10,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Center" Height="Auto" AcceptsReturn="True" TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Discount"  />
+                <TextBox Grid.Row="1" GotFocus="txt_GotFocus"  Name="txtQty" PreviewTextInput="Number_PreviewTextInput"  Grid.Column="1" Margin="10,0,10,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Center" Height="Auto" AcceptsReturn="True" TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Quantity"  />
                 <!--<TextBox Name="txtDiscount" PreviewTextInput="Number_PreviewTextInput"  Padding="10" TextWrapping="Wrap"  Foreground="Gray" Grid.Column="1" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" materialDesign:HintAssist.Hint="Discount"   />-->
                 <!--<TextBox Name="txtQty" PreviewTextInput="Number_PreviewTextInput"  Padding="10" TextWrapping="Wrap"  Foreground="Gray" Grid.Column="0" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" VerticalContentAlignment="Center"  Margin="10,10,10,10" Grid.Row="1" Height="Auto" materialDesign:HintAssist.Hint="Quantity"   />-->
                 <Button Grid.Column="0" Grid.Row="3"  Content="Cancel" Name="Cancel" Click="Cancel_Click"   Style="{DynamicResource btnDanger}" Margin="0,0,5,0" HorizontalAlignment="Right"  ToolTip="Cancel" />

@@ -456,6 +456,8 @@ namespace DAL.DBMODEL
                     .HasColumnType("date")
                     .HasColumnName("date");
 
+                entity.Property(e => e.DeliveryCharges).HasColumnType("decimal(18, 0)");
+
                 entity.Property(e => e.Description)
                     .HasColumnType("text")
                     .HasColumnName("description");

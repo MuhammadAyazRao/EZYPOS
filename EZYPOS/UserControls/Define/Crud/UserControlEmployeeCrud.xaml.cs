@@ -61,14 +61,14 @@ namespace EZYPOS.UserControls
             txtAddress.Text = "";
             txtSalary.Text = "";
             txtCnic.Text = "";
-            txtUserName.Text = "";
+            //txtUserName.Text = "";
             txtPassword.Text = "";
             ddCity.SelectedValue = null;
             ddRole.SelectedValue = null;
             ddSalaryType.SelectedValue = 1;
             txtId.Text = "";
             ckLogin.IsChecked = false;
-            txtUserName.Visibility = Visibility.Collapsed;
+            //txtUserName.Visibility = Visibility.Collapsed;
             txtPassword.Visibility = Visibility.Collapsed;
             JoiningDate.SelectedDate = DateTime.Today;
             SetImage(Environment.CurrentDirectory + @"\Assets\EmployeeImages\No_Image.jpg");
@@ -147,7 +147,7 @@ namespace EZYPOS.UserControls
                 if (EmployeeData?.IsLoginAllowed == true)
                 {
                     ckLogin.IsChecked = true;
-                    txtUserName.Text = EmployeeData?.LoginName;
+                    //txtUserName.Text = EmployeeData?.LoginName;
                     txtPassword.Text = EmployeeData?.Password;
                 }
                 txtId.Text = EmployeeData.Id.ToString();
@@ -223,10 +223,10 @@ namespace EZYPOS.UserControls
                             if(ckLogin.IsChecked == true)
                             {
                                 UpdateEmployee.IsLoginAllowed = true;
-                                if (!string.IsNullOrEmpty(txtUserName.Text))
-                                {
-                                    UpdateEmployee.LoginName = txtUserName.Text;
-                                }
+                                //if (!string.IsNullOrEmpty(txtUserName.Text))
+                                //{
+                                //    UpdateEmployee.LoginName = txtUserName.Text;
+                                //}
                                 if (!string.IsNullOrEmpty(txtPassword.Text))
                                 {
                                     UpdateEmployee.Password = txtPassword.Text;
@@ -279,11 +279,11 @@ namespace EZYPOS.UserControls
             }
             if (ckLogin.IsChecked == true)
             {
-               if(txtUserName.Text == "" || txtPassword.Text =="")
-                {
+               if(/*txtUserName.Text == "" ||*/ txtPassword.Text =="")
+               {
                     EZYPOS.View.MessageBox.ShowCustom("Please Provide UserName and Password.", "Error", "OK");
                     return false;
-                }
+               }
 
             }
             if(Convert.ToInt32(ddSalaryType.SelectedValue) == 2)
@@ -351,7 +351,7 @@ namespace EZYPOS.UserControls
                     if(ckLogin.IsChecked == true)
                     {
                         AddEmployee.IsLoginAllowed = true;
-                        AddEmployee.LoginName = txtUserName.Text;
+                        //AddEmployee.LoginName = txtUserName.Text;
                         AddEmployee.Password = txtPassword.Text;
                     }
                     if (!string.IsNullOrEmpty(UserImage.Source?.ToString()))
@@ -481,12 +481,12 @@ namespace EZYPOS.UserControls
         {
             if(ckLogin.IsChecked == true)
             {
-                txtUserName.Visibility = Visibility.Visible;
+                //txtUserName.Visibility = Visibility.Visible;
                 txtPassword.Visibility = Visibility.Visible;
             }
             else
             {
-                txtUserName.Visibility = Visibility.Collapsed;
+                //txtUserName.Visibility = Visibility.Collapsed;
                 txtPassword.Visibility = Visibility.Collapsed;
             }
         }

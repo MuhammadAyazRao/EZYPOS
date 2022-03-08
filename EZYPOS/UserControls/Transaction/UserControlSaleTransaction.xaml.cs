@@ -61,6 +61,7 @@ namespace EZYPOS.UserControls.Transaction
                 order.payment_status = EditOrder.payment_status;
                 order.OrderDate = EditOrder.OrderDate;
                 order.Discount = EditOrder.Discount;
+                order.DeliverCharges = EditOrder.DeliverCharges;
                 Initialize(EditOrder);
             }
            
@@ -302,10 +303,10 @@ namespace EZYPOS.UserControls.Transaction
                     order.OrdersDetails.RemoveAt(INDEX);
                     listBoxItemCart.Items.RemoveAt(INDEX);
                     EditSaleItem Edit = new EditSaleItem();
-                    Edit.txtSalePrice.Text = orderDetails.Item.price.ToString();
-                    Edit.txtQty.Text = orderDetails.Qty.ToString();
-                    Edit.txtDiscount.Text = orderDetails.ItemDiscount.ToString();
-
+                    Edit.Price = orderDetails.Item.price.ToString();
+                    Edit.Discount = orderDetails.ItemDiscount.ToString();
+                    Edit.Qty = orderDetails.Qty.ToString();
+                    Edit.Refresh();
 
                     if (Edit.ShowDialog() == true)
                     {
@@ -409,7 +410,7 @@ namespace EZYPOS.UserControls.Transaction
             lblDicAmt.Content = order.GetTotalDiscount();
             lblItems.Content = listBoxItemCart.Items.Count;
             lblTotal.Content = order.GetNetTotal();
-
+            lblDeliveryCharges.Content = order.DeliverCharges;
             //ViewHelper.FindChild<Label>(expander, "lblItems").Content = listBoxItemCart.Items.Count;
             //ViewHelper.FindChild<Label>(expander, "lblDicAmt").Content = order.GetTotalDiscount();
             //ViewHelper.FindChild<Label>(expander, "lblTotal").Content = order.GetNetTotal();
@@ -881,8 +882,8 @@ namespace EZYPOS.UserControls.Transaction
 
         private void orderDiscount_Click(object sender, RoutedEventArgs e)
         {
-            Pinverification pinverify = new Pinverification();
-            if (pinverify.ShowDialog() == true)
+            //Pinverification pinverify = new Pinverification();
+            //if (pinverify.ShowDialog() == true)
             {
                 Discount popup = new Discount();
                 if (popup.ShowDialog() == true)
@@ -905,6 +906,18 @@ namespace EZYPOS.UserControls.Transaction
 
         }
 
+        //--- Delivery Charges logic 
+        private void DeliveryCharges_Click(object sender, RoutedEventArgs e)
+        {
+            DeliveryCharges popup = new DeliveryCharges();
+            if (popup.ShowDialog() == true)
+            {
+                double digit = Convert.ToDouble(popup.pin);
+                order.DeliverCharges = digit;
+                UpdateBillSummary();
+
+            }
+        }   //--- end Delivery Charges logic
         private void btnPrint_Click(object sender, RoutedEventArgs e)
         {
             Invoice inv = new Invoice();

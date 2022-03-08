@@ -259,10 +259,14 @@
                     <Label Content="Total Charges" Grid.Column="1" Foreground="{DynamicResource Danger}" FontWeight="Bold" VerticalAlignment="Bottom" Margin="1,0,45,86" Height="26"/>
                     <Label Name="lblTotal" Content="0.00" ContentStringFormat="C" FontWeight="Bold" Foreground="{DynamicResource Danger}"  Grid.Column="1" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="Auto" Margin="95,0,10,0" Height="26"/>
 
+                    <Label Content="Delivery Charges" Grid.Column="1" Foreground="{DynamicResource SharpBlue}" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left" Width="99" Margin="1,26,0,0" Height="26" VerticalAlignment="Top" />
+                    <Label x:Name="lblDeliveryCharges" Grid.Column="1" Foreground="{DynamicResource SharpBlue}" Content="0.00" ContentStringFormat="C" Grid.Row="0" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalAlignment="Top" Width="Auto" Margin="95,26,10,0" Height="26" RenderTransformOrigin="0.5,0.308"/>
+                    
                     <WrapPanel x:Name="stackBtn" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="10,62,0,0" >
                         <Button Content="{materialDesign:PackIcon Kind=FormatListText,Size=30}" Name="Back" ToolTip="Go to View Order" Click="Back_Click" Style="{DynamicResource btnExpander}"/>
                         <Button Content="{materialDesign:PackIcon Kind=Discount,Size=30}" Name="orderDiscount" ToolTip="Order Discount" Click="orderDiscount_Click" Style="{DynamicResource btnExpander}"/>
-                        <Button Content="{materialDesign:PackIcon Kind=Prize,Size=30}" ToolTip="Coupon"  Click="Button_Coupon" Style="{DynamicResource btnExpander}"/>
+                        <Button Content="{materialDesign:PackIcon Kind=LorryDelivery,Size=30}" ToolTip="DeliveryCharges"  Click="DeliveryCharges_Click" Style="{DynamicResource btnExpander}"/>
+                        <!--<Button Content="{materialDesign:PackIcon Kind=Prize,Size=30}" ToolTip="Coupon"  Click="Button_Coupon" Style="{DynamicResource btnExpander}"/>-->
                         <!--<Button Content="Eat-IN" x:Name="btnEatIn" Click="btnEatIn_Click" Style="{DynamicResource btnExpander}">
                             <Button.Template>
                                 <ControlTemplate TargetType="{x:Type Button}">

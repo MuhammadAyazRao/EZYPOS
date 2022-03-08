@@ -40,6 +40,7 @@ namespace DAL.DBMODEL
         public long OnlineAmount { get; set; }
         public int IsPrinted { get; set; }
         public long? ServiceCharge { get; set; }
+        public decimal? DeliveryCharges { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Emplyee Employee { get; set; }

@@ -20,9 +20,22 @@ namespace EZYPOS.View
     /// </summary>
     public partial class EditPurchaseItem : Window
     {
+        string FocusedTextBox = "";
+        public DateTime Start_Date = DateTime.Today;
+        public DateTime End_Date = DateTime.Today;
+        public string Discount = "0";
+        public string Qty = "0";
         public EditPurchaseItem()
         {
             InitializeComponent();
+            Refresh();
+        }
+        public void Refresh()
+        {
+            StartDate.SelectedDate = Start_Date;
+            EndDate.SelectedDate = End_Date;
+            txtDiscount.Text = Discount;
+            txtQty.Text = Qty;
         }
         private void Number_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
@@ -40,6 +53,89 @@ namespace EZYPOS.View
         {
             this.DialogResult = true;
             this.Close();
+        }
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Button btn = (Button)sender;
+                if (btn != null)
+                {
+                    if (FocusedTextBox == "txtDiscount")
+                    {
+                        if (txtDiscount.Text == "0")
+                        {
+                            txtDiscount.Text = (string)btn.Content;
+                        }
+                        else
+                        {
+                            txtDiscount.Text += (string)btn.Content;
+                        }
+                    }
+
+                    if (FocusedTextBox == "txtQty")
+                    {
+                        if (txtQty.Text == "0")
+                        {
+                            txtQty.Text = (string)btn.Content;
+                        }
+                        else
+                        {
+                            txtQty.Text += (string)btn.Content;
+                        }
+                    }
+                }
+            }
+            catch (Exception exp)
+            {
+                EZYPOS.View.MessageBox.ShowCustom(exp.Message, "Error", "ok");
+            }
+
+
+        }
+
+        private void btnBackSpace_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (FocusedTextBox == "txtDiscount")
+                {
+                    if (txtDiscount.Text != string.Empty)
+                    {
+                        txtDiscount.Text = txtDiscount.Text.Remove(txtDiscount.Text.Length - 1);
+                    }
+                }
+                if (FocusedTextBox == "txtQty")
+                {
+                    if (txtQty.Text != string.Empty)
+                    {
+                        txtQty.Text = txtQty.Text.Remove(txtQty.Text.Length - 1);
+                    }
+                }
+
+            }
+            catch (Exception exp)
+            { EZYPOS.View.MessageBox.ShowCustom(exp.Message, "Error", "ok"); }
+        }
+
+
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+        }
+        private void txt_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            switch (tb.Name)
+            {
+                case "txtDiscount":
+                    FocusedTextBox = "txtDiscount";
+                    break;
+                case "txtQty":
+                    FocusedTextBox = "txtQty";
+                    break;
+            }
         }
     }
 }

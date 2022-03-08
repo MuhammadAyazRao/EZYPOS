@@ -46,6 +46,7 @@ namespace DAL.Repository
                     SaleOrder NewOrder = new SaleOrder();
                     NewOrder.CashAmount = (long)CartOrderToProcess.GetNetTotal();
                     NewOrder.DiscountAmount = (long)CartOrderToProcess.GetTotalDiscount();
+                    NewOrder.DeliveryCharges = Convert.ToDecimal(CartOrderToProcess.DeliverCharges);
                     NewOrder.Date = DateTime.Today;
                     NewOrder.PaymentMode = CartOrderToProcess.PaymentType;
                     NewOrder.OrderDate = CartOrderToProcess.OrderDate;
@@ -159,6 +160,7 @@ namespace DAL.Repository
                 Order SingleOrder = new Order();
                 SingleOrder.OrderId = SingleItem.Id;
                 SingleOrder.Discount = (double)SingleItem.DiscountAmount;
+                SingleOrder.DeliverCharges = (double)SingleItem.DeliveryCharges;
                 SingleOrder.PaymentType= SingleItem.PaymentMode;
                 SingleOrder.payment_status = SingleItem.PaymentStatus;
                 SingleOrder.OrderDate =(DateTime) SingleItem.OrderDate;

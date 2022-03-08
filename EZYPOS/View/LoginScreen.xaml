@@ -11,7 +11,7 @@
     <Window.Resources>
         <Style TargetType="Label" x:Key="NumPad">
             <Setter Property="Foreground" Value="{DynamicResource White}"/>
-            <Setter Property="Background" Value="{DynamicResource Orage}"/>
+            <Setter Property="Background" Value="{DynamicResource DarkBlue}"/>
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="20"/>
@@ -63,8 +63,8 @@
                                             MaxHeight="{TemplateBinding MaxHeight}"
                                             MaxWidth="{TemplateBinding MaxWidth}">
                                 <ContentPresenter
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"/>
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
                             </Border>
                         </ControlTemplate>
                     </Setter.Value>
@@ -96,13 +96,23 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="67"/>
-            <RowDefinition/>
+            <RowDefinition Height="700" />
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Label Background="{DynamicResource DarkBlue}" Content="EPOS-NOW" Foreground="White" FontFamily="Raleway" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="30" Grid.ColumnSpan="3"/>
         <Label x:Name="label" Content="LOGIN" BorderBrush="White" BorderThickness="0 0 0 2" Foreground="{DynamicResource DarkBlue}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="25" FontWeight="SemiBold" FontFamily="Raleway" Grid.Row="1" VerticalAlignment="Top" Height="61" Margin="0,69,0,0" Grid.Column="1"/>
-        <Button Click="btnExit_Click" x:Name="btnExit" Content="Exit" Margin="0,261,148,0" Grid.Row="1" Width="126" Style="{DynamicResource btnDanger}" HorizontalAlignment="Right" Height="47" VerticalAlignment="Top" Grid.Column="1"/>
+        <Button Click="btnExit_Click" x:Name="btnExit" Content="Exit" Margin="0,520,230,0" Grid.Row="1" Width="126" Style="{DynamicResource btnDanger}" HorizontalAlignment="Right" Height="47" VerticalAlignment="Top" Grid.Column="1"/>
+        <Button Content="Login" Click="btnLogin_Click" HorizontalAlignment="Right" Style="{DynamicResource btnPrimery}" Margin="0,520,95,0" Grid.Row="1" VerticalAlignment="Top" Width="126" Height="47" Grid.Column="1"/>
         <Grid Height="42" Grid.Row="1" VerticalAlignment="Top" Margin="0,144,0,0" Grid.Column="1">
-            <TextBox   x:Name="txtUser"  materialDesign:HintAssist.Hint="{materialDesign:PackIcon Kind=Account,Size=30}" materialDesign:TextFieldAssist.HasClearButton="True"  />
+            <ComboBox  Name="ddEmployee"
+                           DisplayMemberPath="Name" 
+                           SelectedValuePath="Id" 
+                           Grid.Row="2" Grid.Column="1" 
+                           Margin="20,10,20,10" Height="40"
+                          materialDesign:HintAssist.Hint="Search Employee"                           
+                          materialDesign:HintAssist.HintOpacity=".26"                          
+                          IsEditable="True"/>
+            <!--<TextBox   x:Name="txtUser"  materialDesign:HintAssist.Hint="{materialDesign:PackIcon Kind=Account,Size=30}" materialDesign:TextFieldAssist.HasClearButton="True"  />-->
             <!--<TextBox Name="txtUser" Padding="40 7" FontSize="15" Foreground="Gray"/>
             <Image Source="..\Assets\icons\man-user (1).png" Margin="10,0,0,0" HorizontalAlignment="Left" Width="31"/>-->
         </Grid>
@@ -113,7 +123,26 @@
             </Grid.ColumnDefinitions>
 
             <PasswordBox  x:Name="Password"  materialDesign:HintAssist.Hint="{materialDesign:PackIcon Kind=Lock,Size=30}"  materialDesign:TextFieldAssist.HasClearButton="True" Grid.ColumnSpan="2"  />
+            
         </Grid>
-        <Button Content="Login" Click="btnLogin_Click" HorizontalAlignment="Right" Style="{DynamicResource btnPrimery}" Margin="0,261,5,0" Grid.Row="1" VerticalAlignment="Top" Width="126" Height="47" Grid.Column="1"/>
+        <Grid Margin="80,200,0,0" Grid.Row="1" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="83*"/>
+                <ColumnDefinition Width="251*"/>
+                <ColumnDefinition Width="0*"/>
+            </Grid.ColumnDefinitions>
+            <Button Style="{DynamicResource btn}" Content="1" Margin="7,49,0,0" Click="Button1_Click" Grid.ColumnSpan="2"/>
+            <Button Style="{DynamicResource btn}" Content="5" Margin="8.794,113,0,0" Click="Button1_Click" Grid.Column="1"/>
+            <Button Style="{DynamicResource btn}" Content="6" Margin="97,113,-1,0" Click="Button1_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+            <Button Style="{DynamicResource btn}" Content="2" Margin="8.794,49,0,0" Click="Button1_Click" Grid.Column="1"/>
+            <Button Style="{DynamicResource btn}" Content="3" Margin="97,49,-1,0" Click="Button1_Click" HorizontalAlignment="Left" Width="92" Grid.Column="1" Grid.ColumnSpan="2"/>
+            <Button Style="{DynamicResource btn}" Content="7" Margin="7,177,0,0" Click="Button1_Click" Grid.ColumnSpan="2"/>
+            <Button Style="{DynamicResource btn}" Content="4" Margin="7,113,0,0" Width="82" Click="Button1_Click" Grid.ColumnSpan="2"/>
+            <Button Style="{DynamicResource btn}" Margin="7,241,0,-30" Foreground="White" Content="{materialDesign:PackIcon Kind=Refresh,Size=30}" Click="Button_Click_1" Grid.ColumnSpan="2"/>
+            <Button Style="{DynamicResource btn}" Content="0" Margin="8.794,241,0,-30" Click="Button1_Click" Grid.Column="1"/>
+            <Button Style="{DynamicResource btn}"  Margin="97,241,-1,0" Foreground="White" Content="{materialDesign:PackIcon Kind=Close,Size=30}" x:Name="btnBackSpace" Click="btnBackSpace_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+            <Button Style="{DynamicResource btn}" Content="8" Margin="8.794,177,0,0" Click="Button1_Click" Grid.Column="1"/>
+            <Button Style="{DynamicResource btn}" Content="9" Margin="97,177,-1,0" Click="Button1_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+        </Grid>
     </Grid>
 </Window>
