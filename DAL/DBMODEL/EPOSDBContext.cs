@@ -279,11 +279,19 @@ namespace DAL.DBMODEL
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.Property(e => e.Createdon).HasColumnType("datetime");
+                entity.Property(e => e.Createdon).HasColumnType("date");
 
-                entity.Property(e => e.Lastupdated).HasColumnType("datetime");
+                entity.Property(e => e.Lastupdated).HasColumnType("date");
+
+                entity.Property(e => e.PurchasePrice).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.RetailPrice).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.Size).HasColumnType("decimal(18, 2)");
 
                 entity.Property(e => e.Unit).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Wholesaleprice).HasColumnType("decimal(18, 3)");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Products)
@@ -365,11 +373,17 @@ namespace DAL.DBMODEL
             {
                 entity.ToTable("PurchaseOrder");
 
-                entity.Property(e => e.Date).HasColumnType("datetime");
+                entity.Property(e => e.Date).HasColumnType("date");
+
+                entity.Property(e => e.DeliveryCharges).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.Discount).HasColumnType("decimal(18, 3)");
 
                 entity.Property(e => e.PaymentMode).HasMaxLength(50);
 
                 entity.Property(e => e.PaymentStatus).HasMaxLength(50);
+
+                entity.Property(e => e.TotalAmount).HasColumnType("decimal(18, 3)");
 
                 entity.HasOne(d => d.Employee)
                     .WithMany(p => p.PurchaseOrders)
@@ -392,13 +406,21 @@ namespace DAL.DBMODEL
             {
                 entity.ToTable("Purchase_OrderDetail");
 
-                entity.Property(e => e.ExpiryDate).HasColumnType("datetime");
+                entity.Property(e => e.Discount).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.ExpiryDate).HasColumnType("date");
 
                 entity.Property(e => e.ItemName)
                     .HasMaxLength(1000)
                     .HasColumnName("itemName");
 
-                entity.Property(e => e.StartDate).HasColumnType("datetime");
+                entity.Property(e => e.PurchasePrice).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.SalePrice).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.StartDate).HasColumnType("date");
+
+                entity.Property(e => e.Total).HasColumnType("decimal(18, 3)");
             });
 
             modelBuilder.Entity<SaleOrder>(entity =>
@@ -419,7 +441,9 @@ namespace DAL.DBMODEL
                     .IsUnicode(false)
                     .HasColumnName("addon");
 
-                entity.Property(e => e.CashAmount).HasColumnName("Cash_Amount");
+                entity.Property(e => e.CashAmount)
+                    .HasColumnType("decimal(18, 3)")
+                    .HasColumnName("Cash_Amount");
 
                 entity.Property(e => e.Coupon)
                     .HasMaxLength(80)
@@ -456,13 +480,15 @@ namespace DAL.DBMODEL
                     .HasColumnType("date")
                     .HasColumnName("date");
 
-                entity.Property(e => e.DeliveryCharges).HasColumnType("decimal(18, 0)");
+                entity.Property(e => e.DeliveryCharges).HasColumnType("decimal(18, 3)");
 
                 entity.Property(e => e.Description)
                     .HasColumnType("text")
                     .HasColumnName("description");
 
-                entity.Property(e => e.DiscountAmount).HasColumnName("discount_amount");
+                entity.Property(e => e.DiscountAmount)
+                    .HasColumnType("decimal(18, 3)")
+                    .HasColumnName("discount_amount");
 
                 entity.Property(e => e.DiscountDesc)
                     .HasMaxLength(255)
@@ -485,7 +511,9 @@ namespace DAL.DBMODEL
                     .HasColumnName("is_updated")
                     .HasDefaultValueSql("('no')");
 
-                entity.Property(e => e.OnlineAmount).HasColumnName("Online_Amount");
+                entity.Property(e => e.OnlineAmount)
+                    .HasColumnType("decimal(18, 3)")
+                    .HasColumnName("Online_Amount");
 
                 entity.Property(e => e.OrderCount).HasColumnName("order_count");
 
@@ -509,9 +537,13 @@ namespace DAL.DBMODEL
 
                 entity.Property(e => e.RestaurantId).HasColumnName("restaurant_id");
 
-                entity.Property(e => e.ServiceCharge).HasColumnName("Service_Charge");
+                entity.Property(e => e.ServiceCharge)
+                    .HasColumnType("decimal(18, 3)")
+                    .HasColumnName("Service_Charge");
 
-                entity.Property(e => e.Total).HasColumnName("total");
+                entity.Property(e => e.Total)
+                    .HasColumnType("decimal(18, 3)")
+                    .HasColumnName("total");
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
 
@@ -580,6 +612,7 @@ namespace DAL.DBMODEL
                     .HasColumnName("item_name");
 
                 entity.Property(e => e.ItemPrice)
+                    .HasColumnType("decimal(18, 3)")
                     .HasColumnName("item_price")
                     .HasDefaultValueSql("('0')");
 
@@ -594,6 +627,8 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.PrintSort)
                     .HasColumnName("print_sort")
                     .HasDefaultValueSql("('0')");
+
+                entity.Property(e => e.PurchasePrice).HasColumnType("decimal(18, 3)");
 
                 entity.Property(e => e.SubCatId).HasColumnName("sub_cat_id");
 

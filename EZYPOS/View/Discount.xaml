@@ -42,7 +42,7 @@
                 <Button Style="{DynamicResource btn}" Content="3" Margin="97,49,-1,0" Click="Button_Click" HorizontalAlignment="Left" Width="92" Grid.Column="1" Grid.ColumnSpan="2"/>
                 <Button Style="{DynamicResource btn}" Content="7" Margin="0,177,0,0" Click="Button_Click" Grid.ColumnSpan="2"/>
                 <Button Style="{DynamicResource btn}" Content="4" Margin="0,113,0,0" Click="Button_Click" Grid.ColumnSpan="2"/>
-                <Button Style="{DynamicResource btn}" Margin="0,241,0,-30" Foreground="White" Content="{materialDesign:PackIcon Kind=Refresh,Size=30}" Click="Button_Click_1" Grid.ColumnSpan="2"/>
+                <Button Style="{DynamicResource btn}" Margin="0,241,0,-30" Foreground="White" Content="." Click="DotClick" Grid.ColumnSpan="2"/>
                 <Button Style="{DynamicResource btn}" Content="0" Margin="8.794,241,0,-30" Click="Button_Click" Grid.Column="1"/>
                 <Button Style="{DynamicResource btn}"  Margin="97,241,-1,0" Foreground="White" Content="{materialDesign:PackIcon Kind=Close,Size=30}" x:Name="btnBackSpace" Click="btnBackSpace_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
 
@@ -64,8 +64,9 @@
 
                 
             </StackPanel>
-            <Button x:Name="btndiscountpay" Content="Apply" Click="btndiscountpay_Click" Style="{DynamicResource btnSuccess}" HorizontalAlignment="Left" Margin="20,445,0,0" VerticalAlignment="Top" Width="150" Height="50"/>
-            <Button x:Name="btndiscountcancel" Content="Cancel" Click="btndiscountcancel_Click" Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Margin="180,445,0,0" VerticalAlignment="Top" Width="150" Height="50"/>
+            <Button x:Name="btnrefresh" Content="{materialDesign:PackIcon Kind=Refresh,Size=30}" Click="Button_Click_1" Style="{DynamicResource btnPrimery}" HorizontalAlignment="Left" Margin="20,445,0,0" VerticalAlignment="Top" Width="100" Height="50"/>
+            <Button x:Name="btndiscountpay" Content="Apply" Click="btndiscountpay_Click" Style="{DynamicResource btnSuccess}" HorizontalAlignment="Left" Margin="125,445,0,0" VerticalAlignment="Top" Width="100" Height="50"/>
+            <Button x:Name="btndiscountcancel" Content="Cancel" Click="btndiscountcancel_Click" Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Margin="230,445,0,0" VerticalAlignment="Top" Width="100" Height="50"/>
 
         </Grid>
         </Grid>

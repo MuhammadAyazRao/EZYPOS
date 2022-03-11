@@ -59,7 +59,25 @@ namespace EZYPOS.View
             if (e.Key == Key.Enter)
             { btnAdd_Click(null, null); }
         }
-
+        private void DotClick(object sender, RoutedEventArgs e)
+        {
+            if (lblPin.Content.ToString().Contains("."))
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Mathematical Expression can not have two dots.", "Mathematical Error", "ok");
+            }
+            else if (lblPin.Content.ToString() == "0" || lblPin.Content.ToString() == "")
+            {
+                lblPin.Content = "0.";
+                pin = "0.";
+            }
+            else if (((string)lblPin.Content != string.Empty) && (pin != string.Empty) && pin.Length > 0)
+            {
+                lblPin.Content = lblPin.Content.ToString() + ".";
+                pin = pin.ToString() + ".";
+                //if (OnButtonPressed != null)
+                //    OnButtonPressed(this, EventArgs.Empty);
+            }
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             try

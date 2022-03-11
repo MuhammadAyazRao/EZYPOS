@@ -74,7 +74,7 @@ namespace EZYPOS.UserControls.Transaction
             btnPay.Visibility = Visibility.Collapsed;
             foreach (var odritem in Odr?.OrdersDetails)
             {
-                AddToCart(odritem?.Item.name, (long)odritem?.Item.price, (long)odritem?.Item.PurchasePrice, (int) odritem?.Item.id, (int)odritem?.Qty);
+                AddToCart(odritem?.Item.name, (decimal)odritem?.Item.price, (decimal)odritem?.Item.PurchasePrice, (int) odritem?.Item.id, (int)odritem?.Qty);
             }
         }
         public Order order = new Order();
@@ -83,7 +83,7 @@ namespace EZYPOS.UserControls.Transaction
             //if (listBoxItemCart.Items.Count != 0)
             {
 
-                order.DeliverCharges = Convert.ToDouble(parameter);
+                order.DeliverCharges = Convert.ToDecimal(parameter);
                 UpdateBillSummary();
             }
 
@@ -783,7 +783,7 @@ namespace EZYPOS.UserControls.Transaction
             CartVisibility();
             UpdateBillSummary();
         }
-        private void AddToCart(string Name, long Price, long PurchasePrice, int ProductId, int Qty = 1, int Discount = 0)
+        private void AddToCart(string Name, decimal Price, decimal PurchasePrice, int ProductId, int Qty = 1, decimal Discount = 0)
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {                
@@ -888,7 +888,7 @@ namespace EZYPOS.UserControls.Transaction
                 Discount popup = new Discount();
                 if (popup.ShowDialog() == true)
                 {
-                    double digit = Convert.ToDouble(popup.pin);
+                    decimal digit = Convert.ToDecimal(popup.pin);
                     if (popup.DiscountType.SelectedIndex == 0)
                     {
                         ActiveSession.order_Discount_percentage = 0;
@@ -896,7 +896,7 @@ namespace EZYPOS.UserControls.Transaction
                     }
                     else if (popup.DiscountType.SelectedIndex == 1)
                     {
-                        ActiveSession.order_Discount_percentage = digit;
+                        ActiveSession.order_Discount_percentage = Convert.ToDecimal(digit);
                         order.Discount = (digit / 100) * order.GetTotal();
                     }
                     UpdateBillSummary();
@@ -912,7 +912,7 @@ namespace EZYPOS.UserControls.Transaction
             DeliveryCharges popup = new DeliveryCharges();
             if (popup.ShowDialog() == true)
             {
-                double digit = Convert.ToDouble(popup.pin);
+                decimal digit = Convert.ToDecimal(popup.pin);
                 order.DeliverCharges = digit;
                 UpdateBillSummary();
 
@@ -931,7 +931,7 @@ namespace EZYPOS.UserControls.Transaction
             ProductDTO Product = selectedItem.Content as ProductDTO;
             if (Product != null)
             {
-              AddToCart(Product.ProductName, Product.RetailPrice, (long)Product?.PurchasePrice, Product.Id);            
+              AddToCart(Product.ProductName, (decimal)Product.RetailPrice, (decimal)Product?.PurchasePrice, Product.Id);            
             }           
         }
 
@@ -975,7 +975,7 @@ namespace EZYPOS.UserControls.Transaction
                     var item = GetProductsbycode(Barcode.Text);
                     if (item != null)
                     {
-                        AddToCart(item.ProductName, item.RetailPrice, (long)item?.PurchasePrice, item.Id);
+                        AddToCart(item.ProductName, (decimal)item.RetailPrice, (decimal)item?.PurchasePrice, item.Id);
                         listKitchenLineItems.ItemsSource = null;
                     }
                     else

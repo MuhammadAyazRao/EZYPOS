@@ -19,9 +19,9 @@ namespace DAL.DBMODEL
         public DateTime Date { get; set; }
         public string PaymentStatus { get; set; }
         public string PaymentMode { get; set; }
-        public int? Discount { get; set; }
-        public int? DeliveryCharges { get; set; }
-        public int? TotalAmount { get; set; }
+        public decimal? Discount { get; set; }
+        public decimal? DeliveryCharges { get; set; }
+        public decimal? TotalAmount { get; set; }
 
         public virtual Emplyee Employee { get; set; }
         public virtual Supplier Supplier { get; set; }

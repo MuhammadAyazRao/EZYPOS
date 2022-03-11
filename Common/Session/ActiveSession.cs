@@ -19,7 +19,7 @@ namespace Common.Session
         public static  object Setting = null;
         #endregion
         public static bool PrintLogo = true;
-        public static double order_Discount_percentage;
+        public static decimal order_Discount_percentage;
         public delegate void CommunucationHandler(object parameter);
         
         public static event CommunucationHandler NavigateToHomeView;

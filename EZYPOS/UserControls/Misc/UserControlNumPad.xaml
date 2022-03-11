@@ -15,7 +15,9 @@
         <Button Style="{DynamicResource btn}" Content="3" Margin="184,49,-2,0" Click="Button_Click" HorizontalAlignment="Left" Width="92"/>
         <Button Style="{DynamicResource btn}" Content="7" Margin="0,177,0,0" Click="Button_Click"/>
         <Button Style="{DynamicResource btn}" Content="4" Margin="0,113,0,0" Click="Button_Click"/>
-        <Button Style="{DynamicResource btn}" Margin="0,241,0,0" Click="Button_Click_1">
+        <Button Style="{DynamicResource btn}" Content="." Margin="0,241,0,0" Click="DotClick"/>
+
+        <!--<Button Style="{DynamicResource btn}" Margin="0,241,0,0" Click="Button_Click_1">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Label Style="{DynamicResource NumPad}">
@@ -23,7 +25,7 @@
                     </Label>
                 </ControlTemplate>
             </Button.Template>
-        </Button>
+        </Button>-->
         <Button Style="{DynamicResource btn}" Content="0" Margin="92,241,0,0" Click="Button_Click"/>
         <Button Style="{DynamicResource btn}" Content="Back Space" Margin="184,241,-1,0" x:Name="btnBackSpace" Click="btnBackSpace_Click">
             <Button.Template>

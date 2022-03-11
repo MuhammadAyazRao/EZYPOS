@@ -22,13 +22,13 @@ namespace DAL.DBMODEL
         public bool? Isdeleted { get; set; }
         public int? GroupId { get; set; }
         public int? ShelfId { get; set; }
-        public long RetailPrice { get; set; }
-        public long? Wholesaleprice { get; set; }
-        public long PurchasePrice { get; set; }
+        public decimal RetailPrice { get; set; }
+        public decimal? Wholesaleprice { get; set; }
+        public decimal PurchasePrice { get; set; }
         public DateTime? Lastupdated { get; set; }
         public int? Createdby { get; set; }
         public DateTime? Createdon { get; set; }
-        public int? Size { get; set; }
+        public decimal? Size { get; set; }
         public int? Unit { get; set; }
 
         public virtual ProductCategory Category { get; set; }

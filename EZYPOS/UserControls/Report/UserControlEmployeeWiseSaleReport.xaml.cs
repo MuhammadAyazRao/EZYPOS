@@ -60,7 +60,7 @@ namespace EZYPOS.UserControls.Report
                 var Items = GetSaleOrders();
                 string CustomerName = "";
                 string EmployeeName = "";
-                long GrandTotal = 0;
+                decimal GrandTotal = 0;
                 myList.Clear();
                 foreach (var item in Items)
                 {
@@ -117,7 +117,7 @@ namespace EZYPOS.UserControls.Report
                             Items = Items.Where(x => x.Id == Convert.ToInt32(filter)).ToList();
                             string CustomerName = "";
                             string EmployeeName = "";
-                            long GrandTotal = 0;
+                            decimal GrandTotal = 0;
                             myList.Clear();
                             foreach (var item in Items)
                             {
@@ -134,7 +134,7 @@ namespace EZYPOS.UserControls.Report
                             var Items = GetSaleOrders();
                             string CustomerName = "";
                             string EmployeeName = "";
-                            long GrandTotal = 0;
+                            decimal GrandTotal = 0;
                             myList.Clear();
                             foreach (var item in Items)
                             {
@@ -187,7 +187,7 @@ namespace EZYPOS.UserControls.Report
                             string CustomerName = "";
                             string EmployeeName = "";
                             string PaymentMode = "";
-                            long GrandTotal = 0;
+                            decimal GrandTotal = 0;
                             myList.Clear();
                             foreach (var item in Items)
                             {

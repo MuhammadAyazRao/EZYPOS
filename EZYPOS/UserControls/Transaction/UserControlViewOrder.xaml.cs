@@ -54,7 +54,7 @@ namespace EZYPOS.UserControls.Transaction
                 listOrderAccepted.Items.Clear();
                 foreach (var item in DB.SaleOrder.GetMappedOrder(0))
                 {
-                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, payment_status = item.payment_status, Instrictions = item.PaymentType, OrderCount = (int) item.GetNetTotal(), OrderDate = item.OrderDate }); ;
+                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, payment_status = item.payment_status, Instrictions = item.PaymentType, OrderCount =  item.GetNetTotal(), OrderDate = item.OrderDate }); ;
 
                 }                
             }           

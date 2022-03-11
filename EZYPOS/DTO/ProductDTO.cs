@@ -17,9 +17,9 @@ namespace EZYPOS.DTO
         public string SubcategoryName{ get; set; }
         public bool? Isdeleted { get; set; }
         public int? GroupName { get; set; }
-        public long RetailPrice { get; set; }
-        public long? Wholesaleprice { get; set; }
-        public long? PurchasePrice { get; set; }
+        public decimal RetailPrice { get; set; }
+        public decimal? Wholesaleprice { get; set; }
+        public decimal? PurchasePrice { get; set; }
         public DateTime? Lastupdated { get; set; }
         public int? Createdby { get; set; }
         public DateTime? Createdon { get; set; }

@@ -55,7 +55,7 @@ namespace EZYPOS.UserControls.Transaction
             btnPay.Visibility = Visibility.Collapsed;
             foreach (var odritem in Odr?.OrdersDetails)
             {
-                AddToCart(odritem?.Item.name, (long)odritem?.Item.price, (int)odritem?.Item.id, (int)odritem?.Qty);
+                AddToCart(odritem?.Item.name, (decimal)odritem?.Item.price, (int)odritem?.Item.id, (int)odritem?.Qty);
             }
         }
         public PurchaseOrderDTO order = new PurchaseOrderDTO();
@@ -64,7 +64,7 @@ namespace EZYPOS.UserControls.Transaction
             //if (listBoxItemCart.Items.Count != 0)
             {
 
-                order.DeliverCharges = Convert.ToDouble(parameter);
+                order.DeliverCharges = Convert.ToDecimal(parameter);
                 UpdateBillSummary();
             }
 
@@ -659,7 +659,7 @@ namespace EZYPOS.UserControls.Transaction
             CartVisibility();
             UpdateBillSummary();
         }
-        private void AddToCart(string Name, long Price, int ProductId, int Qty = 1, int Discount = 0)
+        private void AddToCart(string Name, decimal Price, int ProductId, int Qty = 1, int Discount = 0)
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
@@ -758,7 +758,7 @@ namespace EZYPOS.UserControls.Transaction
                 Discount popup = new Discount();
                 if (popup.ShowDialog() == true)
                 {
-                    double digit = Convert.ToDouble(popup.pin);
+                    decimal digit = Convert.ToDecimal(popup.pin);
                     if (popup.DiscountType.SelectedIndex == 0)
                     {
                         ActiveSession.order_Discount_percentage = 0;
@@ -866,7 +866,7 @@ namespace EZYPOS.UserControls.Transaction
             DeliveryCharges popup = new DeliveryCharges();
             if (popup.ShowDialog() == true)
             {
-                double digit = Convert.ToDouble(popup.pin);
+                decimal digit = Convert.ToDecimal(popup.pin);
                 order.DeliverCharges = digit;
                 UpdateBillSummary();
             }

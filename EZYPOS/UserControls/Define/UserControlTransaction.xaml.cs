@@ -38,7 +38,7 @@ namespace EZYPOS.UserControls
             //if (listBoxItemCart.Items.Count != 0)
             {
 
-                order.DeliverCharges = Convert.ToDouble(parameter);
+                order.DeliverCharges = Convert.ToDecimal(parameter);
                 UpdateBillSummary();
             }
 
@@ -748,7 +748,7 @@ namespace EZYPOS.UserControls
             {
                 Discount popup = new Discount();
                 if(popup.ShowDialog()==true)
-                {   double digit= Convert.ToDouble(popup.pin);
+                {   decimal digit= Convert.ToDecimal(popup.pin);
                     if (popup.DiscountType.SelectedIndex == 0)
                     {
                         ActiveSession.order_Discount_percentage = 0;

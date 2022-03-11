@@ -56,7 +56,7 @@ namespace EZYPOS.UserControls.Report
                 var Items = DB.PurchaseOrder.GetAll().Where(x => x.Date >= Sdate && x.Date <= Edate).ToList();
                 string SupplierName = "";
                 string EmployeeName = "";
-                int? GrandTotal = 0;
+                decimal? GrandTotal = 0;
                 myList.Clear();
                 foreach(var item in Items)
                 {
@@ -97,7 +97,7 @@ namespace EZYPOS.UserControls.Report
                             var Items = DB.PurchaseOrder.GetAll().Where(x => x.Date >= Sdate && x.Date <= Edate).ToList();
                             string SupplierName = "";
                             string EmployeeName = "";
-                            int? GrandTotal = 0;
+                            decimal? GrandTotal = 0;
                             myList.Clear();
                             foreach (var item in Items)
                             {
@@ -117,7 +117,7 @@ namespace EZYPOS.UserControls.Report
                             var Items = DB.PurchaseOrder.GetAll().Where(x => x.Date >= Sdate && x.Date <= Edate).ToList();
                             string SupplierName = "";
                             string EmployeeName = "";
-                            int? GrandTotal = 0;
+                            decimal? GrandTotal = 0;
                             myList.Clear();
                             foreach (var item in Items)
                             {
@@ -141,7 +141,7 @@ namespace EZYPOS.UserControls.Report
                             var Items = DB.PurchaseOrder.GetAll().Where(x => x.Date >= Sdate && x.Date <= Edate).ToList();
                             string SupplierName = "";
                             string EmployeeName = "";
-                            int? GrandTotal = 0;
+                            decimal? GrandTotal = 0;
                             myList.Clear();
                             foreach (var item in Items)
                             {
@@ -161,7 +161,7 @@ namespace EZYPOS.UserControls.Report
                             var Items = DB.PurchaseOrder.GetAll().Where(x => x.Date >= Sdate && x.Date <= Edate).ToList();
                             string SupplierName = "";
                             string EmployeeName = "";
-                            int? GrandTotal = 0;
+                            decimal? GrandTotal = 0;
                             myList.Clear();
                             foreach (var item in Items)
                             {

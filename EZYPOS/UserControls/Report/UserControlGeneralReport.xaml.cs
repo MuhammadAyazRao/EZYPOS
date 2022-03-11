@@ -64,8 +64,8 @@ namespace EZYPOS.UserControls.Report
                 var TotalCostOfSale = SaleOrders.Select(x => new { total = x.OrdersDetails?.Sum(v => v.Item.PurchasePrice * v.Qty) }).Sum(x => x.total);
 
                 //Profit Loss
-                long? Profit = 0;
-                long? Loss = 0;
+                decimal? Profit = 0;
+                decimal? Loss = 0;
                 if(TotalSaleAmount >= TotalCostOfSale)
                 {
                     Profit = TotalSaleAmount - TotalCostOfSale;

@@ -39,7 +39,7 @@ namespace EZYPOS.UserControls.Report
                 List<PurchaseOrderDetailDTO> PurchaseOrderDetail = new List<PurchaseOrderDetailDTO>();
                 var Items = Db.PurchaseOrderDetail.GetAll().Where(x => x.PurchaseOrderId == PurchaseOrder.id).ToList();
                 string ItemName = "";
-                int? OrderTotal = 0;
+                decimal? OrderTotal = 0;
                 foreach(var item in Items)
                 {
                     ItemName = Db.Product.Get(item.ProductId).ProductName;

@@ -44,10 +44,10 @@ namespace DAL.Repository
                 try
                 {
                     SaleOrder NewOrder = new SaleOrder();
-                    NewOrder.CashAmount = (long)CartOrderToProcess.GetNetTotal();
-                    NewOrder.DiscountAmount = (long)CartOrderToProcess.GetTotalDiscount();
-                    NewOrder.DeliveryCharges = Convert.ToDecimal(CartOrderToProcess.DeliverCharges);
-                    NewOrder.Date = DateTime.Today;
+                    NewOrder.CashAmount = CartOrderToProcess.GetNetTotal();
+                    NewOrder.DiscountAmount = CartOrderToProcess.GetTotalDiscount();
+                    NewOrder.DeliveryCharges = CartOrderToProcess.DeliverCharges;
+                    NewOrder.Date = CartOrderToProcess.OrderDate;  //DateTime.Today;
                     NewOrder.PaymentMode = CartOrderToProcess.PaymentType;
                     NewOrder.OrderDate = CartOrderToProcess.OrderDate;
                     NewOrder.PaymentStatus = "Paid";
@@ -58,7 +58,7 @@ namespace DAL.Repository
                     NewOrder.OrderCount = 1;
                     NewOrder.CustomerId = CartOrderToProcess.CustId;
                     NewOrder.EmployeeId = ActiveSession.ActiveUser;
-                    NewOrder.Total = (long)CartOrderToProcess.GetTotal();
+                    NewOrder.Total = CartOrderToProcess.GetTotal();
                     Add(NewOrder);
                     //var id = NewOrder.Id;
 
@@ -70,8 +70,8 @@ namespace DAL.Repository
                         NewOrderDetail.ItemId =(int) item?.Item.id;
                         NewOrderDetail.ItemName = item?.Item.name;                        
                         NewOrderDetail.ItemQty = (int)item?.Qty;                      
-                        NewOrderDetail.ItemPrice = (long) item?.Item.price;
-                        NewOrderDetail.PurchasePrice = (long)item?.Item.PurchasePrice;
+                        NewOrderDetail.ItemPrice = item?.Item.price;
+                        NewOrderDetail.PurchasePrice = item?.Item.PurchasePrice;
                         NewOrderDetail.ItemIndex = 1;
                         NewOrderDetail.IsUpdated = "";
                         NewOrderDetail.IsDeleted = "";
@@ -159,8 +159,8 @@ namespace DAL.Repository
             {
                 Order SingleOrder = new Order();
                 SingleOrder.OrderId = SingleItem.Id;
-                SingleOrder.Discount = (double)SingleItem.DiscountAmount;
-                SingleOrder.DeliverCharges = (double)SingleItem.DeliveryCharges;
+                SingleOrder.Discount = (decimal)SingleItem.DiscountAmount;
+                SingleOrder.DeliverCharges = (decimal)SingleItem.DeliveryCharges;
                 SingleOrder.PaymentType= SingleItem.PaymentMode;
                 SingleOrder.payment_status = SingleItem.PaymentStatus;
                 SingleOrder.OrderDate =(DateTime) SingleItem.OrderDate;
@@ -175,8 +175,8 @@ namespace DAL.Repository
                     item NewItem = new item();
                     NewItem.id = orderdetail.ItemId;
                     NewItem.name = orderdetail?.ItemName;                   
-                    NewItem.price =(long) orderdetail?.ItemPrice;
-                    NewItem.PurchasePrice = (long)orderdetail?.PurchasePrice;
+                    NewItem.price = (decimal)orderdetail?.ItemPrice;
+                    NewItem.PurchasePrice = (decimal)orderdetail?.PurchasePrice;
                     SingleOrderDetail.Item = NewItem;
                     if (SingleOrder.OrdersDetails == null)
                     { SingleOrder.OrdersDetails = new List<OrderDetail>(); }

@@ -57,9 +57,9 @@ namespace DAL.Repository
                     NewOrder.SupplierId = CartOrderToProcess.SupplierId;
                     NewOrder.EmployeeId = ActiveSession.ActiveUser;
                     //NewOrder.OrderCount = 1;
-                    NewOrder.Discount = Convert.ToInt32(CartOrderToProcess.Discount);
-                    NewOrder.DeliveryCharges = Convert.ToInt32(CartOrderToProcess.DeliverCharges);
-                    NewOrder.TotalAmount = Convert.ToInt32(CartOrderToProcess.GetNetTotal());
+                    NewOrder.Discount = CartOrderToProcess.Discount;
+                    NewOrder.DeliveryCharges = CartOrderToProcess.DeliverCharges;
+                    NewOrder.TotalAmount = CartOrderToProcess.GetNetTotal();
                     Add(NewOrder);
 
                     //Order Detail
@@ -71,10 +71,10 @@ namespace DAL.Repository
                         NewOrderDetail.ProductId = (int)item?.Item.id;
                         NewOrderDetail.ItemName = item?.Item.name;
                         NewOrderDetail.Qty = (int)item?.Qty;
-                        NewOrderDetail.PurchasePrice = (int)item?.Item.price;  //this need to check decimal
+                        NewOrderDetail.PurchasePrice = item.Item.price;  //this need to check decimal
                         NewOrderDetail.ExpiryDate = item?.ExpiryDate;
                         NewOrderDetail.StartDate = item?.StartDate;
-                        NewOrderDetail.Total = (int)(item.Qty * item?.Item.price);  // this need to check decimal
+                        NewOrderDetail.Total = (item.Qty * item?.Item.price);  // this need to check decimal
                         PurchaseOrderDetail.Add(NewOrderDetail);
                         Stock.Add(new ProductStock { ProductId = NewOrderDetail.ProductId, StartDate = (DateTime)NewOrderDetail.StartDate, ExpiryDate = (DateTime)NewOrderDetail.ExpiryDate, Qty = NewOrderDetail.Qty, PurchaseOrderId = NewOrderDetail.PurchaseOrderId, Adjustment = 0, Conversion= 0 });
 
@@ -165,8 +165,8 @@ namespace DAL.Repository
                 SingleOrder.payment_status = SingleItem.PaymentStatus;
                 SingleOrder.OrderDate = (DateTime)SingleItem.Date;
                 SingleOrder.SupplierId = SingleItem.SupplierId;
-                SingleOrder.DeliverCharges = (double)SingleItem.DeliveryCharges;
-                SingleOrder.Discount = (double)SingleItem.Discount;
+                SingleOrder.DeliverCharges = (decimal)SingleItem.DeliveryCharges;
+                SingleOrder.Discount = (decimal)SingleItem.Discount;
 
 
                 foreach (var orderdetail in PurchaseOrderDetail.GetAll().Where(x => x.PurchaseOrderId == SingleItem.Id))
@@ -178,7 +178,7 @@ namespace DAL.Repository
                     Purchaseitem NewItem = new Purchaseitem();
                     NewItem.id = orderdetail.ProductId;
                     NewItem.name = orderdetail.ItemName;
-                    NewItem.price = (long)orderdetail?.PurchasePrice;   //this need to check
+                    NewItem.price = orderdetail.PurchasePrice;   //this need to check
                     SingleOrderDetail.Item = NewItem;
                     if (SingleOrder.OrdersDetails == null)
                     { SingleOrder.OrdersDetails = new List<Common.DTO.PurchaseOrderDetail>(); }

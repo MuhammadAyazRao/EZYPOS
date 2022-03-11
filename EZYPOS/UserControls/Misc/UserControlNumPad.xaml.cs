@@ -26,7 +26,7 @@ namespace EZYPOS.UserControls.Misc
         public UserControlNumPad()
         {
             InitializeComponent();
-            lblPin.Content = 0;
+            lblPin.Content = "0";
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -44,9 +44,9 @@ namespace EZYPOS.UserControls.Misc
                     }
                     else
                     {
-                        lblPin.Content += (string)btn.Content;
-                        lblPin.Content = string.IsNullOrEmpty(lblPin.Content.ToString()) || string.IsNullOrWhiteSpace(lblPin.Content.ToString()) ? 0 : Convert.ToInt32(lblPin.Content.ToString());
-                        pin += (string)btn.Content;
+                        lblPin.Content += btn.Content.ToString();
+                        lblPin.Content = string.IsNullOrEmpty(lblPin.Content.ToString()) || string.IsNullOrWhiteSpace(lblPin.Content.ToString()) ? "0" : lblPin.Content.ToString();
+                        pin += btn.Content.ToString();
                     }
 
                     OnButtonPressed?.Invoke(this, null);
@@ -88,6 +88,26 @@ namespace EZYPOS.UserControls.Misc
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             ClearPin();
+        }
+
+        private void DotClick(object sender, RoutedEventArgs e)
+        {
+            if (lblPin.Content.ToString().Contains("."))
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Mathematical Expression can not have two dots.", "Mathematical Error", "ok");
+            }
+            else if (lblPin.Content.ToString() == "0" || lblPin.Content.ToString() == "")
+            {
+                lblPin.Content = "0.";
+                pin = "0.";
+            }
+            else if ((lblPin.Content.ToString() != string.Empty) && (pin != string.Empty) && pin.Length > 0)
+            {
+                lblPin.Content = lblPin.Content.ToString() + ".";
+                pin = pin.ToString() + ".";
+                //if (OnButtonPressed != null)
+                //    OnButtonPressed(this, EventArgs.Empty);
+            }
         }
     }
 }

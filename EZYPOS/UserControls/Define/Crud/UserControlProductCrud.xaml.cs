@@ -142,8 +142,8 @@ namespace EZYPOS.UserControls.Define.Crud
         }
         private void txtNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
         }
         private void txt_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -346,9 +346,9 @@ namespace EZYPOS.UserControls.Define.Crud
                         NewProduct.Barcode = txtPCode.Text;
                         NewProduct.ProductName = txtProductName.Text;
                         //urduName
-                        NewProduct.RetailPrice = Convert.ToInt32(txtSalePrice.Text);
-                        NewProduct.Wholesaleprice = Convert.ToInt32(txtWholeSalePrice.Text);
-                        NewProduct.PurchasePrice = Convert.ToInt32(txtPurchasePrice.Text);
+                        NewProduct.RetailPrice = Convert.ToDecimal(txtSalePrice.Text);
+                        NewProduct.Wholesaleprice = Convert.ToDecimal(txtWholeSalePrice.Text);
+                        NewProduct.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
                         NewProduct.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
                         NewProduct.SubcategoryId = Convert.ToInt32(DDSubCategory.SelectedValue);
                         if (DDGroup.SelectedValue != null) 
@@ -366,7 +366,7 @@ namespace EZYPOS.UserControls.Define.Crud
                         //StockDate
                         NewProduct.Createdon = DateTime.Now;
                         NewProduct.Unit = Convert.ToInt32(DDMunit.SelectedValue);
-                        NewProduct.Size = Convert.ToInt32(txtSize.Text);
+                        NewProduct.Size = Convert.ToDecimal(txtSize.Text);
 
                         DB.Complete();
                         EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
@@ -388,9 +388,9 @@ namespace EZYPOS.UserControls.Define.Crud
                     NewProduct.Barcode = txtPCode.Text;
                     NewProduct.ProductName = txtProductName.Text;
                     //urduName
-                    NewProduct.RetailPrice = Convert.ToInt32(txtSalePrice.Text);
-                    NewProduct.Wholesaleprice = Convert.ToInt32(txtWholeSalePrice.Text);
-                    NewProduct.PurchasePrice = Convert.ToInt32(txtPurchasePrice.Text);
+                    NewProduct.RetailPrice = Convert.ToDecimal(txtSalePrice.Text);
+                    NewProduct.Wholesaleprice = Convert.ToDecimal(txtWholeSalePrice.Text);
+                    NewProduct.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
                     NewProduct.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
                     NewProduct.SubcategoryId = Convert.ToInt32(DDSubCategory.SelectedValue);
                     if(DDGroup.SelectedValue != null) 
@@ -407,7 +407,7 @@ namespace EZYPOS.UserControls.Define.Crud
                     //Minimum
                     //StockDate
                     NewProduct.Unit = Convert.ToInt32(DDMunit.SelectedValue);
-                    NewProduct.Size = Convert.ToInt32(txtSize.Text);
+                    NewProduct.Size = Convert.ToDecimal(txtSize.Text);
                     NewProduct.Createdon = DateTime.Today;
                     DB.Product.Add(NewProduct);
                     DB.Complete();

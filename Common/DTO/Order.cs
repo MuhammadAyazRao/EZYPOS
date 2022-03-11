@@ -22,13 +22,13 @@ namespace Common.DTO
         public string Instrictions { get; set; }
         public string payment_status { get; set; }
         public string diverlyType { get;  set; }
-        public double DeliverCharges { get; set; }
+        public decimal DeliverCharges { get; set; }
         public int CustId { get;  set; }
         public int UserId { get; set; }
         public int EmployeeId { get; set; }
-        public int OrderCount { get;  set; }
-        public double Discount { get;  set; }
-        public double ServiceCharges { get; set; }
+        public decimal OrderCount { get;  set; }
+        public decimal Discount { get;  set; }
+        public decimal ServiceCharges { get; set; }
 
 
         public Order()
@@ -36,27 +36,27 @@ namespace Common.DTO
             OrderDate = DateTime.Now;
         }
 
-        public double GetTotal()
+        public decimal GetTotal()
         {
             if (OrdersDetails == null)
                 return 0;
             return OrdersDetails.Sum(x => x.GetTotal);
         }
 
-        public double GetCouponDiscount()
+        public decimal GetCouponDiscount()
         {
             if (Coupon != null)
             {
-                double discAmt = 0;
+                decimal discAmt = 0;
                 if (Coupon != null)
                 {
                     switch (Coupon.type)
                     {
                         case "pound":
-                            discAmt = Convert.ToDouble(Coupon.coupon_value);
+                            discAmt = Convert.ToDecimal(Coupon.coupon_value);
                             break;
                         case "percentage":
-                            discAmt = (GetTotal() / 100) * Convert.ToDouble(Coupon.coupon_value);
+                            discAmt = (GetTotal() / 100) * Convert.ToDecimal(Coupon.coupon_value);
                             break;
                         case "free_shipping":
                             //todo after calculating delivory charges
@@ -68,10 +68,10 @@ namespace Common.DTO
             return 0;
         }
 
-        public double GetTotalDiscount()
+        public decimal GetTotalDiscount()
         {
             Recalculatediscount();
-            double total = 0;
+            decimal total = 0;
             if (OrdersDetails != null)
                 foreach (OrderDetail or in OrdersDetails)
                 {
@@ -91,7 +91,7 @@ namespace Common.DTO
 
         }
 
-        public double GetNetTotal()
+        public decimal GetNetTotal()
         {
             Recalculatediscount();
             return ((GetTotal() + DeliverCharges + ServiceCharges) - GetCouponDiscount()) - Discount;
@@ -103,7 +103,7 @@ namespace Common.DTO
     {
 
         private int qty;
-        private int itemdisc;
+        private decimal itemdisc;
         private string note;
         private int seletedHeight;
         private int normalHeight;
@@ -206,7 +206,7 @@ namespace Common.DTO
             }
         }
 
-        public int ItemDiscount
+        public decimal ItemDiscount
         {
             get { return itemdisc; }
             set
@@ -219,22 +219,22 @@ namespace Common.DTO
         }
 
 
-        public double GetTotal { get { return (GetItemTotal() * Convert.ToDouble(Qty)) - Convert.ToDouble(ItemDiscount); } }
+        public decimal GetTotal { get { return (GetItemTotal() * Convert.ToDecimal(Qty)) - ItemDiscount; } }
 
-        public double GetCouponDiscount
+        public decimal GetCouponDiscount
         {
             get
             {
-                double discAmt = 0;
+                decimal discAmt = 0;
                 if (Coupon != null)
                 {
                     switch (Coupon.type)
                     {
                         case "pound":
-                            discAmt = Convert.ToDouble(Coupon.coupon_value);
+                            discAmt = Convert.ToDecimal(Coupon.coupon_value);
                             break;
                         case "percentage":
-                            discAmt = (Item.price / 100) * Convert.ToDouble(Coupon.coupon_value);
+                            discAmt = (Item.price / 100) * Convert.ToDecimal(Coupon.coupon_value);
                             break;
                     }
                 }
@@ -254,7 +254,7 @@ namespace Common.DTO
         //    }
         //}
 
-        public double GetItemTotal()
+        public decimal GetItemTotal()
         {
             return Item.price;
         }
@@ -331,8 +331,8 @@ namespace Common.DTO
         public string name { get; set; }
         public string description { get; set; }
         public string fixed_items { get; set; }
-        public long price { get; set; }
-        public long PurchasePrice { get; set; }
+        public decimal price { get; set; }
+        public decimal PurchasePrice { get; set; }
 
         public double epos_price { get; set; }
         public string days { get; set; }

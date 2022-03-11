@@ -29,7 +29,7 @@ namespace EZYPOS.View
         Order Order { get; set; }
         PurchaseOrderDTO PurchaseOrder { get; set; }
         public string ScreenType { get; set; }
-        public double CustPay { get; set; }
+        public decimal CustPay { get; set; }
         public void Refresh()
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
@@ -122,7 +122,7 @@ namespace EZYPOS.View
             {
                 if (!string.IsNullOrEmpty(UCNum.pin))
                 {
-                    CustPay = Convert.ToDouble(UCNum.pin);
+                    CustPay = Convert.ToDecimal(UCNum.pin);
                     lblDue.Content = Order.GetNetTotal() - CustPay;
                 }
                 else
@@ -134,7 +134,7 @@ namespace EZYPOS.View
             {
                 if (!string.IsNullOrEmpty(UCNum.pin))
                 {
-                    CustPay = Convert.ToDouble(UCNum.pin);
+                    CustPay = Convert.ToDecimal(UCNum.pin);
                     lblDue.Content = PurchaseOrder.GetNetTotal() - CustPay;
                 }
                 else
