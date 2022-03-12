@@ -147,8 +147,8 @@ namespace EZYPOS.UserControls.Define.Crud
 
         private void NumberOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
         }
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
@@ -164,7 +164,7 @@ namespace EZYPOS.UserControls.Define.Crud
                 {
                     var ex = uw.expt.GetAll().Where(x => x.Id == Convert.ToInt32(txtId.Text)).FirstOrDefault();
                     ex.Discription = txtDescription.Text;
-                    ex.Amount = Convert.ToInt32(txtAmount.Text);
+                    ex.Amount = Convert.ToDecimal(txtAmount.Text);
                     ex.ExpenceType = Convert.ToInt32(ddEType.SelectedValue);
                     ex.ExpenceDate = Convert.ToDateTime(TransactionDate.Text);
                     uw.expt.Save();
@@ -198,7 +198,7 @@ namespace EZYPOS.UserControls.Define.Crud
                 {
                     ExpenceTransaction expt = new ExpenceTransaction();
                     expt.Discription = txtDescription.Text;
-                    expt.Amount = Convert.ToInt32(txtAmount.Text);
+                    expt.Amount = Convert.ToDecimal(txtAmount.Text);
                     expt.ExpenceType = Convert.ToInt32(ddEType.SelectedValue);
                     expt.EmployeeId = Convert.ToInt32(ddEmployee.SelectedValue);
                     expt.ExpenceDate = Convert.ToDateTime(TransactionDate.Text);

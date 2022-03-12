@@ -12,7 +12,7 @@ namespace DAL.DBMODEL
         public int? EmployeeId { get; set; }
         public int? CreatedBy { get; set; }
         public string Discription { get; set; }
-        public long? Amount { get; set; }
+        public decimal? Amount { get; set; }
         public bool? Isdeleted { get; set; }
         public int? ExpenceType { get; set; }
 

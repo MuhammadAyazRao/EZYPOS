@@ -166,7 +166,7 @@
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
                                     <TextBox materialDesign:HintAssist.Hint="Size"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" PreviewTextInput="txtNumber_PreviewTextInput" x:Name="GridSize" Width="100"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" PreviewTextInput="NumberDecimal_PreviewTextInput" x:Name="GridSize" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
@@ -190,7 +190,7 @@
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
                                     <TextBox materialDesign:HintAssist.Hint="Retail Price"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" PreviewTextInput="txtNumber_PreviewTextInput" x:Name="GridRetailPrice" Width="100"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" PreviewTextInput="NumberDecimal_PreviewTextInput" x:Name="GridRetailPrice" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
@@ -210,7 +210,7 @@
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
                                     <TextBox materialDesign:HintAssist.Hint="Whole Sale Price"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" PreviewTextInput="txtNumber_PreviewTextInput" x:Name="GridWholesaleprice" Width="100"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" PreviewTextInput="NumberDecimal_PreviewTextInput" x:Name="GridWholesaleprice" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
@@ -222,7 +222,7 @@
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
                                     <TextBox materialDesign:HintAssist.Hint="Purchase Price"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" PreviewTextInput="txtNumber_PreviewTextInput" x:Name="GridPurchasePrice" Width="100"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" PreviewTextInput="NumberDecimal_PreviewTextInput" x:Name="GridPurchasePrice" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>

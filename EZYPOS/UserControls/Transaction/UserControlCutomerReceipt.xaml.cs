@@ -90,6 +90,12 @@ namespace EZYPOS.UserControls.Transaction
             }
 
         }
+
+        private void NumberDecimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
+        }
         private void txtNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
@@ -206,7 +212,7 @@ namespace EZYPOS.UserControls.Transaction
                     using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
                         CustomerReceipt sp = Db.CustomerReceipt.Get(Convert.ToInt32(txtId.Text));
-                        sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
+                        sp.ReceiptAmount = Convert.ToDecimal(txtAmount.Text);
                         sp.Discription = txtDiscription.Text;
                         sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
                         sp.EmployeeId = Convert.ToInt32(DDReceivedBy.SelectedValue);
@@ -227,7 +233,7 @@ namespace EZYPOS.UserControls.Transaction
                 {
                     CustomerReceipt sp = new CustomerReceipt();
                     sp.Discription = txtDiscription.Text;
-                    sp.ReceiptAmount = Convert.ToInt32(txtAmount.Text);
+                    sp.ReceiptAmount = Convert.ToDecimal(txtAmount.Text);
                     sp.EmployeeId = Convert.ToInt32(DDReceivedBy.SelectedValue);
                     sp.CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
                     sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
@@ -237,7 +243,7 @@ namespace EZYPOS.UserControls.Transaction
 
                     //Ledger
                     CustomerLead CustomerLedCR = new CustomerLead();
-                    CustomerLedCR.Cr = Convert.ToInt32(txtAmount.Text);
+                    CustomerLedCR.Cr = Convert.ToDecimal(txtAmount.Text);
                     CustomerLedCR.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
                     CustomerLedCR.TransactionId = sp.Id;
                     CustomerLedCR.TransactionType = Common.InvoiceType.CustomerReceipt;

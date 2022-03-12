@@ -12,7 +12,7 @@ namespace DAL.DBMODEL
         public int? PayedBy { get; set; }
         public DateTime? Date { get; set; }
         public int? Month { get; set; }
-        public long? Amount { get; set; }
+        public decimal? Amount { get; set; }
         public bool? IsAdvance { get; set; }
 
         public virtual Emplyee Employee { get; set; }

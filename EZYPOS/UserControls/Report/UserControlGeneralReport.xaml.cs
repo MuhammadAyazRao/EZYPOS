@@ -82,7 +82,7 @@ namespace EZYPOS.UserControls.Report
 
                 //Salaries
                 var Salaries = DB.AdvanceSalary.GetAll().Where(x => x.Date >= StartDate && x.Date <= EndDate);
-                long? TotalSalary = 0;
+                decimal? TotalSalary = 0;
                 foreach(var item in Salaries)
                 {
                     TotalSalary += item.Amount;

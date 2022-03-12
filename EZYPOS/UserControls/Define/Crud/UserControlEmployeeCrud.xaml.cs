@@ -186,7 +186,7 @@ namespace EZYPOS.UserControls
                             }
                             if (!string.IsNullOrEmpty(txtSalary.Text))
                             {
-                                UpdateEmployee.Salary =Convert.ToInt32(txtSalary.Text);
+                                UpdateEmployee.Salary =Convert.ToDecimal(txtSalary.Text);
                             }
                             if (!string.IsNullOrEmpty(txtAddress.Text))
                             {
@@ -315,7 +315,7 @@ namespace EZYPOS.UserControls
                     }
                     if (!string.IsNullOrEmpty(txtSalary.Text))
                     {
-                        AddEmployee.Salary = Convert.ToInt32(txtSalary.Text);
+                        AddEmployee.Salary = Convert.ToDecimal(txtSalary.Text);
                     }
                     if (!string.IsNullOrEmpty(txtAddress.Text))
                     {
@@ -392,8 +392,8 @@ namespace EZYPOS.UserControls
 
         private void NumberOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
         }
 
         private void Image_Click(object sender, RoutedEventArgs e)

@@ -8,7 +8,7 @@ namespace DAL.DBMODEL
     public partial class SupplierPayment
     {
         public int Id { get; set; }
-        public int? Amount { get; set; }
+        public decimal? Amount { get; set; }
         public string Discription { get; set; }
         public DateTime TransactionDate { get; set; }
         public DateTime? CreatedOn { get; set; }

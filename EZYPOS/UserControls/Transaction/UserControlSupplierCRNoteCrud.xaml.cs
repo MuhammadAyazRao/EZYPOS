@@ -208,11 +208,11 @@ namespace EZYPOS.UserControls.Transaction
             {
                 SupplierCrnote sp = new SupplierCrnote();
                 sp.Discription = txtDiscription.Text;
-                sp.ReceiptAmount = txtAmount.Text;
+                sp.ReceiptAmount = Convert.ToDecimal(txtAmount.Text);
                 sp.PayedBy = Convert.ToInt32(DDPayedBy.SelectedValue);
                 sp.SupplierId = Convert.ToInt32(DDSupplier.SelectedValue);
                 sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
-                sp.CreatedOn = DateTime.Now;
+                sp.CreatedOn = DateTime.Today;
                 DB.SupplierCRNote.Add(sp);
                 DB.SupplierCRNote.Save();
 
@@ -220,7 +220,7 @@ namespace EZYPOS.UserControls.Transaction
 
 
                 SupplierLead SupplierLeadCR = new SupplierLead();
-                SupplierLeadCR.Dr = Convert.ToInt32(txtAmount.Text);
+                SupplierLeadCR.Dr = Convert.ToDecimal(txtAmount.Text);
                 SupplierLeadCR.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
                 SupplierLeadCR.TransactionId = sp.Id;
                 SupplierLeadCR.TransactionType = Common.InvoiceType.SupplierDRNote;

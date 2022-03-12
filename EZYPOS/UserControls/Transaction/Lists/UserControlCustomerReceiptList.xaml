@@ -133,7 +133,7 @@
                                     <TextBlock Text="{Binding Content, RelativeSource=
                                          {RelativeSource Mode=TemplatedParent}}"/>
                                     <TextBox materialDesign:HintAssist.Hint="Amount"
-  Style="{StaticResource MaterialDesignFloatingHintTextBox}" PreviewTextInput="txtNumber_PreviewTextInput" x:Name="GridAmount" Width="100"  KeyDown="GridName_KeyDown"   />
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" PreviewTextInput="NumberDecimal_PreviewTextInput" x:Name="GridAmount" Width="100"  KeyDown="GridName_KeyDown"   />
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>

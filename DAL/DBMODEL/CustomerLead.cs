@@ -13,7 +13,7 @@ namespace DAL.DBMODEL
         public int? TransactionId { get; set; }
         public string TransactionType { get; set; }
         public string TransactionDetail { get; set; }
-        public int? Dr { get; set; }
-        public int? Cr { get; set; }
+        public decimal? Dr { get; set; }
+        public decimal? Cr { get; set; }
     }
 }

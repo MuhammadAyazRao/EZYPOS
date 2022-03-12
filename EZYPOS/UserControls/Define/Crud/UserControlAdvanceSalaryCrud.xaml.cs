@@ -153,8 +153,8 @@ namespace EZYPOS.UserControls.Define.Crud
                 using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                 {
                     int? Id = Convert.ToInt32(ddEmployee.SelectedValue);
-                    int MonthlySalary = Convert.ToInt32(DB.Employee.Get(Convert.ToInt32(ddEmployee.SelectedValue)).Salary);
-                    int AdvSalary = Convert.ToInt32(txtSalary.Text);
+                    decimal MonthlySalary = Convert.ToDecimal(DB.Employee.Get(Convert.ToInt32(ddEmployee.SelectedValue)).Salary);
+                    decimal AdvSalary = Convert.ToDecimal(txtSalary.Text);
                     AdvancedSalary UpdateAdvanceSalary = DB.AdvanceSalary.GetAll().Where(x => x.EmployeeId == Id).FirstOrDefault();
                     if (UpdateAdvanceSalary != null)
                     {
@@ -299,12 +299,12 @@ namespace EZYPOS.UserControls.Define.Crud
                 {
 
                     int? Id = emp.Id;
-                    int MonthlySalary = Convert.ToInt32(DB.Employee.Get(Convert.ToInt32(Id)).Salary);
+                    decimal MonthlySalary = Convert.ToDecimal(DB.Employee.Get(Convert.ToInt32(Id)).Salary);
                    // int AdvSalary = Convert.ToInt32(txtSalary.Text);
                     var Advances = DB.AdvanceSalary.GetAll().Where(x => x.EmployeeId == Id && x.Month== Convert.ToInt32(ddMonth.SelectedValue)).ToList();
                     if (Advances != null)
                     {
-                        int TotalAdvanceAmount = Convert.ToInt32(Advances.Sum(x=>x.Amount));
+                        decimal TotalAdvanceAmount = Convert.ToDecimal(Advances.Sum(x=>x.Amount));
                         //bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Already Taken .Want to Proceed?", "Yes", "No");
                        // if (Isconfirm)
                         {
@@ -343,12 +343,12 @@ namespace EZYPOS.UserControls.Define.Crud
             {
                 
                     int? Id = Convert.ToInt32(ddEmployee.SelectedValue);
-                    int MonthlySalary = Convert.ToInt32(DB.Employee.Get(Convert.ToInt32(ddEmployee.SelectedValue)).Salary);
-                    int AdvSalary = Convert.ToInt32(txtSalary.Text);
+                    decimal MonthlySalary = Convert.ToDecimal(DB.Employee.Get(Convert.ToInt32(ddEmployee.SelectedValue)).Salary);
+                    decimal AdvSalary = Convert.ToDecimal(txtSalary.Text);
                     AdvancedSalary ExistingEmployee = DB.AdvanceSalary.GetAll().Where(x => x.EmployeeId == Id).FirstOrDefault();
                     if (ExistingEmployee != null)
                     {
-                        int SalaryTaken = Convert.ToInt32(ExistingEmployee.Amount);
+                        decimal SalaryTaken = Convert.ToDecimal(ExistingEmployee.Amount);
                         bool Isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Already Taken .Want to Proceed?", "Yes", "No");
                         if (Isconfirm)
                         {

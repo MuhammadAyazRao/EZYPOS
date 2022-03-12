@@ -208,11 +208,11 @@ namespace EZYPOS.UserControls.Transaction
             {
                 CustomerDrnote sp = new CustomerDrnote();
                 sp.Discription = txtDiscription.Text;
-                sp.ReceiptAmount = txtAmount.Text;
+                sp.ReceiptAmount = Convert.ToDecimal(txtAmount.Text);
                 sp.ReceivedBy = Convert.ToInt32(DDReceivedBy.SelectedValue);
                 sp.CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
                 sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
-                sp.CreatedOn = DateTime.Now;
+                sp.CreatedOn = DateTime.Today;
                 DB.CustomerDRNote.Add(sp);
                 DB.CustomerDRNote.Save();
 
@@ -220,7 +220,7 @@ namespace EZYPOS.UserControls.Transaction
 
 
                 CustomerLead CustomerLedCR = new CustomerLead();
-                CustomerLedCR.Dr = Convert.ToInt32(txtAmount.Text);
+                CustomerLedCR.Dr = Convert.ToDecimal(txtAmount.Text);
                 CustomerLedCR.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
                 CustomerLedCR.TransactionId = sp.Id;
                 CustomerLedCR.TransactionType = Common.InvoiceType.CustomerDrNote;

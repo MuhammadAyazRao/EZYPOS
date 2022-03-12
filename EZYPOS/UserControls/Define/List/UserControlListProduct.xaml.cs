@@ -173,7 +173,11 @@ namespace EZYPOS.UserControls.Define.List
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
+        private void NumberDecimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
+        }
         private void delete_Click(object sender, RoutedEventArgs e)
         {
             EZYPOS.DTO.ProductDTO Product = (EZYPOS.DTO.ProductDTO)MainGrid.SelectedItem;

@@ -80,6 +80,8 @@ namespace DAL.DBMODEL
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.Amount).HasColumnType("decimal(18, 3)");
+
                 entity.Property(e => e.Date).HasColumnType("date");
 
                 entity.HasOne(d => d.Employee)
@@ -100,17 +102,17 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.CashBookId).HasColumnName("CashBook_Id");
 
                 entity.Property(e => e.CrAmt)
-                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnType("decimal(18, 3)")
                     .HasColumnName("CR_Amt");
 
                 entity.Property(e => e.DrAmt)
-                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnType("decimal(18, 3)")
                     .HasColumnName("DR_Amt");
 
                 entity.Property(e => e.PosId).HasColumnName("POS_Id");
 
                 entity.Property(e => e.TransactionDate)
-                    .HasColumnType("datetime")
+                    .HasColumnType("date")
                     .HasColumnName("Transaction_date");
 
                 entity.Property(e => e.TransactionDetail).HasColumnName("Transaction_detail");
@@ -151,7 +153,7 @@ namespace DAL.DBMODEL
 
                 entity.Property(e => e.Discription).HasMaxLength(100);
 
-                entity.Property(e => e.ReceiptAmount).HasMaxLength(100);
+                entity.Property(e => e.ReceiptAmount).HasColumnType("decimal(18, 3)");
 
                 entity.Property(e => e.TransactionDate).HasColumnType("date");
 
@@ -172,14 +174,18 @@ namespace DAL.DBMODEL
             {
                 entity.ToTable("CustomerLead");
 
-                entity.Property(e => e.Cr).HasColumnName("CR");
+                entity.Property(e => e.Cr)
+                    .HasColumnType("decimal(18, 3)")
+                    .HasColumnName("CR");
 
                 entity.Property(e => e.CustomerId).HasColumnName("Customer_id");
 
-                entity.Property(e => e.Dr).HasColumnName("DR");
+                entity.Property(e => e.Dr)
+                    .HasColumnType("decimal(18, 3)")
+                    .HasColumnName("DR");
 
                 entity.Property(e => e.TransactionDate)
-                    .HasColumnType("datetime")
+                    .HasColumnType("date")
                     .HasColumnName("Transaction_date");
 
                 entity.Property(e => e.TransactionDetail).HasColumnName("Transaction_detail");
@@ -197,9 +203,7 @@ namespace DAL.DBMODEL
 
                 entity.Property(e => e.CreatedOn).HasColumnType("date");
 
-                entity.Property(e => e.Discription)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
+                entity.Property(e => e.ReceiptAmount).HasColumnType("decimal(18, 3)");
 
                 entity.Property(e => e.TransactionDate).HasColumnType("date");
 
@@ -225,16 +229,18 @@ namespace DAL.DBMODEL
 
                 entity.Property(e => e.Cnic).HasColumnName("CNIC");
 
-                entity.Property(e => e.Createdon).HasColumnType("datetime");
+                entity.Property(e => e.Createdon).HasColumnType("date");
 
                 entity.Property(e => e.LoginName).HasMaxLength(500);
+
+                entity.Property(e => e.Salary).HasColumnType("decimal(18, 3)");
 
                 entity.Property(e => e.SalaryType).HasMaxLength(50);
 
                 entity.Property(e => e.UserName).HasMaxLength(100);
 
                 entity.Property(e => e.WorkingHours)
-                    .HasColumnType("decimal(18, 0)")
+                    .HasColumnType("decimal(18, 3)")
                     .HasColumnName("Working Hours");
 
                 entity.HasOne(d => d.CityNavigation)
@@ -252,7 +258,9 @@ namespace DAL.DBMODEL
             {
                 entity.ToTable("ExpenceTransaction");
 
-                entity.Property(e => e.ExpenceDate).HasColumnType("datetime");
+                entity.Property(e => e.Amount).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.ExpenceDate).HasColumnType("date");
 
                 entity.HasOne(d => d.CreatedByNavigation)
                     .WithMany(p => p.ExpenceTransactions)
@@ -750,7 +758,7 @@ namespace DAL.DBMODEL
 
                 entity.Property(e => e.Discription).HasMaxLength(100);
 
-                entity.Property(e => e.ReceiptAmount).HasMaxLength(100);
+                entity.Property(e => e.ReceiptAmount).HasColumnType("decimal(18, 3)");
 
                 entity.Property(e => e.TransactionDate).HasColumnType("date");
 
@@ -772,17 +780,17 @@ namespace DAL.DBMODEL
                 entity.ToTable("SupplierLead");
 
                 entity.Property(e => e.Cr)
-                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnType("decimal(18, 3)")
                     .HasColumnName("CR");
 
                 entity.Property(e => e.Dr)
-                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnType("decimal(18, 3)")
                     .HasColumnName("DR");
 
                 entity.Property(e => e.SuplierId).HasColumnName("Suplier_id");
 
                 entity.Property(e => e.TransactionDate)
-                    .HasColumnType("datetime")
+                    .HasColumnType("date")
                     .HasColumnName("Transaction_date");
 
                 entity.Property(e => e.TransactionDet)
@@ -805,11 +813,9 @@ namespace DAL.DBMODEL
             {
                 entity.ToTable("SupplierPayment");
 
-                entity.Property(e => e.CreatedOn).HasColumnType("date");
+                entity.Property(e => e.Amount).HasColumnType("decimal(18, 3)");
 
-                entity.Property(e => e.Discription)
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
+                entity.Property(e => e.CreatedOn).HasColumnType("date");
 
                 entity.Property(e => e.TransactionDate).HasColumnType("date");
 

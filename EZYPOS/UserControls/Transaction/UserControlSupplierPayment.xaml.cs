@@ -94,6 +94,11 @@ namespace EZYPOS.UserControls.Transaction
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
+        private void NumberDecimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
+        }
         private void txt_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = sender as TextBox;
@@ -205,7 +210,7 @@ namespace EZYPOS.UserControls.Transaction
                     using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
                         SupplierPayment sp = Db.SupplierPayment.Get(Convert.ToInt32(txtId.Text));
-                        sp.Amount = Convert.ToInt32(txtAmount.Text);
+                        sp.Amount = Convert.ToDecimal(txtAmount.Text);
                         sp.Discription = txtDiscription.Text;
                         sp.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
                         sp.EmployeeId = Convert.ToInt32(DDPayedBy.SelectedValue);
@@ -226,7 +231,7 @@ namespace EZYPOS.UserControls.Transaction
                 {
                     SupplierPayment sp = new SupplierPayment();
                     sp.Discription = txtDiscription.Text;
-                    sp.Amount = Convert.ToInt32(txtAmount.Text);
+                    sp.Amount = Convert.ToDecimal(txtAmount.Text);
                     sp.EmployeeId = Convert.ToInt32(DDPayedBy.SelectedValue);
                     sp.SupplierId = Convert.ToInt32(DDSupplier.SelectedValue);
                     sp.TransactionDate = Convert.ToDateTime(TransactionDate.SelectedDate);
@@ -236,7 +241,7 @@ namespace EZYPOS.UserControls.Transaction
 
                     //Ledger
                     SupplierLead SupplierLeadCR = new SupplierLead();
-                    SupplierLeadCR.Cr = Convert.ToInt32(txtAmount.Text);
+                    SupplierLeadCR.Cr = Convert.ToDecimal(txtAmount.Text);
                     SupplierLeadCR.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
                     SupplierLeadCR.TransactionId = sp.Id;
                     SupplierLeadCR.TransactionType = Common.InvoiceType.SupplierPayment;

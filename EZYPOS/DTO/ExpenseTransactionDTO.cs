@@ -13,7 +13,7 @@ namespace EZYPOS.DTO
         public int CreateBy { get; set; }
         public string EmployeeName { get; set; }
         public string Discription { get; set; }
-        public int Amount { get; set; }
+        public decimal? Amount { get; set; }
         public bool Isdeleted { get; set; }
         public string ExpenseType { get; set; }
 

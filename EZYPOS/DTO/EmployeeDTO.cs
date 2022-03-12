@@ -18,7 +18,7 @@ namespace EZYPOS.DTO
         public string Phone { get; set; }
         public string Password { get; set; }
         public bool? IsLoginAllowed { get; set; }
-        public long? Salary { get; set; }
+        public decimal? Salary { get; set; }
         public string SalaryType { get; set; }
         public string Image { get; set; }
         // public List<UserPage> UserPages { get; set; }

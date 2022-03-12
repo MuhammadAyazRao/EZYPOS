@@ -43,7 +43,7 @@ namespace EZYPOS.UserControls.Define.List
             {
                 DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
                 DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
-                myList = DB.expt.GetAll().Where(x => x.ExpenceDate >= Sdate && x.ExpenceDate <= Edate).Select(x => new ExpenseTransactionDTO { Id = x.Id, ExpenseDate = Convert.ToDateTime(x.ExpenceDate), CreateBy = Convert.ToInt32(x.CreatedBy), Discription = x.Discription, Amount = Convert.ToInt32(x.Amount), Isdeleted = Convert.ToBoolean(x.Isdeleted), ExpenseType = x.ExpenceTypeNavigation == null ? null : x.ExpenceTypeNavigation.ExpenceName, EmployeeName = x.Employee == null ? null : x.Employee.UserName }).ToList();
+                myList = DB.expt.GetAll().Where(x => x.ExpenceDate >= Sdate && x.ExpenceDate <= Edate).Select(x => new ExpenseTransactionDTO { Id = x.Id, ExpenseDate = Convert.ToDateTime(x.ExpenceDate), CreateBy = Convert.ToInt32(x.CreatedBy), Discription = x.Discription, Amount = x.Amount, Isdeleted = Convert.ToBoolean(x.Isdeleted), ExpenseType = x.ExpenceTypeNavigation == null ? null : x.ExpenceTypeNavigation.ExpenceName, EmployeeName = x.Employee == null ? null : x.Employee.UserName }).ToList();
                 ResetPaging(myList);
 
             }
@@ -83,7 +83,7 @@ namespace EZYPOS.UserControls.Define.List
                     {
                         DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
                         DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
-                        myList = DB.expt.GetAll().Where(x => x.ExpenceDate >= Sdate && x.ExpenceDate <= Edate).Select(x => new ExpenseTransactionDTO { Id = x.Id, ExpenseDate = Convert.ToDateTime(x.ExpenceDate), CreateBy = Convert.ToInt32(x.CreatedBy), Discription = x.Discription, Amount = Convert.ToInt32(x.Amount), Isdeleted = Convert.ToBoolean(x.Isdeleted), ExpenseType = x.ExpenceTypeNavigation == null ? null : x.ExpenceTypeNavigation.ExpenceName, EmployeeName = x.Employee == null ? null : x.Employee.UserName }).ToList();
+                        myList = DB.expt.GetAll().Where(x => x.ExpenceDate >= Sdate && x.ExpenceDate <= Edate).Select(x => new ExpenseTransactionDTO { Id = x.Id, ExpenseDate = Convert.ToDateTime(x.ExpenceDate), CreateBy = Convert.ToInt32(x.CreatedBy), Discription = x.Discription, Amount = x.Amount, Isdeleted = Convert.ToBoolean(x.Isdeleted), ExpenseType = x.ExpenceTypeNavigation == null ? null : x.ExpenceTypeNavigation.ExpenceName, EmployeeName = x.Employee == null ? null : x.Employee.UserName }).ToList();
                         if (t.Name == "GridEtype")
                         {
                             myList = myList.Where(x => x.ExpenseType.ToUpper().Contains(filter.ToUpper())).ToList();
@@ -140,7 +140,11 @@ namespace EZYPOS.UserControls.Define.List
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
+        private void NumberDecimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
+        }
         private void delete_Click(object sender, RoutedEventArgs e)
         {
             ExpenseTransactionDTO exp = (ExpenseTransactionDTO)DG_Etransaction.SelectedItem;

@@ -13,7 +13,7 @@ namespace EZYPOS.DTO
         public string PayedBy { get; set; }
         public DateTime? Date { get; set; }
         public string Month { get; set; }
-        public long? Amount { get; set; }
+        public decimal? Amount { get; set; }
 
     }
 }

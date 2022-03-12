@@ -50,11 +50,11 @@ namespace EZYPOS.UserControls.Transaction.Lists
                     if (DDCustomer.SelectedValue.ToString() != "0")
                     {
                         int CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
-                        myList = DB.CustomerDRNote.GetAll().Where(x => x.CustomerId == CustomerId).Select(x => new CustomerDRNoteDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.UserName, CustomerName = x.Customer.Name, }).ToList();
+                        myList = DB.CustomerDRNote.GetAll().Where(x => x.CustomerId == CustomerId).Select(x => new CustomerDRNoteDTO { Id = x.Id, Amount = x.ReceiptAmount, Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.UserName, CustomerName = x.Customer.Name, }).ToList();
                     }
                     else
                     {
-                        myList = DB.CustomerDRNote.GetAll().Select(x => new CustomerDRNoteDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.UserName, CustomerName = x.Customer.Name, }).ToList();
+                        myList = DB.CustomerDRNote.GetAll().Select(x => new CustomerDRNoteDTO { Id = x.Id, Amount = x.ReceiptAmount, Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.UserName, CustomerName = x.Customer.Name, }).ToList();
 
                     }
                 }
@@ -112,18 +112,18 @@ namespace EZYPOS.UserControls.Transaction.Lists
                             if (DDCustomer.SelectedValue.ToString() != "0")
                             {
                                 int CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
-                                myList = DB.CustomerDRNote.GetAll().Where(x => x.CustomerId == CustomerId).Select(x => new CustomerDRNoteDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.UserName, CustomerName = x.Customer.Name, }).ToList();
+                                myList = DB.CustomerDRNote.GetAll().Where(x => x.CustomerId == CustomerId).Select(x => new CustomerDRNoteDTO { Id = x.Id, Amount = x.ReceiptAmount, Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.UserName, CustomerName = x.Customer.Name, }).ToList();
                             }
                             else
                             {
-                                myList = DB.CustomerDRNote.GetAll().Select(x => new CustomerDRNoteDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.UserName, CustomerName = x.Customer.Name, }).ToList();
+                                myList = DB.CustomerDRNote.GetAll().Select(x => new CustomerDRNoteDTO { Id = x.Id, Amount = x.ReceiptAmount, Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.UserName, CustomerName = x.Customer.Name, }).ToList();
 
                             }
                         }
 
                         else
                         {
-                            myList = DB.CustomerDRNote.GetAll().Select(x => new CustomerDRNoteDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.UserName, CustomerName = x.Customer.Name, }).ToList();
+                            myList = DB.CustomerDRNote.GetAll().Select(x => new CustomerDRNoteDTO { Id = x.Id, Amount = x.ReceiptAmount, Discription = x.Discription, TransactionDate = x.TransactionDate, ReceivedBy = x.ReceivedByNavigation == null ? null : x.ReceivedByNavigation.UserName, CustomerName = x.Customer.Name, }).ToList();
                         }
                         if (t.Name == "GridAmount")
                         {

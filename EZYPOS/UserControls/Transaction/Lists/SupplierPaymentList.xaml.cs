@@ -38,7 +38,7 @@ namespace EZYPOS.UserControls.Transaction
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                myList = DB.SupplierPayment.GetAll().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription=x.Discription, TransactionDate= x.TransactionDate, Employee = x.Employee==null? null: x.Employee.UserName, Supplier = x.Supplier ==null?null : x.Supplier.Name,}).ToList();
+                myList = DB.SupplierPayment.GetAll().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = x.Amount, Discription=x.Discription, TransactionDate= x.TransactionDate, Employee = x.Employee==null? null: x.Employee.UserName, Supplier = x.Supplier ==null?null : x.Supplier.Name,}).ToList();
                 ResetPaging(myList);
             }
         }
@@ -97,7 +97,7 @@ namespace EZYPOS.UserControls.Transaction
                     }
                     else
                     {
-                        myList = DB.SupplierPayment.GetAll().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToInt32(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, Employee = x.Employee == null ? null : x.Employee.UserName, Supplier = x.Supplier == null ? null : x.Supplier.Name, }).ToList();
+                        myList = DB.SupplierPayment.GetAll().Select(x => new SupplierPaymentDTO { Id = x.Id, Amount = Convert.ToDecimal(x.Amount), Discription = x.Discription, TransactionDate = x.TransactionDate, Employee = x.Employee == null ? null : x.Employee.UserName, Supplier = x.Supplier == null ? null : x.Supplier.Name, }).ToList();
 
                         if (t.Name == "GridAmount")
                         {
@@ -173,7 +173,11 @@ namespace EZYPOS.UserControls.Transaction
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
+        private void NumberDecimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
+        }
         private void delete_Click(object sender, RoutedEventArgs e)
         {
             EZYPOS.DTO.SupplierPaymentDTO SupplierPaymentDTO = (EZYPOS.DTO.SupplierPaymentDTO)SupplierPaymentGrid.SelectedItem;

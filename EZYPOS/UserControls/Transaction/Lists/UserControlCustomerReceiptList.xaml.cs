@@ -38,7 +38,7 @@ namespace EZYPOS.UserControls.Transaction.Lists
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                myList = DB.CustomerReceipt.GetAll().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, Employee = x.Employee == null ? null : x.Employee.UserName , Customer = x.Customer == null? null : x.Customer.Name }).ToList();
+                myList = DB.CustomerReceipt.GetAll().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = x.ReceiptAmount, Discription = x.Discription, TransactionDate = x.TransactionDate, Employee = x.Employee == null ? null : x.Employee.UserName , Customer = x.Customer == null? null : x.Customer.Name }).ToList();
                 ResetPaging(myList);
             }
         }
@@ -97,7 +97,7 @@ namespace EZYPOS.UserControls.Transaction.Lists
                     }
                     else
                     {
-                        myList = DB.CustomerReceipt.GetAll().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = Convert.ToInt32(x.ReceiptAmount), Discription = x.Discription, TransactionDate = x.TransactionDate, Employee = x.Employee == null ? null : x.Employee.UserName, Customer = x.Customer == null ? null : x.Customer.Name }).ToList();
+                        myList = DB.CustomerReceipt.GetAll().Select(x => new CustomerReceiptDTO { Id = x.Id, Amount = x.ReceiptAmount, Discription = x.Discription, TransactionDate = x.TransactionDate, Employee = x.Employee == null ? null : x.Employee.UserName, Customer = x.Customer == null ? null : x.Customer.Name }).ToList();
                         if (t.Name == "GridAmount")
                         {
                             myList = myList.Where(x => x.Amount.ToString().Contains(filter)).ToList();
@@ -169,7 +169,11 @@ namespace EZYPOS.UserControls.Transaction.Lists
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
+        private void NumberDecimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
+        }
         private void delete_Click(object sender, RoutedEventArgs e)
         {
             EZYPOS.DTO.CustomerReceiptDTO CRDTO = (EZYPOS.DTO.CustomerReceiptDTO)CustomerReceiptGrid.SelectedItem;
