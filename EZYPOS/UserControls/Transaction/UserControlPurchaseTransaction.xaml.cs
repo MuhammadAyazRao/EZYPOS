@@ -46,6 +46,9 @@ namespace EZYPOS.UserControls.Transaction
                 order.OrderId = EditOrder.OrderId;
                 order.DeliverCharges = EditOrder.DeliverCharges;
                 order.Discount = EditOrder.Discount;
+                order.SupplierId = EditOrder.SupplierId;
+                order.OrderDate = EditOrder.OrderDate;
+                order.EmployeeId = EditOrder.EmployeeId;
                 Initialize(EditOrder);
             }
         }
