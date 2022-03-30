@@ -95,7 +95,7 @@
                     <Button Style="{DynamicResource btn}" Content="3" Margin="101,10,-1,0" Click="Button_Click" HorizontalAlignment="Left" Width="92" Grid.Column="1" Grid.ColumnSpan="2"/>
                     <Button Style="{DynamicResource btn}" Content="7" Margin="49,138,0,0" Click="Button_Click" Grid.ColumnSpan="2"/>
                     <Button Style="{DynamicResource btn}" Content="4" Margin="49,74,0,0" Click="Button_Click" Grid.ColumnSpan="2"/>
-                    <Button Style="{DynamicResource btn}" Margin="49,202,0,-30" Foreground="White" Content="{materialDesign:PackIcon Kind=Refresh,Size=30}" Click="Button_Click_1" Grid.ColumnSpan="2"/>
+                    <Button Style="{DynamicResource btn}" Margin="49,202,0,-30" Foreground="White" Content="." Click="DotClick" Grid.ColumnSpan="2"/>
                     <Button Style="{DynamicResource btn}" Content="0" Margin="8.794,202,0,-30" Click="Button_Click" Grid.Column="1"/>
                     <Button Style="{DynamicResource btn}"  Margin="101,202,-1,0" Foreground="White" Content="{materialDesign:PackIcon Kind=Close,Size=30}" x:Name="btnBackSpace" Click="btnBackSpace_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
 
@@ -109,8 +109,9 @@
                 <TextBox Grid.Row="1"  Name="txtQty" GotFocus="txt_GotFocus" PreviewTextInput="Number_PreviewTextInput"  Grid.Column="1" Margin="10,0,10,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Center" Height="Auto" AcceptsReturn="True" TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Quantity"  />
                 <!--<TextBox Name="txtDiscount" PreviewTextInput="Number_PreviewTextInput"  Padding="10" TextWrapping="Wrap"  Foreground="Gray" Grid.Column="1" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" materialDesign:HintAssist.Hint="Discount"   />-->
                 <!--<TextBox Name="txtQty" PreviewTextInput="Number_PreviewTextInput"  Padding="10" TextWrapping="Wrap"  Foreground="Gray" Grid.Column="0" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}" VerticalContentAlignment="Center"  Margin="10,10,10,10" Grid.Row="1" Height="Auto" materialDesign:HintAssist.Hint="Quantity"   />-->
-                <Button Grid.Column="0" Grid.Row="3"  Content="Cancel" Name="Cancel" Click="Cancel_Click"   Style="{DynamicResource btnDanger}" Margin="0,0,5,0" HorizontalAlignment="Right"  ToolTip="Cancel" />
-                <Button Grid.Column="1" Grid.Row="3 "   Content="Done" Name="Done" Click="Done_Click"  Style="{DynamicResource btnSuccess}" HorizontalAlignment="Left"  Margin="0,0,0,0"   ToolTip="Edit"  />
+                <Button Grid.Column="0" Grid.Row="3" Content="{materialDesign:PackIcon Kind=Refresh,Size=30}" Click="Button_Click_1" Style="{DynamicResource btnPrimery}" HorizontalAlignment="Left" Margin="36,0,0,0" Width="100" />
+                <Button Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2"  Content="Cancel" Name="Cancel" Click="Cancel_Click"   Style="{DynamicResource btnDanger}" Margin="0,0,155,0" HorizontalAlignment="Right"  ToolTip="Cancel" Width="100" />
+                <Button Grid.Column="1" Grid.Row="3 "   Content="Done" Name="Done" Click="Done_Click"  Style="{DynamicResource btnSuccess}" HorizontalAlignment="Left" Margin="48,0,0,0" ToolTip="Edit" Width="100" />
 
                 <!--<TextBox Name="txtFName"  GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Name" Foreground="Gray" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="0" Height="Auto" Style="{Binding txtInput}"  />
                 <TextBox Name="txtPhone" PreviewTextInput="txtPhone_PreviewTextInput" GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Phone" Foreground="Gray" Grid.Column="1" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="0" Height="Auto" Style="{Binding txtInput}"  />

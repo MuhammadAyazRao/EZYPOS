@@ -117,7 +117,7 @@ namespace Common.DTO
     {
 
         private int qty;
-        private int itemdisc;
+        private decimal itemdisc;
         private string note;
         private DateTime startDate=DateTime.Now;
         private DateTime expiryDate = DateTime.Now;
@@ -238,7 +238,7 @@ namespace Common.DTO
             }
         }
 
-        public int ItemDiscount
+        public decimal ItemDiscount
         {
             get { return itemdisc; }
             set

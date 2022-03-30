@@ -56,8 +56,8 @@
                 <Grid>
                     <Label Content="Total Amount" Style="{StaticResource lbl}" Background="#FFffff" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="27"/>
                     <Label Name="lblTotal" Content="0.00" FontWeight="Bold" ContentStringFormat="C" FontSize="15" HorizontalAlignment="Left" Margin="10,21,0,0" VerticalAlignment="Top" Height="36"/>
-                    <Label Content="Service Charges" Style="{StaticResource lbl}" Foreground="{DynamicResource Danger}" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" Height="27"/>
-                    <Label Content="0.00" Name="lblservice" Style="{StaticResource lbl}" Foreground="{DynamicResource Danger}" FontWeight="Bold" ContentStringFormat="C" HorizontalAlignment="Left" Margin="10,77,0,0" VerticalAlignment="Top" Height="31"/>
+                    <Label Content="Delivery Charges" Style="{StaticResource lbl}" Foreground="{DynamicResource DarkBlue}" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,59,0,0" VerticalAlignment="Top" Height="27"/>
+                    <Label Content="0.00" Name="lblDelivery" Style="{StaticResource lbl}" Foreground="{DynamicResource DarkBlue}" FontWeight="Bold" ContentStringFormat="C" HorizontalAlignment="Left" Margin="10,77,0,0" VerticalAlignment="Top" Height="31"/>
                     <Label Content="Discount" Style="{StaticResource lbl}" Foreground="{DynamicResource Success}" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,113,0,0" VerticalAlignment="Top" Height="29"/>
                     <Label Name="lblDisc" Style="{StaticResource lbl}" Content="0.00" Foreground="{DynamicResource Success}" FontWeight="Bold" ContentStringFormat="C" HorizontalAlignment="Left" Margin="10,131,0,0" VerticalAlignment="Top" Height="28"/>
                     <Label Content="Due" Style="{StaticResource lbl}" FontWeight="Bold" HorizontalAlignment="Left" Margin="10,173,0,0" VerticalAlignment="Top" Width="108" Height="29"/>

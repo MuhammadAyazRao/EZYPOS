@@ -68,6 +68,7 @@ namespace EZYPOS.View
             UCSide.onButtonPress += UCSide_onButtonPress;            
             lblTotal.Content = Order.GetNetTotal();
             lblDisc.Content = Order.GetTotalDiscount();
+            lblDelivery.Content = Order.DeliverCharges;
         }
         public CheckOutForm(PurchaseOrderDTO odr)
         {
@@ -78,6 +79,7 @@ namespace EZYPOS.View
             UCSide.onButtonPress += UCSide_onButtonPress;
             lblTotal.Content = PurchaseOrder.GetNetTotal();
             lblDisc.Content = PurchaseOrder.GetTotalDiscount();
+            lblDelivery.Content = PurchaseOrder.DeliverCharges;
         }
         private void UCSide_onButtonPress(object sender, EventArgs e)
         {
@@ -150,18 +152,21 @@ namespace EZYPOS.View
             {
                 if (ScreenType == Common.ScreenType.Sale)
                 {
-                    if (CustPay < Order.GetNetTotal())
-                    {
-                        EZYPOS.View.MessageBox.ShowCustom("Please Collect Payment", "Notification", "Ok");
-                        return;
-                    }
                     //if (DDCustomer.SelectedValue == null || DDEmployee.SelectedValue == null)
                     //{
                     //    EZYPOS.View.MessageBox.ShowCustom("Please Select Customer & Employee", "Error", "Ok");
                     //    return;
                     //}
-                    else
-                    {
+
+
+
+                    //if (CustPay < Order.GetNetTotal())
+                    //{
+                    //    EZYPOS.View.MessageBox.ShowCustom("Please Collect Payment", "Notification", "Ok");
+                    //    return;
+                    //}
+                    //else
+                    //{
                         using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                         {
                             if (DDCustomer.SelectedValue != null)
@@ -177,22 +182,25 @@ namespace EZYPOS.View
                             //}
                             this.DialogResult = Db.SaleOrder.SaveOrder(Order);
                         }
-                    }
+                    //}
                 }
                 else if (ScreenType == Common.ScreenType.Purchase)
                 {
-                    if (CustPay < PurchaseOrder.GetNetTotal())
-                    {
-                        EZYPOS.View.MessageBox.ShowCustom("Please Collect Payment", "Notification", "Ok");
-                        return;
-                    }
                     //if (DDSupplier.SelectedValue == null || DDEmployee.SelectedValue == null)
                     //{
                     //    EZYPOS.View.MessageBox.ShowCustom("Please Select Supplier & Employee", "Error", "Ok");
                     //    return;
                     //}
-                    else
-                    {
+
+
+
+                    //if (CustPay < PurchaseOrder.GetNetTotal())
+                    //{
+                    //    EZYPOS.View.MessageBox.ShowCustom("Please Collect Payment", "Notification", "Ok");
+                    //    return;
+                    //}
+                    //else
+                    //{
                         using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                         {
                             if (DDSupplier.SelectedValue != null)
@@ -208,7 +216,7 @@ namespace EZYPOS.View
                             //}
                             this.DialogResult = Db.PurchaseOrder.SaveOrder(PurchaseOrder);
                         }
-                    }
+                    //}
                 }
             }
             catch (Exception ex)

@@ -28,29 +28,33 @@ namespace EZYPOS.View
         }
         private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            
-            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()) )
+            if(ddEmployee.SelectedValue == null)
             {
-                
-                var SelectedEmployeePin = Db.Employee.GetAll().Where(x=> x.Id == Convert.ToInt32(ddEmployee.SelectedValue)).FirstOrDefault().Password;
-                if (SelectedEmployeePin == Password.Password.ToString())
-                {
-                    EZYPOS.View.SplashScreen Splash = new EZYPOS.View.SplashScreen();
-                    Splash.Show();
-                    await Task.Run(() => Thread.Sleep(3000));
-                    MainWindowNewMenu MainUI = new MainWindowNewMenu();
-                    MainUI.Show();
-                    Splash.Close();
-                    Close();
-                    ActiveSession.ActiveUser = Convert.ToInt32(ddEmployee.SelectedValue);
-                }
-                else
-                {
-                    EZYPOS.View.MessageBox.ShowCustom("Pin is incorrect", "Error", "Ok");
-                }
-
+                EZYPOS.View.MessageBox.ShowCustom("Please Select a User", "Error", "Ok");
             }
-            
+            else
+            {
+                using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+
+                    var SelectedEmployeePin = Db.Employee.GetAll().Where(x => x.Id == Convert.ToInt32(ddEmployee.SelectedValue)).FirstOrDefault().Password;
+                    if (SelectedEmployeePin == Password.Password.ToString())
+                    {
+                        EZYPOS.View.SplashScreen Splash = new EZYPOS.View.SplashScreen();
+                        Splash.Show();
+                        await Task.Run(() => Thread.Sleep(3000));
+                        MainWindowNewMenu MainUI = new MainWindowNewMenu();
+                        MainUI.Show();
+                        Splash.Close();
+                        Close();
+                        ActiveSession.ActiveUser = Convert.ToInt32(ddEmployee.SelectedValue);
+                    }
+                    else
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Pin is incorrect", "Error", "Ok");
+                    }
+                }
+            }    
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)

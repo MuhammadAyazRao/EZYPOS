@@ -311,9 +311,9 @@ namespace EZYPOS.UserControls.Transaction
                     if (Edit.ShowDialog() == true)
                     {
                         //orderDetails.Note = "03/03/2021";
-                        orderDetails.Item.price = (long)Convert.ToDouble(Edit.txtSalePrice.Text);
+                        orderDetails.Item.price = Convert.ToDecimal(Edit.txtSalePrice.Text);
                         orderDetails.Qty = Convert.ToInt16(Edit.txtQty.Text);
-                        orderDetails.ItemDiscount = Convert.ToInt32(Edit.txtDiscount.Text);
+                        orderDetails.ItemDiscount = Convert.ToDecimal(Edit.txtDiscount.Text);
                     }
                     order.OrdersDetails.Insert(INDEX, orderDetails);
                     listBoxItemCart.Items.Insert(INDEX, orderDetails);
@@ -837,10 +837,24 @@ namespace EZYPOS.UserControls.Transaction
                 {
                     Products = Db.Product.GetAll().Where(x => x.SubcategoryId == SubCategoryId).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice}).ToList();
                 }
+                else if (DDCategory.SelectedValue != null || DDCategory.Text.ToLower() != "all")
+                {
+                    Products = Db.Product.GetAll().Where(x => x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue) ).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice }).ToList();
+                }
                 else
                 {
                     Products = Db.Product.GetAll().Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice }).ToList();
                 }
+            }
+            return Products;
+        }
+
+        public List<ProductDTO> GetProductsByCategory(int id)
+        {
+            List<ProductDTO> Products = new List<ProductDTO>();
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                Products = Db.Product.GetAll().Where(x => x.CategoryId == id).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice }).ToList();
             }
             return Products;
         }
@@ -862,9 +876,13 @@ namespace EZYPOS.UserControls.Transaction
             List<ProductDTO> Products = new List<ProductDTO>();
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                if(DDSubCategory.SelectedValue == null || DDSubCategory.Text.ToLower() == "all")
+                if(DDCategory.SelectedValue == null || DDCategory.Text.ToLower() == "all")
                 {
                     Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice }).ToList();
+                }
+                else if (DDSubCategory.SelectedValue == null || DDSubCategory.Text.ToLower() == "all")
+                {
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice }).ToList();
                 }
                 else
                 {
@@ -944,6 +962,14 @@ namespace EZYPOS.UserControls.Transaction
                 List<SubCategoryDTO> SubCategoryList = DB.ProductSubcategory.GetAll().Where(x=> x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue)).Select(x => new SubCategoryDTO { SubcategoryName = x.SubcategoryName, Id = x.Id }).ToList();
                 SubCategoryList.Insert(0, new SubCategoryDTO { Id = 0, SubcategoryName = "ALL" });
                 DDSubCategory.ItemsSource = SubCategoryList;
+
+                BusyIndicator.ShowBusy();
+                if (DDCategory.SelectedValue != null)
+                {
+                    listKitchenLineItems.ItemsSource = GetProductsByCategory(Convert.ToInt16(DDCategory.SelectedValue));
+                }
+                BusyIndicator.CloseBusy();
+
             }
         }
         private void DDSubCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)

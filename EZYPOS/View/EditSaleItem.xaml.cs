@@ -142,7 +142,39 @@ namespace EZYPOS.View
             { EZYPOS.View.MessageBox.ShowCustom(exp.Message, "Error", "ok"); }
         }
 
-        
+        private void DotClick(object sender, RoutedEventArgs e)
+        {
+            if(FocusedTextBox == "txtSalePrice")
+            {
+                if (txtSalePrice.Text.Contains("."))
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("Mathematical Expression can not have two dots.", "Mathematical Error", "ok");
+                }
+                else if (txtSalePrice.Text == "0" || txtSalePrice.Text == "")
+                {
+                    txtSalePrice.Text = "0.";
+                }
+                else if (((string)txtSalePrice.Text != string.Empty))
+                {
+                    txtSalePrice.Text = txtSalePrice.Text + ".";
+                }
+            }
+            else if(FocusedTextBox == "txtDiscount")
+            {
+                if (txtDiscount.Text.Contains("."))
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("Mathematical Expression can not have two dots.", "Mathematical Error", "ok");
+                }
+                else if (txtDiscount.Text == "0" || txtDiscount.Text == "")
+                {
+                    txtDiscount.Text = "0.";
+                }
+                else if (((string)txtDiscount.Text != string.Empty))
+                {
+                    txtDiscount.Text = txtDiscount.Text + ".";
+                }
+            }
+        }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {

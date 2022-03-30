@@ -119,7 +119,25 @@ namespace EZYPOS.View
         }
 
 
-
+        private void DotClick(object sender, RoutedEventArgs e)
+        {
+           
+            if (FocusedTextBox == "txtDiscount")
+            {
+                if (txtDiscount.Text.Contains("."))
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("Mathematical Expression can not have two dots.", "Mathematical Error", "ok");
+                }
+                else if (txtDiscount.Text == "0" || txtDiscount.Text == "")
+                {
+                    txtDiscount.Text = "0.";
+                }
+                else if (((string)txtDiscount.Text != string.Empty))
+                {
+                    txtDiscount.Text = txtDiscount.Text + ".";
+                }
+            }
+        }
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             Refresh();

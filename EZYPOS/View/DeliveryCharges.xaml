@@ -63,9 +63,9 @@
 
 
             </StackPanel>-->
-            <Button x:Name="btnRefresh" Content="{materialDesign:PackIcon Kind=Refresh,Size=30}" Click="Button_Click_1" Style="{DynamicResource MaterialDesignIconButton}" HorizontalAlignment="Left" Margin="40,380,0,0" VerticalAlignment="Top" Width="50" Height="50"/>
-            <Button x:Name="btnApply" Content="Apply" Click="btnApply_Click" Style="{DynamicResource btnSuccess}" HorizontalAlignment="Left" Margin="110,380,0,0" VerticalAlignment="Top" Width="100" Height="50"/>
-            <Button x:Name="btnCancel" Content="Cancel" Click="Cancel_Click" Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Margin="220,380,0,0" VerticalAlignment="Top" Width="100" Height="50"/>
+            <Button x:Name="btnRefresh" Content="{materialDesign:PackIcon Kind=Refresh,Size=30}" Click="Button_Click_1" Style="{DynamicResource btnPrimery}" HorizontalAlignment="Left" Margin="20,380,0,0" VerticalAlignment="Top" Width="100" Height="50"/>
+            <Button x:Name="btnApply" Content="Apply" Click="btnApply_Click" Style="{DynamicResource btnSuccess}" HorizontalAlignment="Left" Margin="125,380,0,0" VerticalAlignment="Top" Width="100" Height="50"/>
+            <Button x:Name="btnCancel" Content="Cancel" Click="Cancel_Click" Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Margin="230,380,0,0" VerticalAlignment="Top" Width="100" Height="50"/>
 
         </Grid>
     </Grid>

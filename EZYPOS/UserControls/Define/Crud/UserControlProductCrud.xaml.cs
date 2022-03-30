@@ -456,9 +456,19 @@ namespace EZYPOS.UserControls.Define.Crud
                 EZYPOS.View.MessageBox.ShowCustom("Sale Price is Required.", "Error", "OK");
                 return false;
             }
-            if (string.IsNullOrEmpty(txtPurchasePrice.Text) || txtPurchasePrice.Text == "Purchase Price")
+            if (string.IsNullOrEmpty(txtPurchasePrice.Text))
             {
                 EZYPOS.View.MessageBox.ShowCustom("Purchase Price is Required.", "Error", "OK");
+                return false;
+            }
+            if (string.IsNullOrEmpty(txtWholeSalePrice.Text))
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Whole Sale Price is Required.", "Error", "OK");
+                return false;
+            }
+            if (string.IsNullOrEmpty(txtSize.Text))
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Size is Required.", "Error", "OK");
                 return false;
             }
             //if (string.IsNullOrEmpty(txtStock.Text) || txtStock.Text == "Current Stock")
@@ -484,6 +494,11 @@ namespace EZYPOS.UserControls.Define.Crud
             if (DDSubCategory.SelectedValue == null)
             {
                 EZYPOS.View.MessageBox.ShowCustom("Please select SubCategory.", "Error", "OK");
+                return false;
+            }
+            if (DDMunit.SelectedValue == null)
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Please select Measuring Unit.", "Error", "OK");
                 return false;
             }
             //if (DDGroup.SelectedValue == null)

@@ -296,7 +296,7 @@ namespace EZYPOS.UserControls.Transaction
                         orderDetails.StartDate =(DateTime) Edit.StartDate.SelectedDate;
                         orderDetails.ExpiryDate = (DateTime) Edit.EndDate.SelectedDate;
                         orderDetails.Qty = Convert.ToInt16(Edit.txtQty.Text);
-                        orderDetails.ItemDiscount = Convert.ToInt16(Edit.txtDiscount.Text);
+                        orderDetails.ItemDiscount = Convert.ToDecimal(Edit.txtDiscount.Text);
                     }
                     order.OrdersDetails.Insert(INDEX, orderDetails);
                     listBoxItemCart.Items.Insert(INDEX, orderDetails);
@@ -710,10 +710,24 @@ namespace EZYPOS.UserControls.Transaction
                 {
                     Products = Db.Product.GetAll().Where(x => x.SubcategoryId == SubCategoryId).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
                 }
+                else if (DDCategory.SelectedValue != null || DDCategory.Text.ToLower() != "all")
+                {
+                    Products = Db.Product.GetAll().Where(x => x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue) ).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
+                }
                 else
                 {
                     Products = Db.Product.GetAll().Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
                 }
+            }
+            return Products;
+        }
+
+        public List<ProductDTO> GetProductsByCategory(int id)
+        {
+            List<ProductDTO> Products = new List<ProductDTO>();
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                Products = Db.Product.GetAll().Where(x => x.CategoryId == id).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
             }
             return Products;
         }
@@ -724,7 +738,7 @@ namespace EZYPOS.UserControls.Transaction
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
 
-                Product = Db.Product.GetAll().Where(x => x.Barcode == code).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).FirstOrDefault();
+                Product = Db.Product.GetAll().Where(x => x.Barcode == code).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).FirstOrDefault();
 
             }
             return Product;
@@ -735,13 +749,17 @@ namespace EZYPOS.UserControls.Transaction
             List<ProductDTO> Products = new List<ProductDTO>();
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                if(DDSubCategory.SelectedValue == null || DDSubCategory.Text.ToLower() == "all")
+                if(DDCategory.SelectedValue == null || DDCategory.Text.ToLower() == "all")
                 {
-                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
+                }
+                else if (DDSubCategory.SelectedValue == null || DDSubCategory.Text.ToLower() == "all")
+                {
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
                 }
                 else
                 {
-                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.SubcategoryId == Convert.ToInt32(DDSubCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.RetailPrice }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.SubcategoryId == Convert.ToInt32(DDSubCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
                 }
 
             }
@@ -805,6 +823,14 @@ namespace EZYPOS.UserControls.Transaction
                 List<SubCategoryDTO> SubCategoryList = DB.ProductSubcategory.GetAll().Where(x=> x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue)).Select(x => new SubCategoryDTO { SubcategoryName = x.SubcategoryName, Id = x.Id }).ToList();
                 SubCategoryList.Insert(0, new SubCategoryDTO { Id = 0, SubcategoryName = "ALL" });
                 DDSubCategory.ItemsSource = SubCategoryList;
+
+                BusyIndicator.ShowBusy();
+                if (DDCategory.SelectedValue != null)
+                {
+                    listKitchenLineItems.ItemsSource = GetProductsByCategory(Convert.ToInt16(DDCategory.SelectedValue));
+                }
+                BusyIndicator.CloseBusy();
+
             }
             
         }
@@ -838,12 +864,12 @@ namespace EZYPOS.UserControls.Transaction
                     if (item != null)
                     {
                         AddToCart(item.ProductName, item.RetailPrice, item.Id);
-                        listKitchenLineItems.ItemsSource = null;
+                        //listKitchenLineItems.ItemsSource = null;
                     }
                     else
                     {
                         EZYPOS.View.MessageBox.ShowCustom("No item found against Barcode", "Not found", "Ok");
-                        listKitchenLineItems.ItemsSource = GetProducts();
+                        //listKitchenLineItems.ItemsSource = GetProducts();
                     }
 
                 }
