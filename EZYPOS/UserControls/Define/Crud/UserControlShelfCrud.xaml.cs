@@ -153,9 +153,17 @@ namespace EZYPOS.UserControls.Define.Crud
             {
                 using (UnitOfWork uw = new UnitOfWork(new EPOSDBContext()))
                 {
-                    uw.Shelf.Delete(Convert.ToInt32(txtId.Text));
-                    uw.Complete();
-                    EZYPOS.View.MessageBox.ShowCustom("Record Deleted Succesfully", "Status", "Ok");
+                    try
+                    {
+                        uw.Shelf.Delete(Convert.ToInt32(txtId.Text));
+                        uw.Complete();
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deleted Succesfully", "Status", "Ok");
+                    }
+                    catch
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Selected Shelf Can't be Deleted because its being used", "Status", "OK");
+                    }
+
                 }
                 RefreshPage();
             }

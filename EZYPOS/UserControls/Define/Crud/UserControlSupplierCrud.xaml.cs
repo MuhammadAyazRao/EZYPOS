@@ -218,15 +218,17 @@ namespace EZYPOS.UserControls
                 EZYPOS.View.MessageBox.ShowCustom("Phone is Required.", "Error", "OK");
                 return false;
             }
-            //if (!string.IsNullOrEmpty(txtAddress.Text))
-            //{
-            //    return false;
-            //}
+            if (string.IsNullOrEmpty(txtAddress.Text))
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Address is Required.", "Error", "OK");
+                return false;
+            }
 
-            //if (!string.IsNullOrEmpty(txtMobile.Text))
-            //{
-            //    return false;
-            //}
+            if (string.IsNullOrEmpty(txtMobile.Text))
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Mobile is Required.", "Error", "OK");
+                return false;
+            }
             if (ddCity.SelectedValue == null)
             {
                 EZYPOS.View.MessageBox.ShowCustom("Please select City.", "Error", "OK");
@@ -267,10 +269,17 @@ namespace EZYPOS.UserControls
                 {
                     using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                     {
-                        DB.Supplier.Delete(Convert.ToInt32(txtId.Text));
-                        DB.Complete();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
-                        RefreshPage();
+                        try
+                        {
+                            DB.Supplier.Delete(Convert.ToInt32(txtId.Text));
+                            DB.Complete();
+                            EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                            RefreshPage();
+                        }
+                        catch
+                        {
+                            EZYPOS.View.MessageBox.ShowCustom("Supplier Can't be Deleted because its being Used", "Status", "OK");
+                        }
                     }
                 }
             }

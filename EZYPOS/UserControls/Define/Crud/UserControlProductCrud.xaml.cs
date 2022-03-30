@@ -97,6 +97,10 @@ namespace EZYPOS.UserControls.Define.Crud
                 {
                     DDGroup.SelectedValue = Productdata.GroupId;
                 }
+                if (Productdata.ShelfId != null && Productdata.ShelfId > 0)
+                {
+                    DDShelf.SelectedValue = Productdata.ShelfId;
+                }
                 if (Productdata.Unit != null && Productdata.Unit > 0)
                 {
                     DDMunit.SelectedValue = Productdata.Unit;
@@ -430,9 +434,16 @@ namespace EZYPOS.UserControls.Define.Crud
                     int Id = Convert.ToInt32(txtId.Text);
                     using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                     {
-                        DB.Product.Delete(Id);                        
-                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
-                        RefreshPage();
+                        try
+                        {
+                            DB.Product.Delete(Id);
+                            EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                            RefreshPage();
+                        }
+                        catch
+                        {
+                            EZYPOS.View.MessageBox.ShowCustom("Selected Product Can't be Deleted because its being used", "Status", "OK");
+                        }
                     }
                 }
             }

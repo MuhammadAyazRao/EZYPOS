@@ -181,7 +181,7 @@ namespace EZYPOS.UserControls
                     }
                     catch
                     {
-                        EZYPOS.View.MessageBox.ShowCustom("Selected Customer Can't be Deleted", "Status", "OK");
+                        EZYPOS.View.MessageBox.ShowCustom("Selected Customer Can't be Deleted because its being Used", "Status", "OK");
                     }
 
                 }

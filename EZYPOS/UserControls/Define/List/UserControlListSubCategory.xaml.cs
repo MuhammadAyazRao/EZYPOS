@@ -159,12 +159,12 @@ namespace EZYPOS.UserControls.Define.List
                     {
                         DB.ProductSubcategory.Delete(Subcategory.Id);
                         DB.ProductSubcategory.Save();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deleted Successfully", "Status", "OK");
                         Refresh();
                     }
                     catch
                     {
-                        EZYPOS.View.MessageBox.ShowCustom("Selected Record Can't be Deleted", "Status", "OK");
+                        EZYPOS.View.MessageBox.ShowCustom("Sub Category Can't be Deleted because its being used", "Status", "OK");
                     }
 
                 }

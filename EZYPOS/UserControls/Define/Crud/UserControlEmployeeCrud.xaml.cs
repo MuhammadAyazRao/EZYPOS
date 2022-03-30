@@ -263,25 +263,46 @@ namespace EZYPOS.UserControls
                 EZYPOS.View.MessageBox.ShowCustom("Phone is Required.", "Error", "OK");
                 return false;
             }
-            //if (!string.IsNullOrEmpty(txtAddress.Text))
-            //{
-            //    return false;
-            //}
-
-            //if (!string.IsNullOrEmpty(txtMobile.Text))
-            //{
-            //    return false;
-            //}
+            if (string.IsNullOrEmpty(txtAddress.Text))
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Address is Required.", "Error", "OK");
+                return false;
+            }
+            if (string.IsNullOrEmpty(txtSalary.Text))
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Salary is Required.", "Error", "OK");
+                return false;
+            }
+            if (string.IsNullOrEmpty(txtCnic.Text))
+            {
+                EZYPOS.View.MessageBox.ShowCustom("CNIC is Required.", "Error", "OK");
+                return false;
+            }
+            if (string.IsNullOrEmpty(JoiningDate.Text))
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Joining Date is Required.", "Error", "OK");
+                return false;
+            }
             if (ddCity.SelectedValue == null)
             {
                 EZYPOS.View.MessageBox.ShowCustom("Please select City.", "Error", "OK");
+                return false;
+            }
+            if (ddRole.SelectedValue == null)
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Please select Employee Role.", "Error", "OK");
+                return false;
+            }
+            if (ddSalaryType.SelectedValue == null)
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Please select Salary Type.", "Error", "OK");
                 return false;
             }
             if (ckLogin.IsChecked == true)
             {
                if(/*txtUserName.Text == "" ||*/ txtPassword.Text =="")
                {
-                    EZYPOS.View.MessageBox.ShowCustom("Please Provide UserName and Password.", "Error", "OK");
+                    EZYPOS.View.MessageBox.ShowCustom("Please Provide PIN for Login.", "Error", "OK");
                     return false;
                }
 

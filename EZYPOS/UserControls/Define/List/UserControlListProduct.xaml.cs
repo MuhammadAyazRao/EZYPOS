@@ -190,12 +190,12 @@ namespace EZYPOS.UserControls.Define.List
                     {
                         DB.Product.Delete(Product.Id);
                         DB.Product.Save();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deleted Successfully", "Status", "OK");
                         Refresh();
                     }
                     catch
                     {
-                        EZYPOS.View.MessageBox.ShowCustom("Selected Record Can't be Deleted", "Status", "OK");
+                        EZYPOS.View.MessageBox.ShowCustom("Selected Product Can't be Deleted because its being used", "Status", "OK");
                     }
 
                 }

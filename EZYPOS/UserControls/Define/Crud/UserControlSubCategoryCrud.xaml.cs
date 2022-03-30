@@ -153,11 +153,18 @@ namespace EZYPOS.UserControls.Define.Crud
                 {
                     using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        Db.ProductSubcategory.Delete(Convert.ToInt32(txtId.Text));
-                        Db.Complete();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        try
+                        {
+                            Db.ProductSubcategory.Delete(Convert.ToInt32(txtId.Text));
+                            Db.Complete();
+                            EZYPOS.View.MessageBox.ShowCustom("Record Deleted Successfully", "Status", "OK");
+                            RefreshPage();
+                        }
+                        catch
+                        {
+                            EZYPOS.View.MessageBox.ShowCustom("Sub Category Can't be Deleted because its being used", "Status", "OK");
+                        }
                     }
-                    RefreshPage();
                 }
             }
         }

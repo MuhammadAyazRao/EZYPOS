@@ -141,11 +141,20 @@ namespace EZYPOS.UserControls.Define.Crud
                 {
                     using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
-                        Db.ProductGroup.Delete(Convert.ToInt32(txtId.Text));
-                        Db.Complete();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        try
+                        {
+                            Db.ProductGroup.Delete(Convert.ToInt32(txtId.Text));
+                            Db.Complete();
+                            EZYPOS.View.MessageBox.ShowCustom("Record Deleted Successfully", "Status", "OK");
+                            RefreshPage();
+                        }
+                        catch
+                        {
+                            EZYPOS.View.MessageBox.ShowCustom("Selected Group Can't be Deleted because its being used", "Status", "OK");
+                        }
+
                     }
-                    RefreshPage();
+                    
                 }
             }
         }

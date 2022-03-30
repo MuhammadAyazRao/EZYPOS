@@ -145,7 +145,7 @@ namespace EZYPOS.UserControls.Define.List
                     }
                     catch
                     {
-                        EZYPOS.View.MessageBox.ShowCustom("Selected Record Can't be Deleted", "Status", "OK");
+                        EZYPOS.View.MessageBox.ShowCustom("Category Can't be Deleted because its being used", "Status", "OK");
                     }
 
                 }

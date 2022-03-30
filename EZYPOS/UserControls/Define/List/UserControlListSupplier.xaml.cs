@@ -170,12 +170,12 @@ namespace EZYPOS.UserControls
                     {
                         DB.Supplier.Delete(SupplierDTO.Id);
                         DB.Supplier.Save();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deleted Successfully", "Status", "OK");
                         Refresh();
                     }
                     catch
                     {
-                        EZYPOS.View.MessageBox.ShowCustom("Selected Record Can't be Deleted", "Status", "OK");
+                        EZYPOS.View.MessageBox.ShowCustom("Supplier Can't be Deleted because its being Used", "Status", "OK");
                     }
 
                 }

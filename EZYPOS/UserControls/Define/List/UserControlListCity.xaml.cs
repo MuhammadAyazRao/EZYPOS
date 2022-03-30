@@ -137,12 +137,12 @@ namespace EZYPOS.UserControls.Define.List
                     {
                         DB.City.Delete(City.Id);
                         DB.City.Save();
-                        EZYPOS.View.MessageBox.ShowCustom("Record Deteleted Successfully", "Status", "OK");
+                        EZYPOS.View.MessageBox.ShowCustom("Record Deleted Successfully", "Status", "OK");
                         Refresh();
                     }
                     catch
                     {
-                        EZYPOS.View.MessageBox.ShowCustom("Selected City Can't be Deleted", "Status", "OK");
+                        EZYPOS.View.MessageBox.ShowCustom("Selected City Can't be Deleted because its being used", "Status", "OK");
                     }
 
                 }

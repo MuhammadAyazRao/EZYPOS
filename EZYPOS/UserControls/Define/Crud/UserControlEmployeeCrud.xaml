@@ -201,7 +201,7 @@
         <Button  Content="{materialDesign:PackIcon Kind=Pencil,Size=50}" Name="Update" Click="Update_Click" Style="{DynamicResource btnInfo}" HorizontalAlignment="Left" Grid.Row="2" Margin="430,0,0,0" Width="100"   ToolTip="Edit"  />
         <Button  Content="{materialDesign:PackIcon Kind=Delete,Size=50}" Name="Delete" Click="Delete_Click" BorderThickness="0"  Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Grid.Row="2" Margin="300,0,0,0" Width="100"  ToolTip="Delete" />
         <Button  Content="{materialDesign:PackIcon Kind=ContentSave,Size=50}" Name="Save" Click="Save_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left" Grid.Row="2" Margin="560,0,0,0" Width="100"  ToolTip="Save" />
-        <Label x:Name="label1" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Content="Employee Detail" HorizontalAlignment="Left" Margin="40,10,0,300"/>
+        <Label x:Name="label1" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Content="Employee Detail" HorizontalAlignment="Left" Margin="45,10,0,555"/>
         <!--<Border Background="{DynamicResource DarkBlue}"/>
         <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Employee" HorizontalAlignment="Left" Margin="10,5,0,0"/>
         <Button x:Name="btnCloseTopBar" Click="btnClose_Click" Content="X" Style="{DynamicResource btnDanger}" Margin="0,5,10,0" HorizontalAlignment="Right" Width="50" Height="40" VerticalAlignment="Top"/>-->
