@@ -102,7 +102,7 @@
                            DisplayMemberPath="Name" 
                            SelectedValuePath="Id" 
                            Grid.Row="1" Grid.Column="2" 
-                           Margin="20,10,20,10"
+                           Margin="20,10,20,10" SelectionChanged="ddProduct_SelectionChanged"
                           materialDesign:HintAssist.Hint="Search Product"                           
                           materialDesign:HintAssist.HintOpacity=".26"                          
                           IsEditable="True"/>

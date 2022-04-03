@@ -175,5 +175,10 @@ namespace EZYPOS.UserControls.Report
             string Discription = "From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
             ReportPrintHelper.PrintCOL5Report(ref ReportViewer, "Product Ledger Report", "Product Name", "Transaction Type", "Date", "DR", "CR", Discription, RptData);
         }
+
+        private void ddProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Refresh();
+        }
     }
 }

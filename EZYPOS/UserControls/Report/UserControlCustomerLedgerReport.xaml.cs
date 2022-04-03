@@ -224,5 +224,10 @@ namespace EZYPOS.UserControls.Report
         {
 
         }
+
+        private void ddCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Refresh();
+        }
     }
 }

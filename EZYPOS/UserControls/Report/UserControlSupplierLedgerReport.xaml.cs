@@ -205,5 +205,10 @@ namespace EZYPOS.UserControls.Report
             ReportPrintHelper.PrintCOL6Report(ref ReportViewer, "Supplier Ledger Report", "Supplier Name", "Date", "Transaction Type", "DR", "CR", "Balance", Discription, RptData);
 
         }
+
+        private void ddSupplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Refresh();
+        }
     }
 }
