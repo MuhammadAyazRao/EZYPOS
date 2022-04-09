@@ -24,6 +24,7 @@ namespace DAL.DBMODEL
         public int KitchenLines { get; set; }
         public string ItemComments { get; set; }
         public int ItemQty { get; set; }
+        public decimal? ItemDiscount { get; set; }
         public decimal? ItemPrice { get; set; }
         public decimal? PurchasePrice { get; set; }
         public int ItemIndex { get; set; }

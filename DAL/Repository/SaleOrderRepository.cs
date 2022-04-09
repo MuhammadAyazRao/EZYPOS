@@ -76,6 +76,7 @@ namespace DAL.Repository
                         NewOrderDetail.IsUpdated = "";
                         NewOrderDetail.IsDeleted = "";
                         NewOrderDetail.KitchenLines = 1;
+                        NewOrderDetail.ItemDiscount = item?.ItemDiscount;
                         SaleOrderDetail.Add(NewOrderDetail);
                         
                         Stock.SaveStockAdjustment(CartOrderToProcess, NewOrderDetail.Id, NewOrder.Id);

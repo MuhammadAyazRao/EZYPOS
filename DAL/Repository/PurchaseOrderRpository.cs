@@ -74,6 +74,7 @@ namespace DAL.Repository
                         NewOrderDetail.PurchasePrice = item.Item.price;  //this need to check decimal
                         NewOrderDetail.ExpiryDate = item?.ExpiryDate;
                         NewOrderDetail.StartDate = item?.StartDate;
+                        NewOrderDetail.ItemDiscount = item?.ItemDiscount;
                         NewOrderDetail.Total = (item.Qty * item?.Item.price);  // this need to check decimal
                         PurchaseOrderDetail.Add(NewOrderDetail);
                         Stock.Add(new ProductStock { ProductId = NewOrderDetail.ProductId, StartDate = (DateTime)NewOrderDetail.StartDate, ExpiryDate = (DateTime)NewOrderDetail.ExpiryDate, Qty = NewOrderDetail.Qty, PurchaseOrderId = NewOrderDetail.PurchaseOrderId, Adjustment = 0, Conversion= 0 });

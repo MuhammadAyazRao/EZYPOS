@@ -370,7 +370,7 @@ namespace EZYPOS.UserControls.Define.Crud
                         //StockDate
                         NewProduct.Createdon = DateTime.Now;
                         NewProduct.Unit = Convert.ToInt32(DDMunit.SelectedValue);
-                        NewProduct.Size = Convert.ToDecimal(txtSize.Text);
+                        NewProduct.Size = Convert.ToDecimal(txtSize.Text.Trim());
 
                         DB.Complete();
                         EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
@@ -477,7 +477,7 @@ namespace EZYPOS.UserControls.Define.Crud
                 EZYPOS.View.MessageBox.ShowCustom("Whole Sale Price is Required.", "Error", "OK");
                 return false;
             }
-            if (string.IsNullOrEmpty(txtSize.Text))
+            if (string.IsNullOrEmpty(txtSize.Text) || string.IsNullOrWhiteSpace(txtSize.Text))
             {
                 EZYPOS.View.MessageBox.ShowCustom("Size is Required.", "Error", "OK");
                 return false;

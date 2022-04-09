@@ -33,37 +33,39 @@ namespace EZYPOS.UserControls.Report
         public UserControlStockExpiry()
         {
             InitializeComponent();
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                var ProductList = DB.Product.GetAll().Select(x => new { Name = x.ProductName, Id = x.Id }).ToList();
+                ProductList.Insert(0, new { Name = "All", Id = 0 });
+                ddProduct.ItemsSource = ProductList;
+            }
+            StartDate.SelectedDate = DateTime.Today;
+            EndDate.SelectedDate = DateTime.Today;
             Refresh();
 
         }
         private void Refresh(object sender = null)
         {
+            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
+            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                myList = DB.Stock.GetStockDetail().ToList();
+                if(ddProduct.SelectedValue == null || ddProduct.SelectedIndex == 0)
+                {
+                    myList = DB.Stock.GetStockDetail().Where(x => x.StartDate >= Sdate && x.StartDate <= Edate).ToList();
+                }
+                else
+                {
+                    myList = DB.Stock.GetStockDetail().Where(x => x.StartDate >= Sdate && x.StartDate <= Edate && x.ProductId == Convert.ToInt32(ddProduct.SelectedValue)).ToList();
+                }
                 ResetPaging(myList);
             }
         }
 
-        //private void Search_Click(object sender, RoutedEventArgs e)
-        //{
-        //    using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-        //    {
-        //        if (StartDate.SelectedDate == null && EndDate.SelectedDate == null)
-        //        {
-                    
-        //        }
-        //        else
-        //        {
-        //            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
-        //            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Now : EndDate.SelectedDate.Value;
-                    
-        //        }
-
-        //        ResetPaging(myList);
-
-        //    }
-        //}
+        private void Search_Click(object sender, RoutedEventArgs e)
+        {
+            Refresh();
+        }
 
         private void GridName_KeyDown(object sender, KeyEventArgs e)
         {
@@ -81,26 +83,31 @@ namespace EZYPOS.UserControls.Report
                     }
                     else
                     {
+                        DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
+                        DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
+                        if (ddProduct.SelectedValue == null || ddProduct.SelectedIndex == 0)
+                        {
+                            myList = DB.Stock.GetStockDetail().Where(x => x.StartDate >= Sdate && x.StartDate <= Edate).ToList();
+                        }
+                        else
+                        {
+                            myList = DB.Stock.GetStockDetail().Where(x => x.StartDate >= Sdate && x.StartDate <= Edate && x.ProductId == Convert.ToInt32(ddProduct.SelectedValue)).ToList();
+                        }
                         if (t.Name == "GridProductName")
                         {
-
-                            myList = DB.Stock.GetStockDetail().Where(x => x.ProductName.ToUpper().Contains(filter.ToUpper())).ToList();
-
+                            myList = myList.Where(x => x.ProductName.ToUpper().Contains(filter.ToUpper())).ToList();
                         }
                         if (t.Name == "GridAvailableQty")
                         {
-                            myList = DB.Stock.GetStockDetail().Where(x => x.AvailableQty.ToString().Contains(filter)).ToList();
-
+                            myList = myList.Where(x => x.AvailableQty.ToString().Contains(filter)).ToList();
                         }
                         if (t.Name == "GridStartDate")
                         {
-                            myList = DB.Stock.GetStockDetail().Where(x => x.StartDate.ToString().Contains(filter)).ToList();
-
+                            myList = myList.Where(x => x.StartDate.ToString().Contains(filter)).ToList();
                         }
                         if (t.Name == "ExpirationDate")
                         {
-                            myList = DB.Stock.GetStockDetail().Where(x => x.ExpirationDate.ToString().Contains(filter)).ToList();
-                            
+                            myList = myList.Where(x => x.ExpirationDate.ToString().Contains(filter)).ToList();
                         }
                         ResetPaging(myList);
                     }
@@ -154,8 +161,13 @@ namespace EZYPOS.UserControls.Report
         {
             Refresh();
             List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.ProductName, COLB = x.AvailableQty.ToString(), COLC = x.StartDate.ToString("dd/MM/yyyy"), COLD = x.ExpirationDate.ToString("dd/MM/yyyy"), COLE = "", COLF = "" }).ToList();
-            string Discription = ""; //"From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
+            string Discription = "From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
             ReportPrintHelper.PrintCOL4Report(ref ReportViewer, "Stock Expiry Report", "Product Name", "Available Quantity", "Start Date", "Expiry Date", Discription, RptData);
+
+        }
+
+        private void ddProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
         }
     }

@@ -414,9 +414,11 @@ namespace DAL.DBMODEL
             {
                 entity.ToTable("Purchase_OrderDetail");
 
-                entity.Property(e => e.Discount).HasColumnType("decimal(18, 3)");
-
                 entity.Property(e => e.ExpiryDate).HasColumnType("date");
+
+                entity.Property(e => e.ItemDiscount)
+                    .HasColumnType("decimal(18, 3)")
+                    .HasColumnName("itemDiscount");
 
                 entity.Property(e => e.ItemName)
                     .HasMaxLength(1000)
@@ -608,6 +610,10 @@ namespace DAL.DBMODEL
                     .HasMaxLength(255)
                     .IsUnicode(false)
                     .HasColumnName("item_comments");
+
+                entity.Property(e => e.ItemDiscount)
+                    .HasColumnType("decimal(18, 3)")
+                    .HasColumnName("itemDiscount");
 
                 entity.Property(e => e.ItemId).HasColumnName("item_id");
 

@@ -22,7 +22,7 @@ namespace EZYPOS.View
             InitializeComponent();
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                var EmployeeList = Db.Employee.GetAll().Select(x => new { Name = x.UserName, Id = x.Id }).ToList();
+                var EmployeeList = Db.Employee.GetAll().Where(x=> x.IsLoginAllowed == true).Select(x => new { Name = x.UserName, Id = x.Id }).ToList();
                 ddEmployee.ItemsSource = EmployeeList;
             }
         }

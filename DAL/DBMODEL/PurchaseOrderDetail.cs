@@ -17,7 +17,7 @@ namespace DAL.DBMODEL
         public int PurchaseOrderId { get; set; }
         public DateTime? ExpiryDate { get; set; }
         public DateTime? StartDate { get; set; }
-        public decimal? Discount { get; set; }
+        public decimal? ItemDiscount { get; set; }
         public decimal? Total { get; set; }
     }
 }

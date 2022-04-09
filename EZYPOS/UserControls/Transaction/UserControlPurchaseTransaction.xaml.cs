@@ -710,7 +710,7 @@ namespace EZYPOS.UserControls.Transaction
                 {
                     Products = Db.Product.GetAll().Where(x => x.SubcategoryId == SubCategoryId).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
                 }
-                else if (DDCategory.SelectedValue != null || DDCategory.Text.ToLower() != "all")
+                else if (DDCategory.SelectedValue != null && DDCategory.Text.ToLower() != "all")
                 {
                     Products = Db.Product.GetAll().Where(x => x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue) ).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
                 }
