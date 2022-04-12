@@ -181,8 +181,13 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Currency" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" />
-                    <ComboBox  Name="ddCurrency" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Country" SelectedValuePath="Currency" materialDesign:HintAssist.Hint="Search Country" Margin="0,0,20,0" materialDesign:HintAssist.HintOpacity=".26" IsEditable="True" />
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Default Supplier" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" />
+                    <ComboBox  Name="ddSupplier" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name" SelectedValuePath="Id" materialDesign:HintAssist.Hint="Search Supplier" Margin="0,0,20,0" materialDesign:HintAssist.HintOpacity=".26" IsEditable="True" />
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Walking Customer" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="1" Grid.Column="0" />
+                    <ComboBox  Name="ddCustomer" Grid.Row="1" Grid.Column="1" DisplayMemberPath="Name" SelectedValuePath="Id" materialDesign:HintAssist.Hint="Search Customer" Margin="0,0,20,0" materialDesign:HintAssist.HintOpacity=".26" IsEditable="True" />
+                    
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Currency" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="0" Grid.Column="2" />
+                    <ComboBox  Name="ddCurrency" Grid.Row="0" Grid.Column="3" DisplayMemberPath="Country" SelectedValuePath="Currency" materialDesign:HintAssist.Hint="Search Country" Margin="0,0,20,0" materialDesign:HintAssist.HintOpacity=".26" IsEditable="True" />
 
 
 

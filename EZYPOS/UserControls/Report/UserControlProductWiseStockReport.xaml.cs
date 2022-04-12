@@ -29,13 +29,32 @@ namespace EZYPOS.UserControls.Report
         public UserControlProductWiseStockReport()
         {
             InitializeComponent();
+            using (UnitOfWork UW = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                var ProductList = UW.Product.GetAll().Select(x => new { Name = x.ProductName, Id = x.Id }).ToList();
+                ProductList.Insert(0, new { Name = "All", Id = 0 });
+                ddProduct.ItemsSource = ProductList;
+            }
             Refresh();
         }
 
         private void Refresh(object sender = null)
         {
 
-            myList = new ProductWiseStockReport().GetStockreportData();
+            //myList = new ProductWiseStockReport().GetStockreportData();
+            if(ddProduct.SelectedIndex != 0 && ddProduct.SelectedValue != null)
+            {
+                using (UnitOfWork UW = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    int id = Convert.ToInt32(ddProduct.SelectedValue);
+                    string SelectedProduct = UW.Product.Get(id).ProductName;
+                    myList = new ProductWiseStockReport().GetStockreportData(SelectedProduct);
+                }
+            }
+            else
+            {
+                myList = new ProductWiseStockReport().GetStockreportData();
+            }
             ResetPaging(myList);
            
         }
@@ -97,19 +116,20 @@ namespace EZYPOS.UserControls.Report
                 {
                     if (filter == "")
                     {
-                        myList = new ProductWiseStockReport().GetStockreportData();
-                        ResetPaging(myList);
+                        Refresh();
+                        //myList = new ProductWiseStockReport().GetStockreportData();
+                        //ResetPaging(myList);
                     }
                     else
                     {
                         {
                             {
 
-                                if (t.Name == "GridName")
-                                {
-                                    myList = new ProductWiseStockReport().GetStockreportData(filter);
-                                    ResetPaging(myList);
-                                }
+                                //if (t.Name == "GridName")
+                                //{
+                                //    myList = new ProductWiseStockReport().GetStockreportData(filter);
+                                //    ResetPaging(myList);
+                                //}
                                 
                             }
                         }
@@ -126,5 +146,9 @@ namespace EZYPOS.UserControls.Report
             ReportPrintHelper.PrintCOL3Report(ref ReportViewer, "Product Wise Stock", "Product Name", "Product Stock", "", Discription, RptData);
         }
 
+        private void ddProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Refresh();
+        }
     }
 }

@@ -85,15 +85,25 @@
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <!--<RowDefinition Height="*"/>-->
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <!--<ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>-->
             </Grid.ColumnDefinitions>
-            <Button  Content="{materialDesign:PackIcon Kind=Printer,Size=25}" Name="Print" Click="Print_Click" Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Right"   Margin="0,45,20,10" Width="100" ToolTip="Print" Grid.Row="1" Grid.Column="2" />
+            <Button  Content="{materialDesign:PackIcon Kind=Printer,Size=25}" Name="Print" Click="Print_Click" Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Right"   Margin="0,5,20,5" Width="100" ToolTip="Print" Grid.Row="1" Grid.Column="2" />
             <Label Content="Product Wise Stock Report" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Grid.Row="0" Grid.Column="0" Margin="20,15,130,0"/>
+
+            <ComboBox  Name="ddProduct"
+                           DisplayMemberPath="Name" 
+                           SelectedValuePath="Id" 
+                           Grid.Row="1" HorizontalAlignment="Right" Width="200"
+                           Margin="0,0,150,0" SelectionChanged="ddProduct_SelectionChanged"
+                          materialDesign:HintAssist.Hint="Search Product"                           
+                          materialDesign:HintAssist.HintOpacity=".26"                          
+                          IsEditable="True"/>
+
             <!--<TextBox Name="txtSearch"   GotFocus="txt_GotFocus" LostFocus="txt_LostFocus" Padding="10" TextWrapping="Wrap" Text="Search Product" Foreground="Gray" Grid.Column="0" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{Binding txtInput}"  />
             <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click"  Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="20,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="1" />-->
         </Grid>

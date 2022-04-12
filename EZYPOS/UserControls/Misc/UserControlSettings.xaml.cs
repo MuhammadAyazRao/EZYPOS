@@ -58,6 +58,8 @@ namespace EZYPOS.UserControls.Misc
                     ddReportPrinter.Items.Add(item);
                 }
                 ddCurrency.ItemsSource = CurrencyList;
+                ddCustomer.ItemsSource = Db.Customers.GetAll().Select(x=> new {Name = x.Name, Id = x.Id }).ToList();
+                ddSupplier.ItemsSource = Db.Supplier.GetAll().Select(x => new { Name = x.Name, Id = x.Id }).ToList();
                 var SettingData = Db.Setting.GetAll().ToList();
                 // Invoice Printer
                 var inv_print = SettingData.Where(x => x.AppKey == SettingKey.PrintInvoice).FirstOrDefault().AppValue;
@@ -113,10 +115,11 @@ namespace EZYPOS.UserControls.Misc
                 ddInvoicePrinter.SelectedItem = SettingData.Where(x => x.AppKey == SettingKey.InvoicePrinter).FirstOrDefault().AppValue;
                 ddReportPrinter.SelectedItem = SettingData.Where(x => x.AppKey == SettingKey.ReportPrinter).FirstOrDefault().AppValue;
                 ddCurrency.SelectedValue = SettingData.Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue;
-                
+                ddSupplier.SelectedValue = SettingData.Where(x => x.AppKey == SettingKey.DefaultSupplier).FirstOrDefault().AppValue;
+                ddCustomer.SelectedValue = SettingData.Where(x => x.AppKey == SettingKey.WalkingCustomer).FirstOrDefault().AppValue;
 
             }
-            
+
         }
         private void ck_Checked(object sender, RoutedEventArgs e)
         {
@@ -161,6 +164,14 @@ namespace EZYPOS.UserControls.Misc
                 if (ddCurrency.SelectedItem != null)
                 {
                     Data.Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue = ddCurrency.SelectedValue.ToString() ;
+                }
+                if (ddSupplier.SelectedItem != null)
+                {
+                    Data.Where(x => x.AppKey == SettingKey.DefaultSupplier).FirstOrDefault().AppValue = ddSupplier.SelectedValue.ToString();
+                }
+                if (ddCustomer.SelectedItem != null)
+                {
+                    Data.Where(x => x.AppKey == SettingKey.WalkingCustomer).FirstOrDefault().AppValue = ddCustomer.SelectedValue.ToString();
                 }
                 //if (!string.IsNullOrEmpty(UserImage.Source?.ToString()))
                 //{
