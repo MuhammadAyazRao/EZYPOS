@@ -343,6 +343,11 @@ namespace EZYPOS
             UserControlStockExpiry UserControlStockExpiry = new UserControlStockExpiry();
             ActiveSession.DisplayuserControlMethod(UserControlStockExpiry);
         }
+        private void ExpiryInformation_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlExpiryInformationReport ExpiryInformation = new UserControlExpiryInformationReport();
+            ActiveSession.DisplayuserControlMethod(ExpiryInformation);
+        }
 
         private void SupplierLedgerReport_Click(object sender, RoutedEventArgs e)
         {

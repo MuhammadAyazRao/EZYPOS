@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -112,6 +113,8 @@ namespace EZYPOS.UserControls.Misc
                 txtShopName.Text = SettingData.Where(x => x.AppKey == SettingKey.ShopName).FirstOrDefault().AppValue; ;
                 txtHeader.Text = SettingData.Where(x => x.AppKey == SettingKey.ReportFooter).FirstOrDefault().AppValue;
                 txtFooter.Text = SettingData.Where(x => x.AppKey == SettingKey.ReportFooter).FirstOrDefault().AppValue;
+                txtMaxNoPrints.Text = SettingData.Where(x => x.AppKey == SettingKey.MaxNoPrints).FirstOrDefault().AppValue;
+                txtExpiryAlert.Text = SettingData.Where(x => x.AppKey == SettingKey.ExpiryAlert).FirstOrDefault().AppValue;
                 ddInvoicePrinter.SelectedItem = SettingData.Where(x => x.AppKey == SettingKey.InvoicePrinter).FirstOrDefault().AppValue;
                 ddReportPrinter.SelectedItem = SettingData.Where(x => x.AppKey == SettingKey.ReportPrinter).FirstOrDefault().AppValue;
                 ddCurrency.SelectedValue = SettingData.Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue;
@@ -145,13 +148,21 @@ namespace EZYPOS.UserControls.Misc
                 {
                     Data.Where(x => x.AppKey == SettingKey.ShopName).FirstOrDefault().AppValue = txtShopName.Text;
                 }
-                if (txtShopName.Text != "") 
+                if (txtHeader.Text != "") 
                 {
                     Data.Where(x => x.AppKey == SettingKey.ReportHeader).FirstOrDefault().AppValue = txtHeader.Text;
                 }
-                if (txtShopName.Text != "") 
+                if (txtFooter.Text != "") 
                 {
                     Data.Where(x => x.AppKey == SettingKey.ReportFooter).FirstOrDefault().AppValue = txtFooter.Text;
+                }
+                if (txtMaxNoPrints.Text != "")
+                {
+                    Data.Where(x => x.AppKey == SettingKey.MaxNoPrints).FirstOrDefault().AppValue = txtMaxNoPrints.Text;
+                }
+                if (txtExpiryAlert.Text != "")
+                {
+                    Data.Where(x => x.AppKey == SettingKey.ExpiryAlert).FirstOrDefault().AppValue = txtExpiryAlert.Text;
                 }
                 if (ddInvoicePrinter.SelectedItem != null)
                 {
@@ -182,7 +193,11 @@ namespace EZYPOS.UserControls.Misc
             }
             EZYPOS.View.MessageBox.ShowCustom("Settings Saved Successfully !", "Message", "Ok");
         }
-
+        private void NumberOnly_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
         private void Image_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();

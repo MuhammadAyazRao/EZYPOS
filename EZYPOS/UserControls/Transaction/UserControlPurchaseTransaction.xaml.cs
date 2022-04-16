@@ -408,6 +408,19 @@ namespace EZYPOS.UserControls.Transaction
                 if (Checkout.ShowDialog() == true)
                 {
                     EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Sucess", "Ok");
+                    var inv_print = ((List<DAL.DBMODEL.Setting>)ActiveSession.Setting).Where(x => x.AppKey == Common.SettingKey.PrintInvoice).FirstOrDefault().AppValue;
+                    if (inv_print.ToLower() == "true")
+                    {
+                        if (order.OrdersDetails != null)
+                        {
+                            int MaxNoPrints = Convert.ToInt32(((List<DAL.DBMODEL.Setting>)ActiveSession.Setting).Where(x => x.AppKey == Common.SettingKey.MaxNoPrints).FirstOrDefault().AppValue);
+                            for (int i = 1; i <= MaxNoPrints; i++)
+                            {
+                                Invoice inv = new Invoice();
+                                inv.DoPrintJob(order);
+                            }
+                        }
+                    }
                     EmptyCart();
                 }
                 

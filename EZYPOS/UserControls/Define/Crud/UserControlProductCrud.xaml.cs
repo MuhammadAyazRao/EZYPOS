@@ -457,6 +457,11 @@ namespace EZYPOS.UserControls.Define.Crud
                 return false;
 
             }
+            if(txtPCode.Text.Length <11)
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Product Code must between 11 to 12 digits.", "Error", "OK");
+                return false;
+            }
             if (string.IsNullOrEmpty(txtProductName.Text) || txtProductName.Text == "Product Name")
             {
                 EZYPOS.View.MessageBox.ShowCustom("Product Name is Required.", "Error", "OK");

@@ -443,8 +443,12 @@ namespace EZYPOS.UserControls.Transaction
                 {
                     if (order.OrdersDetails != null)
                     {
-                        Invoice inv = new Invoice();
-                        inv.DoPrintJob(order);
+                        int MaxNoPrints = Convert.ToInt32(((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.MaxNoPrints).FirstOrDefault().AppValue);
+                        for(int i = 1; i <= MaxNoPrints; i++)
+                        {
+                            Invoice inv = new Invoice();
+                            inv.DoPrintJob(order);
+                        }
                     }
                 }
                 EmptyCart();

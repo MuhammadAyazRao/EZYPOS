@@ -50,6 +50,8 @@ namespace Common
         public static string Currency { get { return nameof(Currency); } }
         public static string WalkingCustomer { get { return nameof(WalkingCustomer); } }
         public static string DefaultSupplier { get { return nameof(DefaultSupplier); } }
+        public static string MaxNoPrints { get { return nameof(MaxNoPrints); } }
+        public static string ExpiryAlert { get { return nameof(ExpiryAlert); } }
 
 
     }

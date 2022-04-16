@@ -160,6 +160,7 @@
                         <MenuItem Header="_InvoiceWiseSummary"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />-->
                     </MenuItem>
                     <MenuItem Header="_Product Report" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Product.png">
+                        <MenuItem Header="_Expiry Information" Click="ExpiryInformation_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\WhereHouse.png" />
                         <MenuItem Header="_Stock Report" Click="StockReport_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\WhereHouse.png" />
                         <MenuItem Header="_ProductWiseStock Report" Click="ProductWiseStockReport_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\ProductWiseStock.png" />
                         <MenuItem Header="_Product Leadger" Click="ProductLedgerReport_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Ledger.png" />
