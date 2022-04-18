@@ -51,6 +51,7 @@ namespace Common
         public static string WalkingCustomer { get { return nameof(WalkingCustomer); } }
         public static string DefaultSupplier { get { return nameof(DefaultSupplier); } }
         public static string MaxNoPrints { get { return nameof(MaxNoPrints); } }
+        public static string ExpiryAlertMonths { get { return nameof(ExpiryAlertMonths); } }
         public static string ExpiryAlert { get { return nameof(ExpiryAlert); } }
 
 

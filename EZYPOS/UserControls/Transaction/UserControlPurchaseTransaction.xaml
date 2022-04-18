@@ -28,7 +28,8 @@
             </Grid.ColumnDefinitions>
             <TextBox Grid.Row="0" Grid.Column="0" KeyDown="Barcode_KeyDown" Name="Barcode"   Margin="45,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="40"  TextWrapping="Wrap"  materialDesign:HintAssist.Hint="Search By Barcode Or Name"  />
             <ComboBox  Name="DDCategory" Grid.Row="0" Grid.Column="1" DisplayMemberPath="Name"  SelectedValuePath="Id" Margin="5,5,5,5" materialDesign:HintAssist.HintOpacity=".26" materialDesign:HintAssist.Hint="Search Category" SelectionChanged="DDCategory_SelectionChanged"    IsEditable="False"/>
-            <ComboBox  Name="DDSubCategory" Grid.Row="0" Grid.Column="2" DisplayMemberPath="SubcategoryName"  SelectedValuePath="Id" Margin="5,5,5,5" materialDesign:HintAssist.HintOpacity=".26" materialDesign:HintAssist.Hint="Search SubCategory" SelectionChanged="DDSubCategory_SelectionChanged"    IsEditable="False"/>
+            <ComboBox  Name="DDSubCategory" Grid.Row="0" Grid.Column="2" DisplayMemberPath="SubcategoryName"  SelectedValuePath="Id" Margin="5,5,70,5" materialDesign:HintAssist.HintOpacity=".26" materialDesign:HintAssist.Hint="Search SubCategory" SelectionChanged="DDSubCategory_SelectionChanged"    IsEditable="False"/>
+            <Button  Content="{materialDesign:PackIcon Kind=Refresh,Size=30}" Grid.Row="0" Grid.Column="2" x:Name="Clear" Click="Clear_Click" Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Right"   Margin="0,0,0,0" Width="50" Height="30" ToolTip="Clear Searches" VerticalAlignment="Center" />
             <ListBox   Grid.Row="1" Grid.ColumnSpan="3"  Height="630"  BorderThickness="0" Name="listKitchenLineItems" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>

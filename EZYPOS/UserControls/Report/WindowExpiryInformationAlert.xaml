@@ -1,0 +1,164 @@
+﻿<Window x:Class="EZYPOS.UserControls.Report.WindowExpiryInformationAlert"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EZYPOS.UserControls.Report" xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Style="{DynamicResource winDialogue2}"
+        Title="WindowExpiryInformationAlert" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+
+        <Style TargetType="{x:Type DataGrid}">
+            <Setter Property="AlternationCount" Value="2" />
+        </Style>
+        <Style TargetType="DataGridRow">
+
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HeaderStyle" Value="{x:Null}"/>
+            <Style.Triggers>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                    <Setter Property="Background" Value="#CCC"></Setter>
+                </Trigger>
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                    <Setter Property="Background" Value="#EEE"></Setter>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#78909c"/>
+                </Trigger>
+
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="{x:Type DataGridCell}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5" />
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{x:Null}"/>
+                    <Setter Property="BorderBrush" Value="{x:Null}"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <!--<Setter Property="Background" Value="{StaticResource PrimaryHueMidBrush}"/>-->
+            <Setter Property="Background" Value="{DynamicResource DarkBlue}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource Gray}"/>
+            <Setter Property="BorderThickness" Value="0 0 0 2"/>
+            <Setter Property="Margin" Value="0 0 0 0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="4 2 2 2"/>
+        </Style>
+        <Style  BasedOn="{StaticResource MaterialDesignTextBox}"  TargetType="{x:Type TextBox}">
+            <Setter Property="BorderBrush" Value="White"/>
+            <!--<Setter Property="Foreground" Value="Black"/>-->
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderBrush" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+    <Grid Margin="20,20,20,20" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border x:Name="label" Grid.Row="1" Margin="15,0,15,0">
+            <DataGrid Name="ExpiryAlertGrid" 
+                      RowHeaderWidth="0"
+                      HorizontalGridLinesBrush="{DynamicResource Gray}"
+                      AutoGenerateColumns="False"
+                      SelectionMode="Single"                      
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      CanUserReorderColumns="True" BorderBrush="White" Background="White" GridLinesVisibility="Horizontal">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ID" Binding="{Binding Id}"  Visibility="Hidden" IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Content, RelativeSource=
+                                         {RelativeSource Mode=TemplatedParent}}"/>
+                                    <TextBox x:Name="Id" Width="100" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" Width="230" IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Content, RelativeSource=
+                                         {RelativeSource Mode=TemplatedParent}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Available Qty" Binding="{Binding AvailableQty}" Width="120" IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Content, RelativeSource=
+                                         {RelativeSource Mode=TemplatedParent}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate , StringFormat={}{0:dd/MM/yyyy}}" Width="120" IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Content, RelativeSource=
+                                         {RelativeSource Mode=TemplatedParent}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Expiration Date" Binding="{Binding ExpirationDate , StringFormat={}{0:dd/MM/yyyy}}" Width="120" IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Content, RelativeSource=
+                                         {RelativeSource Mode=TemplatedParent}}"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+
+
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <Border Background="{DynamicResource DarkBlue}" Margin="15,10,15,0"/>
+        <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Expiry Information Alert" HorizontalAlignment="Left" Margin="15,10,0,10"/>
+        <Button x:Name="btnClose" Click="btnClose_Click"  Content="X" Style="{DynamicResource btnDanger}" Margin="0,15,30,0" HorizontalAlignment="Right" Width="50" Height="30" VerticalAlignment="Top"/>
+        <Button  Content="{materialDesign:PackIcon Kind=Printer,Size=30}" Foreground="White" x:Name="Print" Click="Print_Click"  Style="{DynamicResource MaterialDesignIconButton}"  HorizontalAlignment="Right"   Margin="0,15,90,0" Width="50" Height="30" ToolTip="Print" VerticalAlignment="Top" />
+        <WindowsFormsHost Visibility="Collapsed">
+            <rv:ReportViewer BorderStyle="None" ZoomMode="PageWidth" x:Name="ReportViewer" />
+        </WindowsFormsHost>
+    </Grid>
+</Window>

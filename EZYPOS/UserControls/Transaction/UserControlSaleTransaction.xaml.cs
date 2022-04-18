@@ -968,6 +968,7 @@ namespace EZYPOS.UserControls.Transaction
                 DDSubCategory.ItemsSource = SubCategoryList;
 
                 BusyIndicator.ShowBusy();
+                Barcode.Text = null;
                 if (DDCategory.SelectedValue != null)
                 {
                     listKitchenLineItems.ItemsSource = GetProductsByCategory(Convert.ToInt16(DDCategory.SelectedValue));
@@ -979,6 +980,7 @@ namespace EZYPOS.UserControls.Transaction
         private void DDSubCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             BusyIndicator.ShowBusy();
+            Barcode.Text = null;
             if (DDSubCategory.SelectedValue != null)
             {
                 listKitchenLineItems.ItemsSource = GetProducts(Convert.ToInt16(DDSubCategory.SelectedValue));
@@ -1029,6 +1031,14 @@ namespace EZYPOS.UserControls.Transaction
         private void Back_Click(object sender, RoutedEventArgs e)
         {
             ActiveSession.CloseDisplayuserControlMethod(new UserControlViewOrder());
+        }
+
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            DDCategory.SelectedValue = null;
+            DDSubCategory.SelectedValue = null;
+            Barcode.Text = null;
+            listKitchenLineItems.ItemsSource = GetProducts();
         }
     }
 }

@@ -99,6 +99,16 @@ namespace EZYPOS.UserControls.Misc
                 {
                     ckPrintConfirmation.IsChecked = false;
                 }
+                var ExpiryAlert = SettingData.Where(x => x.AppKey == SettingKey.ExpiryAlert).FirstOrDefault().AppValue;
+                if (ExpiryAlert.ToLower() == "true")
+                {
+                    ckExpiryAlert.IsChecked = true;
+                }
+                else
+                {
+                    ckExpiryAlert.IsChecked = false;
+                }
+
                 //image
                 string imgDirPath = Environment.CurrentDirectory + @"\Assets\";
                 string ImgFullPath = imgDirPath + "logo.png";
@@ -114,7 +124,7 @@ namespace EZYPOS.UserControls.Misc
                 txtHeader.Text = SettingData.Where(x => x.AppKey == SettingKey.ReportFooter).FirstOrDefault().AppValue;
                 txtFooter.Text = SettingData.Where(x => x.AppKey == SettingKey.ReportFooter).FirstOrDefault().AppValue;
                 txtMaxNoPrints.Text = SettingData.Where(x => x.AppKey == SettingKey.MaxNoPrints).FirstOrDefault().AppValue;
-                txtExpiryAlert.Text = SettingData.Where(x => x.AppKey == SettingKey.ExpiryAlert).FirstOrDefault().AppValue;
+                txtExpiryAlertMonths.Text = SettingData.Where(x => x.AppKey == SettingKey.ExpiryAlertMonths).FirstOrDefault().AppValue;
                 ddInvoicePrinter.SelectedItem = SettingData.Where(x => x.AppKey == SettingKey.InvoicePrinter).FirstOrDefault().AppValue;
                 ddReportPrinter.SelectedItem = SettingData.Where(x => x.AppKey == SettingKey.ReportPrinter).FirstOrDefault().AppValue;
                 ddCurrency.SelectedValue = SettingData.Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue;
@@ -143,6 +153,7 @@ namespace EZYPOS.UserControls.Misc
                 Data.Where(x => x.AppKey == SettingKey.PrintLogo).FirstOrDefault().AppValue = ckPrintLogo.IsChecked.ToString();
                 Data.Where(x => x.AppKey == SettingKey.PrintReport).FirstOrDefault().AppValue = ckPrintReport.IsChecked.ToString();
                 Data.Where(x => x.AppKey == SettingKey.PrintConfirmation).FirstOrDefault().AppValue = ckPrintConfirmation.IsChecked.ToString();
+                Data.Where(x => x.AppKey == SettingKey.ExpiryAlert).FirstOrDefault().AppValue = ckExpiryAlert.IsChecked.ToString();
 
                 if (txtShopName.Text!= "") 
                 {
@@ -160,9 +171,9 @@ namespace EZYPOS.UserControls.Misc
                 {
                     Data.Where(x => x.AppKey == SettingKey.MaxNoPrints).FirstOrDefault().AppValue = txtMaxNoPrints.Text;
                 }
-                if (txtExpiryAlert.Text != "")
+                if (txtExpiryAlertMonths.Text != "")
                 {
-                    Data.Where(x => x.AppKey == SettingKey.ExpiryAlert).FirstOrDefault().AppValue = txtExpiryAlert.Text;
+                    Data.Where(x => x.AppKey == SettingKey.ExpiryAlertMonths).FirstOrDefault().AppValue = txtExpiryAlertMonths.Text;
                 }
                 if (ddInvoicePrinter.SelectedItem != null)
                 {

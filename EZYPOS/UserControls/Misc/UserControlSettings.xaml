@@ -191,9 +191,12 @@
                     
                     <Label VerticalContentAlignment="Center" FontSize="15" Content="Currency" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="0" Grid.Column="2" />
                     <ComboBox  Name="ddCurrency" Grid.Row="0" Grid.Column="3" DisplayMemberPath="Country" SelectedValuePath="Currency" materialDesign:HintAssist.Hint="Search Country" Margin="0,0,20,0" materialDesign:HintAssist.HintOpacity=".26" IsEditable="True" />
+                    
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Expiry Alert" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" />
+                    <CheckBox Checked="ck_Checked" Unchecked="ck_Checked" Name="ckExpiryAlert" Style="{DynamicResource CheckBoxStyle1}" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="45" Width="100" Grid.Row="1" Grid.Column="3"  />
 
-                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Expiry Alert (Months)" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" />
-                    <TextBox Name="txtExpiryAlert"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="45" Grid.Row="1" Grid.Column="3" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Expiry Alert Before Months" PreviewTextInput="NumberOnly_PreviewTextInput" />
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Expiry Alert (Months)" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="2" Grid.Column="2" />
+                    <TextBox Name="txtExpiryAlertMonths"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="45" Grid.Row="2" Grid.Column="3" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Expiry Alert Before Months" PreviewTextInput="NumberOnly_PreviewTextInput" />
 
 
 

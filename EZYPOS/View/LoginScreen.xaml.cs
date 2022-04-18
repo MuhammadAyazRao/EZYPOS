@@ -1,6 +1,7 @@
 ﻿using Common.Session;
 using DAL.Repository;
 using EZYPOS;
+using EZYPOS.UserControls.Report;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -47,6 +48,12 @@ namespace EZYPOS.View
                         MainUI.Show();
                         Splash.Close();
                         Close();
+                        var ExpiryAlert = ((List<DAL.DBMODEL.Setting>)ActiveSession.Setting).Where(x => x.AppKey == Common.SettingKey.ExpiryAlert).FirstOrDefault().AppValue;
+                        if(ExpiryAlert.ToLower() == "true")
+                        {
+                            WindowExpiryInformationAlert SaleOrderDetail = new WindowExpiryInformationAlert();
+                            SaleOrderDetail.Show();
+                        }
                         ActiveSession.ActiveUser = Convert.ToInt32(ddEmployee.SelectedValue);
                     }
                     else
