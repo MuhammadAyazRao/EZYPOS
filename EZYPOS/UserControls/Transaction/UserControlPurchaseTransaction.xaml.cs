@@ -721,15 +721,15 @@ namespace EZYPOS.UserControls.Transaction
             {
                 if (SubCategoryId != 0)
                 {
-                    Products = Db.Product.GetAll().Where(x => x.SubcategoryId == SubCategoryId).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.SubcategoryId == SubCategoryId).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.PurchasePrice }).ToList();
                 }
                 else if (DDCategory.SelectedValue != null && DDCategory.Text.ToLower() != "all")
                 {
-                    Products = Db.Product.GetAll().Where(x => x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue) ).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue) ).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.PurchasePrice }).ToList();
                 }
                 else
                 {
-                    Products = Db.Product.GetAll().Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
+                    Products = Db.Product.GetAll().Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.PurchasePrice }).ToList();
                 }
             }
             return Products;
@@ -740,7 +740,7 @@ namespace EZYPOS.UserControls.Transaction
             List<ProductDTO> Products = new List<ProductDTO>();
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                Products = Db.Product.GetAll().Where(x => x.CategoryId == id).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
+                Products = Db.Product.GetAll().Where(x => x.CategoryId == id).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.PurchasePrice }).ToList();
             }
             return Products;
         }
@@ -751,7 +751,7 @@ namespace EZYPOS.UserControls.Transaction
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
 
-                Product = Db.Product.GetAll().Where(x => x.Barcode == code).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).FirstOrDefault();
+                Product = Db.Product.GetAll().Where(x => x.Barcode == code).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.PurchasePrice }).FirstOrDefault();
 
             }
             return Product;
@@ -764,15 +764,15 @@ namespace EZYPOS.UserControls.Transaction
             {
                 if(DDCategory.SelectedValue == null || DDCategory.Text.ToLower() == "all")
                 {
-                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.PurchasePrice }).ToList();
                 }
                 else if (DDSubCategory.SelectedValue == null || DDSubCategory.Text.ToLower() == "all")
                 {
-                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.PurchasePrice }).ToList();
                 }
                 else
                 {
-                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.SubcategoryId == Convert.ToInt32(DDSubCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = "", RetailPrice = X.PurchasePrice }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.SubcategoryId == Convert.ToInt32(DDSubCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.PurchasePrice }).ToList();
                 }
 
             }
@@ -921,6 +921,119 @@ namespace EZYPOS.UserControls.Transaction
             DDSubCategory.SelectedValue = null;
             Barcode.Text = null;
             listKitchenLineItems.ItemsSource = GetProducts();
+        }
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Clear_Click(sender, e);
+        }
+
+        private void Command_BarcodeFoucus(object sender, ExecutedRoutedEventArgs e)
+        {
+            Barcode.Focus();
+        }
+
+        private void Command_EditItem(object sender, ExecutedRoutedEventArgs e)
+        {
+            btnNoteEdit_Click(sender, e);
+        }
+        private void Command_DeleteItem(object sender, ExecutedRoutedEventArgs e)
+        {
+            Button_Click(sender, e);
+        }
+        private void Command_IncQty(object sender, ExecutedRoutedEventArgs e)
+        {
+            try
+            {
+                using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    PurchaseOrderDetail orderDetails = (PurchaseOrderDetail)listBoxItemCart.SelectedItem;
+                    orderDetails.Qty = orderDetails.Qty + 1;
+                    int INDEX = listBoxItemCart.SelectedIndex;
+                    order.OrdersDetails.RemoveAt(INDEX);
+                    listBoxItemCart.Items.RemoveAt(INDEX);
+                    order.OrdersDetails.Insert(INDEX, orderDetails);
+                    listBoxItemCart.Items.Insert(INDEX, orderDetails);
+                    listBoxItemCart.SelectedIndex = INDEX;
+                    UpdateBillSummary();
+                }
+            }
+            catch (Exception ex)
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Changing Item Quantity Failed", "Error", "ok");
+            }
+        }
+
+        private void Command_DecQty(object sender, ExecutedRoutedEventArgs e)
+        {
+            try
+            {
+                using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    Label button = (Label)sender;
+                    if (button != null)
+                    {
+                        PurchaseOrderDetail orderDetails = (PurchaseOrderDetail)listBoxItemCart.SelectedItem;
+                        if (orderDetails.Qty > 1)
+                        {
+                            orderDetails.Qty--;
+                            int INDEX = listBoxItemCart.SelectedIndex;
+                            order.OrdersDetails.RemoveAt(INDEX);
+                            listBoxItemCart.Items.RemoveAt(INDEX);
+                            order.OrdersDetails.Insert(INDEX, orderDetails);
+                            listBoxItemCart.Items.Insert(INDEX, orderDetails);
+                            listBoxItemCart.SelectedIndex = INDEX;
+                        }
+                        UpdateBillSummary();
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Changing Item Quantity Failed", "Error", "ok");
+            }
+        }
+
+        private void Command_ViewOrder(object sender, ExecutedRoutedEventArgs e)
+        {
+            ActiveSession.CloseDisplayuserControlMethod(new UserControlPurchaseOrder());
+        }
+
+        private void Command_OrderDiscount(object sender, ExecutedRoutedEventArgs e)
+        {
+            orderDiscount_Click(sender, e);
+        }
+
+        private void Command_DeliveryCharges(object sender, ExecutedRoutedEventArgs e)
+        {
+            DeliveryCharges_Click(sender, e);
+        }
+
+        private void Command_ManualItem(object sender, ExecutedRoutedEventArgs e)
+        {
+            btnnew_Click(sender, e);
+        }
+
+        private void Command_Summary(object sender, ExecutedRoutedEventArgs e)
+        {
+            btmSummary_Click(sender, e);
+        }
+
+        private void Command_Proceed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if(btnEdit.Visibility == Visibility.Visible)
+            {
+                btnEdit_Click(sender,e);
+            }
+            else
+            {
+                btnPay_Click(sender, e);
+            }
+        }
+
+        private void Command_Delete(object sender, ExecutedRoutedEventArgs e)
+        {
+            btnDeleteCart_Click(sender, e);
         }
     }
 }

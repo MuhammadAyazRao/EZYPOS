@@ -7,6 +7,52 @@
               xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignWidth="768" Name="Sale">
+    <UserControl.Resources>
+        <RoutedUICommand x:Key="ShortCut"></RoutedUICommand>
+        <RoutedUICommand x:Key="barcode"></RoutedUICommand>
+        <RoutedUICommand x:Key="EditItem"></RoutedUICommand>
+        <RoutedUICommand x:Key="DeleteItem"></RoutedUICommand>
+        <RoutedUICommand x:Key="IncQty"></RoutedUICommand>
+        <RoutedUICommand x:Key="DecQty"></RoutedUICommand>
+        <RoutedUICommand x:Key="ViewOrder"></RoutedUICommand>
+        <RoutedUICommand x:Key="OrderDiscount"></RoutedUICommand>
+        <RoutedUICommand x:Key="DeliveryCharges"></RoutedUICommand>
+        <RoutedUICommand x:Key="ManualItem"></RoutedUICommand>
+        <RoutedUICommand x:Key="Summary"></RoutedUICommand>
+        <RoutedUICommand x:Key="Proceed"></RoutedUICommand>
+        <RoutedUICommand x:Key="Delete"></RoutedUICommand>
+
+    </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="{StaticResource ShortCut}" Executed="CommandBinding_Executed"></CommandBinding>
+        <CommandBinding Command="{StaticResource barcode}" Executed="Command_BarcodeFoucus"></CommandBinding>
+        <CommandBinding Command="{StaticResource EditItem}" Executed="Command_EditItem"></CommandBinding>
+        <CommandBinding Command="{StaticResource DeleteItem}" Executed="Command_DeleteItem"></CommandBinding>
+        <CommandBinding Command="{StaticResource IncQty}" Executed="Command_IncQty"></CommandBinding>
+        <CommandBinding Command="{StaticResource DecQty}" Executed="Command_DecQty"></CommandBinding>
+        <CommandBinding Command="{StaticResource ViewOrder}" Executed="Command_ViewOrder"></CommandBinding>
+        <CommandBinding Command="{StaticResource OrderDiscount}" Executed="Command_OrderDiscount"></CommandBinding>
+        <CommandBinding Command="{StaticResource DeliveryCharges}" Executed="Command_DeliveryCharges"></CommandBinding>
+        <CommandBinding Command="{StaticResource ManualItem}" Executed="Command_ManualItem"></CommandBinding>
+        <CommandBinding Command="{StaticResource Summary}" Executed="Command_Summary"></CommandBinding>
+        <CommandBinding Command="{StaticResource Proceed}" Executed="Command_Proceed"></CommandBinding>
+        <CommandBinding Command="{StaticResource Delete}" Executed="Command_Delete"></CommandBinding>
+    </UserControl.CommandBindings>
+    <UserControl.InputBindings>
+        <KeyBinding  Modifiers="Alt" Key="R" Command="{StaticResource ShortCut}"></KeyBinding>
+        <KeyBinding  Modifiers="Alt" Key="T"  Command="{StaticResource barcode}"></KeyBinding>
+        <KeyBinding  Modifiers="Alt" Key="E"  Command="{StaticResource EditItem}"></KeyBinding>
+        <KeyBinding  Modifiers="Alt" Key="D"  Command="{StaticResource DeleteItem}"></KeyBinding>
+        <KeyBinding  Key="Left"  Command="{StaticResource IncQty}"></KeyBinding>
+        <KeyBinding  Key="Right"  Command="{StaticResource DecQty}"></KeyBinding>
+        <KeyBinding  Modifiers="Alt" Key="V"  Command="{StaticResource ViewOrder}"></KeyBinding>
+        <KeyBinding  Modifiers="Alt" Key="G"  Command="{StaticResource OrderDiscount}"></KeyBinding>
+        <KeyBinding  Modifiers="Alt" Key="C"  Command="{StaticResource DeliveryCharges}"></KeyBinding>
+        <KeyBinding  Modifiers="Alt" Key="M"  Command="{StaticResource ManualItem}"></KeyBinding>
+        <KeyBinding  Modifiers="Alt" Key="S"  Command="{StaticResource Summary}"></KeyBinding>
+        <KeyBinding  Modifiers="Alt" Key="O" Command="{StaticResource Proceed}"></KeyBinding>
+        <KeyBinding  Modifiers="Alt" Key="X" Command="{StaticResource Delete}"></KeyBinding>
+    </UserControl.InputBindings>
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -38,7 +84,7 @@
                 </ListBox.ItemsPanel>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="{DynamicResource SharpBlue}" Width="160"  Height="150" CornerRadius="3">
+                        <Border Background="{DynamicResource SharpBlue}" Width="260"  Height="150" CornerRadius="5">
                             <Grid>
                                 <Label BorderBrush="White"  BorderThickness="2" Height="30" VerticalAlignment="Top"  HorizontalContentAlignment="Center" HorizontalAlignment="Center" Width="100" Margin="10,45,10,10" Foreground="White" FontWeight="Bold">
                                     <TextBlock TextWrapping="Wrap" Text="{Binding RetailPrice, StringFormat=C}"></TextBlock>
@@ -49,15 +95,16 @@
                                     <Label.Content>
                                         <TextBlock TextWrapping="Wrap">
                                             <TextBlock.Text>
-                                                <MultiBinding StringFormat="{} {0} -{1}">
+                                                <MultiBinding StringFormat="{} {0} -{1} -{2}">
                                                     <Binding Path="Size"/>
+                                                    <Binding Path="Unit"/>
                                                     <Binding Path="ProductName"/>
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
                                     </Label.Content>
                                 </Label>
-                                <Label BorderBrush="White"  BorderThickness="2" FontSize="8" Height="auto" VerticalAlignment="Top"  HorizontalContentAlignment="Center" HorizontalAlignment="Center" Width="auto" Margin="10,80,10,10" Background="{DynamicResource DarkBlue}" Foreground="White">
+                                <Label BorderBrush="White"  BorderThickness="2" FontSize="10" Height="auto" VerticalAlignment="Top"  HorizontalContentAlignment="Center" HorizontalAlignment="Center" Width="100" Margin="10,80,10,10" Background="{DynamicResource DarkBlue}" Foreground="White">
                                     <TextBlock TextWrapping="Wrap" Text="{Binding CategoryName}"></TextBlock>
                                 </Label>
                                 <!--<Label HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" Height="auto"  Margin="5,120,5,5"  FontWeight="Bold" Foreground="White">
@@ -184,23 +231,23 @@
                                 </Button.Template>
                             </Button>-->
 
-                            <Label x:Name="btnOpenNoteInput" PreviewMouseDown="btnOpenNoteInput_Click" Content="{materialDesign:PackIcon Kind=Pencil,Size=20}"   Foreground="White" HorizontalAlignment="Left" Grid.Row="2"  Width="32" VerticalAlignment="Bottom" Margin="10 0 0 20"/>
+                            <Label x:Name="btnOpenNoteInput" PreviewMouseDown="btnOpenNoteInput_Click" Content="{materialDesign:PackIcon Kind=Pencil,Size=20}"   Foreground="{StaticResource Success}" HorizontalAlignment="Left" Grid.Row="2"  Width="32" VerticalAlignment="Bottom" Margin="10 0 0 20"/>
 
-                            <Label Content="+" FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Left" Grid.Row="2" Width="32" VerticalAlignment="Bottom" Margin="93 0 0 20" PreviewMouseDown="incdec_Click"/>
+                            <Label Content="+" FontSize="30" FontWeight="Bold" Foreground="White" HorizontalAlignment="Left" Grid.Row="2" Width="32" VerticalAlignment="Bottom" Margin="93 5 0 20" PreviewMouseDown="incdec_Click"/>
 
 
                             <Label Content="{Binding Qty}" MouseDoubleClick="itemqty_PreviewMouseDown" Grid.Row="2" HorizontalContentAlignment="Center" Margin="120 0 0 20" Width="50" Height="30" Background="{DynamicResource White}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-                            <Label Content="-" FontSize="25" FontWeight="Bold" Foreground="White"  HorizontalAlignment="Left" Grid.Row="2" Width="32" VerticalAlignment="Bottom" Margin="173 0 0 20" PreviewMouseDown="incdec_Click"/>
+                            <Label Content="-" FontSize="35" FontWeight="Bold" Foreground="White"  HorizontalAlignment="Left" Grid.Row="2" Width="34" VerticalAlignment="Bottom" Margin="173 0 0 20" PreviewMouseDown="incdec_Click"/>
                             <Label Content="{Binding ItemDiscount}" MouseDoubleClick="itemqty_PreviewMouseDown" Grid.Row="2" HorizontalContentAlignment="Center" Margin="250 0 0 20" Width="50" Height="30" Background="{DynamicResource White}" Foreground="Gray" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
 
 
-                            <Label HorizontalAlignment="Right" Content="{materialDesign:PackIcon Kind=Delete,Size=20}" Foreground="White" Width="32" Grid.Row="2" VerticalAlignment="Bottom" Margin="0 0 0 20" PreviewMouseDown="Button_Click">
+                            <Label HorizontalAlignment="Right" Content="{materialDesign:PackIcon Kind=Delete,Size=20}" Foreground="{StaticResource Danger}" Width="32" Grid.Row="2" VerticalAlignment="Bottom" Margin="0 0 0 20" PreviewMouseDown="Button_Click">
 
                             </Label>
-                            <Label HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Bottom" Foreground="White" FontFamily="Times" FontSize="9" FontStyle="Italic" Content="NOTE" Margin="7 0 0 0"/>
+                            <Label HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Bottom" Foreground="{StaticResource Success}" FontFamily="Times" FontSize="9" FontStyle="Italic" Content="NOTE" Margin="7 0 0 0"/>
                             <Label HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Bottom" Foreground="White" FontFamily="Times" FontSize="9" FontStyle="Italic" Content="QUANTITY" HorizontalContentAlignment="Center" Margin="120 0 0 0"/>
                             <Label HorizontalAlignment="Left" Grid.Row="2" VerticalAlignment="Bottom" Foreground="White" FontFamily="Times" FontSize="9" FontStyle="Italic" Content="DISCOUNT" HorizontalContentAlignment="Center" Margin="250 0 0 0"/>
-                            <Label HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Bottom" Foreground="White" FontFamily="Times" FontSize="9" FontStyle="Italic" Content="DELETE" HorizontalContentAlignment="Center" Margin="0 0 -2 0"/>
+                            <Label HorizontalAlignment="Right" Grid.Row="2" VerticalAlignment="Bottom" Foreground="{StaticResource Danger}" FontFamily="Times" FontSize="9" FontStyle="Italic" Content="DELETE" HorizontalContentAlignment="Center" Margin="0 0 -2 0"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
