@@ -108,7 +108,15 @@ namespace EZYPOS.UserControls.Misc
                 {
                     ckExpiryAlert.IsChecked = false;
                 }
-
+                var AllowTax = SettingData.Where(x => x.AppKey == SettingKey.AllowTax).FirstOrDefault().AppValue;
+                if (AllowTax.ToLower() == "true")
+                {
+                    ckTax.IsChecked = true;
+                }
+                else
+                {
+                    ckTax.IsChecked = false;
+                }
                 //image
                 string imgDirPath = Environment.CurrentDirectory + @"\Assets\";
                 string ImgFullPath = imgDirPath + "logo.png";
@@ -125,6 +133,8 @@ namespace EZYPOS.UserControls.Misc
                 txtFooter.Text = SettingData.Where(x => x.AppKey == SettingKey.ReportFooter).FirstOrDefault().AppValue;
                 txtMaxNoPrints.Text = SettingData.Where(x => x.AppKey == SettingKey.MaxNoPrints).FirstOrDefault().AppValue;
                 txtExpiryAlertMonths.Text = SettingData.Where(x => x.AppKey == SettingKey.ExpiryAlertMonths).FirstOrDefault().AppValue;
+                txtTaxPercentage.Text = SettingData.Where(x => x.AppKey == SettingKey.TaxPercentage).FirstOrDefault().AppValue;
+                txtMinimumTaxLimit.Text = SettingData.Where(x => x.AppKey == SettingKey.MinimumTaxLimit).FirstOrDefault().AppValue;
                 ddInvoicePrinter.SelectedItem = SettingData.Where(x => x.AppKey == SettingKey.InvoicePrinter).FirstOrDefault().AppValue;
                 ddReportPrinter.SelectedItem = SettingData.Where(x => x.AppKey == SettingKey.ReportPrinter).FirstOrDefault().AppValue;
                 ddCurrency.SelectedValue = SettingData.Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue;
@@ -154,6 +164,7 @@ namespace EZYPOS.UserControls.Misc
                 Data.Where(x => x.AppKey == SettingKey.PrintReport).FirstOrDefault().AppValue = ckPrintReport.IsChecked.ToString();
                 Data.Where(x => x.AppKey == SettingKey.PrintConfirmation).FirstOrDefault().AppValue = ckPrintConfirmation.IsChecked.ToString();
                 Data.Where(x => x.AppKey == SettingKey.ExpiryAlert).FirstOrDefault().AppValue = ckExpiryAlert.IsChecked.ToString();
+                Data.Where(x => x.AppKey == SettingKey.AllowTax).FirstOrDefault().AppValue = ckTax.IsChecked.ToString();
 
                 if (txtShopName.Text!= "") 
                 {
@@ -174,6 +185,14 @@ namespace EZYPOS.UserControls.Misc
                 if (txtExpiryAlertMonths.Text != "")
                 {
                     Data.Where(x => x.AppKey == SettingKey.ExpiryAlertMonths).FirstOrDefault().AppValue = txtExpiryAlertMonths.Text;
+                }
+                if (txtTaxPercentage.Text != "")
+                {
+                    Data.Where(x => x.AppKey == SettingKey.TaxPercentage).FirstOrDefault().AppValue = txtTaxPercentage.Text;
+                }
+                if (txtMinimumTaxLimit.Text != "")
+                {
+                    Data.Where(x => x.AppKey == SettingKey.MinimumTaxLimit).FirstOrDefault().AppValue = txtMinimumTaxLimit.Text;
                 }
                 if (ddInvoicePrinter.SelectedItem != null)
                 {
@@ -208,6 +227,11 @@ namespace EZYPOS.UserControls.Misc
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+        private void Decimal_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
+            e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
         }
         private void Image_Click(object sender, RoutedEventArgs e)
         {

@@ -26,6 +26,8 @@ namespace Common.DTO
         public int CustId { get;  set; }
         public int UserId { get; set; }
         public int EmployeeId { get; set; }
+        public decimal TaxPercentage { get; set; }
+        public decimal Tax { get; set; }
         public decimal OrderCount { get;  set; }
         public decimal Discount { get;  set; }
         public decimal ServiceCharges { get; set; }

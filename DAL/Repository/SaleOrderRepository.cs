@@ -44,7 +44,9 @@ namespace DAL.Repository
                 try
                 {
                     SaleOrder NewOrder = new SaleOrder();
-                    NewOrder.CashAmount = CartOrderToProcess.GetNetTotal();
+                    NewOrder.CashAmount = CartOrderToProcess.GetNetTotal() + CartOrderToProcess.Tax;
+                    NewOrder.TaxPercentage = CartOrderToProcess.TaxPercentage;
+                    NewOrder.Tax = CartOrderToProcess.Tax;
                     NewOrder.DiscountAmount = CartOrderToProcess.GetTotalDiscount();
                     NewOrder.DeliveryCharges = CartOrderToProcess.DeliverCharges;
                     NewOrder.Date = CartOrderToProcess.OrderDate;  //DateTime.Today;

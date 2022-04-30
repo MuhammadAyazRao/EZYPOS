@@ -175,12 +175,27 @@ namespace EZYPOS.View
                                 Order.OrderDate = Convert.ToDateTime(TransactionDate.SelectedDate);
                             }
 
-                            //if (DDEmployee.SelectedValue != null)
-                            //{
-                            //    Order.EmployeeId = Convert.ToInt32(DDEmployee.SelectedValue);
+                        //if (DDEmployee.SelectedValue != null)
+                        //{
+                        //    Order.EmployeeId = Convert.ToInt32(DDEmployee.SelectedValue);
 
-                            //}
-                            this.DialogResult = Db.SaleOrder.SaveOrder(Order);
+                        //}
+                        decimal Tax = 0;
+                        Decimal TaxPercentage = 0;
+                        var AllowTax = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.AllowTax).FirstOrDefault().AppValue;
+                        if(AllowTax.ToLower()== "true")
+                        {
+                            var MinimumTaxLimit = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.MinimumTaxLimit).FirstOrDefault().AppValue;
+                            decimal Total = Order.GetNetTotal();
+                            if (Total >= Convert.ToInt32(MinimumTaxLimit))
+                            {
+                                TaxPercentage = Convert.ToDecimal(((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.TaxPercentage).FirstOrDefault().AppValue);
+                                Tax = TaxPercentage / 100 * Total;
+                            }
+                        }
+                        Order.TaxPercentage = TaxPercentage;
+                        Order.Tax= Tax; 
+                        this.DialogResult = Db.SaleOrder.SaveOrder(Order);
                         }
                     //}
                 }
@@ -209,12 +224,13 @@ namespace EZYPOS.View
                                 PurchaseOrder.OrderDate = Convert.ToDateTime(TransactionDate.SelectedDate);
                             }
 
-                            //if (DDEmployee.SelectedValue != null)
-                            //{
-                            //    PurchaseOrder.EmployeeId = Convert.ToInt32(DDEmployee.SelectedValue);
+                        //if (DDEmployee.SelectedValue != null)
+                        //{
+                        //    PurchaseOrder.EmployeeId = Convert.ToInt32(DDEmployee.SelectedValue);
 
-                            //}
-                            this.DialogResult = Db.PurchaseOrder.SaveOrder(PurchaseOrder);
+                        //}
+                        
+                        this.DialogResult = Db.PurchaseOrder.SaveOrder(PurchaseOrder);
                         }
                     //}
                 }

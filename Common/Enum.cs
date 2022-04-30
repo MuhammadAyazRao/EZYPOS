@@ -53,6 +53,10 @@ namespace Common
         public static string MaxNoPrints { get { return nameof(MaxNoPrints); } }
         public static string ExpiryAlertMonths { get { return nameof(ExpiryAlertMonths); } }
         public static string ExpiryAlert { get { return nameof(ExpiryAlert); } }
+        public static string AllowTax { get { return nameof(AllowTax); } }
+        public static string TaxPercentage { get { return nameof(TaxPercentage); } }
+        public static string MinimumTaxLimit { get { return nameof(MinimumTaxLimit); } }
+
 
 
     }

@@ -36,6 +36,8 @@ namespace DAL.DBMODEL
         public string CustomerPhone { get; set; }
         public string IsUpdated { get; set; }
         public string IsDeleted { get; set; }
+        public decimal? TaxPercentage { get; set; }
+        public decimal? Tax { get; set; }
         public decimal CashAmount { get; set; }
         public decimal OnlineAmount { get; set; }
         public int IsPrinted { get; set; }

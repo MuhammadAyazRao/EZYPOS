@@ -551,6 +551,10 @@ namespace DAL.DBMODEL
                     .HasColumnType("decimal(18, 3)")
                     .HasColumnName("Service_Charge");
 
+                entity.Property(e => e.Tax).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.TaxPercentage).HasColumnType("decimal(18, 3)");
+
                 entity.Property(e => e.Total)
                     .HasColumnType("decimal(18, 3)")
                     .HasColumnName("total");
