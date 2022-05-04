@@ -69,7 +69,7 @@ namespace EZYPOS.Helper
 
         public static bool Backlupnew(string path)
         {
-            SqlConnection con = new SqlConnection(ActiveSession.Database);
+            SqlConnection con = new SqlConnection(ActiveSession.CompleteConnection);
             string database = con.Database.ToString();
             try
             {
@@ -92,7 +92,7 @@ namespace EZYPOS.Helper
                 
 
             }
-            catch
+            catch(Exception exp)
             {
                 return false;
             }
@@ -100,7 +100,7 @@ namespace EZYPOS.Helper
 
         public static bool Restore(string Path)
         {
-            SqlConnection con = new SqlConnection(ActiveSession.Database);
+            SqlConnection con = new SqlConnection(ActiveSession.CompleteConnection);
             string database = con.Database.ToString();
             if (con.State != ConnectionState.Open)
             {

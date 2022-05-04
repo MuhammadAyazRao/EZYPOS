@@ -10,7 +10,8 @@ namespace Common.Session
     {
         #region DatabaseSettings
         //public static string Database = "Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=False;User ID=admin;Password=A722713yaz@";
-        public static string Database = "Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;";
+        public static string CompleteConnection = "Data Source=DESKTOP-4GEDHEB\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;";
+        public static string DummyConnection = "Data Source=<<server>>;Database=<<database>>;Trusted_Connection=True;";
         public static string ServerName = "HAIER-PC\\SQLEXPRESS";
         public static string UserName = "admin";
         public static string Password = "A722713yaz@";
@@ -92,5 +93,6 @@ namespace Common.Session
         {
             RefreshCustomerList = null;
         }
+
     }
 }
