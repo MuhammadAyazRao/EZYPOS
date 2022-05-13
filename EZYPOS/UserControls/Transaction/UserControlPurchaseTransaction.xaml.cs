@@ -567,38 +567,38 @@ namespace EZYPOS.UserControls.Transaction
         private void btnnew_Click(object sender, RoutedEventArgs e)
         {
 
-            //ManualItem Manual = new ManualItem();
-            //if (Manual.ShowDialog() == true)
-            //{
-            //    if (Manual.ManualMenuitem != null)
-            //    {
-            //        if (order.OrdersDetails == null)
-            //            order.OrdersDetails = new List<PurchaseOrderDetail>();
+            PurchaseManualItem Manual = new PurchaseManualItem();
+            if (Manual.ShowDialog() == true)
+            {
+                if (Manual.ManualMenuitem != null)
+                {
+                    if (order.OrdersDetails == null)
+                        order.OrdersDetails = new List<PurchaseOrderDetail>();
 
-            //        if (order.OrdersDetails == null)
-            //            order.OrdersDetails = new List<PurchaseOrderDetail>();
+                    if (order.OrdersDetails == null)
+                        order.OrdersDetails = new List<PurchaseOrderDetail>();
 
-            //        order.OrdersDetails.Insert(0, Manual.ManualMenuitem as PurchaseOrderDetail);
-            //        listBoxItemCart.Items.Insert(0, Manual.ManualMenuitem);
-            //        listBoxItemCart.SelectedIndex = 0;
-            //        CartVisibility();
-            //        UpdateBillSummary();
-            //    }
-            //}
+                    order.OrdersDetails.Insert(0, Manual.ManualMenuitem as PurchaseOrderDetail);
+                    listBoxItemCart.Items.Insert(0, Manual.ManualMenuitem);
+                    listBoxItemCart.SelectedIndex = 0;
+                    CartVisibility();
+                    UpdateBillSummary();
+                }
+            }
         }
 
         private void btmSummary_Click(object sender, RoutedEventArgs e)
         {
-            //if (order.OrdersDetails != null)
-            //{
-            //    CartSummary OrderSummary = new CartSummary();
-            //    OrderSummary.InvoiceUC.SetFlowDoc(Invoice.GetFlowDocuments(order));
-            //    OrderSummary.ShowDialog();
-            //}
-            //else
-            //{
-            //    EZYPOS.View.MessageBox.ShowCustom("Cart is Empty", "Empty Cart", "Ok");
-            //}
+            if (order.OrdersDetails != null)
+            {
+                CartSummary OrderSummary = new CartSummary();
+                OrderSummary.InvoiceUC.SetFlowDoc(Invoice.GetFlowDocuments(order));
+                OrderSummary.ShowDialog();
+            }
+            else
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Cart is Empty", "Empty Cart", "Ok");
+            }
 
         }
 
