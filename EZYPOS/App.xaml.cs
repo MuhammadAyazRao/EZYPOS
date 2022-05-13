@@ -1,5 +1,6 @@
 ﻿using Common.Session;
 using DAL.Repository;
+using EZYPOS.View;
 using Microsoft.Extensions.Logging;
 using NLog;
 using System;
@@ -85,22 +86,30 @@ namespace EZYPOS
         protected override async void OnStartup(StartupEventArgs e)
         {
             // SetupExceptionHandling();
-            string server= ReadSetting("Server");
-            string database= ReadSetting("Database");
-            ActiveSession.CompleteConnection = ActiveSession.DummyConnection.Replace("<<server>>", server).Replace("<<database>>", database);
-            await Task.Run(() => SetupExceptionHandling());         
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {
-                ActiveSession.Setting = DB.Setting.GetAll().ToList();
-            }
-
             EZYPOS.View.SplashScreen Splash = new EZYPOS.View.SplashScreen();
             Splash.Show();
             await Task.Run(() => Thread.Sleep(3000));
-           
-            EZYPOS.View.LoginScreen LoginScreen = new EZYPOS.View.LoginScreen();
-            LoginScreen.Show();
-            Splash.Close();
+            try
+            {
+                string server = ReadSetting("Server");
+                string database = ReadSetting("Database");
+                ActiveSession.CompleteConnection = ActiveSession.DummyConnection.Replace("<<server>>", server).Replace("<<database>>", database);
+                await Task.Run(() => SetupExceptionHandling());
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    ActiveSession.Setting = DB.Setting.GetAll().ToList();
+                }
+                EZYPOS.View.LoginScreen LoginScreen = new EZYPOS.View.LoginScreen();
+                LoginScreen.Show();
+                Splash.Close();
+            }
+            catch
+            {
+                EZYPOS.View.MessageBox.ShowCustom("Connection no Successful with database", "Connection Error", "OK");
+                ConnectionError popup = new ConnectionError();
+                popup.Show();
+            }
+            
         }
 
         private void SetupExceptionHandling()

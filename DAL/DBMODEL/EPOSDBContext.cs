@@ -59,9 +59,10 @@ namespace DAL.DBMODEL
             {
                 // Get the IP
                 string myIP = Dns.GetHostByName(Dns.GetHostName()).AddressList[0].ToString();
-                
+
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source="+myIP+";Database=EPOS-DB;Trusted_Connection=True;");
+                //optionsBuilder.UseSqlServer("Data Source="+myIP+";Database=EPOS-DB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(ActiveSession.CompleteConnection);
             }
         }
 
