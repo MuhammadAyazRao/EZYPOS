@@ -164,6 +164,7 @@ namespace DAL.Repository
                 SingleOrder.OrderId = SingleItem.Id;
                 SingleOrder.Discount = (decimal)SingleItem.DiscountAmount;
                 SingleOrder.DeliverCharges = (decimal)SingleItem.DeliveryCharges;
+                SingleOrder.Tax = (decimal)SingleItem.Tax;
                 SingleOrder.PaymentType= SingleItem.PaymentMode;
                 SingleOrder.payment_status = SingleItem.PaymentStatus;
                 SingleOrder.OrderDate =(DateTime) SingleItem.OrderDate;

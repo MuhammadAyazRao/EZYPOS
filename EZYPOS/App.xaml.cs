@@ -1,6 +1,9 @@
 ﻿using Common.Session;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.View;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using NLog;
 using System;
@@ -94,8 +97,10 @@ namespace EZYPOS
                 string server = ReadSetting("Server");
                 string database = ReadSetting("Database");
                 ActiveSession.CompleteConnection = ActiveSession.DummyConnection.Replace("<<server>>", server).Replace("<<database>>", database);
+                EPOSDBContext context = new EPOSDBContext();
+                context.Database.GetService<IRelationalDatabaseCreator>().Exists(); 
                 await Task.Run(() => SetupExceptionHandling());
-                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
                 {
                     ActiveSession.Setting = DB.Setting.GetAll().ToList();
                 }
@@ -105,7 +110,7 @@ namespace EZYPOS
             }
             catch
             {
-                EZYPOS.View.MessageBox.ShowCustom("Connection no Successful with database", "Connection Error", "OK");
+                EZYPOS.View.MessageBox.ShowCustom("Connection not Successful with database, Plz Provide Server IP", "Connection Error", "OK");
                 ConnectionError popup = new ConnectionError();
                 popup.Show();
             }

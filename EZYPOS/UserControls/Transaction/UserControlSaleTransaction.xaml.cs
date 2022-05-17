@@ -704,6 +704,21 @@ namespace EZYPOS.UserControls.Transaction
             if (order.OrdersDetails != null)
             {
                 CartSummary OrderSummary = new CartSummary();
+                decimal Tax = 0;
+                Decimal TaxPercentage = 0;
+                var AllowTax = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.AllowTax).FirstOrDefault().AppValue;
+                if (AllowTax.ToLower() == "true")
+                {
+                    var MinimumTaxLimit = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.MinimumTaxLimit).FirstOrDefault().AppValue;
+                    decimal Total = order.GetNetTotal();
+                    if (Total >= Convert.ToInt32(MinimumTaxLimit))
+                    {
+                        TaxPercentage = Convert.ToDecimal(((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.TaxPercentage).FirstOrDefault().AppValue);
+                        Tax = TaxPercentage / 100 * Total;
+                    }
+                }
+                order.TaxPercentage = TaxPercentage;
+                order.Tax = Tax;
                 OrderSummary.InvoiceUC.SetFlowDoc(Invoice.GetFlowDocuments(order));
                 OrderSummary.ShowDialog();
             }

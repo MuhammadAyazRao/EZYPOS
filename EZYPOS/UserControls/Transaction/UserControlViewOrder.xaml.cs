@@ -52,7 +52,7 @@ namespace EZYPOS.UserControls.Transaction
                 EndDate.SelectedDate = null;
                 txtOrderNum.Text = "";
                 listOrderAccepted.Items.Clear();
-                foreach (var item in DB.SaleOrder.GetMappedOrder(0))
+                foreach (var item in DB.SaleOrder.GetMappedOrder(0).OrderByDescending(x=>x.OrderDate))
                 {
                     listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, payment_status = item.payment_status, Instrictions = item.PaymentType, OrderCount =  item.GetNetTotal(), OrderDate = item.OrderDate });
                 }                

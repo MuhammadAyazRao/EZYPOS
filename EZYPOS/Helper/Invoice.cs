@@ -98,7 +98,7 @@ namespace EZYPOS.Helper
                 infoGrid.Width = pageWidth - flowDocument.PagePadding.Right - flowDocument.PagePadding.Left;
                 infoGrid.FlowDirection = FlowDirection.LeftToRight;
 
-
+                {
                 //if (order.Customer != null)
                 //{
                 //    TextBlock lblName = new TextBlock()
@@ -161,7 +161,7 @@ namespace EZYPOS.Helper
 
 
                 //}
-                
+                }
 
 
 
@@ -266,13 +266,14 @@ namespace EZYPOS.Helper
                         FontFamily = new FontFamily(Constants.FontFamily)
                     };
 
-                    
 
-                    
+
+
                     TextBlock total = new TextBlock()
                     {
                         Text = item.GetTotal.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
-                        Width = 60,
+                        Width = 120,
+                        
                         FontSize = 14,//14
                         FontWeight = FontWeights.Bold,
                         TextAlignment = TextAlignment.Right,
@@ -383,7 +384,16 @@ namespace EZYPOS.Helper
                     FontWeight = FontWeights.Bold,
                     FontFamily = new FontFamily(Constants.FontFamily)
                 };
-
+                TextBlock lblTax = new TextBlock()
+                {
+                    Text = "Tax Charges",
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    Height = 20,
+                    Width = 150,
+                    //Margin = new Thickness(0, 150, 0, 0),
+                    FontWeight = FontWeights.Bold,
+                    FontFamily = new FontFamily(Constants.FontFamily)
+                };
                 TextBlock lblTotal = new TextBlock()
                 {
                     Text = "Total",
@@ -412,6 +422,14 @@ namespace EZYPOS.Helper
                     SummaryTopmargin += 50;
                     lblDisc.Margin = new Thickness(0, SummaryTopmargin, 0, 0);
                     billSummery.Children.Add(lblDisc);
+                }
+                
+                if (order.Tax > 0)
+                {
+                    SummaryBlockmargin += -20;
+                    SummaryTopmargin += 50;
+                    lblTax.Margin = new Thickness(0, SummaryTopmargin, 0, 0);
+                    billSummery.Children.Add(lblTax);
                 }
                
                 SummaryTopmargin += 50;
@@ -452,11 +470,26 @@ namespace EZYPOS.Helper
 
                 };
 
-                
+                TextBlock lblTaxAmt = new TextBlock()
+                {
+                    Text = order.Tax == null ? "0" : order.Tax.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    TextAlignment = TextAlignment.Right,
+                    Height = 20,
+                    Width = 120,
+                    FontSize = 14,//14
+                    FontWeight = FontWeights.Bold,
+                    FontFamily = new FontFamily(Constants.FontFamily)
+                    //Margin = new Thickness(0, 100, 0, 0)
+
+                };
+
+
 
                 TextBlock lblTotalAmt = new TextBlock()
                 {
-                    Text = order.GetNetTotal().ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
+                    
+                    Text = (order.GetNetTotal()+ order.Tax).ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())),
                     HorizontalAlignment = HorizontalAlignment.Right,
                     TextAlignment = TextAlignment.Right,
                     Height = 20,
@@ -481,7 +514,14 @@ namespace EZYPOS.Helper
                     lblDiscAmt.Margin = new Thickness(0, SummaryTopmargin, 0, 0);
                     billSummery.Children.Add(lblDiscAmt);
                 }
-                
+
+                if (order.Tax > 0)
+                {
+                    SummaryTopmargin += 50;
+                    lblTaxAmt.Margin = new Thickness(0, SummaryTopmargin, 0, 0);
+                    billSummery.Children.Add(lblTaxAmt);
+                }
+
                 SummaryTopmargin += 50;
                 lblTotalAmt.Margin = new Thickness(0, SummaryTopmargin, 0, 0);
                 billSummery.Children.Add(lblTotalAmt);
@@ -969,6 +1009,7 @@ namespace EZYPOS.Helper
                     FontWeight = FontWeights.Bold,
                     FontFamily = new FontFamily(Constants.FontFamily)
                 };
+                
 
                 TextBlock lblTotal = new TextBlock()
                 {
@@ -999,6 +1040,7 @@ namespace EZYPOS.Helper
                     lblDisc.Margin = new Thickness(0, SummaryTopmargin, 0, 0);
                     billSummery.Children.Add(lblDisc);
                 }
+                
 
                 SummaryTopmargin += 50;
                 lblTotal.Margin = new Thickness(0, SummaryTopmargin, 0, 0);
