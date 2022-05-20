@@ -268,7 +268,7 @@ namespace EZYPOS.UserControls.Transaction
                 listOrderAccepted.Items.Clear();
 
 
-                List<Order> Allorders = DB.SaleOrder.GetMappedOrder();
+                List<Order> Allorders = DB.SaleOrder.GetMappedOrder().OrderByDescending(x=> x.OrderDate).ToList();
                 if(StartDate.SelectedDate != null && EndDate.SelectedDate != null)
                 {
                     DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Now : StartDate.SelectedDate.Value;
@@ -318,7 +318,7 @@ namespace EZYPOS.UserControls.Transaction
             listOrderAccepted.Items.Clear();
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                List<Order> Allorders = DB.SaleOrder.GetMappedOrder();
+                List<Order> Allorders = DB.SaleOrder.GetMappedOrder().OrderByDescending(x => x.OrderDate).ToList();
                 Allorders = Allorders.Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate).ToList();
                 foreach (var item in Allorders)
                 {

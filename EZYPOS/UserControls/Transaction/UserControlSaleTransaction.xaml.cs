@@ -1023,7 +1023,7 @@ namespace EZYPOS.UserControls.Transaction
                     if (item != null)
                     {
                         AddToCart(item.ProductName, (decimal)item.RetailPrice, (decimal)item?.PurchasePrice, item.Id);
-                        listKitchenLineItems.ItemsSource = null;
+                        //listKitchenLineItems.ItemsSource = null;
                     }
                     else
                     {

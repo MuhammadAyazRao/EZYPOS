@@ -46,7 +46,7 @@ namespace EZYPOS.UserControls.Transaction
                 ddPaymentMode.SelectedValue = null;
                 txtOrderNum.Text = "";
                 listOrderAccepted.Items.Clear();
-                foreach (var item in DB.PurchaseOrder.GetMappedOrder())
+                foreach (var item in DB.PurchaseOrder.GetMappedOrder().OrderByDescending(x=> x.OrderDate))
                 {
                     listOrderAccepted.Items.Add(new PurchaseOrderDTO { OrderId = item.OrderId, payment_status = item.payment_status, diverlyType = item.PaymentType, OrderCount = item.GetNetTotal(), OrderDate = item.OrderDate }); ;
 
@@ -230,7 +230,7 @@ namespace EZYPOS.UserControls.Transaction
                     SelectedPaymentMode = SelectedPaymentMode.ToUpper();
                 }
                 listOrderAccepted.Items.Clear();
-                List<PurchaseOrderDTO> Allorders = DB.PurchaseOrder.GetMappedOrder();
+                List<PurchaseOrderDTO> Allorders = DB.PurchaseOrder.GetMappedOrder().OrderByDescending(x=> x.OrderDate).ToList();
                 if (StartDate.SelectedDate != null && EndDate.SelectedDate != null)
                 {
                     DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
@@ -283,7 +283,7 @@ namespace EZYPOS.UserControls.Transaction
             listOrderAccepted.Items.Clear();
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                List<PurchaseOrderDTO> Allorders = DB.PurchaseOrder.GetMappedOrder();
+                List<PurchaseOrderDTO> Allorders = DB.PurchaseOrder.GetMappedOrder().OrderByDescending(x=> x.OrderDate).ToList();
                 Allorders = Allorders.Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate).ToList();
                 foreach (var item in Allorders)
                 {

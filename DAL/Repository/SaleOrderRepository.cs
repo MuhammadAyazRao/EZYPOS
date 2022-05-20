@@ -175,7 +175,7 @@ namespace DAL.Repository
                     OrderDetail SingleOrderDetail = new OrderDetail();
                     SingleOrderDetail.OrderId = orderdetail.Id;
                     SingleOrderDetail.Qty = (int)orderdetail?.ItemQty;
-
+                    SingleOrderDetail.ItemDiscount = (decimal)orderdetail?.ItemDiscount;
                     item NewItem = new item();
                     NewItem.id = orderdetail.ItemId;
                     NewItem.name = orderdetail?.ItemName;                   
