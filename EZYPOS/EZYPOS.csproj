@@ -140,6 +140,8 @@
   <ItemGroup>
     <PackageReference Include="BarcodeLib" Version="2.3.0" />
     <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+    <PackageReference Include="LiveCharts" Version="0.9.7" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="MaterialDesignColors" Version="1.2.7" />
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
     <PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="161.46367.54" />

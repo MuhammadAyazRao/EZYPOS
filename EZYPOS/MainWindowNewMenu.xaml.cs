@@ -24,6 +24,8 @@ using EZYPOS.UserControls.Transaction;
 using EZYPOS.UserControls.Transaction.Lists;
 using EZYPOS.UserControls.Utility;
 using EZYPOS.View;
+using LiveCharts;
+using LiveCharts.Wpf;
 using MessageBox = EZYPOS.View.MessageBox;
 
 namespace EZYPOS
@@ -51,7 +53,7 @@ namespace EZYPOS
             //};
             //mnuDeleteInvoice.Icon = new MaterialDesignThemes.Wpf.PackIcon { Kind = MaterialDesignThemes.Wpf.PackIconKind.Delete };
             VSOnline.Items.Add(mnuDeleteInvoice);
-
+            Onload();
            
         }
 
@@ -208,7 +210,12 @@ namespace EZYPOS
         }
 
         #endregion
-
+       
+        private void Onload()
+        {
+            DashBoard dashboard = new DashBoard();
+            ActiveSession.DisplayuserControlMethod(dashboard);
+        }
         private void Product_Click(object sender, RoutedEventArgs e)
         {
             UserControlListProduct Product = new UserControlListProduct();

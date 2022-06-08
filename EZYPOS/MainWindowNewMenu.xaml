@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:my="clr-namespace:ChromeTabs;assembly=ChromeTabs"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:EZYPOS"
         mc:Ignorable="d"
@@ -92,7 +93,8 @@
         <Grid.RowDefinitions>
             <RowDefinition x:Name="ColMenu" Height="40"/>
             <RowDefinition x:Name="ColShowMenu" Height="0"/>
-            <RowDefinition x:Name="ColContent" Height="*"/>         
+            <RowDefinition x:Name="ColContent" Height="*"/>            
+            <!--<RowDefinition  Height="*"/>-->      
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -230,6 +232,9 @@
                 </my:ChromeTabItem>-->
             </my:ChromeTabControl>
         </ScrollViewer>
+        <!--<Grid Grid.Row="3">
+            <lvc:CartesianChart Series="{Binding SeriesCollection}" />
+        </Grid>-->
     </Grid>
     
 </Window>
