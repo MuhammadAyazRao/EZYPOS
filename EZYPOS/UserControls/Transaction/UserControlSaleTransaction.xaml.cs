@@ -74,8 +74,7 @@ namespace EZYPOS.UserControls.Transaction
             btnEdit.Visibility = Visibility.Visible;
             btnPay.Visibility = Visibility.Collapsed;
             foreach (var odritem in Odr?.OrdersDetails)
-            {
-                AddToCart(odritem?.Item.name, (decimal)odritem?.Item.price, (decimal)odritem?.Item.PurchasePrice, (int) odritem?.Item.id, (int)odritem?.Qty, odritem.ItemDiscount);
+            {                
                 AddToCart(odritem?.Item.name, (decimal)odritem?.Item.price, (decimal)odritem?.Item.PurchasePrice,odritem.Item.TaxType,odritem.Item.Tax, (int) odritem?.Item.id, (int)odritem?.Qty , odritem.ItemDiscount);
             }
         }
@@ -842,8 +841,8 @@ namespace EZYPOS.UserControls.Transaction
                 var CartProduct = order.OrdersDetails.Where(x => x.Item?.id == ProductId).FirstOrDefault();
                 if (CartProduct != null)
                 {
-                    //if (CartProduct.Qty + 1 <= Db.Stock.GetProductQty(ProductId))
-                  //  {
+                        //if (CartProduct.Qty + 1 <= Db.Stock.GetProductQty(ProductId))
+                        //  {
                         CartProduct.Qty = CartProduct.Qty + 1;
                         int INDEX = listBoxItemCart.SelectedIndex;
                         order.OrdersDetails.RemoveAt(INDEX);
@@ -851,25 +850,27 @@ namespace EZYPOS.UserControls.Transaction
                         order.OrdersDetails.Insert(INDEX, CartProduct);
                         listBoxItemCart.Items.Insert(INDEX, CartProduct);
                         listBoxItemCart.SelectedIndex = INDEX;
-                    }
-                    else
-                    {
-                        EZYPOS.View.MessageBox.ShowCustom("Available Qty is " + Db.Stock.GetProductQty(ProductId), "QTY Exceeded", "Ok");
-                    }
-                }
-                else
-                {
-                    if (Db.Stock.GetProductQty(ProductId) >= 1)
-                    {
-                        order.OrdersDetails.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, PurchasePrice = PurchasePrice, TaxType= TaxType, Tax= Tax, id = ProductId }, ItemDiscount = Discount });
-                        listBoxItemCart.Items.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, PurchasePrice = PurchasePrice, TaxType = TaxType, Tax = Tax, id = ProductId }, ItemDiscount = Discount });
-                        listBoxItemCart.SelectedIndex = 0;
                     //}
                     //else
                     //{
                     //    EZYPOS.View.MessageBox.ShowCustom("Available Qty is " + Db.Stock.GetProductQty(ProductId), "QTY Exceeded", "Ok");
                     //}
                 }
+                else
+                {
+                    //if (Db.Stock.GetProductQty(ProductId) >= 1)
+                    //{
+                        order.OrdersDetails.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, PurchasePrice = PurchasePrice, TaxType = TaxType, Tax = Tax, id = ProductId }, ItemDiscount = Discount });
+                        listBoxItemCart.Items.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, PurchasePrice = PurchasePrice, TaxType = TaxType, Tax = Tax, id = ProductId }, ItemDiscount = Discount });
+                        listBoxItemCart.SelectedIndex = 0;                        
+                   // }
+                    //}
+                    //else
+                    //{
+                    //    EZYPOS.View.MessageBox.ShowCustom("Available Qty is " + Db.Stock.GetProductQty(ProductId), "QTY Exceeded", "Ok");
+                    //}
+                }
+
 
                 CartVisibility();
                 UpdateBillSummary();
