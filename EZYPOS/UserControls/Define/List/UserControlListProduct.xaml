@@ -239,6 +239,31 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding TaxType}"  IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Content, RelativeSource=
+                                         {RelativeSource Mode=TemplatedParent}}"/>
+                                    <TextBox materialDesign:HintAssist.Hint="Tax Type"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridTaxType" Width="100"  KeyDown="GridName_KeyDown"   />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Tax}"  IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Content, RelativeSource=
+                                         {RelativeSource Mode=TemplatedParent}}"/>
+                                    <TextBox materialDesign:HintAssist.Hint="Tax"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridTax" Width="100" PreviewTextInput="NumberDecimal_PreviewTextInput"  KeyDown="GridName_KeyDown"   />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
+
                     <DataGridTextColumn Binding="{Binding SubcategoryName}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
                             <DataTemplate>

@@ -30,6 +30,8 @@ namespace DAL.DBMODEL
         public DateTime? Createdon { get; set; }
         public decimal? Size { get; set; }
         public int? Unit { get; set; }
+        public string TaxType { get; set; }
+        public decimal? Tax { get; set; }
 
         public virtual ProductCategory Category { get; set; }
         public virtual ProductGroup Group { get; set; }

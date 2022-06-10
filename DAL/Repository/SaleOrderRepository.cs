@@ -74,6 +74,8 @@ namespace DAL.Repository
                         NewOrderDetail.ItemQty = (int)item?.Qty;                      
                         NewOrderDetail.ItemPrice = item?.Item.price;
                         NewOrderDetail.PurchasePrice = item?.Item.PurchasePrice;
+                        NewOrderDetail.TaxType = item?.Item.TaxType;
+                        NewOrderDetail.ItemTax = item?.Item.Tax;
                         NewOrderDetail.ItemIndex = 1;
                         NewOrderDetail.IsUpdated = "";
                         NewOrderDetail.IsDeleted = "";
@@ -181,6 +183,8 @@ namespace DAL.Repository
                     NewItem.name = orderdetail?.ItemName;                   
                     NewItem.price = (decimal)orderdetail?.ItemPrice;
                     NewItem.PurchasePrice = (decimal)orderdetail?.PurchasePrice;
+                    NewItem.TaxType = orderdetail?.TaxType;
+                    NewItem.Tax = (decimal)orderdetail?.ItemTax;
                     SingleOrderDetail.Item = NewItem;
                     if (SingleOrder.OrdersDetails == null)
                     { SingleOrder.OrdersDetails = new List<OrderDetail>(); }

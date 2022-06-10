@@ -117,6 +117,16 @@ namespace EZYPOS.UserControls.Misc
                 {
                     ckTax.IsChecked = false;
                 }
+
+                var ItemBaseTax = SettingData.Where(x => x.AppKey == SettingKey.ItemBaseTax).FirstOrDefault().AppValue;
+                if (ItemBaseTax.ToLower() == "true")
+                {
+                    ckItemBaseTax.IsChecked = true;
+                }
+                else
+                {
+                    ckItemBaseTax.IsChecked = false;
+                }
                 //image
                 string imgDirPath = Environment.CurrentDirectory + @"\Assets\";
                 string ImgFullPath = imgDirPath + "logo.png";
@@ -165,6 +175,7 @@ namespace EZYPOS.UserControls.Misc
                 Data.Where(x => x.AppKey == SettingKey.PrintConfirmation).FirstOrDefault().AppValue = ckPrintConfirmation.IsChecked.ToString();
                 Data.Where(x => x.AppKey == SettingKey.ExpiryAlert).FirstOrDefault().AppValue = ckExpiryAlert.IsChecked.ToString();
                 Data.Where(x => x.AppKey == SettingKey.AllowTax).FirstOrDefault().AppValue = ckTax.IsChecked.ToString();
+                Data.Where(x => x.AppKey == SettingKey.ItemBaseTax).FirstOrDefault().AppValue = ckItemBaseTax.IsChecked.ToString();
 
                 if (txtShopName.Text!= "") 
                 {

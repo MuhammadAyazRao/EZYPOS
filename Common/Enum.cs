@@ -13,7 +13,17 @@ namespace Common
         KG=1,
         G=2
     }
+    public enum TaxType
+    {
+        HST = 1,
+        GST = 2
+    }
+    public static class TypeOfTax
+    {
+        public static string HST { get { return nameof(HST); } }
+        public static string GST { get { return nameof(GST); } }
 
+    }
     public static class SalaryMode
     {
         public static string Monthly { get { return nameof(Monthly); } }
@@ -56,6 +66,7 @@ namespace Common
         public static string AllowTax { get { return nameof(AllowTax); } }
         public static string TaxPercentage { get { return nameof(TaxPercentage); } }
         public static string MinimumTaxLimit { get { return nameof(MinimumTaxLimit); } }
+        public static string ItemBaseTax { get { return nameof(ItemBaseTax); } }
 
 
 

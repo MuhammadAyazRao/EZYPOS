@@ -27,6 +27,8 @@ namespace DAL.DBMODEL
         public decimal? ItemDiscount { get; set; }
         public decimal? ItemPrice { get; set; }
         public decimal? PurchasePrice { get; set; }
+        public string TaxType { get; set; }
+        public decimal? ItemTax { get; set; }
         public int ItemIndex { get; set; }
         public int? BillNo { get; set; }
         public string IsUpdated { get; set; }

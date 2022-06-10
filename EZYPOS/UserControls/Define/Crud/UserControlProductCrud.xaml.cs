@@ -1,4 +1,5 @@
-﻿using Common.Session;
+﻿using Common;
+using Common.Session;
 using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
@@ -105,6 +106,21 @@ namespace EZYPOS.UserControls.Define.Crud
                 {
                     DDMunit.SelectedValue = Productdata.Unit;
                 }
+                if(Productdata.TaxType != null)
+                {
+                    if(Productdata.TaxType == TypeOfTax.HST)
+                    {
+                        DDTaxType.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        DDTaxType.SelectedIndex = 1;
+                    }
+                }
+                if(Productdata.Tax  != null)
+                {
+                    txtTax.Text = Productdata.Tax.ToString();
+                }
                 //CurrentStock
                 //Supplier
                 //Maximum
@@ -128,7 +144,8 @@ namespace EZYPOS.UserControls.Define.Crud
                 DDShelf.ItemsSource = Db.Shelf.GetAll().ToList();
                 DDSupplier.ItemsSource = Db.Supplier.GetAll().ToList();
                 DDMunit.ItemsSource = Db.MUnit.GetAll().ToList();
-
+                DDTaxType.ItemsSource = Enum.GetValues(typeof(TaxType)).Cast<TaxType>().Select(v => v.ToString()).ToList();
+                DDTaxType.SelectedValue = null;
             }
             txtPCode.Text = "";
             txtProductName.Text = "";
@@ -140,6 +157,7 @@ namespace EZYPOS.UserControls.Define.Crud
             txtStockMin.Text = "";
             txtStockMax.Text = "";
             txtSize.Text = "";
+            txtTax.Text = "";
             DateStock.SelectedDate = DateTime.Today;
 
             txtId.Text = "";
@@ -355,6 +373,8 @@ namespace EZYPOS.UserControls.Define.Crud
                         NewProduct.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
                         NewProduct.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
                         NewProduct.SubcategoryId = Convert.ToInt32(DDSubCategory.SelectedValue);
+                        NewProduct.TaxType = DDTaxType.Text;
+                        NewProduct.Tax = Convert.ToDecimal(txtTax.Text);
                         if (DDGroup.SelectedValue != null) 
                         {
                             NewProduct.GroupId = Convert.ToInt32(DDGroup.SelectedValue);
@@ -397,7 +417,9 @@ namespace EZYPOS.UserControls.Define.Crud
                     NewProduct.PurchasePrice = Convert.ToDecimal(txtPurchasePrice.Text);
                     NewProduct.CategoryId = Convert.ToInt32(DDCategory.SelectedValue);
                     NewProduct.SubcategoryId = Convert.ToInt32(DDSubCategory.SelectedValue);
-                    if(DDGroup.SelectedValue != null) 
+                    NewProduct.TaxType = DDTaxType.Text;
+                    NewProduct.Tax = Convert.ToDecimal(txtTax.Text);
+                    if (DDGroup.SelectedValue != null) 
                     {
                         NewProduct.GroupId = Convert.ToInt32(DDGroup.SelectedValue);
                     }

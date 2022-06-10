@@ -112,7 +112,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="430"/>
-            <RowDefinition Height="320"/>
+            <RowDefinition Height="430"/>
             <RowDefinition Height="61"/>
         </Grid.RowDefinitions>
         <Border ScrollViewer.CanContentScroll="True" ScrollViewer.PanningMode="VerticalFirst" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="LightGray" BorderThickness="0" Margin="50,0,50,0" Grid.Row="1">
@@ -176,6 +176,7 @@
                         <RowDefinition Height="60"></RowDefinition>
                         <RowDefinition Height="60"></RowDefinition>
                         <RowDefinition Height="60"></RowDefinition>
+                        <RowDefinition Height="60"></RowDefinition>
 
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -207,7 +208,8 @@
                     <Label VerticalContentAlignment="Center" FontSize="15" Content="Minimum Tax Limit" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="3" Grid.Column="2" />
                     <TextBox Name="txtMinimumTaxLimit"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="45" Grid.Row="3" Grid.Column="3" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Minimum Tax Limit" PreviewTextInput="NumberOnly_PreviewTextInput" />
 
-
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Item base Tax" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="4" Grid.Column="2" />
+                    <CheckBox Checked="ck_Checked" Unchecked="ck_Checked" Name="ckItemBaseTax" Style="{DynamicResource CheckBoxStyle1}" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="45" Width="100" Grid.Row="4" Grid.Column="3"  />
 
                 </Grid>
             </GroupBox>

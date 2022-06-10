@@ -285,8 +285,8 @@
                     <Label Content="Total Discount" Foreground="{DynamicResource Success}" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left" Width="92" Margin="11,0,0,0" Height="26" VerticalAlignment="Top" />
                     <Label x:Name="lblDicAmt" Foreground="{DynamicResource Success}" Content="0.00" ContentStringFormat="C" Grid.Row="0" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalAlignment="Top" Width="Auto" Margin="54,0,6,0" Height="26" Grid.Column="0"/>
 
-                    <Label Content="Total Items" Foreground="{DynamicResource DarkBlue}" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left" Width="99" Margin="9,26,0,0" Height="26" VerticalAlignment="Top" />
-                    <Label x:Name="lblItems" Foreground="{DynamicResource DarkBlue}" Content="0.00" Grid.Row="0" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalAlignment="Top" Width="Auto" Margin="54,26,6,0" Height="26" RenderTransformOrigin="0.5,0.308" Grid.Column="0"/>
+                    <Label Content="Total Tax" Foreground="{DynamicResource DarkBlue}" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left" Width="99" Margin="9,26,0,0" Height="26" VerticalAlignment="Top" />
+                    <Label x:Name="lblTax" Foreground="{DynamicResource DarkBlue}" Content="0.00" Grid.Row="0" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalAlignment="Top" Width="Auto" Margin="54,26,6,0" Height="26" RenderTransformOrigin="0.5,0.308" Grid.Column="0"/>
 
                     <Label Content="Total Charges" Grid.Column="1" Foreground="{DynamicResource Danger}" FontWeight="Bold" VerticalAlignment="Bottom" Margin="1,0,45,86" Height="26"/>
                     <Label Name="lblTotal" Content="0.00" ContentStringFormat="C" FontWeight="Bold" Foreground="{DynamicResource Danger}"  Grid.Column="1" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="Auto" Margin="95,0,10,0" Height="26"/>

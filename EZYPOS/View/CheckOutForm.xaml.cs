@@ -65,8 +65,9 @@ namespace EZYPOS.View
             this.Language = System.Windows.Markup.XmlLanguage.GetLanguage(HelperMethods.GetCurrency());
             Order = odr;
             UCNum.OnButtonPressed += UCNum_OnButtonPressed;
-            UCSide.onButtonPress += UCSide_onButtonPress;            
-            lblTotal.Content = Order.GetNetTotal();
+            UCSide.onButtonPress += UCSide_onButtonPress;
+            var Taxobj = Tax_Taxpercentage();
+            lblTotal.Content = Order.GetNetTotal()+ Taxobj.Tax;
             lblDisc.Content = Order.GetTotalDiscount();
             lblDelivery.Content = Order.DeliverCharges;
         }
@@ -145,6 +146,39 @@ namespace EZYPOS.View
                 }
             }
         }
+        private TaxDTO Tax_Taxpercentage() 
+        {
+            TaxDTO taxDTO = new TaxDTO();   
+            decimal Tax = 0;
+            decimal TaxPercentage = 0;
+            var AllowTax = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.AllowTax).FirstOrDefault().AppValue;
+            if (AllowTax.ToLower() == "true")
+            {
+                var ItemBaseTax = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.ItemBaseTax).FirstOrDefault().AppValue;
+                if (ItemBaseTax.ToLower() != "true")
+                {
+                    var MinimumTaxLimit = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.MinimumTaxLimit).FirstOrDefault().AppValue;
+                    decimal Total = Order.GetNetTotal();
+                    if (Total >= Convert.ToInt32(MinimumTaxLimit))
+                    {
+                        TaxPercentage = Convert.ToDecimal(((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.TaxPercentage).FirstOrDefault().AppValue);
+                        Tax = TaxPercentage / 100 * Total;
+                    }
+                }
+                else
+                {
+                    foreach (var item in Order?.OrdersDetails)
+                    {
+                        Tax += item.Item.Tax * item.Qty;
+                    }
+                }
+
+            }
+            taxDTO.Percentage = TaxPercentage;
+            taxDTO.Tax = Tax;
+            return taxDTO;
+
+        }
 
         private void btnCheckout_Click(object sender, RoutedEventArgs e)
         {
@@ -180,21 +214,10 @@ namespace EZYPOS.View
                         //    Order.EmployeeId = Convert.ToInt32(DDEmployee.SelectedValue);
 
                         //}
-                        decimal Tax = 0;
-                        Decimal TaxPercentage = 0;
-                        var AllowTax = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.AllowTax).FirstOrDefault().AppValue;
-                        if(AllowTax.ToLower()== "true")
-                        {
-                            var MinimumTaxLimit = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.MinimumTaxLimit).FirstOrDefault().AppValue;
-                            decimal Total = Order.GetNetTotal();
-                            if (Total >= Convert.ToInt32(MinimumTaxLimit))
-                            {
-                                TaxPercentage = Convert.ToDecimal(((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.TaxPercentage).FirstOrDefault().AppValue);
-                                Tax = TaxPercentage / 100 * Total;
-                            }
-                        }
-                        Order.TaxPercentage = TaxPercentage;
-                        Order.Tax= Tax; 
+                        var Taxobj = Tax_Taxpercentage();
+                        Order.Tax = Taxobj.Tax;
+                        Order.TaxPercentage = Taxobj.Percentage;
+
                         this.DialogResult = Db.SaleOrder.SaveOrder(Order);
                         }
                     //}

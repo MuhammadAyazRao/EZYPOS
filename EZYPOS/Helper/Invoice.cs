@@ -265,8 +265,25 @@ namespace EZYPOS.Helper
                         VerticalAlignment = VerticalAlignment.Bottom,
                         FontFamily = new FontFamily(Constants.FontFamily)
                     };
-
-
+                    TextBlock lblItemTax = new TextBlock()
+                    {
+                        Text = "|Tax",
+                        FontSize = 12,//14
+                        FontWeight = FontWeights.Bold,
+                        TextWrapping = TextWrapping.Wrap,
+                        VerticalAlignment = VerticalAlignment.Bottom,
+                        FontFamily = new FontFamily(Constants.FontFamily)
+                    };
+                    TextBlock ItemTax = new TextBlock()
+                    {
+                        Text = (item.Item.Tax*item.Qty).ToString(),
+                        FontSize = 12,//14
+                        FontWeight = FontWeights.Bold,
+                        TextWrapping = TextWrapping.Wrap,
+                        VerticalAlignment = VerticalAlignment.Bottom,
+                        FontFamily = new FontFamily(Constants.FontFamily)
+                    };
+                    
 
 
                     TextBlock total = new TextBlock()
@@ -283,6 +300,10 @@ namespace EZYPOS.Helper
                     };
 
                     span.Children.Add(name);
+                    span.Children.Add(lblItemTax);
+                    span.Children.Add(ItemTax);
+
+
                     lineDetails.Children.Add(total);
 
                     orderDetails.Children.Add(lineDetails);

@@ -99,7 +99,6 @@ namespace Common.DTO
             return ((GetTotal() + DeliverCharges + ServiceCharges) - GetCouponDiscount()) - Discount;
         }
 
-
     }
     public class OrderDetail : PropertyHelper
     {
@@ -335,6 +334,8 @@ namespace Common.DTO
         public string fixed_items { get; set; }
         public decimal price { get; set; }
         public decimal PurchasePrice { get; set; }
+        public string TaxType { get; set; }
+        public decimal Tax { get; set; }
 
         public double epos_price { get; set; }
         public string days { get; set; }

@@ -74,7 +74,7 @@ namespace EZYPOS.UserControls.Transaction
             btnPay.Visibility = Visibility.Collapsed;
             foreach (var odritem in Odr?.OrdersDetails)
             {
-                AddToCart(odritem?.Item.name, (decimal)odritem?.Item.price, (decimal)odritem?.Item.PurchasePrice, (int) odritem?.Item.id, (int)odritem?.Qty);
+                AddToCart(odritem?.Item.name, (decimal)odritem?.Item.price, (decimal)odritem?.Item.PurchasePrice,odritem.Item.TaxType,odritem.Item.Tax, (int) odritem?.Item.id, (int)odritem?.Qty , odritem.ItemDiscount);
             }
         }
         public Order order = new Order();
@@ -88,7 +88,39 @@ namespace EZYPOS.UserControls.Transaction
             }
 
         }
+        private TaxDTO Tax_Taxpercentage()
+        {
+            TaxDTO taxDTO = new TaxDTO();
+            decimal Tax = 0;
+            decimal TaxPercentage = 0;
+            var AllowTax = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.AllowTax).FirstOrDefault().AppValue;
+            if (AllowTax.ToLower() == "true")
+            {
+                var ItemBaseTax = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.ItemBaseTax).FirstOrDefault().AppValue;
+                if (ItemBaseTax.ToLower() != "true")
+                {
+                    var MinimumTaxLimit = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.MinimumTaxLimit).FirstOrDefault().AppValue;
+                    decimal Total = order.GetNetTotal();
+                    if (Total >= Convert.ToInt32(MinimumTaxLimit))
+                    {
+                        TaxPercentage = Convert.ToDecimal(((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.TaxPercentage).FirstOrDefault().AppValue);
+                        Tax = TaxPercentage / 100 * Total;
+                    }
+                }
+                else
+                {
+                    foreach (var item in order?.OrdersDetails)
+                    {
+                        Tax += item.Item.Tax * item.Qty;
+                    }
+                }
 
+            }
+            taxDTO.Percentage = TaxPercentage;
+            taxDTO.Tax = Tax;
+            return taxDTO;
+
+        }
 
         // Delete Cart Items on the basis of selected item within cart list
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -408,8 +440,9 @@ namespace EZYPOS.UserControls.Transaction
         public void UpdateBillSummary()
         {
             lblDicAmt.Content = order.GetTotalDiscount();
-            lblItems.Content = listBoxItemCart.Items.Count;
-            lblTotal.Content = order.GetNetTotal();
+            //lblItems.Content = listBoxItemCart.Items.Count;
+            lblTax.Content = Tax_Taxpercentage().Tax;
+            lblTotal.Content = order.GetNetTotal()+ Tax_Taxpercentage().Tax;
             lblDeliveryCharges.Content = order.DeliverCharges;
             //ViewHelper.FindChild<Label>(expander, "lblItems").Content = listBoxItemCart.Items.Count;
             //ViewHelper.FindChild<Label>(expander, "lblDicAmt").Content = order.GetTotalDiscount();
@@ -704,21 +737,10 @@ namespace EZYPOS.UserControls.Transaction
             if (order.OrdersDetails != null)
             {
                 CartSummary OrderSummary = new CartSummary();
-                decimal Tax = 0;
-                Decimal TaxPercentage = 0;
-                var AllowTax = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.AllowTax).FirstOrDefault().AppValue;
-                if (AllowTax.ToLower() == "true")
-                {
-                    var MinimumTaxLimit = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.MinimumTaxLimit).FirstOrDefault().AppValue;
-                    decimal Total = order.GetNetTotal();
-                    if (Total >= Convert.ToInt32(MinimumTaxLimit))
-                    {
-                        TaxPercentage = Convert.ToDecimal(((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.TaxPercentage).FirstOrDefault().AppValue);
-                        Tax = TaxPercentage / 100 * Total;
-                    }
-                }
-                order.TaxPercentage = TaxPercentage;
-                order.Tax = Tax;
+                var Taxobj = Tax_Taxpercentage();
+
+                order.TaxPercentage = Taxobj.Percentage;
+                order.Tax = Taxobj.Tax;
                 OrderSummary.InvoiceUC.SetFlowDoc(Invoice.GetFlowDocuments(order));
                 OrderSummary.ShowDialog();
             }
@@ -802,7 +824,7 @@ namespace EZYPOS.UserControls.Transaction
             CartVisibility();
             UpdateBillSummary();
         }
-        private void AddToCart(string Name, decimal Price, decimal PurchasePrice, int ProductId, int Qty = 1, decimal Discount = 0)
+        private void AddToCart(string Name, decimal Price, decimal PurchasePrice, string TaxType, decimal Tax, int ProductId, int Qty = 1, decimal Discount = 0)
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {                
@@ -833,8 +855,8 @@ namespace EZYPOS.UserControls.Transaction
                 {
                     if (Db.Stock.GetProductQty(ProductId) >= 1)
                     {
-                        order.OrdersDetails.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, PurchasePrice = PurchasePrice, id = ProductId }, ItemDiscount = Discount });
-                        listBoxItemCart.Items.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, PurchasePrice = PurchasePrice, id = ProductId }, ItemDiscount = Discount });
+                        order.OrdersDetails.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, PurchasePrice = PurchasePrice, TaxType= TaxType, Tax= Tax, id = ProductId }, ItemDiscount = Discount });
+                        listBoxItemCart.Items.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, PurchasePrice = PurchasePrice, TaxType = TaxType, Tax = Tax, id = ProductId }, ItemDiscount = Discount });
                         listBoxItemCart.SelectedIndex = 0;
                     }
                     else
@@ -854,15 +876,15 @@ namespace EZYPOS.UserControls.Transaction
             {
                 if (SubCategoryId != 0)
                 {
-                    Products = Db.Product.GetAll().Where(x => x.SubcategoryId == SubCategoryId).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice}).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.SubcategoryId == SubCategoryId).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType= X.TaxType}).ToList();
                 }
                 else if (DDCategory.SelectedValue != null && DDCategory.Text.ToLower() != "all")
                 {
-                    Products = Db.Product.GetAll().Where(x => x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue) ).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size= X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue) ).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size= X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
                 }
                 else
                 {
-                    Products = Db.Product.GetAll().Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice }).ToList();
+                    Products = Db.Product.GetAll().Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
                 }
             }
             return Products;
@@ -873,7 +895,7 @@ namespace EZYPOS.UserControls.Transaction
             List<ProductDTO> Products = new List<ProductDTO>();
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                Products = Db.Product.GetAll().Where(x => x.CategoryId == id).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice }).ToList();
+                Products = Db.Product.GetAll().Where(x => x.CategoryId == id).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
             }
             return Products;
         }
@@ -884,7 +906,7 @@ namespace EZYPOS.UserControls.Transaction
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 
-                    Product = Db.Product.GetAll().Where(x => x.Barcode == code).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice }).FirstOrDefault();
+                    Product = Db.Product.GetAll().Where(x => x.Barcode == code).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).FirstOrDefault();
                 
             }
             return Product;
@@ -897,15 +919,15 @@ namespace EZYPOS.UserControls.Transaction
             {
                 if(DDCategory.SelectedValue == null || DDCategory.Text.ToLower() == "all")
                 {
-                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
                 }
                 else if (DDSubCategory.SelectedValue == null || DDSubCategory.Text.ToLower() == "all")
                 {
-                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
                 }
                 else
                 {
-                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.SubcategoryId == Convert.ToInt32(DDSubCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.SubcategoryId == Convert.ToInt32(DDSubCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
                 }
 
             }
@@ -968,7 +990,7 @@ namespace EZYPOS.UserControls.Transaction
             ProductDTO Product = selectedItem.Content as ProductDTO;
             if (Product != null)
             {
-              AddToCart(Product.ProductName, (decimal)Product.RetailPrice, (decimal)Product?.PurchasePrice, Product.Id);            
+              AddToCart(Product.ProductName, (decimal)Product.RetailPrice, (decimal)Product?.PurchasePrice,Product.TaxType,(decimal)Product.Tax, Product.Id);            
             }           
         }
 
@@ -1022,7 +1044,7 @@ namespace EZYPOS.UserControls.Transaction
                     var item = GetProductsbycode(Barcode.Text);
                     if (item != null)
                     {
-                        AddToCart(item.ProductName, (decimal)item.RetailPrice, (decimal)item?.PurchasePrice, item.Id);
+                        AddToCart(item.ProductName, (decimal)item.RetailPrice, (decimal)item?.PurchasePrice,item.TaxType, (decimal)item.Tax, item.Id);
                         //listKitchenLineItems.ItemsSource = null;
                     }
                     else
