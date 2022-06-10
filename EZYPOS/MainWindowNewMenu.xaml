@@ -100,7 +100,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>        
         <StackPanel>
-            <Menu IsMainMenu="True">
+            <Menu x:Name="MainManu" IsMainMenu="True">
                 <MenuItem Header="_EZYPOS" Name="VSOnline" Template="{StaticResource VsOnline}" >
                     <MenuItem Header="_Setting" Name="Setting" Click="Setting_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Settings1.png" />
                 </MenuItem>
@@ -188,6 +188,7 @@
                 <MenuItem Header="_Utilities" Template="{StaticResource VsMenuTop}">
                     <MenuItem Header="_Barcode" Name="Barcode" Click="Barcode_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Barcode.png" />
                     <MenuItem Header="_BackUp" Name="Backup" Click="Backup_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Backup.png" />
+                    <MenuItem Header="_UserAccess" Name="UserAccess" Click="UserPages_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Backup.png" />
                         <!--<MenuItem Header="_Stock Transfer" Name="StockTransfer" Click="StockTransfer_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
                     <MenuItem Header="_Payroll" Template="{StaticResource VsMenuSub}">
                         <MenuItem Header="_Salary Disbursement"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />

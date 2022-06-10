@@ -25,6 +25,7 @@ namespace DAL.Repository
             SupplierPayment = new Repository<SupplierPayment>(_context);
             User = new Repository<User>(_context);
             CustomerReceipt = new Repository<CustomerReceipt>(_context);
+            Pages = new Repository<Page>(_context);
             expt = new Repository<ExpenceTransaction>(_context);
             Account = new Repository<Account>(_context);
             Customers = new CustomerRepository(_context);
@@ -50,6 +51,7 @@ namespace DAL.Repository
             CashBookLead = new Repository<CashBookLead>(_context);
 
         }
+        public  IRepository<Page> Pages { get; }
         public IRepository<SupplierLead> SupplierLead { get; }
         public IRepository<CustomerLead> CustomerLead { get; }
         public IRepository<CashBookLead> CashBookLead { get; }

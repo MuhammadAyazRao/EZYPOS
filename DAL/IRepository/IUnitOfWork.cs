@@ -27,6 +27,7 @@ namespace DAL.IRepository
         IRepository<Emplyee> Employee { get; }
         IRepository<ExpenceType> ExpenceType { get; }
         IRepository<ProductCategory> ProductCategory { get; }
+        IRepository<Page> Pages { get; }
         IRepository<ProductSubcategory> ProductSubcategory { get; }
         IRepository<ProductGroup> ProductGroup { get; }
         IRepository<Product> Product { get; }

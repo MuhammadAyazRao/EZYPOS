@@ -29,6 +29,7 @@ namespace DAL.DBMODEL
         public virtual DbSet<Emplyee> Emplyees { get; set; }
         public virtual DbSet<ExpenceTransaction> ExpenceTransactions { get; set; }
         public virtual DbSet<ExpenceType> ExpenceTypes { get; set; }
+        public virtual DbSet<Page> Pages { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<ProductGroup> ProductGroups { get; set; }
@@ -283,6 +284,13 @@ namespace DAL.DBMODEL
                 entity.ToTable("ExpenceType");
 
                 entity.Property(e => e.Createdon).HasColumnType("datetime");
+            });
+
+            modelBuilder.Entity<Page>(entity =>
+            {
+                entity.Property(e => e.Icon).HasMaxLength(500);
+
+                entity.Property(e => e.Name).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Product>(entity =>

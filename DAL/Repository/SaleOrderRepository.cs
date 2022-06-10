@@ -166,7 +166,7 @@ namespace DAL.Repository
                 SingleOrder.OrderId = SingleItem.Id;
                 SingleOrder.Discount = (decimal)SingleItem.DiscountAmount;
                 SingleOrder.DeliverCharges = (decimal)SingleItem.DeliveryCharges;
-                SingleOrder.Tax = (decimal)SingleItem.Tax;
+                SingleOrder.Tax = (decimal)(SingleItem.Tax==null?0: SingleItem.Tax);
                 SingleOrder.PaymentType= SingleItem.PaymentMode;
                 SingleOrder.payment_status = SingleItem.PaymentStatus;
                 SingleOrder.OrderDate =(DateTime) SingleItem.OrderDate;
@@ -177,12 +177,13 @@ namespace DAL.Repository
                     OrderDetail SingleOrderDetail = new OrderDetail();
                     SingleOrderDetail.OrderId = orderdetail.Id;
                     SingleOrderDetail.Qty = (int)orderdetail?.ItemQty;
-                    SingleOrderDetail.ItemDiscount = (decimal)orderdetail?.ItemDiscount;
+                    SingleOrderDetail.ItemDiscount = (decimal)(orderdetail?.ItemDiscount == null ? 0 : orderdetail?.ItemDiscount);
                     item NewItem = new item();
                     NewItem.id = orderdetail.ItemId;
                     NewItem.name = orderdetail?.ItemName;                   
-                    NewItem.price = (decimal)orderdetail?.ItemPrice;
-                    NewItem.PurchasePrice = (decimal)orderdetail?.PurchasePrice;
+                    NewItem.price = (decimal)(orderdetail?.ItemPrice == null ? 0 : orderdetail?.ItemPrice);
+                    NewItem.PurchasePrice = (decimal)(orderdetail?.PurchasePrice == null ? 0 : orderdetail?.PurchasePrice);
+                    
                     NewItem.TaxType = orderdetail?.TaxType;
                     NewItem.Tax = (decimal)orderdetail?.ItemTax;
                     SingleOrderDetail.Item = NewItem;

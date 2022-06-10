@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ChromeTabs;
 using Common.Session;
+using DAL.Repository;
 using EZYPOS.Helper.Session;
 using EZYPOS.UserControls;
 using EZYPOS.UserControls.Define.Crud;
@@ -177,6 +178,11 @@ namespace EZYPOS
             UserControlListCity City = new UserControlListCity();
             ActiveSession.DisplayuserControlMethod(City);
         }
+        private void UserPages_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlUserPages UserPages = new UserControlUserPages();
+            ActiveSession.DisplayuserControlMethod(UserPages);
+        }
 
         private void Employee_Click(object sender, RoutedEventArgs e)
         {
@@ -215,6 +221,7 @@ namespace EZYPOS
         {
             DashBoard dashboard = new DashBoard();
             ActiveSession.DisplayuserControlMethod(dashboard);
+            Menu();
         }
         private void Product_Click(object sender, RoutedEventArgs e)
         {
@@ -440,53 +447,96 @@ namespace EZYPOS
             ActiveSession.DisplayuserControlMethod(GeneralReport);
         }
 
-        //public ActionResult Menu()
-        //{
-        //    MenuVM vm = new MenuVM();
-        //    string currentUserId = User.Identity.GetUserId();
+        public void Menu()
+        {
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                var Allpages= DB.Pages.GetAll().ToList();
+                var ParentPages = Allpages.Where(x => x.ParentId == 0).ToList();
+                //var childpages = Allpages.Where(x => x.ParentId> 0).ToList();
+                ChildPages(ParentPages, Allpages, null);
+            }
+            
+            //    MenuVM vm = new MenuVM();
+            //string currentUserId = User.Identity.GetUserId();
 
-        //    var pages = RoleUserPageRepository.GetList()
-        //        .Where(x => x.UserId == currentUserId && x.IsActive).ToList()
-        //        .Select(x => (x.RolePage.IsActive) ? x.RolePage.Page : new RolePage().Page).ToList();
+            //var pages = RoleUserPageRepository.GetList()
+            //    .Where(x => x.UserId == currentUserId && x.IsActive).ToList()
+            //    .Select(x => (x.RolePage.IsActive) ? x.RolePage.Page : new RolePage().Page).ToList();
 
-        //    if (User.IsInRole("SuperAdmin"))
-        //    {
-        //        pages = PageRepository.GetList();
-        //    }
-        //    pages.Where(x => x.IsActive).ToList().OrderBy(x => x.Ordering).ToList();
+            //if (User.IsInRole("SuperAdmin"))
+            //{
+            //    pages = PageRepository.GetList();
+            //}
+            //pages.Where(x => x.IsActive).ToList().OrderBy(x => x.Ordering).ToList();
 
-        //    var parentPages = pages.Where(x => x.ParentId == 0).ToList();
-        //    vm.MenuString += ChildPages(parentPages, pages, "");
+            //var parentPages = pages.Where(x => x.ParentId == 0).ToList();
+            //vm.MenuString += ChildPages(parentPages, pages, "");
 
 
-        //    return View(vm);
-        //}
+            //return View(vm);
+        }
 
-        //public string ChildPages(List<Page> ParentPages, List<Page> AllPages, string data)
-        //{
+        public void ChildPages(List<DAL.DBMODEL.Page> ParentPages, List<DAL.DBMODEL.Page> AllPages, MenuItem data)
+        {
 
-        //    foreach (var page in ParentPages)
-        //    {
-        //        if (page.IsClickable)
-        //        {
-        //            data += "<li>";
-        //            data += "<a href='/" + page.Area + "/" + page.Controller + "/" + page.Action + "'><i class='" + page.Icon + "'></i>" + page.Name + "</a>";
-        //            data += "</li>";
-        //        }
-        //        else
-        //        {
-        //            var childPages = AllPages.Where(x => x.ParentId == page.Id).ToList();
-        //            data += "<li class='dropdown'>";
-        //            data += "<a href = '#'>" + page.Name + "<i class='" + page.Icon + "'></i></a>";
-        //            data += "<ul class='dropdown-menu bold'>";
-        //            data += ChildPages(childPages, AllPages, "");
-        //            data += "</ul>";
-        //            data += "</li>";
+            foreach (var page in ParentPages)
+            {
+                if (page.Isclickable==true)
+                {
+                    MenuItem mnuDeleteInvoice = new MenuItem();
+                    mnuDeleteInvoice.Header = page.PageName;
+                    mnuDeleteInvoice.Template = (ControlTemplate)FindResource(page.Template);
+                    mnuDeleteInvoice.Tag = page.Tag;
+                    mnuDeleteInvoice.Click += MenuItem_Click;
+                    //mnuDeleteInvoice.Name = page.PageName.Trim();
+                    //mnuDeleteInvoice.Height = 50;
+                    mnuDeleteInvoice.Icon = "Assets\\icons\\Customer.png";
+                    //mnuDeleteInvoice.Icon = new System.Windows.Controls.Image
+                    //{
+                    //    Source = new BitmapImage(new Uri("Assets//icons//icon_queries.png", UriKind.Relative))
+                    //};
+                    //mnuDeleteInvoice.Icon = new MaterialDesignThemes.Wpf.PackIcon { Kind = MaterialDesignThemes.Wpf.PackIconKind.Delete };
+                    if (page.ParentId == 0)
+                    {
+                        MainManu.Items.Add(mnuDeleteInvoice); 
+                    }
+                    else
+                    {
+                        
+                        data.Items.Add(mnuDeleteInvoice);
+                    }
+                }
+                else
+                {
+                    MenuItem mnuDeleteInvoice = new MenuItem();
+                    mnuDeleteInvoice.Header = page.PageName;
+                    mnuDeleteInvoice.Template = (ControlTemplate)FindResource(page.Template);
+                    mnuDeleteInvoice.Tag = page.Tag;
+                    //mnuDeleteInvoice.Name = "bnbn";
+                   // mnuDeleteInvoice.Click += MenuItem_Click;
+                   // mnuDeleteInvoice.Height = 50;
+                    //mnuDeleteInvoice.Icon = new System.Windows.Controls.Image
+                    //{
+                    //    Source = new BitmapImage(new Uri("Assets//icons//icon_queries.png", UriKind.Relative))
+                    //};
+                    //mnuDeleteInvoice.Icon = new MaterialDesignThemes.Wpf.PackIcon { Kind = MaterialDesignThemes.Wpf.PackIconKind.Delete };
+                    if (page.ParentId == 0)
+                    {
+                        MainManu.Items.Add(mnuDeleteInvoice);
+                    }
+                    else
+                    {
+                        data.Items.Add(mnuDeleteInvoice);
+                    }
+                    var childPages = AllPages.Where(x => x.ParentId == page.Id).ToList();
+                    ChildPages(childPages, AllPages, mnuDeleteInvoice);
+                    
 
-        //        }
-        //    }
+                }
+            }
 
-        //    return data;
-        //}
+            //return data;
+        }
     }
 }
