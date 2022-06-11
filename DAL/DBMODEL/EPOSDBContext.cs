@@ -21,6 +21,7 @@ namespace DAL.DBMODEL
         public virtual DbSet<AdvancedSalary> AdvancedSalaries { get; set; }
         public virtual DbSet<AppPage> AppPages { get; set; }
         public virtual DbSet<CashBookLead> CashBookLeads { get; set; }
+        public virtual DbSet<CashSummary> CashSummaries { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerDrnote> CustomerDrnotes { get; set; }
@@ -125,6 +126,29 @@ namespace DAL.DBMODEL
                     .HasColumnName("Transaction_type");
 
                 entity.Property(e => e.UserId).HasColumnName("User_Id");
+            });
+
+            modelBuilder.Entity<CashSummary>(entity =>
+            {
+                entity.ToTable("CashSummary");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.EndAmount).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.EndDate).HasColumnType("datetime");
+
+                entity.Property(e => e.EndedBy).HasMaxLength(100);
+
+                entity.Property(e => e.Posid)
+                    .HasMaxLength(50)
+                    .HasColumnName("POSId");
+
+                entity.Property(e => e.StartAmount).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
+
+                entity.Property(e => e.StartedBy).HasMaxLength(100);
             });
 
             modelBuilder.Entity<City>(entity =>
@@ -557,6 +581,10 @@ namespace DAL.DBMODEL
                     .HasColumnName("payment_status")
                     .HasDefaultValueSql("('cash')");
 
+                entity.Property(e => e.Posid)
+                    .HasMaxLength(50)
+                    .HasColumnName("POSId");
+
                 entity.Property(e => e.RestaurantId).HasColumnName("restaurant_id");
 
                 entity.Property(e => e.ServiceCharge)
@@ -655,6 +683,10 @@ namespace DAL.DBMODEL
                     .HasDefaultValueSql("('0')");
 
                 entity.Property(e => e.OrderId).HasColumnName("order_id");
+
+                entity.Property(e => e.Posid)
+                    .HasMaxLength(50)
+                    .HasColumnName("POSId");
 
                 entity.Property(e => e.PrintSort)
                     .HasColumnName("print_sort")
@@ -906,19 +938,6 @@ namespace DAL.DBMODEL
                     .HasForeignKey(d => d.UserRole)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_User_UserRole");
-            });
-
-            modelBuilder.Entity<UserPage>(entity =>
-            {
-                entity.HasOne(d => d.Page)
-                    .WithMany(p => p.UserPages)
-                    .HasForeignKey(d => d.PageId)
-                    .HasConstraintName("FK_UserPages_AppPages");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.UserPages)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK_UserPages_Emplyee");
             });
 
             modelBuilder.Entity<UserRole>(entity =>

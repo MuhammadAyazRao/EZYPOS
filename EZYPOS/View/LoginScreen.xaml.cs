@@ -1,6 +1,7 @@
 ﻿using Common.Session;
 using DAL.Repository;
 using EZYPOS;
+using EZYPOS.Helper;
 using EZYPOS.UserControls.Report;
 using System;
 using System.Collections.Generic;
@@ -38,8 +39,8 @@ namespace EZYPOS.View
                 using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
 
-                    var SelectedEmployeePin = Db.Employee.GetAll().Where(x => x.Id == Convert.ToInt32(ddEmployee.SelectedValue)).FirstOrDefault().Password;
-                    if (SelectedEmployeePin == Password.Password.ToString())
+                    var SelectedEmployee = Db.Employee.GetAll().Where(x => x.Id == Convert.ToInt32(ddEmployee.SelectedValue)).FirstOrDefault();
+                    if (SelectedEmployee.Password == Password.Password.ToString())
                     {
                         EZYPOS.View.SplashScreen Splash = new EZYPOS.View.SplashScreen();
                         Splash.Show();
@@ -55,6 +56,10 @@ namespace EZYPOS.View
                             SaleOrderDetail.Show();
                         }
                         ActiveSession.ActiveUser = Convert.ToInt32(ddEmployee.SelectedValue);
+                        ActiveSession.ActiveUserName = SelectedEmployee.UserName;
+                        ActiveSession.POSId = AppconfigHelper.ReadSetting("POSId");
+
+
                     }
                     else
                     {

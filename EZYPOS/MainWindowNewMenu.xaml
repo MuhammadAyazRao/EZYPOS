@@ -157,6 +157,8 @@
                         <MenuItem Header="_Employee Wise Sale Report" Click="EmployeeWiseSaleReport_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\EmployeeWiseSale.png" />
                         <MenuItem Header="_Purchase Order Report" Name="PurchaseReport" Click="PurchaseReport_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Purchase.png" />
                         <MenuItem Header="_Expense Report" Click="ExpenseReport_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Expenses.png" />
+                        <MenuItem Header="_Cash Summary Report" Click="CashSummaryReport_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Expenses.png" />
+
                         <!--<MenuItem Header="_DetailSaleReport"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
                         <MenuItem Header="_DaySummary"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />
                         <MenuItem Header="_InvoiceWiseSummary"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\icon_epic.png" />-->

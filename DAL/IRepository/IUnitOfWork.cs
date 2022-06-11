@@ -17,6 +17,7 @@ namespace DAL.IRepository
         IRepository<CustomerDrnote> CustomerDRNote { get; }
         IRepository<SupplierCrnote> SupplierCRNote { get; }
         IRepository<Setting> Setting { get; }
+        IRepository<CashSummary> CashSummary { get; }
         IRepository<AdvancedSalary> AdvanceSalary { get; }
         IRepository<SupplierPayment> SupplierPayment { get; }
         IRepository<Supplier> Supplier { get; }

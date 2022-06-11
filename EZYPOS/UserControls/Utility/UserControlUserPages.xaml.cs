@@ -1,4 +1,5 @@
-﻿using DAL.Repository;
+﻿using DAL.DBMODEL;
+using DAL.Repository;
 using EZYPOS.DTO;
 using System;
 using System.Collections.Generic;
@@ -22,17 +23,19 @@ namespace EZYPOS.UserControls.Utility
     /// </summary>
     public partial class UserControlUserPages : UserControl
     {
+        List<UserAccessDTO> AllPages = new List<UserAccessDTO>();
         public UserControlUserPages()
         {
-            InitializeComponent();
+            InitializeComponent();                        
             Refresh();
         }
         private void Refresh(object sender = null)
         {
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
             {
-                var myList = DB.City.GetAll().ToList().Select(x=>new UserAccessDTO { IsAssigned=true,Id=x.Id.ToString(),PageName=x.CityName }).ToList();
-                CityGrid.ItemsSource = myList;
+                var EmployeeList = DB.Employee.GetAll().Select(x => new { Name = x.UserName, Id = x.Id }).ToList();                
+                ddEmployee.ItemsSource = EmployeeList;
+                ddEmployee.SelectedValue = null;
             }
         }
         private void GridName_KeyDown(object sender, KeyEventArgs e)
@@ -64,6 +67,50 @@ namespace EZYPOS.UserControls.Utility
                 //}
             }
 
+        }
+
+        private void ddEmployee_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ddEmployee.SelectedValue != null)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                {
+                    var AssignedPages = DB.UserPage.GetAll().Where(x => x.UserId == Convert.ToInt16(ddEmployee.SelectedValue)).Select(x => x.PageId).ToArray();
+                    AllPages = DB.Pages.GetAll().ToList().Select(x => new UserAccessDTO { IsAssigned = AssignedPages.Contains(x.Id), Id = x.Id, PageName = x.PageName }).ToList();
+                    CityGrid.ItemsSource = AllPages;
+                }
+
+            }
+        }
+
+        private void btnSelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            CityGrid.ItemsSource=null;
+            AllPages.ForEach(x => x.IsAssigned = true);
+            CityGrid.ItemsSource = AllPages;
+        }
+
+        private void btnUnselectAll_Click(object sender, RoutedEventArgs e)
+        {
+            CityGrid.ItemsSource = null;
+            AllPages.ForEach(x => x.IsAssigned = false);
+            CityGrid.ItemsSource = AllPages;
+        }
+
+        private void btnSave_Click(object sender, RoutedEventArgs e)
+        {
+            if (ddEmployee.SelectedValue != null)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                {
+                    var AllAssignedpages = DB.UserPage.GetAll().Where(x => x.UserId == Convert.ToInt16(ddEmployee.SelectedValue)).ToList();
+                    DB.UserPage.RemoveRange(AllAssignedpages);
+                    var UpdatedPages = AllPages.Where(x => x.IsAssigned == true).Select(x => new UserPage { PageId = x.Id, UserId = Convert.ToInt16(ddEmployee.SelectedValue) });
+                    DB.UserPage.AddRange(UpdatedPages); 
+
+                }
+
+            }
         }
     }
    

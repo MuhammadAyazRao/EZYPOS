@@ -10,7 +10,7 @@ namespace EZYPOS.DTO
     public class UserAccessDTO
     {
         public bool IsAssigned { get; set; }
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string PageName { get; set; }
     }
 }

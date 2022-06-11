@@ -295,9 +295,10 @@
                     <Label x:Name="lblDeliveryCharges" Grid.Column="1" Foreground="{DynamicResource SharpBlue}" Content="0.00" ContentStringFormat="C" Grid.Row="0" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalAlignment="Top" Width="Auto" Margin="95,26,10,0" Height="26" RenderTransformOrigin="0.5,0.308"/>
                     
                     <WrapPanel x:Name="stackBtn" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="0,62,0,0" >
-                        <Button Content="{materialDesign:PackIcon Kind=FormatListText,Size=30}" Name="Back" ToolTip="Go to View Order" Click="Back_Click"  Style="{DynamicResource btnExpander}"/>
-                        <Button Content="{materialDesign:PackIcon Kind=Discount,Size=30}" Name="orderDiscount" ToolTip="Order Discount" Click="orderDiscount_Click" Style="{DynamicResource btnExpander}"/>
-                        <Button Content="{materialDesign:PackIcon Kind=LorryDelivery,Size=30}" ToolTip="DeliveryCharges"  Click="DeliveryCharges_Click" Style="{DynamicResource btnExpander}"/>
+                        <Button Content="{materialDesign:PackIcon Kind=FormatListText,Size=30}" Name="Back" ToolTip="Go to View Order" Click="Back_Click" Width="55"  Style="{DynamicResource btnExpander}"/>
+                        <Button Content="{materialDesign:PackIcon Kind=Close,Size=30}" Name="EndSession" ToolTip="Go to View Order" Click="EndSession_Click" Width="55" Style="{DynamicResource btnExpander}"/>
+                        <Button Content="{materialDesign:PackIcon Kind=Discount,Size=30}" Name="orderDiscount" ToolTip="Order Discount" Click="orderDiscount_Click" Width="55" Style="{DynamicResource btnExpander}"/>
+                        <Button Content="{materialDesign:PackIcon Kind=LorryDelivery,Size=30}" ToolTip="DeliveryCharges"  Click="DeliveryCharges_Click" Width="55" Style="{DynamicResource btnExpander}"/>
                         <!--<Button Content="{materialDesign:PackIcon Kind=Prize,Size=30}" ToolTip="Coupon"  Click="Button_Coupon" Style="{DynamicResource btnExpander}"/>-->
                         <!--<Button Content="Eat-IN" x:Name="btnEatIn" Click="btnEatIn_Click" Style="{DynamicResource btnExpander}">
                             <Button.Template>
@@ -331,8 +332,8 @@
                                 </ControlTemplate>
                             </Button.Template>
                         </Button>-->
-                        <Button Content="{materialDesign:PackIcon Kind=Plus,Size=30}" ToolTip="Manual Item"  Click="btnnew_Click" x:Name="btnnew" Style="{DynamicResource btnExpander}"/>
-                        <Button Content="{materialDesign:PackIcon Kind=NoteMultiple,Size=30}" ToolTip="Summary"  Click="btmSummary_Click" x:Name="btmSummary" Style="{DynamicResource btnExpander}"/>
+                        <Button Content="{materialDesign:PackIcon Kind=Plus,Size=30}" ToolTip="Manual Item"  Click="btnnew_Click" x:Name="btnnew" Width="55" Style="{DynamicResource btnExpander}"/>
+                        <Button Content="{materialDesign:PackIcon Kind=NoteMultiple,Size=30}" ToolTip="Summary"  Click="btmSummary_Click" x:Name="btmSummary" Width="55" Style="{DynamicResource btnExpander}"/>
                         <!--<Button Content="{materialDesign:PackIcon Kind=Printer,Size=30}" ToolTip="Print"  Click="btnPrint_Click" x:Name="btnPrint" Style="{DynamicResource btnExpander}"/>-->
 
 

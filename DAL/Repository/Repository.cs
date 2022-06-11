@@ -69,6 +69,13 @@ namespace DAL.Repository
         public virtual void RemoveRange(IEnumerable<TEntity> entities)
         {
             _dbContext.Set<TEntity>().RemoveRange(entities);
+            _dbContext.SaveChanges();
+        }
+        
+        public virtual void AddRange(IEnumerable<TEntity> entities)
+        {
+            _dbContext.Set<TEntity>().AddRange(entities);
+            _dbContext.SaveChanges();
         }
         public void Save()
         {

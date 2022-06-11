@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:EZYPOS.UserControls.Utility"
               mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="1024" Name="CityList" d:DesignWidth="768">
+             d:DesignHeight="1024" Name="AccessManagement" d:DesignWidth="768">
     <UserControl.Resources>
         <Style TargetType="{x:Type DataGrid}">
             <Setter Property="AlternationCount" Value="2" />
@@ -80,24 +80,33 @@
     <Grid>
         <Grid.RowDefinitions>
 
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <!--<RowDefinition Height="*"/>-->
+                
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <!--<ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>-->
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <!--<DatePicker Name="StartDate" Grid.Row="1"  DisplayDateEnd="{Binding Path=SelectedDate, ElementName=EndDate}"   Grid.Column="0"  materialDesign:HintAssist.Hint="Start Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
-            <DatePicker Name="EndDate" DisplayDateStart="{Binding ElementName=StartDate, Path=SelectedDate}"   Grid.Row="1" Grid.Column="1"  materialDesign:HintAssist.Hint="End Date" Margin="20,0,0,0"  Style="{StaticResource MaterialDesignDatePicker}" />
-            <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="2" />-->
-            <!--<Button x:Name="AddCity"  Click="AddCity_Click" Content="Add City" Margin="20,20,0,0" Style="{DynamicResource btnInfo}" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="150" Height="35"/>-->
+            <Label x:Name="Add" Content="User Pages" Margin="20,10,0,0" Style="{DynamicResource lblLazeTitle}" Foreground="{DynamicResource DarkBlue}" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="230" Height="35"/>
+            
+            <Button Click="btnSelectAll_Click"  Content="{materialDesign:PackIcon Kind=SelectAll,Size=25}" Name="btnSelectAll" Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Left"   Margin="50,20,0,10" Width="100" Height="50" ToolTip="Select All" Grid.Row="1" Grid.Column="1" />
+            <Button Click="btnUnselectAll_Click"  Content="{materialDesign:PackIcon Kind=Undo,Size=25}" Name="btnUnselectAll" Style="{DynamicResource btnDanger}"  HorizontalAlignment="Left"   Margin="170,20,0,10" Width="100" Height="50" ToolTip="UnSelect All" Grid.Row="1" Grid.Column="1" />
+            <Button Click="btnSave_Click"  Content="{materialDesign:PackIcon Kind=ContentSaveAll,Size=25}" Name="btnSave" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="290,20,0,10" Width="100" Height="50" ToolTip="Save" Grid.Row="1" Grid.Column="1" />
+            <ComboBox  Name="ddEmployee"
+                           DisplayMemberPath="Name" 
+                           SelectedValuePath="Id" 
+                           Grid.Row="1" Grid.Column="0" 
+                           Margin="20,30,20,10" SelectionChanged="ddEmployee_SelectionChanged"
+                          materialDesign:HintAssist.Hint="Search Employee"                           
+                          materialDesign:HintAssist.HintOpacity=".26"                          
+                          IsEditable="True"/>
         </Grid>
 
         <Border x:Name="label" Grid.Row="1" Margin="20,0,20,0">

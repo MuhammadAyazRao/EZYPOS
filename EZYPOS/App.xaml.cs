@@ -1,6 +1,7 @@
 ﻿using Common.Session;
 using DAL.DBMODEL;
 using DAL.Repository;
+using EZYPOS.Helper;
 using EZYPOS.View;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -48,21 +49,7 @@ namespace EZYPOS
                 Console.WriteLine("Error reading app settings");
             }
         }
-        static string ReadSetting(string key)
-        {
-            try
-            {
-                var appSettings = ConfigurationManager.AppSettings;
-                string result = appSettings[key] ?? "Not Found";
-                //Console.WriteLine(result);
-                return result;
-            }
-            catch (ConfigurationErrorsException)
-            {
-                Console.WriteLine("Error reading app settings");
-            }
-            return null;
-        }
+        
 
         static void AddUpdateAppSettings(string key, string value)
         {
@@ -94,8 +81,8 @@ namespace EZYPOS
             await Task.Run(() => Thread.Sleep(3000));
             try
             {
-                string server = ReadSetting("Server");
-                string database = ReadSetting("Database");
+                string server = AppconfigHelper.ReadSetting("Server");
+                string database = AppconfigHelper.ReadSetting("Database");
                 ActiveSession.CompleteConnection = ActiveSession.DummyConnection.Replace("<<server>>", server).Replace("<<database>>", database);
                 EPOSDBContext context = new EPOSDBContext();
                 context.Database.GetService<IRelationalDatabaseCreator>().Exists(); 

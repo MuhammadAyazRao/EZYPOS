@@ -21,6 +21,7 @@ namespace DAL.Repository
             CustomerDRNote = new Repository<CustomerDrnote>(_context);
             SupplierCRNote = new Repository<SupplierCrnote>(_context);
             Setting = new Repository<Setting>(_context);
+            CashSummary = new Repository<CashSummary>(_context);
             AdvanceSalary = new Repository<AdvancedSalary>(_context);
             SupplierPayment = new Repository<SupplierPayment>(_context);
             User = new Repository<User>(_context);
@@ -62,6 +63,8 @@ namespace DAL.Repository
         public IRepository<CustomerDrnote> CustomerDRNote { get; }
         public IRepository<SupplierCrnote> SupplierCRNote { get; }
         public IRepository<Setting> Setting { get; }
+        public IRepository<CashSummary> CashSummary { get; }
+
         public IRepository<AdvancedSalary> AdvanceSalary { get; }
         public IRepository<SupplierPayment> SupplierPayment { get; }
         public IRepository<User> User { get; }

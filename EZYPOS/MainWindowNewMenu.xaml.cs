@@ -103,7 +103,8 @@ namespace EZYPOS
         public void CloseDisplayUserControl(object Usercontrol)
         {
             this.chrometabs.RemoveTab(this.chrometabs.SelectedItem);
-            DisplayUserControl(Usercontrol);
+            if (Usercontrol != null)
+            { DisplayUserControl(Usercontrol); }
         }
         public void DisplayUserControl(object Usercontrol)  
         {
@@ -292,6 +293,11 @@ namespace EZYPOS
         {
             UserControlExpenseReport ExpenseReport = new UserControlExpenseReport();
             ActiveSession.DisplayuserControlMethod(ExpenseReport);
+        }
+        private void CashSummaryReport_Click(object sender, RoutedEventArgs e)
+        {
+            CashSummaryReport CashSummary = new CashSummaryReport();
+            ActiveSession.DisplayuserControlMethod(CashSummary);
         }
         private void Backup_Click(object sender, RoutedEventArgs e)
         {

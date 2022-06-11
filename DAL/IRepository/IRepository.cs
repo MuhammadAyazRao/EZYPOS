@@ -20,6 +20,8 @@ namespace DAL.IRepository
         void Change(TEntity entity, bool isSaveChanges = true);
 
         void Delete(int id, bool isSaveChanges = true);
+        void RemoveRange(IEnumerable<TEntity> Entity);
+        void AddRange(IEnumerable<TEntity> Entity);
 
         void Save();
     }

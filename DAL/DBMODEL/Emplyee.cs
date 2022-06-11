@@ -18,7 +18,6 @@ namespace DAL.DBMODEL
             SaleOrders = new HashSet<SaleOrder>();
             SupplierCrnotes = new HashSet<SupplierCrnote>();
             SupplierPayments = new HashSet<SupplierPayment>();
-            UserPages = new HashSet<UserPage>();
         }
 
         public int Id { get; set; }
@@ -49,6 +48,5 @@ namespace DAL.DBMODEL
         public virtual ICollection<SaleOrder> SaleOrders { get; set; }
         public virtual ICollection<SupplierCrnote> SupplierCrnotes { get; set; }
         public virtual ICollection<SupplierPayment> SupplierPayments { get; set; }
-        public virtual ICollection<UserPage> UserPages { get; set; }
     }
 }

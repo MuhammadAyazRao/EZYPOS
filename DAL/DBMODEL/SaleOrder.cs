@@ -15,6 +15,7 @@ namespace DAL.DBMODEL
         public int Id { get; set; }
         public int RestaurantId { get; set; }
         public int UserId { get; set; }
+        public string Posid { get; set; }
         public int OrderCount { get; set; }
         public decimal Total { get; set; }
         public DateTime Date { get; set; }

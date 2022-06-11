@@ -52,6 +52,7 @@ namespace EZYPOS.UserControls.Transaction
             
             listKitchenLineItems.ItemsSource = GetProducts();
             BusyIndicator.CloseBusy();
+            IsSessionStarted();
             if (EditOrder != null)
             {
                 order.OrderId = EditOrder.OrderId;
@@ -66,9 +67,19 @@ namespace EZYPOS.UserControls.Transaction
             }
             CartVisibility();
             UpdateBillSummary();
-
         }
-
+        public void IsSessionStarted()
+        {
+            using (UnitOfWork Db = new UnitOfWork(new EPOSDBContext()))
+            {
+                var ActiveSessions = Db.CashSummary.GetAll().Where(x => x.IsActive == true && x.Posid == ActiveSession.POSId).ToList();
+                if(ActiveSessions.Count == 0)
+                {
+                    SessionScreen SS = new SessionScreen("Start");
+                    SS.Show();
+                }
+            }
+        }
         public void Initialize(Order Odr)
         {
             btnEdit.Visibility = Visibility.Visible;
@@ -1075,6 +1086,11 @@ namespace EZYPOS.UserControls.Transaction
         private void Back_Click(object sender, RoutedEventArgs e)
         {
             ActiveSession.CloseDisplayuserControlMethod(new UserControlViewOrder());
+        }
+        private void EndSession_Click(object sender, RoutedEventArgs e)
+        {
+            SessionScreen SS = new SessionScreen("End");
+            SS.Show();
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)

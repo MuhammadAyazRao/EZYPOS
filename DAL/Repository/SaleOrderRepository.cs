@@ -57,6 +57,7 @@ namespace DAL.Repository
                     NewOrder.Addon = "";
                     NewOrder.RestaurantId = 1;
                     NewOrder.UserId = 1;
+                    NewOrder.Posid = ActiveSession.POSId;
                     NewOrder.OrderCount = 1;
                     NewOrder.CustomerId = CartOrderToProcess.CustId;
                     NewOrder.EmployeeId = ActiveSession.ActiveUser;
@@ -81,6 +82,7 @@ namespace DAL.Repository
                         NewOrderDetail.IsDeleted = "";
                         NewOrderDetail.KitchenLines = 1;
                         NewOrderDetail.ItemDiscount = item?.ItemDiscount;
+                        NewOrderDetail.Posid = ActiveSession.POSId;
                         SaleOrderDetail.Add(NewOrderDetail);
                         
                         Stock.SaveStockAdjustment(CartOrderToProcess, NewOrderDetail.Id, NewOrder.Id);

@@ -33,6 +33,7 @@ namespace DAL.DBMODEL
         public int? BillNo { get; set; }
         public string IsUpdated { get; set; }
         public string IsDeleted { get; set; }
+        public string Posid { get; set; }
 
         public virtual SaleOrder Order { get; set; }
         public virtual ICollection<StockOderDetail> StockOderDetails { get; set; }
