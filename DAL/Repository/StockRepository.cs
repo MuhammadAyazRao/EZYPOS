@@ -180,5 +180,89 @@ namespace DAL.Repository
             return true;
         }
 
+
+        public bool SaveStockAdjustmentItemWise(OrderDetail order, int OrderDetailId, int OrderId)
+        {
+
+            // using (TransactionScope scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            {
+                try
+                {
+                    //foreach (var item in order?.OrdersDetails)
+                    {
+                        foreach (var Subitem in GetStockDetailToAdjust(order.Qty, order?.Item.id))
+                        {
+
+                            StockOderDetail.Add(new StockOderDetail { ProductId = Subitem.ProductId, StockId = Subitem.StockId, OrderDetailId = OrderDetailId, Qty = Subitem.CanbeSettled, OrderId = OrderId });
+                        }
+                    }
+
+
+                    //The Transaction will be completed    
+                    //scope.Complete();
+
+                }
+                catch (Exception ex)
+                {
+                    // scope.Dispose();
+                }
+
+            }
+
+            return true;
+        }
+
+        public bool revertStockAdjustmentItemWise(OrderDetail order, int OrderDetailId, int OrderId,int? parentId)
+        {
+            // using (TransactionScope scope = new TransactionScope(TransactionScopeOption.RequiresNew))
+            {
+                try
+                {
+                    //foreach (var item in order?.OrdersDetails)
+                    {
+                        //foreach (var Subitem in GetStockDetailToAdjust(order.Qty, order?.Item.id))
+                        {
+                            int unsettled = 0;
+                            var alltrans=  StockOderDetail.GetAll().Where(x => x.OrderId == parentId && x.ProductId == order.Item.id).ToList();
+                            unsettled= order.Qty;
+                            foreach (var item in alltrans)
+                            {
+                                if (unsettled > 0)
+                                {
+                                    
+                                    if (item.Qty < unsettled)
+                                    {
+                                        unsettled -= item.Qty;
+                                        item.Qty = 0;
+                                        StockOderDetail.Change(item);
+                                    }
+                                    else
+                                    {
+                                        item.Qty = item.Qty - order.Qty;
+                                        StockOderDetail.Change(item);
+                                        break;
+                                    }
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            
+                        }
+                    }
+
+
+                    //The Transaction will be completed    
+                    //scope.Complete();
+
+                }
+                catch (Exception ex)
+                {
+                    // scope.Dispose();
+                }
+            }
+            return true;
+        }
     }
 }

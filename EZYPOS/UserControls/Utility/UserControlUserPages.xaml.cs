@@ -99,19 +99,21 @@ namespace EZYPOS.UserControls.Utility
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (ddEmployee.SelectedValue != null)
+            bool isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do You Want to Save", "Yes", "No");
+            if (isconfirm)
             {
-                using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                if (ddEmployee.SelectedValue != null)
                 {
-                    var AllAssignedpages = DB.UserPage.GetAll().Where(x => x.UserId == Convert.ToInt16(ddEmployee.SelectedValue)).ToList();
-                    DB.UserPage.RemoveRange(AllAssignedpages);
-                    var UpdatedPages = AllPages.Where(x => x.IsAssigned == true).Select(x => new UserPage { PageId = x.Id, UserId = Convert.ToInt16(ddEmployee.SelectedValue) });
-                    DB.UserPage.AddRange(UpdatedPages); 
+                    using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
+                    {
+                        var AllAssignedpages = DB.UserPage.GetAll().Where(x => x.UserId == Convert.ToInt16(ddEmployee.SelectedValue)).ToList();
+                        DB.UserPage.RemoveRange(AllAssignedpages);
+                        var UpdatedPages = AllPages.Where(x => x.IsAssigned == true).Select(x => new UserPage { PageId = x.Id, UserId = Convert.ToInt16(ddEmployee.SelectedValue) });
+                        DB.UserPage.AddRange(UpdatedPages);
 
+                    }
                 }
-
-            }
+            } 
         }
-    }
-   
+    }  
 }

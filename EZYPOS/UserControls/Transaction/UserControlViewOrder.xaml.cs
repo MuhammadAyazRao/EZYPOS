@@ -158,7 +158,29 @@ namespace EZYPOS.UserControls.Transaction
                 }
             }
         }
+        private void btnRefund_Click(object sender, RoutedEventArgs e)
+        {
+            ListBoxItem selectedItem = (ListBoxItem)listOrderAccepted.ItemContainerGenerator.ContainerFromItem(((Button)sender).DataContext);
+            Order Order = selectedItem.Content as Order;
+            if (Order != null)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
 
+                    Order = DB.SaleOrder.GetMappedOrder(Order.OrderId).FirstOrDefault();
+                }
+                if (Order.OrdersDetails != null)
+                {
+
+                    ActiveSession.CloseDisplayuserControlMethod(new UserControlRefundScreen(Order));
+                }
+                else
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("Order is Empty", "Empty Order", "Ok");
+                }
+            }
+            Refresh();
+        }
         private void Print_Click(object sender, RoutedEventArgs e)
         {
             ListBoxItem selectedItem = (ListBoxItem)listOrderAccepted.ItemContainerGenerator.ContainerFromItem(((Button)sender).DataContext);
@@ -207,7 +229,6 @@ namespace EZYPOS.UserControls.Transaction
 
 
         }
-
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
             ListBoxItem selectedItem = (ListBoxItem)listOrderAccepted.ItemContainerGenerator.ContainerFromItem(((Button)sender).DataContext);
@@ -216,8 +237,28 @@ namespace EZYPOS.UserControls.Transaction
             {
                 using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-                    if (DB.SaleOrder.DeleteOrder(Order.OrderId))
-                    { 
+                    if (DB.SaleOrder.DeleteOrder(Order.OrderId, "Canceled"))
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Order Canceled Sucessfully", "Deleted Order", "Ok");
+                        Refresh();
+                    }
+                    else
+                    {
+                        EZYPOS.View.MessageBox.ShowCustom("Order is Empty", "Empty Order", "Ok");
+                    }
+                }
+            }
+        }
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            ListBoxItem selectedItem = (ListBoxItem)listOrderAccepted.ItemContainerGenerator.ContainerFromItem(((Button)sender).DataContext);
+            Order Order = selectedItem.Content as Order;
+            if (Order != null)
+            {
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+                {
+                    if (DB.SaleOrder.DeleteOrder(Order.OrderId, "Deleted"))
+                    {
                         EZYPOS.View.MessageBox.ShowCustom("Order Deleted Sucessfully", "Deleted Order", "Ok");
                         Refresh();
                     }
@@ -225,9 +266,8 @@ namespace EZYPOS.UserControls.Transaction
                     {
                         EZYPOS.View.MessageBox.ShowCustom("Order is Empty", "Empty Order", "Ok");
                     }
-                }               
+                }
             }
-            
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)

@@ -111,6 +111,8 @@ namespace DAL.DBMODEL
                     .HasColumnType("decimal(18, 3)")
                     .HasColumnName("DR_Amt");
 
+                entity.Property(e => e.IsDeleted).HasColumnName("Is_Deleted");
+
                 entity.Property(e => e.PosId).HasColumnName("POS_Id");
 
                 entity.Property(e => e.TransactionDate)
@@ -208,6 +210,8 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.Dr)
                     .HasColumnType("decimal(18, 3)")
                     .HasColumnName("DR");
+
+                entity.Property(e => e.IsDeleted).HasColumnName("Is_Deleted");
 
                 entity.Property(e => e.TransactionDate)
                     .HasColumnType("date")
@@ -541,21 +545,11 @@ namespace DAL.DBMODEL
                     .IsUnicode(false)
                     .HasColumnName("discount_desc");
 
-                entity.Property(e => e.IsDeleted)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("is_deleted")
-                    .HasDefaultValueSql("('no')");
+                entity.Property(e => e.IsDeleted).HasColumnName("is_deleted");
 
                 entity.Property(e => e.IsPrinted).HasColumnName("Is_Printed");
 
-                entity.Property(e => e.IsUpdated)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("is_updated")
-                    .HasDefaultValueSql("('no')");
+                entity.Property(e => e.IsUpdated).HasColumnName("is_updated");
 
                 entity.Property(e => e.OnlineAmount)
                     .HasColumnType("decimal(18, 3)")
@@ -566,6 +560,8 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.OrderDate)
                     .HasColumnType("date")
                     .HasColumnName("order_date");
+
+                entity.Property(e => e.OrderStatus).HasMaxLength(50);
 
                 entity.Property(e => e.PaymentMode)
                     .IsRequired()
@@ -636,12 +632,7 @@ namespace DAL.DBMODEL
                     .IsUnicode(false)
                     .HasColumnName("fixed_item_des");
 
-                entity.Property(e => e.IsDeleted)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("is_deleted")
-                    .HasDefaultValueSql("('no')");
+                entity.Property(e => e.IsDeleted).HasColumnName("is_deleted");
 
                 entity.Property(e => e.IsUpdated)
                     .IsRequired()
@@ -745,6 +736,8 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.DrQty)
                     .HasColumnType("numeric(18, 2)")
                     .HasColumnName("DR_qty");
+
+                entity.Property(e => e.IsDeleted).HasColumnName("Is_Deleted");
 
                 entity.Property(e => e.PaymentMode).HasMaxLength(50);
 

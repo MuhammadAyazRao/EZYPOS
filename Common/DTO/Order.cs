@@ -31,6 +31,10 @@ namespace Common.DTO
         public decimal OrderCount { get;  set; }
         public decimal Discount { get;  set; }
         public decimal ServiceCharges { get; set; }
+        public bool? IsUpdated { get; set; }
+        public bool? IsDeleted { get; set; }
+        public string? OrderStatus { get; set; }
+        public int ParenOrderId { get; set; }
 
 
         public Order()

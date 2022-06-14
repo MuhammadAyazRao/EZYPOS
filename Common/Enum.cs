@@ -30,6 +30,14 @@ namespace Common
         public static string Hourly { get { return nameof(Hourly); } }
         
     }
+    public enum OrderStatus
+    {
+        New = 1,
+        Refunded = 2,
+        Deleted = 3,
+        Canceled = 4,
+        Edited = 5,
+    }
     public enum SalaryType
     {
         Advance = 1,

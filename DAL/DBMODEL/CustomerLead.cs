@@ -15,5 +15,6 @@ namespace DAL.DBMODEL
         public string TransactionDetail { get; set; }
         public decimal? Dr { get; set; }
         public decimal? Cr { get; set; }
+        public bool? IsDeleted { get; set; }
     }
 }

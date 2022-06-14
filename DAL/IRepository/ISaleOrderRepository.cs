@@ -13,7 +13,7 @@ namespace DAL.IRepository
         IEnumerable<SaleOrder> GetAllCyCustomer();
          bool SaveOrder(Order CartOrderToProcess);
         List<Order> GetMappedOrder(int id=0);
-        bool DeleteOrder(int id);
+        bool DeleteOrder(int id , string type);
         // List<Order> GetMappedOrderbyid(int id);
 
 

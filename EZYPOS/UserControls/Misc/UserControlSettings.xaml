@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EZYPOS.UserControls.Misc" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-              d:DesignHeight="1024" Name="Setting"  d:DesignWidth="768">
+              d:DesignHeight="1524" Name="Setting"  d:DesignWidth="768">
     <UserControl.Resources>
         <Style TargetType="Label">
             <Setter Property="Foreground" Value="Black" />
@@ -113,6 +113,7 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="430"/>
             <RowDefinition Height="430"/>
+            <RowDefinition Height="430"/>
             <RowDefinition Height="61"/>
         </Grid.RowDefinitions>
         <Border ScrollViewer.CanContentScroll="True" ScrollViewer.PanningMode="VerticalFirst" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="LightGray" BorderThickness="0" Margin="50,0,50,0" Grid.Row="1">
@@ -214,12 +215,47 @@
                 </Grid>
             </GroupBox>
         </Border>
+        <Border ScrollViewer.CanContentScroll="True" ScrollViewer.PanningMode="VerticalFirst" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="LightGray" BorderThickness="0" Margin="50,0,50,0" Grid.Row="3">
+            <GroupBox Margin="10,10,10,10"  BorderThickness="3">
+                <GroupBox.Header>
+                    System Information
+                </GroupBox.Header>
+                <Grid Margin="0,0,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"></RowDefinition>
+                        <RowDefinition Height="60"></RowDefinition>
+                        <RowDefinition Height="60"></RowDefinition>
+                        <RowDefinition Height="60"></RowDefinition>
+                        <RowDefinition Height="60"></RowDefinition>
+                        <RowDefinition Height="60"></RowDefinition>
+
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Server" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" />
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="" Name="lblServer" Foreground="{StaticResource DarkBlue}" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1" />
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Password" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="0" Grid.Column="2" />
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="" Name="lblPassword" Foreground="{StaticResource DarkBlue}" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="0" Grid.Column="3" />
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Database" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="1" Grid.Column="0" />
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="" Name="lblDatabase" Foreground="{StaticResource DarkBlue}" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" />
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="POS Id" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" />
+                    <Label VerticalContentAlignment="Center" FontSize="15" Content="" Name="lblPOSId" Foreground="{StaticResource DarkBlue}" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="1" Grid.Column="3" />
+                    
+
+
+                </Grid>
+            </GroupBox>
+        </Border>
 
         <!--<Button  Content="{materialDesign:PackIcon Kind=FormatListNumbers,Size=50}" Name="List"  Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Left" Grid.Row="2" Margin="50,0,0,0" Width="100"  ToolTip="Back to List" />
         <Button  Content="{materialDesign:PackIcon Kind=Refresh,Size=50}" Name="Refresh"   Style="{DynamicResource btnTile}" Grid.Row="2" Margin="175,0,0,0" HorizontalAlignment="Left" Width="100" ToolTip="Refresh" />
         <Button  Content="{materialDesign:PackIcon Kind=Pencil,Size=50}" Name="Update"  Style="{DynamicResource btnInfo}" HorizontalAlignment="Left" Grid.Row="2" Margin="430,0,0,0" Width="100"   ToolTip="Edit"  />
         <Button  Content="{materialDesign:PackIcon Kind=Delete,Size=50}" Name="Delete"  BorderThickness="0"  Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Grid.Row="2" Margin="300,0,0,0" Width="100"  ToolTip="Delete" />-->
-        <Button  Content="{materialDesign:PackIcon Kind=ContentSave,Size=50}" Name="Save" Click="Save_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left" Grid.Row="3" Margin="60,0,0,10" Width="150"  ToolTip="Save" />
+        <Button  Content="{materialDesign:PackIcon Kind=ContentSave,Size=50}" Name="Save" Click="Save_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left" Grid.Row="4" Margin="60,0,0,10" Width="150"  ToolTip="Save" />
         <Label x:Name="label1" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Content="Settings" HorizontalAlignment="Left" Grid.Row="0" Margin="55,15,0,0"/>
         <!--<Border Background="{DynamicResource DarkBlue}"/>
         <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Employee" HorizontalAlignment="Left" Margin="10,5,0,0"/>

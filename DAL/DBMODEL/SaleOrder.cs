@@ -35,15 +35,17 @@ namespace DAL.DBMODEL
         public int? EmployeeId { get; set; }
         public int? CustomerId { get; set; }
         public string CustomerPhone { get; set; }
-        public string IsUpdated { get; set; }
-        public string IsDeleted { get; set; }
+        public bool? IsUpdated { get; set; }
+        public bool? IsDeleted { get; set; }
         public decimal? TaxPercentage { get; set; }
         public decimal? Tax { get; set; }
         public decimal CashAmount { get; set; }
         public decimal OnlineAmount { get; set; }
-        public int IsPrinted { get; set; }
+        public bool? IsPrinted { get; set; }
         public decimal? ServiceCharge { get; set; }
         public decimal? DeliveryCharges { get; set; }
+        public string OrderStatus { get; set; }
+        public int? ParentOrderId { get; set; }
 
         public virtual Customer Customer { get; set; }
         public virtual Emplyee Employee { get; set; }

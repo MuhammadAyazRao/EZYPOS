@@ -1,39 +1,27 @@
 ﻿using Common;
-using Common;
 using Common.DTO;
 using Common.Session;
 using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.Helper;
-using EZYPOS.Helper.Session;
 using EZYPOS.View;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
 
 namespace EZYPOS.UserControls.Transaction
 {
     /// <summary>
-    /// Interaction logic for UserControlSaleTransaction.xaml
+    /// Interaction logic for UserControlRefundScreen.xaml
     /// </summary>
-    public partial class UserControlSaleTransaction : UserControl
+    public partial class UserControlRefundScreen : UserControl
     {
-        public UserControlSaleTransaction(Order EditOrder=null)
+        public UserControlRefundScreen(Order EditOrder = null)
         {
             InitializeComponent();
             // this.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
@@ -49,7 +37,7 @@ namespace EZYPOS.UserControls.Transaction
                 var CategoryList = DB.ProductCategory.GetAll().ToList();
                 DDCategory.ItemsSource = CategoryList;
             }
-            
+
             listKitchenLineItems.ItemsSource = GetProducts();
             BusyIndicator.CloseBusy();
             IsSessionStarted();
@@ -63,6 +51,9 @@ namespace EZYPOS.UserControls.Transaction
                 order.OrderDate = EditOrder.OrderDate;
                 order.Discount = EditOrder.Discount;
                 order.DeliverCharges = EditOrder.DeliverCharges;
+                order.IsUpdated = EditOrder.IsUpdated;
+                order.IsDeleted = EditOrder.IsDeleted;
+                order.OrderStatus = EditOrder.OrderStatus;
                 Initialize(EditOrder);
             }
             CartVisibility();
@@ -73,7 +64,7 @@ namespace EZYPOS.UserControls.Transaction
             using (UnitOfWork Db = new UnitOfWork(new EPOSDBContext()))
             {
                 var ActiveSessions = Db.CashSummary.GetAll().Where(x => x.IsActive == true && x.Posid == ActiveSession.POSId).ToList();
-                if(ActiveSessions.Count == 0)
+                if (ActiveSessions.Count == 0)
                 {
                     SessionScreen SS = new SessionScreen("Start");
                     SS.Show();
@@ -85,8 +76,8 @@ namespace EZYPOS.UserControls.Transaction
             btnEdit.Visibility = Visibility.Visible;
             btnPay.Visibility = Visibility.Collapsed;
             foreach (var odritem in Odr?.OrdersDetails)
-            {                
-                AddToCart(odritem?.Item.name, (decimal)odritem?.Item.price, (decimal)odritem?.Item.PurchasePrice,odritem.Item.TaxType,odritem.Item.Tax, (int) odritem?.Item.id, (int)odritem?.Qty , odritem.ItemDiscount);
+            {
+                AddToCart(odritem?.Item.name, (decimal)odritem?.Item.price, (decimal)odritem?.Item.PurchasePrice, odritem.Item.TaxType, odritem.Item.Tax, (int)odritem?.Item.id, (int)odritem?.Qty, odritem.ItemDiscount);
             }
         }
         public Order order = new Order();
@@ -454,7 +445,7 @@ namespace EZYPOS.UserControls.Transaction
             lblDicAmt.Content = order.GetTotalDiscount();
             //lblItems.Content = listBoxItemCart.Items.Count;
             lblTax.Content = Tax_Taxpercentage().Tax;
-            lblTotal.Content = order.GetNetTotal()+ Tax_Taxpercentage().Tax;
+            lblTotal.Content = order.GetNetTotal() + Tax_Taxpercentage().Tax;
             lblDeliveryCharges.Content = order.DeliverCharges;
             //ViewHelper.FindChild<Label>(expander, "lblItems").Content = listBoxItemCart.Items.Count;
             //ViewHelper.FindChild<Label>(expander, "lblDicAmt").Content = order.GetTotalDiscount();
@@ -493,7 +484,7 @@ namespace EZYPOS.UserControls.Transaction
                     if (order.OrdersDetails != null)
                     {
                         int MaxNoPrints = Convert.ToInt32(((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.MaxNoPrints).FirstOrDefault().AppValue);
-                        for(int i = 1; i <= MaxNoPrints; i++)
+                        for (int i = 1; i <= MaxNoPrints; i++)
                         {
                             Invoice inv = new Invoice();
                             inv.DoPrintJob(order);
@@ -618,20 +609,20 @@ namespace EZYPOS.UserControls.Transaction
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-
-            
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 // Delete Order 
                 //Delete Order Detail
-                // Detele Stock_OrderDetail
-                if (Db.SaleOrder.DeleteOrder(order.OrderId , "Edited"))
+                //Detele Stock_OrderDetail
+               // if (Db.SaleOrder.DeleteOrder(order.OrderId))
                 {
-                    order.OrderStatus = OrderStatus.Edited.ToString();
+                    order.OrderStatus = OrderStatus.Refunded.ToString();
+                    order.ParenOrderId = order.OrderId;
                     if (Db.SaleOrder.SaveOrder(order))
                     {
                         EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Sucess", "Ok");
                         EmptyCart();
+                        ActiveSession.CloseDisplayuserControlMethod(null);
                     }
                 }
             }
@@ -844,7 +835,7 @@ namespace EZYPOS.UserControls.Transaction
         private void AddToCart(string Name, decimal Price, decimal PurchasePrice, string TaxType, decimal Tax, int ProductId, int Qty = 1, decimal Discount = 0)
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {                
+            {
 
                 if (order.OrdersDetails == null)
                     order.OrdersDetails = new List<OrderDetail>();
@@ -853,15 +844,15 @@ namespace EZYPOS.UserControls.Transaction
                 var CartProduct = order.OrdersDetails.Where(x => x.Item?.id == ProductId).FirstOrDefault();
                 if (CartProduct != null)
                 {
-                        //if (CartProduct.Qty + 1 <= Db.Stock.GetProductQty(ProductId))
-                        //  {
-                        CartProduct.Qty = CartProduct.Qty + 1;
-                        int INDEX = listBoxItemCart.SelectedIndex;
-                        order.OrdersDetails.RemoveAt(INDEX);
-                        listBoxItemCart.Items.RemoveAt(INDEX);
-                        order.OrdersDetails.Insert(INDEX, CartProduct);
-                        listBoxItemCart.Items.Insert(INDEX, CartProduct);
-                        listBoxItemCart.SelectedIndex = INDEX;
+                    //if (CartProduct.Qty + 1 <= Db.Stock.GetProductQty(ProductId))
+                    //  {
+                    CartProduct.Qty = CartProduct.Qty + 1;
+                    int INDEX = listBoxItemCart.SelectedIndex;
+                    order.OrdersDetails.RemoveAt(INDEX);
+                    listBoxItemCart.Items.RemoveAt(INDEX);
+                    order.OrdersDetails.Insert(INDEX, CartProduct);
+                    listBoxItemCart.Items.Insert(INDEX, CartProduct);
+                    listBoxItemCart.SelectedIndex = INDEX;
                     //}
                     //else
                     //{
@@ -872,10 +863,10 @@ namespace EZYPOS.UserControls.Transaction
                 {
                     //if (Db.Stock.GetProductQty(ProductId) >= 1)
                     //{
-                        order.OrdersDetails.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, PurchasePrice = PurchasePrice, TaxType = TaxType, Tax = Tax, id = ProductId }, ItemDiscount = Discount });
-                        listBoxItemCart.Items.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, PurchasePrice = PurchasePrice, TaxType = TaxType, Tax = Tax, id = ProductId }, ItemDiscount = Discount });
-                        listBoxItemCart.SelectedIndex = 0;                        
-                   // }
+                    order.OrdersDetails.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, PurchasePrice = PurchasePrice, TaxType = TaxType, Tax = Tax, id = ProductId }, ItemDiscount = Discount });
+                    listBoxItemCart.Items.Insert(0, new OrderDetail { Qty = Qty, Item = new item { name = Name, price = Price, PurchasePrice = PurchasePrice, TaxType = TaxType, Tax = Tax, id = ProductId }, ItemDiscount = Discount });
+                    listBoxItemCart.SelectedIndex = 0;
+                    // }
                     //}
                     //else
                     //{
@@ -888,22 +879,22 @@ namespace EZYPOS.UserControls.Transaction
                 UpdateBillSummary();
             }
         }
-        public List<ProductDTO> GetProducts(int SubCategoryId=0)
+        public List<ProductDTO> GetProducts(int SubCategoryId = 0)
         {
             List<ProductDTO> Products = new List<ProductDTO>();
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 if (SubCategoryId != 0)
                 {
-                    Products = Db.Product.GetAll().Where(x => x.SubcategoryId == SubCategoryId).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType= X.TaxType}).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.SubcategoryId == SubCategoryId).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
                 }
                 else if (DDCategory.SelectedValue != null && DDCategory.Text.ToLower() != "all")
                 {
-                    Products = Db.Product.GetAll().Where(x => x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue) ).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size= X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
                 }
                 else
                 {
-                    Products = Db.Product.GetAll().Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
+                    Products = Db.Product.GetAll().Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
                 }
             }
             return Products;
@@ -924,9 +915,9 @@ namespace EZYPOS.UserControls.Transaction
             ProductDTO Product = new ProductDTO();
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                
-                    Product = Db.Product.GetAll().Where(x => x.Barcode == code).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).FirstOrDefault();
-                
+
+                Product = Db.Product.GetAll().Where(x => x.Barcode == code).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).FirstOrDefault();
+
             }
             return Product;
         }
@@ -936,9 +927,9 @@ namespace EZYPOS.UserControls.Transaction
             List<ProductDTO> Products = new List<ProductDTO>();
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                if(DDCategory.SelectedValue == null || DDCategory.Text.ToLower() == "all")
+                if (DDCategory.SelectedValue == null || DDCategory.Text.ToLower() == "all")
                 {
-                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
                 }
                 else if (DDSubCategory.SelectedValue == null || DDSubCategory.Text.ToLower() == "all")
                 {
@@ -946,7 +937,7 @@ namespace EZYPOS.UserControls.Transaction
                 }
                 else
                 {
-                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.SubcategoryId == Convert.ToInt32(DDSubCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice , PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
+                    Products = Db.Product.GetAll().Where(x => x.ProductName.Contains(Name) && x.SubcategoryId == Convert.ToInt32(DDSubCategory.SelectedValue)).Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
                 }
 
             }
@@ -1004,22 +995,24 @@ namespace EZYPOS.UserControls.Transaction
 
         private void AddTocart_Click(object sender, RoutedEventArgs e)
         {
-            
-            ListBoxItem selectedItem = (ListBoxItem)listKitchenLineItems.ItemContainerGenerator.ContainerFromItem(((Button)sender).DataContext);            
+            EZYPOS.View.MessageBox.ShowCustom("Keep only those items in cart you want to refund", "Refund", "Ok");
+            return;
+
+            ListBoxItem selectedItem = (ListBoxItem)listKitchenLineItems.ItemContainerGenerator.ContainerFromItem(((Button)sender).DataContext);
             ProductDTO Product = selectedItem.Content as ProductDTO;
             if (Product != null)
             {
-              AddToCart(Product.ProductName, (decimal)Product.RetailPrice, (decimal)Product?.PurchasePrice,Product.TaxType,(decimal)Product.Tax, Product.Id);            
-            }           
+                AddToCart(Product.ProductName, (decimal)Product.RetailPrice, (decimal)Product?.PurchasePrice, Product.TaxType, (decimal)Product.Tax, Product.Id);
+            }
         }
 
-        
+
 
         private void DDCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                List<SubCategoryDTO> SubCategoryList = DB.ProductSubcategory.GetAll().Where(x=> x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue)).Select(x => new SubCategoryDTO { SubcategoryName = x.SubcategoryName, Id = x.Id }).ToList();
+                List<SubCategoryDTO> SubCategoryList = DB.ProductSubcategory.GetAll().Where(x => x.CategoryId == Convert.ToInt32(DDCategory.SelectedValue)).Select(x => new SubCategoryDTO { SubcategoryName = x.SubcategoryName, Id = x.Id }).ToList();
                 SubCategoryList.Insert(0, new SubCategoryDTO { Id = 0, SubcategoryName = "ALL" });
                 DDSubCategory.ItemsSource = SubCategoryList;
 
@@ -1056,14 +1049,17 @@ namespace EZYPOS.UserControls.Transaction
         }
         private void Barcode_KeyDown(object sender, KeyEventArgs e)
         {
+           
             if (e.Key == Key.Enter)
             {
-                if (IsDigitsOnly(Barcode.Text) && Barcode.Text!="")
-                { 
+                EZYPOS.View.MessageBox.ShowCustom("Keep only those items in cart you want to refund", "Refund", "Ok");
+                return;
+                if (IsDigitsOnly(Barcode.Text) && Barcode.Text != "")
+                {
                     var item = GetProductsbycode(Barcode.Text);
                     if (item != null)
                     {
-                        AddToCart(item.ProductName, (decimal)item.RetailPrice, (decimal)item?.PurchasePrice,item.TaxType, (decimal)item.Tax, item.Id);
+                        AddToCart(item.ProductName, (decimal)item.RetailPrice, (decimal)item?.PurchasePrice, item.TaxType, (decimal)item.Tax, item.Id);
                         //listKitchenLineItems.ItemsSource = null;
                     }
                     else
@@ -1071,12 +1067,12 @@ namespace EZYPOS.UserControls.Transaction
                         EZYPOS.View.MessageBox.ShowCustom("No item found against Barcode", "Not found", "Ok");
                         listKitchenLineItems.ItemsSource = GetProducts();
                     }
-                    
+
                 }
                 else
                 {
                     var items = GetProductsbyName(Barcode.Text);
-                    if (items!= null)
+                    if (items != null)
                     {
                         listKitchenLineItems.ItemsSource = items;
                     }
@@ -1118,7 +1114,7 @@ namespace EZYPOS.UserControls.Transaction
         }
         private void Command_DeleteItem(object sender, ExecutedRoutedEventArgs e)
         {
-            Button_Click(sender,e);
+            Button_Click(sender, e);
         }
         private void Command_IncQty(object sender, ExecutedRoutedEventArgs e)
         {
@@ -1192,7 +1188,7 @@ namespace EZYPOS.UserControls.Transaction
 
         private void Command_DeliveryCharges(object sender, ExecutedRoutedEventArgs e)
         {
-            DeliveryCharges_Click(sender,e);
+            DeliveryCharges_Click(sender, e);
         }
 
         private void Command_ManualItem(object sender, ExecutedRoutedEventArgs e)

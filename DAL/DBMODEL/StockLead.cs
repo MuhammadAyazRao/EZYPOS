@@ -18,6 +18,7 @@ namespace DAL.DBMODEL
         public long? UserId { get; set; }
         public long? PosId { get; set; }
         public string PaymentMode { get; set; }
+        public bool? IsDeleted { get; set; }
 
         public virtual Product Product { get; set; }
     }

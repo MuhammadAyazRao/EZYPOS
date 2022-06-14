@@ -80,7 +80,7 @@
     <Grid>
         <Grid.RowDefinitions>
 
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="130"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
@@ -96,14 +96,14 @@
             </Grid.ColumnDefinitions>
             <Label x:Name="Add" Content="User Pages" Margin="20,10,0,0" Style="{DynamicResource lblLazeTitle}" Foreground="{DynamicResource DarkBlue}" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="230" Height="35"/>
             
-            <Button Click="btnSelectAll_Click"  Content="{materialDesign:PackIcon Kind=SelectAll,Size=25}" Name="btnSelectAll" Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Left"   Margin="50,20,0,10" Width="100" Height="50" ToolTip="Select All" Grid.Row="1" Grid.Column="1" />
-            <Button Click="btnUnselectAll_Click"  Content="{materialDesign:PackIcon Kind=Undo,Size=25}" Name="btnUnselectAll" Style="{DynamicResource btnDanger}"  HorizontalAlignment="Left"   Margin="170,20,0,10" Width="100" Height="50" ToolTip="UnSelect All" Grid.Row="1" Grid.Column="1" />
-            <Button Click="btnSave_Click"  Content="{materialDesign:PackIcon Kind=ContentSaveAll,Size=25}" Name="btnSave" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="290,20,0,10" Width="100" Height="50" ToolTip="Save" Grid.Row="1" Grid.Column="1" />
+            <Button Click="btnSelectAll_Click"  Content="{materialDesign:PackIcon Kind=SelectAll,Size=25}" Name="btnSelectAll" Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Left"   Margin="50,45,0,10" Width="100" Height="50" ToolTip="Select All" Grid.Row="1" Grid.Column="1" />
+            <Button Click="btnUnselectAll_Click"  Content="{materialDesign:PackIcon Kind=Undo,Size=25}" Name="btnUnselectAll" Style="{DynamicResource btnDanger}"  HorizontalAlignment="Left"  Grid.ColumnSpan="2"  Margin="170,45,0,10" Width="100" Height="50" ToolTip="UnSelect All" Grid.Row="1" Grid.Column="1" />
+            <Button Click="btnSave_Click"  Content="{materialDesign:PackIcon Kind=ContentSaveAll,Size=25}" Name="btnSave" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left" Grid.ColumnSpan="2"   Margin="290,45,0,10" Width="100" Height="50" ToolTip="Save" Grid.Row="1" Grid.Column="1" />
             <ComboBox  Name="ddEmployee"
                            DisplayMemberPath="Name" 
                            SelectedValuePath="Id" 
                            Grid.Row="1" Grid.Column="0" 
-                           Margin="20,30,20,10" SelectionChanged="ddEmployee_SelectionChanged"
+                           Margin="20,45,20,10" SelectionChanged="ddEmployee_SelectionChanged"
                           materialDesign:HintAssist.Hint="Search Employee"                           
                           materialDesign:HintAssist.HintOpacity=".26"                          
                           IsEditable="True"/>

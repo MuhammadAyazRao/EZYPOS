@@ -93,7 +93,7 @@ namespace EZYPOS.View
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (((string)lblPin.Content != "0"))
+            if ((string)lblPin.Content != "0")
             {
                 using (UnitOfWork Db = new UnitOfWork(new EPOSDBContext()))
                 {
@@ -111,16 +111,23 @@ namespace EZYPOS.View
                     }
                     else if (ScreenType == "End")
                     {
-                        var StartedSession = Db.CashSummary.GetAll().Where(x => x.IsActive == true && x.Posid == ActiveSession.POSId).FirstOrDefault();
-                        if(StartedSession != null)
+                        var isconfirm = EZYPOS.View.MessageYesNo.ShowCustom("Confirmation", "Do You Want to End Session !", "Yes", "NO");
+                        if(isconfirm)
                         {
-                            StartedSession.EndAmount = Convert.ToDecimal(lblPin.Content);
-                            StartedSession.EndedBy = ActiveSession.ActiveUserName;
-                            StartedSession.EndDate = DateTime.Now;
-                            StartedSession.IsActive = false;
-                            Db.CashSummary.Save();
-                            this.Close();
-                            ActiveSession.CloseDisplayuserControlMethod(null);
+                            var StartedSession = Db.CashSummary.GetAll().Where(x => x.IsActive == true && x.Posid == ActiveSession.POSId).FirstOrDefault();
+                            if (StartedSession != null)
+                            {
+                                if((string)lblPin.Content != "0")
+                                {
+                                    StartedSession.EndAmount = Convert.ToDecimal(lblPin.Content);
+                                    StartedSession.EndedBy = ActiveSession.ActiveUserName;
+                                    StartedSession.EndDate = DateTime.Now;
+                                    StartedSession.IsActive = false;
+                                    Db.CashSummary.Save();
+                                    this.Close();
+                                    ActiveSession.CloseDisplayuserControlMethod(null);
+                                }
+                            }
                         }
                     }
                 }

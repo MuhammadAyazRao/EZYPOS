@@ -12,6 +12,8 @@ namespace DAL.IRepository
     {
         List<StockDetailDTO> GetStockDetailToAdjust(int Qty, int? ProductId);
         bool SaveStockAdjustment(Order Order, int OrderDetailId, int OrderId);
+        bool SaveStockAdjustmentItemWise(OrderDetail Order, int OrderDetailId, int OrderId);
+        bool revertStockAdjustmentItemWise(OrderDetail Order, int OrderDetailId, int OrderId,int? parentId);
         int GetProductQty(int ProductId);
         List<StockDetailDTO> GetStockDetail();
         // List<long?> GetStockDetailToAdjust(int Qty, int ProductId);

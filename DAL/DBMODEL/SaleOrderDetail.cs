@@ -32,7 +32,7 @@ namespace DAL.DBMODEL
         public int ItemIndex { get; set; }
         public int? BillNo { get; set; }
         public string IsUpdated { get; set; }
-        public string IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
         public string Posid { get; set; }
 
         public virtual SaleOrder Order { get; set; }

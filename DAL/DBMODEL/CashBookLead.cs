@@ -17,5 +17,6 @@ namespace DAL.DBMODEL
         public decimal? CrAmt { get; set; }
         public long? UserId { get; set; }
         public long? PosId { get; set; }
+        public bool? IsDeleted { get; set; }
     }
 }

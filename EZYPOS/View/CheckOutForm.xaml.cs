@@ -217,7 +217,7 @@ namespace EZYPOS.View
                         var Taxobj = Tax_Taxpercentage();
                         Order.Tax = Taxobj.Tax;
                         Order.TaxPercentage = Taxobj.Percentage;
-
+                        Order.OrderStatus = OrderStatus.New.ToString();
                         this.DialogResult = Db.SaleOrder.SaveOrder(Order);
                         }
                     //}

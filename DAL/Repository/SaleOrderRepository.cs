@@ -62,6 +62,8 @@ namespace DAL.Repository
                     NewOrder.CustomerId = CartOrderToProcess.CustId;
                     NewOrder.EmployeeId = ActiveSession.ActiveUser;
                     NewOrder.Total = CartOrderToProcess.GetTotal();
+                    NewOrder.ParentOrderId = CartOrderToProcess.ParenOrderId;
+                    NewOrder.OrderStatus = CartOrderToProcess.OrderStatus;
                     Add(NewOrder);
                     //var id = NewOrder.Id;
 
@@ -79,37 +81,85 @@ namespace DAL.Repository
                         NewOrderDetail.ItemTax = item?.Item.Tax;
                         NewOrderDetail.ItemIndex = 1;
                         NewOrderDetail.IsUpdated = "";
-                        NewOrderDetail.IsDeleted = "";
+                        //NewOrderDetail.IsDeleted = "";
                         NewOrderDetail.KitchenLines = 1;
                         NewOrderDetail.ItemDiscount = item?.ItemDiscount;
                         NewOrderDetail.Posid = ActiveSession.POSId;
                         SaleOrderDetail.Add(NewOrderDetail);
-                        
-                        Stock.SaveStockAdjustment(CartOrderToProcess, NewOrderDetail.Id, NewOrder.Id);
-
+                        if (CartOrderToProcess.OrderStatus == OrderStatus.Refunded.ToString())
+                        {
+                            Stock.revertStockAdjustmentItemWise(item, NewOrderDetail.Id, NewOrder.Id, NewOrder.ParentOrderId);
+                        }
+                        else
+                        {
+                            Stock.SaveStockAdjustmentItemWise(item, NewOrderDetail.Id, NewOrder.Id);                            
+                        }
                         //Ledger Transaction
 
                         //Stock Transaction
                         StockLead stockled = new StockLead();
-                        stockled.CrQty = NewOrderDetail.ItemQty;
+                        if(CartOrderToProcess.OrderStatus==OrderStatus.Refunded.ToString())
+                        {
+                            stockled.DrQty = NewOrderDetail.ItemQty;
+                            stockled.TransactionType = Common.InvoiceType.ReturnInvoice;
+                            stockled.TransactionDetail = "Return Transaction against Invoice Number # " + NewOrder.Id;
+
+                        }
+                        else
+                        {
+                            stockled.CrQty = NewOrderDetail.ItemQty;
+                            stockled.TransactionType = Common.InvoiceType.SaleInvoice;
+                            stockled.TransactionDetail = "Sale Transaction against Invoice Number # " + NewOrder.Id;
+
+                        }
                         stockled.TransactionDate = DateTime.Now;
                         stockled.TransactionId = NewOrder.Id;
-                        stockled.TransactionType = Common.InvoiceType.SaleInvoice;
-                        stockled.TransactionDetail = "Sale Transaction against Invoice Number # " + NewOrder.Id;
                         stockled.ProductId = NewOrderDetail.ItemId;                       
                         StockLead.Add(stockled);
                         
                     }
 
                     // Customer Transaction
-                    CustomerLead CustomerLed = new CustomerLead();
-                    CustomerLed.Dr =(int)NewOrder.CashAmount;
-                    CustomerLed.TransactionDate = DateTime.Now;
-                    CustomerLed.TransactionId = NewOrder.Id;
-                    CustomerLed.TransactionType = Common.InvoiceType.SaleInvoice;
-                    CustomerLed.TransactionDetail = "Sale Transaction against Invoice Number # " + NewOrder.Id;
-                    CustomerLed.CustomerId = CartOrderToProcess.CustId;
-                    CustomerLead.Add(CustomerLed);
+                   
+
+                    if (CartOrderToProcess.OrderStatus == OrderStatus.Refunded.ToString())
+                    {
+                        if (CartOrderToProcess.PaymentType.ToUpper() == OrderEnums.PaymentType.CREDIT)
+                        {
+                            CustomerLead CustomerLed = new CustomerLead();
+                            CustomerLed.Cr = (int)NewOrder.CashAmount;
+                            CustomerLed.TransactionType = Common.InvoiceType.ReturnInvoice;
+                            CustomerLed.TransactionDetail = "Return Transaction against Invoice Number # " + NewOrder.Id;
+                            CustomerLed.TransactionDate = DateTime.Now;
+                            CustomerLed.TransactionId = NewOrder.Id;
+                            CustomerLed.CustomerId = CartOrderToProcess.CustId;
+                            CustomerLead.Add(CustomerLed);
+                        }
+                        else
+                        {
+                            CashBookLead CashBookLed = new CashBookLead();
+                            CashBookLed.CrAmt = (int)NewOrder.CashAmount;
+                            CashBookLed.TransactionDate = DateTime.Now;
+                            CashBookLed.TransactionId = NewOrder.Id;
+                            CashBookLed.TransactionType = Common.InvoiceType.ReturnInvoice;
+                            CashBookLed.TransactionDetail = "Cash Return Transaction against Invoice Number # " + NewOrder.Id;
+                            //CashBookLed.CustomerId = 1;
+                            CashBookLead.Add(CashBookLed);
+                        }
+                       
+                    }
+                    else
+                    {
+                        CustomerLead CustomerLed = new CustomerLead();
+                        CustomerLed.Dr = (int)NewOrder.CashAmount;
+                        CustomerLed.TransactionType = Common.InvoiceType.SaleInvoice;
+                        CustomerLed.TransactionDetail = "Sale Transaction against Invoice Number # " + NewOrder.Id;
+                        CustomerLed.TransactionDate = DateTime.Now;
+                        CustomerLed.TransactionId = NewOrder.Id;
+                        CustomerLed.CustomerId = CartOrderToProcess.CustId;
+                        CustomerLead.Add(CustomerLed);
+                    }
+                   
                     if (CartOrderToProcess.PaymentType.ToUpper() == OrderEnums.PaymentType.CASH)
                     {
                         CustomerLead CustomerLedCR = new CustomerLead();
@@ -174,6 +224,9 @@ namespace DAL.Repository
                 SingleOrder.OrderDate =(DateTime) SingleItem.OrderDate;
                 SingleOrder.EmployeeId = (int)SingleItem.EmployeeId;
                 SingleOrder.CustId = (int)SingleItem.CustomerId;
+                SingleOrder.IsUpdated = SingleItem.IsUpdated;
+                SingleOrder.IsDeleted = SingleItem.IsDeleted;
+                SingleOrder.OrderStatus = SingleItem.OrderStatus;
                 foreach(var orderdetail in SaleOrderDetail.GetAll().Where(x=>x.OrderId== SingleItem.Id))
                 {
                     OrderDetail SingleOrderDetail = new OrderDetail();
@@ -200,13 +253,32 @@ namespace DAL.Repository
             return MappedOrdeList;
 
         }
-        public bool DeleteOrder(int id)
+        public bool DeleteOrder(int id , string type)
         {
             _DbEntities.StockOderDetails.RemoveRange(_DbEntities.StockOderDetails.Where(x => x.OrderId == id).ToList());
-            _DbEntities.SaleOrderDetails.RemoveRange(_DbEntities.SaleOrderDetails.Where(x => x.OrderId == id).ToList());           
-            Delete(id);
-            return true;
+            _DbEntities.CustomerLeads.RemoveRange(_DbEntities.CustomerLeads.Where(x => x.Id == id).ToList());
+            _DbEntities.CashBookLeads.RemoveRange(_DbEntities.CashBookLeads.Where(x => x.Id == id).ToList());
 
+            var allorderdet = _DbEntities.SaleOrderDetails.Where(x => x.OrderId == id).ToList();
+            allorderdet.ForEach(x => x.IsDeleted = true);
+            _DbEntities.SaleOrderDetails.UpdateRange(allorderdet);
+            var Order = _DbEntities.SaleOrders.Find(id);
+            Order.IsDeleted = true;
+            if(type == "Deleted")
+            {
+                Order.OrderStatus = OrderStatus.Deleted.ToString();
+            }
+            else if (type == "Canceled")
+            {
+                Order.OrderStatus = OrderStatus.Canceled.ToString();
+            }
+            else if (type == "Edited")
+            {
+                Order.OrderStatus = OrderStatus.Edited.ToString();
+            }
+            _DbEntities.SaleOrders.Update(Order);
+            _DbEntities.SaveChanges();
+            return true;
         }
     }
 }

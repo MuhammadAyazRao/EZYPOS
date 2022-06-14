@@ -1,6 +1,7 @@
 ﻿using Common;
 using Common.Session;
 using DAL.Repository;
+using EZYPOS.Helper;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -150,6 +151,14 @@ namespace EZYPOS.UserControls.Misc
                 ddCurrency.SelectedValue = SettingData.Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue;
                 ddSupplier.SelectedValue = SettingData.Where(x => x.AppKey == SettingKey.DefaultSupplier).FirstOrDefault().AppValue;
                 ddCustomer.SelectedValue = SettingData.Where(x => x.AppKey == SettingKey.WalkingCustomer).FirstOrDefault().AppValue;
+                
+                
+                //System Information Lables Start
+                lblServer.Content = AppconfigHelper.ReadSetting("Server");
+                lblPOSId.Content = AppconfigHelper.ReadSetting("POSId");
+                lblDatabase.Content = AppconfigHelper.ReadSetting("Database");
+                lblPassword.Content = AppconfigHelper.ReadSetting("Password");
+                //System Information Lables Start
 
             }
 
