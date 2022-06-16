@@ -416,6 +416,11 @@ namespace EZYPOS
             UserControlEmployeeWiseSaleReport EmployeeWiseSale = new UserControlEmployeeWiseSaleReport();
             ActiveSession.DisplayuserControlMethod(EmployeeWiseSale);
         }
+        private void POSWiseSaleReport_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlPOSWiseSaleReport POSWiseSale = new UserControlPOSWiseSaleReport();
+            ActiveSession.DisplayuserControlMethod(POSWiseSale);
+        }
 
         private void AdvanceSalary_Click(object sender, RoutedEventArgs e)
         {

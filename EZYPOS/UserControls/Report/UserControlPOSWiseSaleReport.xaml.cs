@@ -1,15 +1,12 @@
 ﻿using Common;
-using Common.Session;
 using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.DTO.ReportsDTO;
 using EZYPOS.Helper;
-using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -27,18 +24,16 @@ using System.Windows.Shapes;
 namespace EZYPOS.UserControls.Report
 {
     /// <summary>
-    /// Interaction logic for UserControlSaleOrderReport.xaml
+    /// Interaction logic for UserControlPOSWiseSaleReport.xaml
     /// </summary>
-
-    
-    public partial class UserControlSaleOrderReport : UserControl
+    public partial class UserControlPOSWiseSaleReport : UserControl
     {
         List<SaleOrderDTO> myList = new List<SaleOrderDTO>();
         Pager<SaleOrderDTO> Pager = new Helper.Pager<SaleOrderDTO>();
-        public UserControlSaleOrderReport()
+        public UserControlPOSWiseSaleReport()
         {
             InitializeComponent();
-            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            using (UnitOfWork DB = new UnitOfWork(new EPOSDBContext()))
             {
                 var POSList = DB.POS.GetAll().Select(x => new { Name = x.Name, Id = x.Id }).ToList();
                 POSList.Insert(0, new { Name = "All", Id = 0 });
@@ -49,39 +44,18 @@ namespace EZYPOS.UserControls.Report
             Refresh();
 
         }
-        public List<SaleOrder> GetSaleOrders()
-        {
-            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
-            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
-            List<SaleOrder> SaleOrders = new List<SaleOrder>();
-            using (UnitOfWork Db = new UnitOfWork(new EPOSDBContext()))
-            {
-                if (ddPOS.SelectedItem == null || Convert.ToInt32(ddPOS.SelectedValue) == 0)
-                {
-                    SaleOrders = Db.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate && x.OrderStatus != OrderStatus.Deleted.ToString() && x.OrderStatus != OrderStatus.Canceled.ToString()).ToList();
-                }
-                else
-                {
-                    SaleOrders = Db.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate && x.Posid == ddPOS.Text && x.OrderStatus != OrderStatus.Deleted.ToString() && x.OrderStatus != OrderStatus.Canceled.ToString()).ToList();
-                }
-                return SaleOrders;
-            }
-        }
         private void Refresh(object sender = null)
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
-                DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
-
                 var Items = GetSaleOrders();
                 string CustomerName = "";
                 string EmployeeName = "";
                 decimal GrandTotal = 0;
                 myList.Clear();
-                foreach(var item in Items)
+                foreach (var item in Items)
                 {
-                    if (item.OrderStatus == OrderStatus.Refunded.ToString())
+                    if(item.OrderStatus == OrderStatus.Refunded.ToString())
                     {
                         GrandTotal -= item.Total;
                     }
@@ -91,10 +65,28 @@ namespace EZYPOS.UserControls.Report
                     }
                     CustomerName = DB.Customers.Get(Convert.ToInt32(item.CustomerId)).Name;
                     EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
-                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, TotalAmount = item.Total.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                    myList.Add(new SaleOrderDTO { id = item.Id, POS= item.Posid, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, TotalAmount = item.Total.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), OrderStatus = item.OrderStatus });
                 }
-                myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "", PaymentMode = "Total", TotalAmount = GrandTotal.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                myList.Add(new SaleOrderDTO { POS= "-", Customer = "-", Employee = "-", Date = "-", PaymentMode = "Total", TotalAmount = GrandTotal.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), OrderStatus = "" });
                 ResetPaging(myList);
+            }
+        }
+        public List<SaleOrder> GetSaleOrders()
+        {
+            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
+            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
+            List<SaleOrder> SaleOrders = new List<SaleOrder>();
+            using (UnitOfWork Db = new UnitOfWork(new EPOSDBContext()))
+            {
+                if (ddPOS.SelectedItem == null || Convert.ToInt32(ddPOS.SelectedValue) == 0)
+                {
+                    SaleOrders = Db.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate && x.OrderStatus != OrderStatus.Deleted.ToString()  && x.OrderStatus != OrderStatus.Canceled.ToString()).ToList();
+                }
+                else
+                {
+                    SaleOrders = Db.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate && x.Posid == ddPOS.Text && x.OrderStatus != OrderStatus.Deleted.ToString() && x.OrderStatus != OrderStatus.Canceled.ToString()).ToList();
+                }
+                return SaleOrders;
             }
         }
         private void Search_Click(object sender, RoutedEventArgs e)
@@ -117,11 +109,33 @@ namespace EZYPOS.UserControls.Report
                     }
                     else
                     {
+                        if (t.Name == "GridOrderNumber")
+                        {
+                            var Items = GetSaleOrders();
+                            Items = Items.Where(x => x.Id == Convert.ToInt32(filter)).ToList();
+                            string CustomerName = "";
+                            string EmployeeName = "";
+                            decimal GrandTotal = 0;
+                            myList.Clear();
+                            foreach (var item in Items)
+                            {
+                                if (item.OrderStatus == OrderStatus.Refunded.ToString())
+                                {
+                                    GrandTotal -= item.Total;
+                                }
+                                else
+                                {
+                                    GrandTotal += item.Total;
+                                }
+                                CustomerName = DB.Customers.Get(Convert.ToInt32(item.CustomerId)).Name;
+                                EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
+                                myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, TotalAmount = item.Total.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), OrderStatus = item.OrderStatus });
+                            }
+                            myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "-", PaymentMode = "Total", TotalAmount = GrandTotal.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), OrderStatus = "" });
+                            ResetPaging(myList);
+                        }
                         if (t.Name == "GridCName")
                         {
-                            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
-                            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
-
                             var Items = GetSaleOrders();
                             string CustomerName = "";
                             string EmployeeName = "";
@@ -133,37 +147,6 @@ namespace EZYPOS.UserControls.Report
                                 if (CustomerName.ToUpper().Contains(filter.ToUpper()))
                                 {
                                     EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
-                                    if(item.OrderStatus == OrderStatus.Refunded.ToString())
-                                    {
-                                        GrandTotal -= item.Total;
-                                    }
-                                    else
-                                    {
-                                        GrandTotal += item.Total;
-                                    }
-                                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, OrderStatus = item.OrderStatus, TotalAmount = item.Total.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
-                                }
-                                
-                            }
-                            myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "", PaymentMode = "", OrderStatus = "Total", TotalAmount = GrandTotal.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
-                            ResetPaging(myList);
-                        }
-                        if (t.Name == "GridEmployee")
-                        {
-                            DateTime Sdate = StartDate.SelectedDate == null ? DateTime.Today : StartDate.SelectedDate.Value;
-                            DateTime Edate = EndDate.SelectedDate == null ? DateTime.Today : EndDate.SelectedDate.Value;
-
-                            var Items = GetSaleOrders();
-                            string CustomerName = "";
-                            string EmployeeName = "";
-                            decimal GrandTotal = 0;
-                            myList.Clear();
-                            foreach (var item in Items)
-                            {
-                                CustomerName = DB.Customers.Get(Convert.ToInt32(item.CustomerId)).Name;
-                                EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
-                                if (EmployeeName.ToUpper().Contains(filter.ToUpper()))
-                                {
                                     if (item.OrderStatus == OrderStatus.Refunded.ToString())
                                     {
                                         GrandTotal -= item.Total;
@@ -172,12 +155,33 @@ namespace EZYPOS.UserControls.Report
                                     {
                                         GrandTotal += item.Total;
                                     }
-                                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, OrderStatus = item.OrderStatus, TotalAmount = item.Total.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                                    myList.Add(new SaleOrderDTO { id = item.Id, POS= item.Posid, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, TotalAmount = item.Total.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), OrderStatus = item.OrderStatus });
                                 }
+
                             }
-                            myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "", PaymentMode = "", OrderStatus = "Total", TotalAmount = GrandTotal.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                            myList.Add(new SaleOrderDTO { POS = "-", Customer = "-", Employee = "-", Date = "-", PaymentMode = "Total", TotalAmount = GrandTotal.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), OrderStatus = "" });
                             ResetPaging(myList);
                         }
+                        //if (t.Name == "GridEmployee")
+                        //{
+                        //    var Items = GetSaleOrders();
+                        //    string CustomerName = "";
+                        //    string EmployeeName = "";
+                        //    long GrandTotal = 0;
+                        //    myList.Clear();
+                        //    foreach (var item in Items)
+                        //    {
+                        //        CustomerName = DB.Customers.Get(Convert.ToInt32(item.CustomerId)).Name;
+                        //        EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
+                        //        if (EmployeeName.ToUpper().Contains(filter.ToUpper()))
+                        //        {
+                        //            GrandTotal += item.Total;
+                        //            myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = Convert.ToString(item.OrderDate), PaymentMode = item.PaymentMode, TotalAmount = Convert.ToString(item.Total) });
+                        //        }
+                        //    }
+                        //    myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "Total", PaymentMode = "-", TotalAmount = Convert.ToString(GrandTotal) });
+                        //    ResetPaging(myList);
+                        //}
                         if (t.Name == "GridOrderDate")
                         {
 
@@ -212,10 +216,10 @@ namespace EZYPOS.UserControls.Report
                                     {
                                         GrandTotal += item.Total;
                                     }
-                                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, OrderStatus = item.OrderStatus, TotalAmount = item.Total.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                                    myList.Add(new SaleOrderDTO { id = item.Id, POS= item.Posid, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, TotalAmount = item.Total.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), OrderStatus = item.OrderStatus });
                                 }
                             }
-                            myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "-", PaymentMode = "", OrderStatus = "Total", TotalAmount = GrandTotal.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                            myList.Add(new SaleOrderDTO { POS = "-", Customer = "-", Employee = "-", Date = "-", PaymentMode = "Total", TotalAmount = GrandTotal.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), OrderStatus = "" });
                             ResetPaging(myList);
                         }
                     }
@@ -223,14 +227,6 @@ namespace EZYPOS.UserControls.Report
                 }
             }
 
-        }
-
-        private void btnSaleOrderDetail_Click(object sender, RoutedEventArgs e)
-        {
-
-            EZYPOS.DTO.SaleOrderDTO SaleOrder = (EZYPOS.DTO.SaleOrderDTO)SaleOrderGrid.SelectedItem;
-            WindowSaleOrderDetail SaleOrderDetail = new WindowSaleOrderDetail(SaleOrder);
-            SaleOrderDetail.Show();
         }
 
 
@@ -278,13 +274,19 @@ namespace EZYPOS.UserControls.Report
             e.Handled = regex.IsMatch(e.Text);
         }
 
+        private void TodayOrder_Click(object sender, RoutedEventArgs e)
+        {
+            StartDate.SelectedDate = DateTime.Today;
+            EndDate.SelectedDate = DateTime.Today;
+            Refresh();
+        }
+
         private void Print_Click(object sender, RoutedEventArgs e)
         {
             Refresh();
-            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.Customer, COLB = x.Employee, COLC = x.Date, COLD = x.PaymentMode, COLE = x.OrderStatus, COLF = x.TotalAmount }).ToList();
+            List<GenericCOL6DTO> RptData = myList.Select(x => new GenericCOL6DTO { COLA = x.id.ToString(),COLB = x.POS, COLC = x.Customer, COLD = x.Date, COLE = x.PaymentMode, COLF = x.TotalAmount,}).ToList();
             string Discription = "From: " + StartDate.SelectedDate?.ToString("dd/MM/yyyy") + ", To: " + EndDate.SelectedDate?.ToString("dd/MM/yyyy");
-            ReportPrintHelper.PrintCOL6Report(ref ReportViewer, "Sale Order Report", "Customer Name", "Employee Name", "Date", "Payment Mode","Order Status", "Amount", Discription, RptData);
-
+            ReportPrintHelper.PrintCOL6Report(ref ReportViewer, "POS Wise Sale Report", "Order Number", "POS", "Customer Name", "Date", "Transaction Type", "Amount", Discription, RptData);
         }
     }
 }

@@ -227,6 +227,7 @@ namespace DAL.Repository
                 SingleOrder.IsUpdated = SingleItem.IsUpdated;
                 SingleOrder.IsDeleted = SingleItem.IsDeleted;
                 SingleOrder.OrderStatus = SingleItem.OrderStatus;
+                SingleOrder.POS = SingleItem.Posid;
                 foreach(var orderdetail in SaleOrderDetail.GetAll().Where(x=>x.OrderId== SingleItem.Id))
                 {
                     OrderDetail SingleOrderDetail = new OrderDetail();

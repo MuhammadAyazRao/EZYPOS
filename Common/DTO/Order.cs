@@ -35,6 +35,7 @@ namespace Common.DTO
         public bool? IsDeleted { get; set; }
         public string? OrderStatus { get; set; }
         public int ParenOrderId { get; set; }
+        public string POS { get; set; }
 
 
         public Order()

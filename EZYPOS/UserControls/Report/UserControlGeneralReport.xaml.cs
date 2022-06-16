@@ -36,6 +36,12 @@ namespace EZYPOS.UserControls.Report
         public UserControlGeneralReport()
         {
             InitializeComponent();
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                var POSList = DB.POS.GetAll().Select(x => new { Name = x.Name, Id = x.Id }).ToList();
+                POSList.Insert(0, new { Name = "All", Id = 0 });
+                ddPOS.ItemsSource = POSList;
+            }
             var Months = Month.GetMonths().Select(x => new { Name = x.Name, Id = x.Id });
             ddMonth.ItemsSource = Months;
             ddYear.ItemsSource = Enumerable.Range(1950, DateTime.UtcNow.Year - 1949).Reverse().ToList();
@@ -57,11 +63,23 @@ namespace EZYPOS.UserControls.Report
                 var StartDate = new DateTime(Convert.ToInt32(ddYear.Text), Convert.ToInt32(ddMonth.SelectedValue), 1);
                 var EndDate = StartDate.AddMonths(1).AddDays(-1);
                 // Sale 
-                var SaleOrders = DB.SaleOrder.GetMappedOrder().Where(x => x.OrderDate >= StartDate && x.OrderDate <= EndDate).ToList();
-                var CashSaleAmount = SaleOrders.Where(x => x.PaymentType == PaymentType.CASH).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
-                var CreditSaleAmount = SaleOrders.Where(x => x.PaymentType == PaymentType.CREDIT).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
-                var TotalSaleAmount = SaleOrders.Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
-                var TotalCostOfSale = SaleOrders.Select(x => new { total = x.OrdersDetails?.Sum(v => v.Item.PurchasePrice * v.Qty) }).Sum(x => x.total);
+                List<Common.DTO.Order> SaleOrders = new List<Common.DTO.Order>();
+                if(ddPOS.SelectedValue == null || Convert.ToInt32(ddPOS.SelectedValue) == 0)
+                {
+                     SaleOrders = DB.SaleOrder.GetMappedOrder().Where(x => x.OrderDate >= StartDate && x.OrderDate <= EndDate && x.OrderStatus != Common.OrderStatus.Deleted.ToString() && x.OrderStatus != Common.OrderStatus.Canceled.ToString()).ToList();
+                }
+                else
+                {
+                     SaleOrders = DB.SaleOrder.GetMappedOrder().Where(x => x.OrderDate >= StartDate && x.OrderDate <= EndDate && x.OrderStatus != Common.OrderStatus.Deleted.ToString() && x.OrderStatus != Common.OrderStatus.Canceled.ToString() && x.POS == ddPOS.Text ).ToList();
+                }
+                var CashSaleAmount = SaleOrders.Where(x => x.PaymentType == PaymentType.CASH && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total) 
+                                   - SaleOrders.Where(x => x.PaymentType == PaymentType.CASH && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                var CreditSaleAmount = SaleOrders.Where(x => x.PaymentType == PaymentType.CREDIT && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                                     - SaleOrders.Where(x => x.PaymentType == PaymentType.CREDIT && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                var TotalSaleAmount = SaleOrders.Where(x=> x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                                    - SaleOrders.Where(x => x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                var TotalCostOfSale = SaleOrders.Where(x => x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Item.PurchasePrice * v.Qty) }).Sum(x => x.total)
+                                    - SaleOrders.Where(x => x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Item.PurchasePrice * v.Qty) }).Sum(x => x.total);
 
                 //Profit Loss
                 decimal? Profit = 0;
@@ -186,7 +204,6 @@ namespace EZYPOS.UserControls.Report
         {
             Refresh();
         }
-
         private void Print_Click(object sender, RoutedEventArgs e)
         {
             Refresh();
@@ -195,5 +212,7 @@ namespace EZYPOS.UserControls.Report
             ReportPrintHelper.PrintCOL3Report(ref ReportViewer, "General Report", "Serial No", "Key", "Value", Discription, RptData);
 
         }
+
+        
     }
 }

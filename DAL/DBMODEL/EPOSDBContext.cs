@@ -31,6 +31,7 @@ namespace DAL.DBMODEL
         public virtual DbSet<ExpenceTransaction> ExpenceTransactions { get; set; }
         public virtual DbSet<ExpenceType> ExpenceTypes { get; set; }
         public virtual DbSet<Page> Pages { get; set; }
+        public virtual DbSet<Po> Pos { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<ProductGroup> ProductGroups { get; set; }
@@ -111,7 +112,9 @@ namespace DAL.DBMODEL
                     .HasColumnType("decimal(18, 3)")
                     .HasColumnName("DR_Amt");
 
-                entity.Property(e => e.IsDeleted).HasColumnName("Is_Deleted");
+                entity.Property(e => e.IsDeleted)
+                    .HasColumnName("Is_Deleted")
+                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.PosId).HasColumnName("POS_Id");
 
@@ -211,7 +214,9 @@ namespace DAL.DBMODEL
                     .HasColumnType("decimal(18, 3)")
                     .HasColumnName("DR");
 
-                entity.Property(e => e.IsDeleted).HasColumnName("Is_Deleted");
+                entity.Property(e => e.IsDeleted)
+                    .HasColumnName("Is_Deleted")
+                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.TransactionDate)
                     .HasColumnType("date")
@@ -319,6 +324,15 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.Icon).HasMaxLength(500);
 
                 entity.Property(e => e.Name).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<Po>(entity =>
+            {
+                entity.ToTable("POS");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Name).HasMaxLength(100);
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -545,11 +559,17 @@ namespace DAL.DBMODEL
                     .IsUnicode(false)
                     .HasColumnName("discount_desc");
 
-                entity.Property(e => e.IsDeleted).HasColumnName("is_deleted");
+                entity.Property(e => e.IsDeleted)
+                    .HasColumnName("is_deleted")
+                    .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.IsPrinted).HasColumnName("Is_Printed");
+                entity.Property(e => e.IsPrinted)
+                    .HasColumnName("Is_Printed")
+                    .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.IsUpdated).HasColumnName("is_updated");
+                entity.Property(e => e.IsUpdated)
+                    .HasColumnName("is_updated")
+                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.OnlineAmount)
                     .HasColumnType("decimal(18, 3)")
@@ -737,7 +757,9 @@ namespace DAL.DBMODEL
                     .HasColumnType("numeric(18, 2)")
                     .HasColumnName("DR_qty");
 
-                entity.Property(e => e.IsDeleted).HasColumnName("Is_Deleted");
+                entity.Property(e => e.IsDeleted)
+                    .HasColumnName("Is_Deleted")
+                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.PaymentMode).HasMaxLength(50);
 

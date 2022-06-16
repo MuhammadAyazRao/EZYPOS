@@ -15,5 +15,7 @@ namespace EZYPOS.DTO
         public string PaymentMode { get; set; }
         public string PaymentStatus { get; set; }
         public string TotalAmount { get; set; }
+        public string OrderStatus { get; set; }
+        public string POS { get; set; }
    }
 }
