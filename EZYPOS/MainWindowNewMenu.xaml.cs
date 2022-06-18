@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ChromeTabs;
+using Common;
 using Common.Session;
 using DAL.Repository;
 using EZYPOS.Helper.Session;
@@ -353,9 +354,13 @@ namespace EZYPOS
 
         private void SaleReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlSaleOrderReport sor = new UserControlSaleOrderReport();
+            UserControlSaleOrderReport sor = new UserControlSaleOrderReport("Sale");
             ActiveSession.DisplayuserControlMethod(sor);
-
+        }
+        private void RefundedOrderReport_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlSaleOrderReport sor = new UserControlSaleOrderReport(OrderStatus.Refunded.ToString());
+            ActiveSession.DisplayuserControlMethod(sor);
         }
 
         private void StockReport_Click(object sender, RoutedEventArgs e)

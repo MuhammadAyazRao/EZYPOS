@@ -163,7 +163,7 @@
         </Border>
 
         <Border Background="{DynamicResource DarkBlue}" Margin="15,10,15,0"/>
-        <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Sale Order Detail" HorizontalAlignment="Left" Margin="15,10,0,10"/>
+        <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Order Details" HorizontalAlignment="Left" Margin="15,10,0,10"/>
         <Button x:Name="btnClose" Click="btnClose_Click"  Content="X" Style="{DynamicResource btnDanger}" Margin="0,15,30,0" HorizontalAlignment="Right" Width="50" Height="30" VerticalAlignment="Top"/>
 
     </Grid>

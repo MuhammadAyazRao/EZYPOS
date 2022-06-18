@@ -105,7 +105,7 @@
                           IsEditable="True"/>
             <Button  Content="{materialDesign:PackIcon Kind=Search,Size=25}" Name="Search" Click="Search_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left"   Margin="50,10,0,10" Width="100" ToolTip="Search" Grid.Row="1" Grid.Column="3" />
             <Button  Content="{materialDesign:PackIcon Kind=Printer,Size=25}" Name="Print" Click="Print_Click"  Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Left"   Margin="160,10,0,10" Width="100" ToolTip="Print" Grid.Row="1" Grid.Column="3" />
-            <Label Content="Sale Order Report" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Grid.Row="0" Grid.Column="0" Margin="20,15,0,0"/>
+            <Label Name="lblTitle" Content="Sale Order Report" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Grid.Row="0" Grid.Column="0" Margin="20,15,0,0"/>
         </Grid>
         <Border x:Name="label" Grid.Row="1" Margin="20,0,20,0">
             <DataGrid Name="SaleOrderGrid"
@@ -170,6 +170,16 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
+                    <DataGridTextColumn Header="order Status" Binding="{Binding OrderStatus}"  IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox materialDesign:HintAssist.Hint="Order Status"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" IsReadOnly="True" x:Name="GridOrderStatus" Width="100"  KeyDown="GridName_KeyDown"   />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
 
                     <DataGridTextColumn Header="order amount" Binding="{Binding TotalAmount}"  IsReadOnly="True">
                         <DataGridTextColumn.HeaderTemplate>
@@ -187,7 +197,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                    <Button Name="btnSaleOrderDetail" Click="btnSaleOrderDetail_Click" Style="{DynamicResource btnInfo}" FontSize="12" Margin="5 0" Content="Sale Order Detail" Height="30" Width="110"/>
+                                    <Button Name="btnSaleOrderDetail" Click="btnSaleOrderDetail_Click" Style="{DynamicResource btnInfo}" FontSize="12" Margin="5 0" Content="Order Details" Height="30" Width="110"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

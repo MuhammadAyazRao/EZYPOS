@@ -35,9 +35,15 @@ namespace EZYPOS.UserControls.Report
     {
         List<SaleOrderDTO> myList = new List<SaleOrderDTO>();
         Pager<SaleOrderDTO> Pager = new Helper.Pager<SaleOrderDTO>();
-        public UserControlSaleOrderReport()
+        public string OrderType { get; set; }
+        public UserControlSaleOrderReport(string type)
         {
             InitializeComponent();
+            OrderType = type;
+            if(OrderType == OrderStatus.Refunded.ToString())
+            {
+                lblTitle.Content = "Refunded Order Report";
+            }
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var POSList = DB.POS.GetAll().Select(x => new { Name = x.Name, Id = x.Id }).ToList();
@@ -58,11 +64,25 @@ namespace EZYPOS.UserControls.Report
             {
                 if (ddPOS.SelectedItem == null || Convert.ToInt32(ddPOS.SelectedValue) == 0)
                 {
-                    SaleOrders = Db.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate && x.OrderStatus != OrderStatus.Deleted.ToString() && x.OrderStatus != OrderStatus.Canceled.ToString()).ToList();
+                    if (OrderType == OrderStatus.Refunded.ToString())
+                    {
+                        SaleOrders = Db.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate && x.OrderStatus == OrderStatus.Refunded.ToString()).ToList();
+                    }
+                    else
+                    {
+                        SaleOrders = Db.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate && x.OrderStatus != OrderStatus.Deleted.ToString() && x.OrderStatus != OrderStatus.Canceled.ToString()).ToList();
+                    }
                 }
                 else
                 {
-                    SaleOrders = Db.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate && x.Posid == ddPOS.Text && x.OrderStatus != OrderStatus.Deleted.ToString() && x.OrderStatus != OrderStatus.Canceled.ToString()).ToList();
+                    if (OrderType == OrderStatus.Refunded.ToString())
+                    {
+                        SaleOrders = Db.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate && x.Posid == ddPOS.Text && x.OrderStatus == OrderStatus.Refunded.ToString()).ToList();
+                    }
+                    else
+                    {
+                        SaleOrders = Db.SaleOrder.GetAll().Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate && x.Posid == ddPOS.Text && x.OrderStatus != OrderStatus.Deleted.ToString() && x.OrderStatus != OrderStatus.Canceled.ToString()).ToList();
+                    }
                 }
                 return SaleOrders;
             }
@@ -91,9 +111,9 @@ namespace EZYPOS.UserControls.Report
                     }
                     CustomerName = DB.Customers.Get(Convert.ToInt32(item.CustomerId)).Name;
                     EmployeeName = DB.Employee.Get(Convert.ToInt32(item.EmployeeId)).UserName;
-                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode, TotalAmount = item.Total.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                    myList.Add(new SaleOrderDTO { id = item.Id, Customer = CustomerName, Employee = EmployeeName, Date = item.OrderDate?.ToString("dd/MM/yyyy"), PaymentMode = item.PaymentMode,OrderStatus= item.OrderStatus, TotalAmount = item.Total.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
                 }
-                myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "", PaymentMode = "Total", TotalAmount = GrandTotal.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
+                myList.Add(new SaleOrderDTO { Customer = "-", Employee = "-", Date = "", PaymentMode = "", OrderStatus = "Total", TotalAmount = GrandTotal.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) });
                 ResetPaging(myList);
             }
         }
