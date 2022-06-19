@@ -1,4 +1,5 @@
 ﻿using Common.Session;
+using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS;
 using EZYPOS.Helper;
@@ -25,6 +26,18 @@ namespace EZYPOS.View
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var EmployeeList = Db.Employee.GetAll().Where(x=> x.IsLoginAllowed == true).Select(x => new { Name = x.UserName, Id = x.Id }).ToList();
+                if (EmployeeList == null && EmployeeList.Count<=0)
+                {
+                    Emplyee Employee = new Emplyee();
+                    Employee.City = null;
+                    Employee.UserName = "SuperAdmin";
+                    Employee.IsLoginAllowed = true;
+                    Employee.Password = "1122";
+                    Db.Employee.Add(Employee);
+                    Db.Employee.Save();
+                    EmployeeList = Db.Employee.GetAll().Where(x => x.IsLoginAllowed == true).Select(x => new { Name = x.UserName, Id = x.Id }).ToList();
+
+                }
                 ddEmployee.ItemsSource = EmployeeList;
             }
         }
