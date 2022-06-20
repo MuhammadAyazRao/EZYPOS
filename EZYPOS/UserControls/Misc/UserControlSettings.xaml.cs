@@ -117,12 +117,22 @@ namespace EZYPOS.UserControls.Misc
                 else
                 {
                     ckTax.IsChecked = false;
+                    lblItemBaseTax.Visibility = Visibility.Collapsed;
+                    ckItemBaseTax.Visibility = Visibility.Collapsed;
+                    txtTaxPercentage.Visibility = Visibility.Collapsed;
+                    lblTaxPercentage.Visibility = Visibility.Collapsed;
+                    txtMinimumTaxLimit.Visibility = Visibility.Collapsed;
+                    lblMinimumTaxLimit.Visibility = Visibility.Collapsed;
                 }
 
                 var ItemBaseTax = SettingData.Where(x => x.AppKey == SettingKey.ItemBaseTax).FirstOrDefault().AppValue;
                 if (ItemBaseTax.ToLower() == "true")
                 {
                     ckItemBaseTax.IsChecked = true;
+                    txtTaxPercentage.Visibility = Visibility.Collapsed;
+                    lblTaxPercentage.Visibility = Visibility.Collapsed;
+                    txtMinimumTaxLimit.Visibility = Visibility.Collapsed;
+                    lblMinimumTaxLimit.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
@@ -166,6 +176,47 @@ namespace EZYPOS.UserControls.Misc
         private void ck_Checked(object sender, RoutedEventArgs e)
         {
 
+        }
+        private void ck_AllowTaxChecked(object sender, RoutedEventArgs e)
+        {
+            if(ckTax.IsChecked == true)
+            {
+                lblItemBaseTax.Visibility = Visibility.Visible;
+                ckItemBaseTax.Visibility = Visibility.Visible;
+                if(ckItemBaseTax.IsChecked == false)
+                {
+                    txtTaxPercentage.Visibility = Visibility.Visible;
+                    lblTaxPercentage.Visibility = Visibility.Visible;
+                    txtMinimumTaxLimit.Visibility = Visibility.Visible;
+                    lblMinimumTaxLimit.Visibility = Visibility.Visible;
+                } 
+            }
+            else
+            {
+                lblItemBaseTax.Visibility = Visibility.Collapsed;
+                ckItemBaseTax.Visibility = Visibility.Collapsed;
+                txtTaxPercentage.Visibility = Visibility.Collapsed;
+                lblTaxPercentage.Visibility = Visibility.Collapsed;
+                txtMinimumTaxLimit.Visibility = Visibility.Collapsed;
+                lblMinimumTaxLimit.Visibility = Visibility.Collapsed;
+            }
+        }
+        private void ck_ItemBaseTaxChecked(object sender, RoutedEventArgs e)
+        {
+            if(ckItemBaseTax.IsChecked == false)
+            {
+                txtTaxPercentage.Visibility = Visibility.Visible;
+                lblTaxPercentage.Visibility = Visibility.Visible;
+                txtMinimumTaxLimit.Visibility = Visibility.Visible;
+                lblMinimumTaxLimit.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                txtTaxPercentage.Visibility = Visibility.Collapsed;
+                lblTaxPercentage.Visibility = Visibility.Collapsed;
+                txtMinimumTaxLimit.Visibility = Visibility.Collapsed;
+                lblMinimumTaxLimit.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

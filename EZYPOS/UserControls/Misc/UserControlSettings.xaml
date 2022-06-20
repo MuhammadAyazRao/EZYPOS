@@ -201,16 +201,16 @@
                     <TextBox Name="txtExpiryAlertMonths"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="45" Grid.Row="3" Grid.Column="1" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Expiry Alert Before Months" PreviewTextInput="NumberOnly_PreviewTextInput" />
 
                     <Label VerticalContentAlignment="Center" FontSize="15" Content="Allow Tax" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" />
-                    <CheckBox Checked="ck_Checked" Unchecked="ck_Checked" Name="ckTax" Style="{DynamicResource CheckBoxStyle1}" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="45" Width="100" Grid.Row="1" Grid.Column="3"  />
-                    
-                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Tax Percentage" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="2" Grid.Column="2" />
-                    <TextBox Name="txtTaxPercentage"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="45" Grid.Row="2" Grid.Column="3" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Tax Percentage" PreviewTextInput="Decimal_PreviewTextInput" />
+                    <CheckBox Checked="ck_AllowTaxChecked" Unchecked="ck_AllowTaxChecked" Name="ckTax" Style="{DynamicResource CheckBoxStyle1}" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="45" Width="100" Grid.Row="1" Grid.Column="3"  />
 
-                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Minimum Tax Limit" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="3" Grid.Column="2" />
-                    <TextBox Name="txtMinimumTaxLimit"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="45" Grid.Row="3" Grid.Column="3" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Minimum Tax Limit" PreviewTextInput="NumberOnly_PreviewTextInput" />
+                    <Label VerticalContentAlignment="Center" FontSize="15" Name="lblItemBaseTax" Content="Item base Tax" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="2" Grid.Column="2" />
+                    <CheckBox Checked="ck_ItemBaseTaxChecked" Unchecked="ck_ItemBaseTaxChecked" Name="ckItemBaseTax" Style="{DynamicResource CheckBoxStyle1}" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="45" Width="100" Grid.Row="2" Grid.Column="3"  />
 
-                    <Label VerticalContentAlignment="Center" FontSize="15" Content="Item base Tax" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="4" Grid.Column="2" />
-                    <CheckBox Checked="ck_Checked" Unchecked="ck_Checked" Name="ckItemBaseTax" Style="{DynamicResource CheckBoxStyle1}" HorizontalAlignment="Left"  VerticalAlignment="Center" Height="45" Width="100" Grid.Row="4" Grid.Column="3"  />
+                    <Label Name="lblTaxPercentage" VerticalContentAlignment="Center" FontSize="15" Content="Tax Percentage" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="3" Grid.Column="2" />
+                    <TextBox Name="txtTaxPercentage"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="45" Grid.Row="3" Grid.Column="3" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Tax Percentage" PreviewTextInput="Decimal_PreviewTextInput" />
+
+                    <Label Name="lblMinimumTaxLimit" VerticalContentAlignment="Center" FontSize="15" Content="Minimum Tax Limit" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="4" Grid.Column="2" />
+                    <TextBox Name="txtMinimumTaxLimit"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="45" Grid.Row="4" Grid.Column="3" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Minimum Tax Limit" PreviewTextInput="NumberOnly_PreviewTextInput" />
 
                 </Grid>
             </GroupBox>

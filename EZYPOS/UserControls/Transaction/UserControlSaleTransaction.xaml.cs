@@ -1,5 +1,4 @@
 ﻿using Common;
-using Common;
 using Common.DTO;
 using Common.Session;
 using DAL.DBMODEL;
@@ -121,10 +120,14 @@ namespace EZYPOS.UserControls.Transaction
                 }
                 else
                 {
-                    foreach (var item in order?.OrdersDetails)
+                    if(order?.OrdersDetails != null)
                     {
-                        Tax += item.Item.Tax * item.Qty;
+                        foreach (var item in order?.OrdersDetails)
+                        {
+                            Tax += item.Item.Tax * item.Qty;
+                        }
                     }
+                    
                 }
 
             }
