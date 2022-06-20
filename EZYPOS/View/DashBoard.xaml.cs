@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using DAL.Repository;
 using LiveCharts;
 using LiveCharts.Wpf;
+using static Common.OrderEnums;
 
 namespace EZYPOS.View
 {
@@ -32,7 +33,7 @@ namespace EZYPOS.View
             PointLabel = chartPoint =>
                 string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
 
-            DataContext = this;
+            //DataContext = this;
             //pie chart
             BarChart();
             NegativeStackedRow();
@@ -231,24 +232,86 @@ namespace EZYPOS.View
 
         public void NegativeStackedRow()
         {
-            SeriesCollection1 = new SeriesCollection
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                new StackedRowSeries
-                {
-                    Title = "Male",
-                    Values = new ChartValues<double> {.5, .7, .8, .8, .6, .2, .6}
-                },
-                new StackedRowSeries
-                {
-                    Title = "Female",
-                    Values = new ChartValues<double> {-.5, -.7, -.8, -.8, -.6, -.2, -.6}
-                }
-            };
+                //Formation of Dates
+                var ThisStartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var ThisEndDate = ThisStartDate.AddMonths(1).AddDays(-1);
+                //Previous1
+                var P1StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1);
+                var P1EndDate = P1StartDate.AddMonths(1).AddDays(-1);
+                //Previous2
+                var P2StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-2);
+                var P2EndDate = P2StartDate.AddMonths(1).AddDays(-1);
+                //Previous3
+                var P3StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-3);
+                var P3EndDate = P3StartDate.AddMonths(1).AddDays(-1);
+                //Previous4
+                var P4StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-4);
+                var P4EndDate = P4StartDate.AddMonths(1).AddDays(-1);
+                //Previous5
+                var P5StartDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-5);
+                var P5EndDate = P5StartDate.AddMonths(1).AddDays(-1);
+                //End Formation of Dates
 
-            Labels1 = new[] { "0-20", "20-35", "35-45", "45-55", "55-65", "65-70", ">70" };
-            Formatter1 = value => Math.Abs(value).ToString("P");
+                //Start Credit and Sale Calculations
+                var SaleOrders = DB.SaleOrder.GetMappedOrder().Where(x => x.OrderStatus != Common.OrderStatus.Deleted.ToString() && x.OrderStatus != Common.OrderStatus.Canceled.ToString()).ToList();
+                var ThisCash = SaleOrders.Where(x => x.OrderDate >= ThisStartDate && x.OrderDate <= ThisEndDate && x.PaymentType == PaymentType.CASH && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                             - SaleOrders.Where(x => x.OrderDate >= ThisStartDate && x.OrderDate <= ThisEndDate && x.PaymentType == PaymentType.CASH && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                var ThisCredit = SaleOrders.Where(x => x.OrderDate >= ThisStartDate && x.OrderDate <= ThisEndDate && x.PaymentType == PaymentType.CREDIT && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                               - SaleOrders.Where(x => x.OrderDate >= ThisStartDate && x.OrderDate <= ThisEndDate && x.PaymentType == PaymentType.CREDIT && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                //Previous1
+                var P1Cash = SaleOrders.Where(x => x.OrderDate >= P1StartDate && x.OrderDate <= P1EndDate && x.PaymentType == PaymentType.CASH && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                           - SaleOrders.Where(x => x.OrderDate >= P1StartDate && x.OrderDate <= P1EndDate && x.PaymentType == PaymentType.CASH && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                var P1Credit = SaleOrders.Where(x => x.OrderDate >= P1StartDate && x.OrderDate <= P1EndDate && x.PaymentType == PaymentType.CREDIT && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                             - SaleOrders.Where(x => x.OrderDate >= P1StartDate && x.OrderDate <= P1EndDate && x.PaymentType == PaymentType.CREDIT && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                //Previous2
+                var P2Cash = SaleOrders.Where(x => x.OrderDate >= P2StartDate && x.OrderDate <= P2EndDate && x.PaymentType == PaymentType.CASH && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                           - SaleOrders.Where(x => x.OrderDate >= P2StartDate && x.OrderDate <= P2EndDate && x.PaymentType == PaymentType.CASH && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                var P2Credit = SaleOrders.Where(x => x.OrderDate >= P2StartDate && x.OrderDate <= P2EndDate && x.PaymentType == PaymentType.CREDIT && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                             - SaleOrders.Where(x => x.OrderDate >= P2StartDate && x.OrderDate <= P2EndDate && x.PaymentType == PaymentType.CREDIT && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                //Previous3
+                var P3Cash = SaleOrders.Where(x => x.OrderDate >= P3StartDate && x.OrderDate <= P3EndDate && x.PaymentType == PaymentType.CASH && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                           - SaleOrders.Where(x => x.OrderDate >= P3StartDate && x.OrderDate <= P3EndDate && x.PaymentType == PaymentType.CASH && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                var P3Credit = SaleOrders.Where(x => x.OrderDate >= P3StartDate && x.OrderDate <= P3EndDate && x.PaymentType == PaymentType.CREDIT && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                             - SaleOrders.Where(x => x.OrderDate >= P3StartDate && x.OrderDate <= P3EndDate && x.PaymentType == PaymentType.CREDIT && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                //Previous4
+                var P4Cash = SaleOrders.Where(x => x.OrderDate >= P4StartDate && x.OrderDate <= P4EndDate && x.PaymentType == PaymentType.CASH && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                           - SaleOrders.Where(x => x.OrderDate >= P4StartDate && x.OrderDate <= P4EndDate && x.PaymentType == PaymentType.CASH && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                var P4Credit = SaleOrders.Where(x => x.OrderDate >= P4StartDate && x.OrderDate <= P4EndDate && x.PaymentType == PaymentType.CREDIT && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                             - SaleOrders.Where(x => x.OrderDate >= P4StartDate && x.OrderDate <= P4EndDate && x.PaymentType == PaymentType.CREDIT && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                //Previous5
+                var P5Cash = SaleOrders.Where(x => x.OrderDate >= P5StartDate && x.OrderDate <= P5EndDate && x.PaymentType == PaymentType.CASH && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                           - SaleOrders.Where(x => x.OrderDate >= P5StartDate && x.OrderDate <= P5EndDate && x.PaymentType == PaymentType.CASH && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                var P5Credit = SaleOrders.Where(x => x.OrderDate >= P5StartDate && x.OrderDate <= P5EndDate && x.PaymentType == PaymentType.CREDIT && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                             - SaleOrders.Where(x => x.OrderDate >= P5StartDate && x.OrderDate <= P5EndDate && x.PaymentType == PaymentType.CREDIT && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
 
-            DataContext = this;
+                SeriesCollection1 = new SeriesCollection
+                {
+                    new StackedRowSeries
+                    {
+                        Title = "Cash",
+                        Values = new ChartValues<decimal> {Convert.ToDecimal(P5Cash), Convert.ToDecimal(P4Cash), Convert.ToDecimal(P3Cash), Convert.ToDecimal(P2Cash), Convert.ToDecimal(P1Cash), Convert.ToDecimal(ThisCash) }
+                    },
+                    new StackedRowSeries
+                    {
+                        Title = "Credit",
+                        Values = new ChartValues<decimal> {Convert.ToDecimal(P5Credit), Convert.ToDecimal(P4Credit), Convert.ToDecimal(P3Credit), Convert.ToDecimal(P2Credit), Convert.ToDecimal(P1Credit), Convert.ToDecimal(ThisCredit), }
+                    }
+                };
+                    string thismonth = DateTime.Now.ToString("MMMM");
+                    string previous1 = DateTime.Now.AddMonths(-1).ToString("MMMM");
+                    string previous2 = DateTime.Now.AddMonths(-2).ToString("MMMM");
+                    string previous3 = DateTime.Now.AddMonths(-3).ToString("MMMM");
+                    string previous4 = DateTime.Now.AddMonths(-4).ToString("MMMM");
+                    string previous5 = DateTime.Now.AddMonths(-5).ToString("MMMM");
+                    Labels1 = new[] { previous5, previous4, previous3, previous2, previous1, thismonth };
+                    Formatter1 = value => Math.Abs(value).ToString("P");
+                    //Formatter1 = value => value.ToString("N");
+
+                    //DataContext = this;
+            }
+
         }
         public SeriesCollection SeriesCollection { get; set; }
         public SeriesCollection SeriesCollection1 { get; set; }

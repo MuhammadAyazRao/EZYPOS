@@ -60,8 +60,8 @@ namespace EZYPOS.UserControls.Report
             }
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                var StartDate = new DateTime(Convert.ToInt32(ddYear.Text), Convert.ToInt32(ddMonth.SelectedValue), 1);
-                var EndDate = StartDate.AddMonths(1).AddDays(-1);
+                    var StartDate = new DateTime(Convert.ToInt32(ddYear.Text), Convert.ToInt32(ddMonth.SelectedValue), 1);
+                    var EndDate = StartDate.AddMonths(1).AddDays(-1);
                 // Sale 
                 List<Common.DTO.Order> SaleOrders = new List<Common.DTO.Order>();
                 if(ddPOS.SelectedValue == null || Convert.ToInt32(ddPOS.SelectedValue) == 0)
