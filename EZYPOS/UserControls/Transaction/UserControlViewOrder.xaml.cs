@@ -1,4 +1,5 @@
-﻿using Common.DTO;
+﻿using Common;
+using Common.DTO;
 using Common.Session;
 using DAL.Repository;
 using EZYPOS.Helper;
@@ -39,13 +40,26 @@ namespace EZYPOS.UserControls.Transaction
             // Preparing.Add(new Order { OrderId = 1, payment_status = "Paid" ,PaymentType="Cash"});
             //Preparing.Add(new Order { OrderId = 2, payment_status = "Paid", PaymentType = "Credit" });
         }
-
+        public IEnumerable<OrderStatus> GetOrderStatuses()
+        {
+            return Enum.GetValues(typeof(OrderStatus)).Cast<OrderStatus>();
+        }
         void Refresh()
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                ddCustomer.ItemsSource = DB.Customers.GetAll().ToList();
+                var CustomerList = DB.Customers.GetAll().Select(x=> new {Name = x.Name, Id = x.Id}).ToList();
+                CustomerList.Insert(0, new { Name = "All", Id = 0 });
+                ddCustomer.ItemsSource = CustomerList;
                 ddCustomer.SelectedValue = null;
+                var POSList = DB.POS.GetAll().Select(x=> new { Name = x.Name, Id= x.Id}).ToList();
+                POSList.Insert(0, new { Name = "All", Id = 0 });
+                ddPOS.ItemsSource = POSList;
+                ddPOS.SelectedValue = null;
+                var orderstatuslist = GetOrderStatuses().Select(x => new { Name = x.ToString() }).ToList();
+                orderstatuslist.Insert(0, new { Name = "All"});
+                ddOrderStatus.ItemsSource = orderstatuslist;
+                ddOrderStatus.SelectedValue = null;
                 ddPaymentStatus.SelectedValue = null;
                 ddPaymentMode.SelectedValue = null;
                 StartDate.SelectedDate = null;
@@ -54,7 +68,7 @@ namespace EZYPOS.UserControls.Transaction
                 listOrderAccepted.Items.Clear();
                 foreach (var item in DB.SaleOrder.GetMappedOrder(0).OrderByDescending(x=>x.OrderDate))
                 {
-                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, payment_status = item.payment_status, Instrictions = item.PaymentType, OrderCount =  item.GetNetTotal(), OrderDate = item.OrderDate });
+                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, POS = item.POS, OrderStatus = item.OrderStatus, payment_status = item.payment_status, Instrictions = item.PaymentType, OrderCount =  item.GetNetTotal(), OrderDate = item.OrderDate });
                 }                
             }           
         }
@@ -235,9 +249,19 @@ namespace EZYPOS.UserControls.Transaction
             Order Order = selectedItem.Content as Order;
             if (Order != null)
             {
+                if(Order.OrderStatus == OrderStatus.Deleted.ToString())
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("This Order Is Deleted Already", "Error", "Ok");
+                    return;
+                }
+                if (Order.OrderStatus == OrderStatus.Canceled.ToString())
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("This Order Is Canceled Already", "Error", "Ok");
+                    return;
+                }
                 using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-                    if (DB.SaleOrder.DeleteOrder(Order.OrderId, "Canceled"))
+                    if (DB.SaleOrder.DeleteOrder(Order.OrderId, OrderStatus.Canceled.ToString()))
                     {
                         EZYPOS.View.MessageBox.ShowCustom("Order Canceled Sucessfully", "Deleted Order", "Ok");
                         Refresh();
@@ -255,9 +279,19 @@ namespace EZYPOS.UserControls.Transaction
             Order Order = selectedItem.Content as Order;
             if (Order != null)
             {
+                if (Order.OrderStatus == OrderStatus.Deleted.ToString())
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("This Order Is Deleted Already", "Error", "Ok");
+                    return;
+                }
+                if (Order.OrderStatus == OrderStatus.Canceled.ToString())
+                {
+                    EZYPOS.View.MessageBox.ShowCustom("This Order Is Canceled Already", "Error", "Ok");
+                    return;
+                }
                 using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-                    if (DB.SaleOrder.DeleteOrder(Order.OrderId, "Deleted"))
+                    if (DB.SaleOrder.DeleteOrder(Order.OrderId, OrderStatus.Deleted.ToString()))
                     {
                         EZYPOS.View.MessageBox.ShowCustom("Order Deleted Sucessfully", "Deleted Order", "Ok");
                         Refresh();
@@ -281,18 +315,6 @@ namespace EZYPOS.UserControls.Transaction
                     SelectedCustomer = Convert.ToInt32(ddCustomer.SelectedValue);
                 }
                 string SelectedPaymentStatus = "";
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
                 if (ddPaymentStatus.SelectedValue != null)
                 {
                     SelectedPaymentStatus = Convert.ToString(ddPaymentStatus.Text);
@@ -305,9 +327,19 @@ namespace EZYPOS.UserControls.Transaction
                     SelectedPaymentMode = Convert.ToString(ddPaymentMode.Text);
                     SelectedPaymentMode = SelectedPaymentMode.ToUpper();
                 }
+                string SelectedOrderStatus = "";
+                if (ddOrderStatus.SelectedValue != null)
+                {
+                    SelectedOrderStatus = Convert.ToString(ddOrderStatus.Text);
+                    SelectedOrderStatus = SelectedOrderStatus.ToUpper();
+                }
+                string SelectedPOS = "";
+                if (ddPOS.SelectedValue != null)
+                {
+                    SelectedPOS = Convert.ToString(ddPOS.Text);
+                    SelectedPOS = SelectedPOS.ToUpper();
+                }
                 listOrderAccepted.Items.Clear();
-
-
                 List<Order> Allorders = DB.SaleOrder.GetMappedOrder().OrderByDescending(x=> x.OrderDate).ToList();
                 if(StartDate.SelectedDate != null && EndDate.SelectedDate != null)
                 {
@@ -328,10 +360,16 @@ namespace EZYPOS.UserControls.Transaction
 
                 if (SelectedPaymentMode != "ALL" && SelectedPaymentMode != "")
                 {
-                    Allorders = Allorders.Where(x => x.PaymentType == SelectedPaymentMode).ToList();
+                    Allorders = Allorders.Where(x => x.PaymentType.ToUpper() == SelectedPaymentMode).ToList();
                 }
-
-
+                if (SelectedOrderStatus != "ALL" && SelectedOrderStatus != "")
+                {
+                    Allorders = Allorders.Where(x => x.OrderStatus?.ToUpper() == SelectedOrderStatus).ToList();
+                }
+                if (SelectedPOS != "ALL" && SelectedPOS != "")
+                {
+                    Allorders = Allorders.Where(x => x.POS?.ToUpper() == SelectedPOS).ToList();
+                }
                 if (txtOrderNum.Text != "" && txtOrderNum.Text != "Order No")
                 {
                     int ordernum = Convert.ToInt32(txtOrderNum.Text);
@@ -340,7 +378,7 @@ namespace EZYPOS.UserControls.Transaction
 
                 foreach (var item in Allorders)
                 {
-                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, payment_status = item.payment_status, Instrictions = item.PaymentType, OrderCount =(int)item.GetNetTotal(), OrderDate = item.OrderDate,});
+                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, POS = item.POS, OrderStatus = item.OrderStatus, payment_status = item.payment_status, Instrictions = item.PaymentType, OrderCount =(int)item.GetNetTotal(), OrderDate = item.OrderDate,});
 
                 }
 
@@ -362,7 +400,7 @@ namespace EZYPOS.UserControls.Transaction
                 Allorders = Allorders.Where(x => x.OrderDate >= Sdate && x.OrderDate <= Edate).ToList();
                 foreach (var item in Allorders)
                 {
-                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, payment_status = item.payment_status, Instrictions = item.PaymentType, OrderCount = (int)item.GetNetTotal(), OrderDate = item.OrderDate,});
+                    listOrderAccepted.Items.Add(new Order { OrderId = item.OrderId, POS = item.POS, OrderStatus = item.OrderStatus, payment_status = item.payment_status, Instrictions = item.PaymentType, OrderCount = (int)item.GetNetTotal(), OrderDate = item.OrderDate,});
 
                 }
             }

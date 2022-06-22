@@ -265,15 +265,15 @@ namespace DAL.Repository
             _DbEntities.SaleOrderDetails.UpdateRange(allorderdet);
             var Order = _DbEntities.SaleOrders.Find(id);
             Order.IsDeleted = true;
-            if(type == "Deleted")
+            if(type == OrderStatus.Deleted.ToString())
             {
                 Order.OrderStatus = OrderStatus.Deleted.ToString();
             }
-            else if (type == "Canceled")
+            else if (type == OrderStatus.Canceled.ToString())
             {
                 Order.OrderStatus = OrderStatus.Canceled.ToString();
             }
-            else if (type == "Edited")
+            else if (type == OrderStatus.Edited.ToString())
             {
                 Order.OrderStatus = OrderStatus.Edited.ToString();
             }
