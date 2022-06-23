@@ -320,5 +320,20 @@ namespace EZYPOS.UserControls.Transaction
         {
             ActiveSession.CloseDisplayuserControlMethod(new SupplierPaymentList());
         }
+
+        private void DDSupplier_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                var items = Db.SupplierLead.GetAll().Where(x=> x.SuplierId == Convert.ToInt32(DDSupplier.SelectedValue)).GroupBy(x => x.SuplierId).Select(x => new { SuppId = x.Key, TotalDr = x.Sum(v => v.Dr), TotalCr = x.Sum(v => v.Cr), Balance = x.Sum(v => v.Dr) - x.Sum(v => v.Cr) }).ToList();
+                decimal Balance = 0;
+                string SupplierName = Db.Supplier.Get(Convert.ToInt32(DDSupplier.SelectedValue)).Name;
+                foreach (var item in items)
+                {
+                    Balance += (decimal)item.Balance;
+                }
+                lblBalance.Content = SupplierName + "'s Current Balance is: " + Balance;
+            }
+        }
     }
 }

@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EZYPOS.View"
-             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" xmlns:UserControls="clr-namespace:EZYPOS.UserControls.Report"
              mc:Ignorable="d" 
-             d:DesignHeight="1024" d:DesignWidth="768" d:DataContext="{d:DesignInstance local:DashBoard}">
+             Name="DashBoardUC" d:DesignHeight="1024" d:DesignWidth="768" d:DataContext="{d:DesignInstance local:DashBoard}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -16,15 +16,9 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Grid x:Name="barchart" Grid.Row="0" Grid.Column="0">
-        <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Left">
-            <lvc:CartesianChart.AxisX>
-                <lvc:Axis Title="Year Summary" Labels="{Binding Labels}"></lvc:Axis>
-            </lvc:CartesianChart.AxisX>
-            <lvc:CartesianChart.AxisY>
-                <lvc:Axis Title="Sold Apps" LabelFormatter="{Binding Formatter}"></lvc:Axis>
-            </lvc:CartesianChart.AxisY>
-        </lvc:CartesianChart>
+        <Grid x:Name="Report" Grid.Row="0" Grid.Column="0">
+            <UserControls:UserControlExpiryInformation x:Name="expiryUC" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"/>
+
         </Grid>
         <Grid x:Name="piechart" Grid.Row="0" Grid.Column="1">
             <lvc:PieChart LegendLocation="Bottom" DataClick="Chart_OnDataClick" Hoverable="False" DataTooltip="{x:Null}">
@@ -55,5 +49,16 @@
                 </lvc:CartesianChart.DataTooltip>
             </lvc:CartesianChart>
         </Grid>
+        <Grid x:Name="barchart" Grid.Row="1" Grid.Column="1">
+            <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Left">
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis Title="Year Summary" Labels="{Binding Labels}"></lvc:Axis>
+                </lvc:CartesianChart.AxisX>
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis Title="Sold Apps" LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart>
+        </Grid>
+
     </Grid>
 </UserControl>

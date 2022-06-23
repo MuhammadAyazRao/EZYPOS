@@ -322,5 +322,20 @@ namespace EZYPOS.UserControls.Transaction
         {
             ActiveSession.CloseDisplayuserControlMethod(new UserControlCustomerReceiptList());
         }
+
+        private void DDCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                var items = Db.CustomerLead.GetAll().Where(x=> x.CustomerId == Convert.ToInt32(DDCustomer.SelectedValue)).GroupBy(x => x.CustomerId).Select(x => new { CustId = x.Key, TotalDr = x.Sum(v => v.Dr), TotalCr = x.Sum(v => v.Cr), Balance = x.Sum(v => v.Dr) - x.Sum(v => v.Cr) }).ToList();
+                decimal Balance = 0;
+                string CustomerName = Db.Customers.Get(Convert.ToInt32(DDCustomer.SelectedValue)).Name;
+                foreach (var item in items)
+                {
+                    Balance += (decimal)item.Balance;
+                }
+                lblBalance.Content = CustomerName +"'s Current Blance is: "+ Balance ;
+            }
+        }
     }
 }
