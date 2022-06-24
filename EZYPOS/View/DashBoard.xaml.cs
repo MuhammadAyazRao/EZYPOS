@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Common;
 using DAL.Repository;
 using LiveCharts;
 using LiveCharts.Wpf;
@@ -37,6 +38,7 @@ namespace EZYPOS.View
             //pie chart
             BarChart();
             NegativeStackedRow();
+            PieChart();
         }
         public void BarChart()
         {
@@ -312,6 +314,60 @@ namespace EZYPOS.View
                     //DataContext = this;
             }
 
+        }
+        public void PieChart()
+        {
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                var SaleOrders = Db.SaleOrder.GetAll().ToList();
+                int New = SaleOrders.Where(x => x.OrderStatus == Common.OrderStatus.New.ToString()).Count();
+                int Refunded = SaleOrders.Where(x => x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Count();
+                int Deleted = SaleOrders.Where(x => x.OrderStatus == Common.OrderStatus.Deleted.ToString()).Count();
+                int Canceled = SaleOrders.Where(x => x.OrderStatus == Common.OrderStatus.Canceled.ToString()).Count();
+                int Edited = SaleOrders.Where(x => x.OrderStatus == Common.OrderStatus.Edited.ToString()).Count();
+                LiveCharts.SeriesCollection psc = new LiveCharts.SeriesCollection
+                {
+                    new LiveCharts.Wpf.PieSeries
+                    {
+                        Values = new LiveCharts.ChartValues<int> {New},
+                        Title = "New",
+                        DataLabels=true,
+                        LabelPoint=PointLabel,
+                    },
+                    new LiveCharts.Wpf.PieSeries
+                    {
+                        Values = new LiveCharts.ChartValues<int> {Deleted},
+                        Title = "Deleted",
+                        DataLabels=true,
+                        LabelPoint=PointLabel,
+                    },
+                    new LiveCharts.Wpf.PieSeries
+                    {
+                        Values = new LiveCharts.ChartValues<int> {Refunded},
+                        Title = "Refunded",
+                        DataLabels=true,
+                        LabelPoint=PointLabel,
+                    },
+                    new LiveCharts.Wpf.PieSeries
+                    {
+                        Values = new LiveCharts.ChartValues<int> {Canceled},
+                        Title = "Canceled",
+                        DataLabels=true,
+                        LabelPoint=PointLabel,
+                    },
+                    new LiveCharts.Wpf.PieSeries
+                    {
+                        Values = new LiveCharts.ChartValues<int> {Edited},
+                        Title = "Edited",
+                        DataLabels=true,
+                        LabelPoint=PointLabel,
+                    },
+                };
+                foreach (LiveCharts.Wpf.PieSeries ps in psc)
+                {
+                    myPieChart.Series.Add(ps);
+                }
+            }
         }
         public SeriesCollection SeriesCollection { get; set; }
         public SeriesCollection SeriesCollection1 { get; set; }

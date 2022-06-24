@@ -27,8 +27,11 @@ namespace EZYPOS.UserControls.Report
         {
             myList.Clear();
             var StartDate = DateTime.Today;
-            //int ExpiryAlertMonths = Convert.ToInt32(((List<DAL.DBMODEL.Setting>)ActiveSession.Setting).Where(x => x.AppKey == Common.SettingKey.ExpiryAlertMonths).FirstOrDefault().AppValue);
-            var MidDate = StartDate.AddMonths(2 /*Convert.ToInt32(ExpiryAlertMonths)*/);
+            int ExpiryAlertMonths = 1;
+            
+            ExpiryAlertMonths=Convert.ToInt32(((List<DAL.DBMODEL.Setting>)ActiveSession.Setting).Where(x => x.AppKey == Common.SettingKey.ExpiryAlertMonths).FirstOrDefault().AppValue);
+            
+            var MidDate = StartDate.AddMonths(ExpiryAlertMonths);
             var EndDate = new DateTime(MidDate.Year, MidDate.Month, DateTime.DaysInMonth(MidDate.Year, MidDate.Month));
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {

@@ -146,7 +146,7 @@
         </Border>
 
         <Border Background="{DynamicResource DarkBlue}" Margin="15,10,15,0"/>
-        <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Expiry Information" HorizontalAlignment="Left" Margin="15,10,0,10"/>
+        <Label x:Name="label1" Style="{DynamicResource lblLazeTitle}" Content="Expiry Information" HorizontalAlignment="Left" Margin="15,10,0,0"/>
         <Button  Content="{materialDesign:PackIcon Kind=Printer,Size=30}" Foreground="White" x:Name="Print" Click="Print_Click"  Style="{DynamicResource MaterialDesignIconButton}"  HorizontalAlignment="Right"   Margin="0,15,50,0" Width="50" Height="30" ToolTip="Print" VerticalAlignment="Top" />
         <WindowsFormsHost Visibility="Collapsed">
             <rv:ReportViewer BorderStyle="None" ZoomMode="PageWidth" x:Name="ReportViewer" />

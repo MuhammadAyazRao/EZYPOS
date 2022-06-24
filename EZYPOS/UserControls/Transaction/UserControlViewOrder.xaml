@@ -178,7 +178,20 @@
                     <Button Content="{materialDesign:PackIcon Kind=Printer,Size=25}" ToolTip="Print" Foreground="{StaticResource Success}" Name="Print" Click="Print_Click" Margin="3 0" Style="{DynamicResource MaterialDesignIconButton}"/>
                     <Button Content="{materialDesign:PackIcon Kind=Pencil,Size=25}" ToolTip="Edit" Name="Edit" Click="Edit_Click" Margin="3 0" Style="{DynamicResource MaterialDesignIconButton}"/>
                     <Button Content="{materialDesign:PackIcon Kind=Delete,Size=25}" ToolTip="Delete" Foreground="{StaticResource Danger}" Name="Delete" Click="Delete_Click" Margin="3 0" Style="{DynamicResource MaterialDesignIconButton}"/>
-                    <Button Content="{materialDesign:PackIcon Kind=Cancel,Size=25}" ToolTip="Cancel" Foreground="{StaticResource Danger}" Name="Cancel" Click="Cancel_Click" Margin="3 0" Style="{DynamicResource MaterialDesignIconButton}"/>
+                    <!--<Button Content="{materialDesign:PackIcon Kind=Cancel,Size=25}" ToolTip="Cancel" Foreground="{StaticResource Danger}" Name="Cancel" Click="Cancel_Click" Margin="3 0" Style="{DynamicResource MaterialDesignIconButton}"/>-->
+                    <Border Margin="3 0" HorizontalAlignment="Right">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding OrderStatus}" Value="Deleted">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Button Content="{materialDesign:PackIcon Kind=Cancel,Size=25}" ToolTip="Cancel" Foreground="{StaticResource Danger}" Name="Cancel" Click="Cancel_Click" Margin="3 0" Style="{DynamicResource MaterialDesignIconButton}"/>
+                    </Border>
                 </StackPanel>
             </Grid>
         </DataTemplate>

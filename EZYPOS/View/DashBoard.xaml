@@ -21,9 +21,9 @@
 
         </Grid>
         <Grid x:Name="piechart" Grid.Row="0" Grid.Column="1">
-            <lvc:PieChart LegendLocation="Bottom" DataClick="Chart_OnDataClick" Hoverable="False" DataTooltip="{x:Null}">
-                <lvc:PieChart.Series>
-                    <lvc:PieSeries Title="New" Values="30" DataLabels="True"
+            <lvc:PieChart x:Name="myPieChart" LegendLocation="Bottom" DataClick="Chart_OnDataClick" Hoverable="False" DataTooltip="{x:Null}">
+                <!--<lvc:PieChart.Series >
+                    --><!--<lvc:PieSeries Title="New" Values="30" DataLabels="True"
                                LabelPoint="{Binding PointLabel}"/>
                     <lvc:PieSeries Title="Canceled" Values="4" DataLabels="True" 
                                LabelPoint="{Binding PointLabel}"/>
@@ -32,8 +32,8 @@
                     <lvc:PieSeries Title="Edited" Values="2" DataLabels="True" 
                                LabelPoint="{Binding PointLabel}"/>
                     <lvc:PieSeries Title="Refunded" Values="2" DataLabels="True" 
-                               LabelPoint="{Binding PointLabel}"/>
-                </lvc:PieChart.Series>
+                               LabelPoint="{Binding PointLabel}"/>--><!--
+                </lvc:PieChart.Series>-->
             </lvc:PieChart>
         </Grid>
         <Grid x:Name="negativestackedrow" Grid.Row="1" Grid.Column="0" Margin="0,0,0,30">
