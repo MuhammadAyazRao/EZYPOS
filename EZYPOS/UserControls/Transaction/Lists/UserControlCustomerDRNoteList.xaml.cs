@@ -206,7 +206,9 @@ namespace EZYPOS.UserControls.Transaction.Lists
                 using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
                     DB.CustomerDRNote.Delete(CRDTO.Id);
+                    DB.CustomerLead.Delete(DB.CustomerLead.GetAll().Where(x => x.TransactionType == Common.InvoiceType.CustomerDrNote && x.TransactionId == CRDTO.Id).FirstOrDefault().Id);
                     DB.CustomerDRNote.Save();
+                    DB.CustomerLead.Save();
                 }
                 Refresh();
             }

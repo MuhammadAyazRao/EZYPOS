@@ -218,6 +218,23 @@ namespace EZYPOS.UserControls.Transaction
                         sp.EmployeeId = Convert.ToInt32(DDReceivedBy.SelectedValue);
                         sp.CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
                         Db.CustomerReceipt.Save();
+
+                        //Ledger
+                        CustomerLead CustomerLedCR = Db.CustomerLead.GetAll().Where(x=> x.TransactionType == Common.InvoiceType.CustomerReceipt && x.TransactionId ==Convert.ToInt32(txtId.Text)).FirstOrDefault();
+                        CustomerLedCR.Cr = Convert.ToDecimal(txtAmount.Text);
+                        CustomerLedCR.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
+                        CustomerLedCR.TransactionId = sp.Id;
+                        CustomerLedCR.TransactionType = Common.InvoiceType.CustomerReceipt;
+                        if (string.IsNullOrEmpty(txtDiscription.Text))
+                        {
+                            CustomerLedCR.TransactionDetail = "Customer Paid on Date: " + TransactionDate.SelectedDate?.ToString("dd/MM/yyyy") + " against CR Invoice Number # " + sp.Id;
+                        }
+                        else
+                        {
+                            CustomerLedCR.TransactionDetail = txtDiscription.Text + " against Customer Receipt Invoice Number # " + sp.Id;
+                        }
+                        CustomerLedCR.CustomerId = Convert.ToInt32(DDCustomer.SelectedValue);
+                        Db.CustomerLead.Save();
                         EZYPOS.View.MessageBox.ShowCustom("Your Record Updated Succesfully", "Message", "Ok");
                         RefreshPage();
                     }
@@ -329,7 +346,11 @@ namespace EZYPOS.UserControls.Transaction
             {
                 var items = Db.CustomerLead.GetAll().Where(x=> x.CustomerId == Convert.ToInt32(DDCustomer.SelectedValue)).GroupBy(x => x.CustomerId).Select(x => new { CustId = x.Key, TotalDr = x.Sum(v => v.Dr), TotalCr = x.Sum(v => v.Cr), Balance = x.Sum(v => v.Dr) - x.Sum(v => v.Cr) }).ToList();
                 decimal Balance = 0;
-                string CustomerName = Db.Customers.Get(Convert.ToInt32(DDCustomer.SelectedValue)).Name;
+                string CustomerName = "";
+                if(DDCustomer.SelectedValue != null)
+                {
+                    CustomerName = Db.Customers.Get(Convert.ToInt32(DDCustomer.SelectedValue)).Name;
+                }
                 foreach (var item in items)
                 {
                     Balance += (decimal)item.Balance;

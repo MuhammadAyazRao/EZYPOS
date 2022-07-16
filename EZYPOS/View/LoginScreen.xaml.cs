@@ -25,8 +25,8 @@ namespace EZYPOS.View
             InitializeComponent();
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                var EmployeeList = Db.Employee.GetAll().Where(x=> x.IsLoginAllowed == true).Select(x => new { Name = x.UserName, Id = x.Id }).ToList();
-                if (EmployeeList == null && EmployeeList.Count<=0)
+                var EmployeeList = Db.Employee.GetAll().Where(x => x.IsLoginAllowed == true).Select(x => new { Name = x.UserName, Id = x.Id }).ToList();
+                if (EmployeeList == null || EmployeeList.Count <= 0)
                 {
                     Emplyee Employee = new Emplyee();
                     Employee.City = null;
@@ -87,9 +87,6 @@ namespace EZYPOS.View
             Application.Current.Shutdown();
 
         }
-
-
-
         private void txtPas_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.Enter)

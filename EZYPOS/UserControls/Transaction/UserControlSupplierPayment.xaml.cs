@@ -216,6 +216,24 @@ namespace EZYPOS.UserControls.Transaction
                         sp.EmployeeId = Convert.ToInt32(DDPayedBy.SelectedValue);
                         sp.SupplierId = Convert.ToInt32(DDSupplier.SelectedValue);
                         Db.SupplierPayment.Save();
+
+                        //Ledger
+                        SupplierLead SupplierLeadCR = Db.SupplierLead.GetAll().Where(x=> x.TransactionType == Common.InvoiceType.SupplierPayment && x.TransactionId ==Convert.ToInt32(txtId.Text)).FirstOrDefault();
+                        SupplierLeadCR.Cr = Convert.ToDecimal(txtAmount.Text);
+                        SupplierLeadCR.TransactionDate = Convert.ToDateTime(TransactionDate.Text);
+                        SupplierLeadCR.TransactionId = sp.Id;
+                        SupplierLeadCR.TransactionType = Common.InvoiceType.SupplierPayment;
+                        if (string.IsNullOrEmpty(txtDiscription.Text))
+                        {
+                            SupplierLeadCR.TransactionDet = "Supplier Received On Date: " + TransactionDate.SelectedDate?.ToString("dd/MM/yyyy") + " against CR Invoice Number # " + sp.Id;
+                        }
+                        else
+                        {
+                            SupplierLeadCR.TransactionDet = txtDiscription.Text + " Supplier Payment Invoice Number # " + sp.Id;
+                        }
+                        SupplierLeadCR.SuplierId = Convert.ToInt32(DDSupplier.SelectedValue);
+                        Db.SupplierLead.Save();
+
                         EZYPOS.View.MessageBox.ShowCustom("Your Record Updated Succesfully", "Message", "Ok");
                         RefreshPage();
                     }
@@ -275,8 +293,9 @@ namespace EZYPOS.UserControls.Transaction
                     using(UnitOfWork db= new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                     {
                         db.SupplierPayment.Delete(Convert.ToInt32(txtId.Text));
-                        db.SupplierLead.Delete(db.SupplierLead.GetAll().Where(x => x.TransactionType == Common.InvoiceType.SupplierDRNote && x.TransactionId == Convert.ToInt32(txtId.Text)).FirstOrDefault().Id);
+                        db.SupplierLead.Delete(db.SupplierLead.GetAll().Where(x => x.TransactionType == Common.InvoiceType.SupplierPayment && x.TransactionId == Convert.ToInt32(txtId.Text)).FirstOrDefault().Id);
                         db.SupplierPayment.Save();
+                        db.SupplierLead.Save();
                         RefreshPage();
                     }
                 }
@@ -327,7 +346,11 @@ namespace EZYPOS.UserControls.Transaction
             {
                 var items = Db.SupplierLead.GetAll().Where(x=> x.SuplierId == Convert.ToInt32(DDSupplier.SelectedValue)).GroupBy(x => x.SuplierId).Select(x => new { SuppId = x.Key, TotalDr = x.Sum(v => v.Dr), TotalCr = x.Sum(v => v.Cr), Balance = x.Sum(v => v.Dr) - x.Sum(v => v.Cr) }).ToList();
                 decimal Balance = 0;
-                string SupplierName = Db.Supplier.Get(Convert.ToInt32(DDSupplier.SelectedValue)).Name;
+                string SupplierName = "";
+                if(DDSupplier.SelectedValue != null)
+                {
+                    SupplierName = Db.Supplier.Get(Convert.ToInt32(DDSupplier.SelectedValue)).Name;
+                }
                 foreach (var item in items)
                 {
                     Balance += (decimal)item.Balance;

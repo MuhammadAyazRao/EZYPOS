@@ -189,7 +189,7 @@ namespace EZYPOS.UserControls.Transaction
                     try
                     {
                         DB.SupplierPayment.Delete(SupplierPaymentDTO.Id);
-                        DB.SupplierLead.Delete(DB.SupplierLead.GetAll().Where(x => x.TransactionType == Common.InvoiceType.SupplierDRNote && x.TransactionId == Convert.ToInt32(SupplierPaymentDTO.Id)).FirstOrDefault().Id);
+                        DB.SupplierLead.Delete(DB.SupplierLead.GetAll().Where(x => x.TransactionType == Common.InvoiceType.SupplierPayment && x.TransactionId == Convert.ToInt32(SupplierPaymentDTO.Id)).FirstOrDefault().Id);
                         DB.SupplierPayment.Save();
                         EZYPOS.View.MessageBox.ShowCustom("Record Deleted Successfully", "Status", "OK");
                         Refresh();
