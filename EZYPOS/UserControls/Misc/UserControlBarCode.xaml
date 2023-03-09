@@ -78,7 +78,7 @@
 
 
                 <Button x:Name="View" Content="Generate" Click="View_Click"></Button>
-                <Button x:Name="Print" Content="Print" Click="Print_Click"></Button>
+                <Button x:Name="Print" Content="Print" Margin="10,0,0,0" Click="Print_Click"></Button>
             </StackPanel>
             <StackPanel Orientation="Vertical" Background="Pink">
                 

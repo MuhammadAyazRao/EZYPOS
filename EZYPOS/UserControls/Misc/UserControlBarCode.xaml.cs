@@ -62,20 +62,20 @@ namespace EZYPOS.UserControls.Misc
                 f.PageHeight = 94;                
                 Paragraph p = new Paragraph();               
                 {
-                    Image ReslogoImg = new Image();
+                    Image BarcodeImg = new Image();
                     //ReslogoImg.Margin = new Thickness(0, 10, 0, 10);                   
-                    ReslogoImg.Width = pageWidth;
-                    ReslogoImg.Height = 120;
+                    BarcodeImg.Width = pageWidth;
+                    BarcodeImg.Height = 90;
                     try
                     {
-                        ReslogoImg.Source = new BitmapImage(new Uri(path));
+                        BarcodeImg.Source = new BitmapImage(new Uri(path));
                     }
                     catch (FileNotFoundException ex)
                     {
                        // Views.MessageBox.ShowCustom(ex.FileName + " Restaurant Logo not found.", "Invoice Error", "Ok");
                     }
 
-                    p.Inlines.Add(ReslogoImg);
+                    p.Inlines.Add(BarcodeImg);
                     f.Blocks.Add(p);
 
                 }
@@ -120,7 +120,7 @@ namespace EZYPOS.UserControls.Misc
                     image.Save(fileName, System.Drawing.Imaging.ImageFormat.Jpeg);
                     SetImage(fileName);
                     PrintDialog print = new PrintDialog();
-                    print.PrintDocument(((IDocumentPaginatorSource)printLable(fileName, 1)).DocumentPaginator, "Test");
+                    print.PrintDocument(((IDocumentPaginatorSource)printLable(fileName, 1)).DocumentPaginator, "Barcode");
                     if (File.Exists(fileName))
                     {
                         File.Delete(fileName);
@@ -163,8 +163,8 @@ namespace EZYPOS.UserControls.Misc
                     b.ImageFormat = System.Drawing.Imaging.ImageFormat.Jpeg;
                     System.Drawing.Font font = new System.Drawing.Font("verdana", 10f);
                     b.LabelFont = font;
-                    b.Height = 120;
-                    b.Width = 290;
+                    b.Height = 93;
+                    b.Width = 287;
 
                     image = b.Encode(BarcodeLib.TYPE.UPCA, txtBarcode.Text);//生成图片
                     image.Save(fileName, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -183,7 +183,7 @@ namespace EZYPOS.UserControls.Misc
         private void Print_Click(object sender, RoutedEventArgs e)
         {
             PrintDialog print = new PrintDialog();
-            print.PrintDocument(((IDocumentPaginatorSource)printLable(fileName, 1)).DocumentPaginator, "Test");
+            print.PrintDocument(((IDocumentPaginatorSource)printLable(fileName, 1)).DocumentPaginator, "Barcode");
             
             bcode.Source = null;
             //if (File.Exists(fileName))
