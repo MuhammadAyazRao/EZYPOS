@@ -56,14 +56,14 @@ namespace EZYPOS.UserControls.Misc
 
                 f = new FlowDocument();
                 f.PageWidth = pageWidth;
-                f.PagePadding = new Thickness(10);
+                f.PagePadding = new Thickness(5);
                 f.FontFamily = new FontFamily("Verdana");
                 f.FontSize = 12;
-                f.PageHeight = 140;                
+                f.PageHeight = 94;                
                 Paragraph p = new Paragraph();               
                 {
                     Image ReslogoImg = new Image();
-                    ReslogoImg.Margin = new Thickness(0, 10, 0, 10);                   
+                    //ReslogoImg.Margin = new Thickness(0, 10, 0, 10);                   
                     ReslogoImg.Width = pageWidth;
                     ReslogoImg.Height = 120;
                     try
@@ -113,8 +113,8 @@ namespace EZYPOS.UserControls.Misc
                     b.ImageFormat = System.Drawing.Imaging.ImageFormat.Jpeg;//图片格式
                     System.Drawing.Font font = new System.Drawing.Font("verdana", 10f);//字体设置
                     b.LabelFont = font;
-                    b.Height = 120;//图片高度设置(px单位)
-                    b.Width = 290;//图片宽度设置(px单位)
+                    b.Height = 93;//图片高度设置(px单位)
+                    b.Width = 287;//图片宽度设置(px单位)
 
                     image = b.Encode(BarcodeLib.TYPE.UPCA, "038000356216");//生成图片
                     image.Save(fileName, System.Drawing.Imaging.ImageFormat.Jpeg);

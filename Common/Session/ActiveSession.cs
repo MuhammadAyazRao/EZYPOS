@@ -10,7 +10,7 @@ namespace Common.Session
     {
         #region DatabaseSettings
         //public static string Database = "Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=False;User ID=admin;Password=A722713yaz@";
-        public static string CompleteConnection = "Data Source=DESKTOP-4GEDHEB\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;";
+        public static string CompleteConnection = "Data Source=DESKTOP-SF5UVV3;Database=EPOS-DB;Trusted_Connection=True;";
         //public static string DummyConnection = "Data Source=<<server>>,1433;Database=<<database>>;Trusted_Connection=False;User ID=EzyposAdmin;Password=123";
         public static string DummyConnection = "Data Source=<<server>>;Database=<<database>>;Trusted_Connection=True";
         public static string ServerName = "HAIER-PC\\SQLEXPRESS";
