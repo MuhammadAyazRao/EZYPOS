@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Common.Session
 {
-  public static  class ActiveSession
-    {
-        #region DatabaseSettings
-        //public static string Database = "Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=False;User ID=admin;Password=A722713yaz@";
-        public static string CompleteConnection = "Data Source=DESKTOP-SF5UVV3;Database=EPOS-DB;Trusted_Connection=True;";
-        //public static string DummyConnection = "Data Source=<<server>>,1433;Database=<<database>>;Trusted_Connection=False;User ID=EzyposAdmin;Password=123";
-        public static string DummyConnection = "Data Source=<<server>>;Database=<<database>>;Trusted_Connection=True";
-        public static string ServerName = "HAIER-PC\\SQLEXPRESS";
+  public static  class ActiveSession {
+    #region DatabaseSettings
+    //public static string Database = "Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=False;User ID=admin;Password=A722713yaz@";
+    //public static string CompleteConnection = "Data Source=DESKTOP-SF5UVV3;Database=EPOS-DB;Trusted_Connection=True;";
+    public static string CompleteConnection = "Data Source=ZULQAR\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=False;User ID=admin;Password=A722713yaz@";
+    public static string DummyConnection = "Data Source=<<server>>;Database=<<database>>;Trusted_Connection=False;User ID=admin;Password=A722713yaz@";
+    //public static string DummyConnection = "Data Source=<<server>>;Database=<<database>>;Trusted_Connection=True";
+    public static string ServerName = "ZULQAR\\SQLEXPRESS";
         public static string UserName = "admin";
         public static string Password = "A722713yaz@";
         public static string DatabaseName = "EPOS-DB";
