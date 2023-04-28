@@ -204,6 +204,7 @@
                             </ContentControl>
                             <!--<TextBlock Text="{Binding Qty}"   Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" TextAlignment="Center" Margin="200 5 0 0" Width="30" HorizontalAlignment="Left" VerticalAlignment="Top"/>-->
                             <TextBlock Text="{Binding Item.price, StringFormat=C}" Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" TextAlignment="Left" Margin="220 5 0 0" Width="90" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                            <TextBlock Text="{Binding Item.reward_points}" Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" TextAlignment="Left" Margin="180 5 0 0" Width="90" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                             <TextBlock Text="{Binding GetTotal, StringFormat=C}" Grid.Row="0" Foreground="{DynamicResource White}" FontWeight="Bold" TextAlignment="Right" Margin="290 5 0 0" Width="80" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                             <StackPanel Grid.Row="1" Margin="0">
                                 <Border Visibility="{Binding DiscVisibility}" Width="263" Margin="0 0 5 5">
@@ -253,8 +254,8 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <StackPanel Visibility="Collapsed" Grid.Row="0" x:Name="cartHeader"  Height="25" VerticalAlignment="Top" Orientation="Horizontal">
-                <Label Content="PRODUCTS" FontSize="9" HorizontalAlignment="Left" Margin="5 0 0 0" VerticalContentAlignment="Bottom" Width="230"/>
-                <!--<Label Content="QTY" FontSize="9" VerticalContentAlignment="Bottom" Width="40" HorizontalContentAlignment="Center"/>-->
+                <Label Content="PRODUCTS" FontSize="9" HorizontalAlignment="Left" Margin="5 0 0 0" VerticalContentAlignment="Bottom" Width="120"/>
+                <Label Content="REWARD POINTS" FontSize="9" VerticalContentAlignment="Bottom" Width="100" HorizontalContentAlignment="Left" />
                 <Label HorizontalContentAlignment="left" Content="Each" FontSize="9" VerticalContentAlignment="Bottom" Width="90"/>
                 <Label HorizontalContentAlignment="Right" Content="Total" FontSize="9" VerticalContentAlignment="Bottom" Width="60"/>
             </StackPanel>
@@ -288,13 +289,15 @@
                     <Label Content="Total Tax" Foreground="{DynamicResource DarkBlue}" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left" Width="99" Margin="9,26,0,0" Height="26" VerticalAlignment="Top" />
                     <Label x:Name="lblTax" Foreground="{DynamicResource DarkBlue}" Content="0.00" Grid.Row="0" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalAlignment="Top" Width="Auto" Margin="54,26,6,0" Height="26" RenderTransformOrigin="0.5,0.308" Grid.Column="0"/>
 
-                    <Label Content="Total Charges" Grid.Column="1" Foreground="{DynamicResource Danger}" FontWeight="Bold" VerticalAlignment="Bottom" Margin="1,0,45,86" Height="26"/>
+                    <Label Content="Total Charges" Grid.Column="1" Foreground="{DynamicResource Danger}" FontWeight="Bold" VerticalAlignment="Top" Margin="1,0,45,86" Height="26"/>
                     <Label Name="lblTotal" Content="0.00" ContentStringFormat="C" FontWeight="Bold" Foreground="{DynamicResource Danger}"  Grid.Column="1" HorizontalContentAlignment="Right" VerticalAlignment="Top" Width="Auto" Margin="95,0,10,0" Height="26"/>
 
                     <Label Content="Delivery Charges" Grid.Column="1" Foreground="{DynamicResource SharpBlue}" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left" Width="99" Margin="1,26,0,0" Height="26" VerticalAlignment="Top" />
                     <Label x:Name="lblDeliveryCharges" Grid.Column="1" Foreground="{DynamicResource SharpBlue}" Content="0.00" ContentStringFormat="C" Grid.Row="0" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalAlignment="Top" Width="Auto" Margin="95,26,10,0" Height="26" RenderTransformOrigin="0.5,0.308"/>
-                    
-                    <WrapPanel x:Name="stackBtn" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="0,62,0,0" >
+                    <Label Content="Reward Points" Grid.Column="1" Foreground="{DynamicResource SharpBlue}" FontWeight="Bold" Grid.Row="0" HorizontalAlignment="Left" Width="99" Margin="1,52,0,0" Height="26" VerticalAlignment="Top" />
+                    <Label x:Name="lblRewardPoints" Grid.Column="1" Foreground="{DynamicResource SharpBlue}" Content="0.00" Grid.Row="0" HorizontalContentAlignment="Right" FontWeight="Bold" VerticalAlignment="Top" Width="Auto" Margin="95,52,10,0" Height="26" RenderTransformOrigin="0.5,0.308"/>
+
+                    <WrapPanel x:Name="stackBtn" Orientation="Horizontal" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="0,82,0,0" >
                         <Button Content="{materialDesign:PackIcon Kind=FormatListText,Size=30}" Name="Back" ToolTip="Go to View Order" Click="Back_Click" Width="55"  Style="{DynamicResource btnExpander}"/>
                         <Button Content="{materialDesign:PackIcon Kind=Close,Size=30}" Name="EndSession" ToolTip="End Session" Click="EndSession_Click" Width="55" Style="{DynamicResource btnExpander}"/>
                         <Button Content="{materialDesign:PackIcon Kind=Discount,Size=30}" Name="orderDiscount" ToolTip="Order Discount" Click="orderDiscount_Click" Width="55" Style="{DynamicResource btnExpander}"/>
