@@ -25,6 +25,6 @@ namespace EZYPOS.DTO
         public DateTime? Lastupdated { get; set; }
         public int? Createdby { get; set; }
         public DateTime? Createdon { get; set; }
-       
-    }
+    public decimal? RewardPoints { get; set; }
+  }
 }

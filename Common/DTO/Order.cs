@@ -104,7 +104,12 @@ namespace Common.DTO
             return ((GetTotal() + DeliverCharges + ServiceCharges) - GetCouponDiscount()) - Discount;
         }
 
+    public object GetTotalRewardPoints() {
+      if (OrdersDetails == null)
+        return 0;
+      return OrdersDetails.Sum(x => x.Item.reward_points*x.Qty);
     }
+  }
     public class OrderDetail : PropertyHelper
     {
 
@@ -354,6 +359,7 @@ namespace Common.DTO
         public string kitchen_lines { get; set; }
         public string addon_display_inline { get; set; }
         public string status { get; set; }
+    public decimal reward_points { get; set; }
     }
 
     

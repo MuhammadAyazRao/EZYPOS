@@ -41,5 +41,6 @@ namespace DAL.DBMODEL
         public virtual ICollection<ProductStock> ProductStocks { get; set; }
         public virtual ICollection<StockLead> StockLeads { get; set; }
         public virtual ICollection<StockOderDetail> StockOderDetails { get; set; }
-    }
+    public decimal? RewardPoints { get; set; }
+  }
 }

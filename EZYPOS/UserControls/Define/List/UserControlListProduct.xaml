@@ -276,6 +276,18 @@
                             </DataTemplate>
                         </DataGridTextColumn.HeaderTemplate>
                     </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding RewardPoints}"  IsReadOnly="True">
+                        <DataGridTextColumn.HeaderTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Content, RelativeSource=
+                                         {RelativeSource Mode=TemplatedParent}}"/>
+                                    <TextBox materialDesign:HintAssist.Hint="Reward Points"
+  Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="GridRewardPoints" Width="100" PreviewTextInput="NumberDecimal_PreviewTextInput"  KeyDown="GridName_KeyDown"   />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTextColumn.HeaderTemplate>
+                    </DataGridTextColumn>
                     <DataGridTemplateColumn  IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
