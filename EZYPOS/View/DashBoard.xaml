@@ -4,23 +4,55 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EZYPOS.View"
-             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" xmlns:UserControls="clr-namespace:EZYPOS.UserControls.Report"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" xmlns:UserControls="clr-namespace:EZYPOS.UserControls.Report" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              Name="DashBoardUC" d:DesignHeight="1024" d:DesignWidth="768" d:DataContext="{d:DesignInstance local:DashBoard}">
+    
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid x:Name="Report" Grid.Row="0" Grid.Column="0">
-            <UserControls:UserControlExpiryInformation x:Name="expiryUC" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top"/>
+        <Grid x:Name="Buttons" Grid.Row="0" Margin="75,10,0,0" Grid.Column="0" Grid.ColumnSpan="2">
+            <Button  Content="Sale Order" Width="230"  Name="SaleOrder" Click="SaleOrder_Click"  Style="{DynamicResource btnInfo}"  HorizontalAlignment="Left" />
+            <Button  Content="Purchase Order" Width="230" Margin="247,0,0,0"  Name="PurchaseOrder" Click="PurchaseOrder_Click"  Style="{DynamicResource btnInfo}"  HorizontalAlignment="Left" />
+            <Button  Content="View Sale Order" Width="230" Margin="493,0,0,0"  Name="ViewSaleOrder" Click="ViewSaleOrder_Click"  Style="{DynamicResource btnInfo}"  HorizontalAlignment="Left" />
+            <Button  Content="View Purchase Order" Width="230" Margin="739,0,0,0"  Name="ViewPurchaseOrder" Click="ViewPurchaseOrder_Click"  Style="{DynamicResource btnInfo}"  HorizontalAlignment="Left" />
+            <Button  Content="Settings" Width="230" Margin="985,0,0,0"  Name="Settings" Click="Settings_Click"  Style="{DynamicResource btnInfo}"  HorizontalAlignment="Left" />
 
         </Grid>
-        <Grid x:Name="piechart" Grid.Row="0" Grid.Column="1">
+        <Grid x:Name="Tiles" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            <ListBox Width="1360" BorderThickness="0" Name="listKitchenLineItems" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Width="230"  Height="150" CornerRadius="5" Background="{Binding coloroftile}">
+                            <Grid>
+                                <Label Height="30" VerticalAlignment="Top"  HorizontalContentAlignment="Center" HorizontalAlignment="Center" Width="210" Margin="10,15,10,10" Foreground="White" FontWeight="Bold">
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding Key}"></TextBlock>
+                                </Label>
+                                <Label FontSize="30" Height="95" VerticalAlignment="Top"  HorizontalContentAlignment="Center" HorizontalAlignment="Center" Width="210" Margin="10,45,10,10" Foreground="White">
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding Value}"></TextBlock>
+                                </Label>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </Grid>
+        <Grid x:Name="piechart" Grid.Row="2" Grid.Column="0">
             <lvc:PieChart x:Name="myPieChart" LegendLocation="Bottom" DataClick="Chart_OnDataClick" Hoverable="False" DataTooltip="{x:Null}">
                 <!--<lvc:PieChart.Series >
                     --><!--<lvc:PieSeries Title="New" Values="30" DataLabels="True"
@@ -36,7 +68,7 @@
                 </lvc:PieChart.Series>-->
             </lvc:PieChart>
         </Grid>
-        <Grid x:Name="negativestackedrow" Grid.Row="1" Grid.Column="0" Margin="0,0,0,30">
+        <!--<Grid x:Name="negativestackedrow" Grid.Row="1" Grid.Column="0" Margin="0,0,0,30">
             <lvc:CartesianChart Series="{Binding SeriesCollection1}">
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis LabelFormatter="{Binding Formatter1}"></lvc:Axis>
@@ -48,8 +80,8 @@
                     <lvc:DefaultTooltip SelectionMode="SharedYValues"></lvc:DefaultTooltip>
                 </lvc:CartesianChart.DataTooltip>
             </lvc:CartesianChart>
-        </Grid>
-        <Grid x:Name="barchart" Grid.Row="1" Grid.Column="1">
+        </Grid>-->
+        <Grid x:Name="barchart" Grid.Row="2" Grid.Column="1">
             <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Left">
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis Title="Year Summary" Labels="{Binding Labels}"></lvc:Axis>

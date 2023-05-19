@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,12 +10,18 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Common;
+using Common.Session;
 using DAL.Repository;
+using EZYPOS.DTO;
+using EZYPOS.Helper;
+using EZYPOS.UserControls.Misc;
+using EZYPOS.UserControls.Transaction;
 using LiveCharts;
 using LiveCharts.Wpf;
 using static Common.OrderEnums;
@@ -28,7 +36,7 @@ namespace EZYPOS.View
         public DashBoard()
         {
             InitializeComponent();
-            
+
 
             //pie chart
             PointLabel = chartPoint =>
@@ -39,6 +47,88 @@ namespace EZYPOS.View
             BarChart();
             NegativeStackedRow();
             PieChart();
+            Refresh();
+            //listKitchenLineItems.ItemsSource = GetProducts();
+        }
+        
+
+        private void Refresh(object sender = null)
+        {
+            List<GeneralReportDTO> myList = new List<GeneralReportDTO>();
+            myList.Clear();
+            using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                var StartDate = new DateTime(DateTime.Now.Year, 1, 1);
+                var EndDate = DateTime.Today;
+                // Sale 
+                List<Common.DTO.Order> SaleOrders = new List<Common.DTO.Order>();
+                SaleOrders = DB.SaleOrder.GetMappedOrder().Where(x => x.OrderDate >= StartDate && x.OrderDate <= EndDate && x.OrderStatus != Common.OrderStatus.Deleted.ToString() && x.OrderStatus != Common.OrderStatus.Canceled.ToString()).ToList();
+
+                var CashSaleAmount = SaleOrders.Where(x => x.PaymentType == PaymentType.CASH && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                                   - SaleOrders.Where(x => x.PaymentType == PaymentType.CASH && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                var CreditSaleAmount = SaleOrders.Where(x => x.PaymentType == PaymentType.CREDIT && x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                                     - SaleOrders.Where(x => x.PaymentType == PaymentType.CREDIT && x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                var TotalSaleAmount = SaleOrders.Where(x => x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total)
+                                    - SaleOrders.Where(x => x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                var TotalCostOfSale = SaleOrders.Where(x => x.OrderStatus != Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Item.PurchasePrice * v.Qty) }).Sum(x => x.total)
+                                    - SaleOrders.Where(x => x.OrderStatus == Common.OrderStatus.Refunded.ToString()).Select(x => new { total = x.OrdersDetails?.Sum(v => v.Item.PurchasePrice * v.Qty) }).Sum(x => x.total);
+
+                //Profit Loss
+                decimal? Profit = 0;
+                decimal? Loss = 0;
+                if (TotalSaleAmount >= TotalCostOfSale)
+                {
+                    Profit = TotalSaleAmount - TotalCostOfSale;
+                }
+                else
+                {
+                    Loss = TotalCostOfSale - TotalSaleAmount;
+                }
+                // Purchase
+                var PurchaseOrders = DB.PurchaseOrder.GetMappedOrder().Where(x => x.OrderDate >= StartDate && x.OrderDate <= EndDate).ToList();
+                var CashPurchaseAmount = PurchaseOrders.Where(x => x.PaymentType == PaymentType.CASH).Select(x => new { total = x.OrdersDetails.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                var CreditPurchaseAmount = PurchaseOrders.Where(x => x.PaymentType == PaymentType.CREDIT).Select(x => new { total = x.OrdersDetails.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+                var TotalPurchaseAmount = PurchaseOrders.Select(x => new { total = x.OrdersDetails.Sum(v => v.Qty * v.Item?.price) }).Sum(x => x.total);
+
+                //Salaries
+                var Salaries = DB.AdvanceSalary.GetAll().Where(x => x.Date >= StartDate && x.Date <= EndDate);
+                decimal? TotalSalary = 0;
+                foreach (var item in Salaries)
+                {
+                    TotalSalary += item.Amount;
+                }
+
+                //Expense
+                var items = DB.expt.GetAll().Where(x => x.ExpenceDate >= StartDate && x.ExpenceDate <= EndDate).ToList();
+                decimal? TotalExpenses = 0;
+                foreach (var item in items)
+                {
+                    TotalExpenses += item.Amount;
+                }
+
+                //Formation of list 
+                myList.Add(new GeneralReportDTO { SerialNo = "1", Key = "Credit Sale", Value = CreditSaleAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), coloroftile = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#27AE60")) });
+                myList.Add(new GeneralReportDTO { SerialNo = "2", Key = "Cash Sale", Value = CashSaleAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), coloroftile = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1E8449")) });
+                myList.Add(new GeneralReportDTO { SerialNo = "3", Key = "Total Sale", Value = TotalSaleAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), coloroftile = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#145A32")) });
+                myList.Add(new GeneralReportDTO { SerialNo = "7", Key = "Profit", Value = Profit?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), coloroftile = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#4A235A")) });
+                myList.Add(new GeneralReportDTO { SerialNo = "8", Key = "Loss", Value = Loss?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), coloroftile = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1B4F72")) });
+                myList.Add(new GeneralReportDTO { SerialNo = "4", Key = "Credit Purchase", Value = CreditPurchaseAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), coloroftile = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C0392B")) });
+                myList.Add(new GeneralReportDTO { SerialNo = "5", Key = "Cash Purchase", Value = CashPurchaseAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), coloroftile = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#922B21")) });
+                myList.Add(new GeneralReportDTO { SerialNo = "6", Key = "Total Purchase", Value = TotalPurchaseAmount?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), coloroftile = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#641E16")) });
+                myList.Add(new GeneralReportDTO { SerialNo = "9", Key = "Total Salary", Value = TotalSalary?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), coloroftile = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#839192")) });
+                myList.Add(new GeneralReportDTO { SerialNo = "10", Key = "Expense", Value = TotalExpenses?.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())), coloroftile = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#A2D9CE")) });
+                listKitchenLineItems.ItemsSource = myList;
+            }
+
+        }
+        public List<ProductDTO> GetProducts(int SubCategoryId = 0)
+        {
+            List<ProductDTO> Products = new List<ProductDTO>();
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                Products = Db.Product.GetAll().Select(X => new ProductDTO { ProductName = X.ProductName, Id = X.Id, CategoryName = X.Category.Name, Size = X.Size.ToString(), Unit = X.UnitNavigation.Name, RetailPrice = X.RetailPrice, PurchasePrice = X.PurchasePrice, Tax = X.Tax, TaxType = X.TaxType }).ToList();
+            }
+            return Products;
         }
         public void BarChart()
         {
@@ -376,5 +466,35 @@ namespace EZYPOS.View
         public Func<double, string> Formatter { get; set; }
         public Func<double, string> Formatter1 { get; set; }
 
+
+        private void SaleOrder_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlSaleTransaction SaleItem = new UserControlSaleTransaction();
+            ActiveSession.DisplayuserControlMethod(SaleItem);
+        }
+
+        private void PurchaseOrder_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlPurchaseTransaction PurchaseItem = new UserControlPurchaseTransaction();
+            ActiveSession.DisplayuserControlMethod(PurchaseItem);
+        }
+
+        private void ViewSaleOrder_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlViewOrder OrderScreen = new UserControlViewOrder();
+            ActiveSession.DisplayuserControlMethod(OrderScreen);
+        }
+
+        private void ViewPurchaseOrder_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlPurchaseOrder PurchaseOrder = new UserControlPurchaseOrder();
+            ActiveSession.DisplayuserControlMethod(PurchaseOrder);
+        }
+
+        private void Settings_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlSettings Settings = new UserControlSettings();
+            ActiveSession.DisplayuserControlMethod(Settings);
+        }
     }
 }
