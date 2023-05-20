@@ -39,7 +39,7 @@ namespace EZYPOS.UserControls.Define.List
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                myList = DB.Product.GetAll().Select(x => new ProductDTO { Id = x.Id, ProductName = x.ProductName, Size= x.Size.ToString(), Unit=x.UnitNavigation.Name, Barcode=x.Barcode, RetailPrice=x.RetailPrice,Wholesaleprice=x.Wholesaleprice,PurchasePrice=x.PurchasePrice, TaxType = x.TaxType, Tax = x.Tax, CategoryName=x.Category.Name,SubcategoryName=x.Subcategory.SubcategoryName}).ToList();                
+                myList = DB.Product.GetAll().Select(x => new ProductDTO { Id = x.Id, ProductName = x.ProductName, Size= x.Size.ToString(),RewardPoints=x.RewardPoints, Unit=x.UnitNavigation.Name, Barcode=x.Barcode, RetailPrice=x.RetailPrice,Wholesaleprice=x.Wholesaleprice,PurchasePrice=x.PurchasePrice, TaxType = x.TaxType, Tax = x.Tax, CategoryName=x.Category.Name,SubcategoryName=x.Subcategory.SubcategoryName}).ToList();                
                 ResetPaging(myList);
             }
         }     
@@ -74,7 +74,7 @@ namespace EZYPOS.UserControls.Define.List
                 string filter = t.Text;
                 using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-                    myList = DB.Product.GetAll().Select(x => new ProductDTO { Id = x.Id, ProductName = x.ProductName, Size = x.Size.ToString(), Unit = x.UnitNavigation.Name, Barcode = x.Barcode, RetailPrice = x.RetailPrice, Wholesaleprice = x.Wholesaleprice, PurchasePrice = x.PurchasePrice, TaxType = x.TaxType, Tax = x.Tax, CategoryName = x.Category.Name, SubcategoryName = x.Subcategory.SubcategoryName }).ToList();
+                    myList = DB.Product.GetAll().Select(x => new ProductDTO { Id = x.Id, RewardPoints=x.RewardPoints, ProductName = x.ProductName, Size = x.Size.ToString(), Unit = x.UnitNavigation.Name, Barcode = x.Barcode, RetailPrice = x.RetailPrice, Wholesaleprice = x.Wholesaleprice, PurchasePrice = x.PurchasePrice, TaxType = x.TaxType, Tax = x.Tax, CategoryName = x.Category.Name, SubcategoryName = x.Subcategory.SubcategoryName }).ToList();
 
                     if (filter == "")
                     {
@@ -128,7 +128,10 @@ namespace EZYPOS.UserControls.Define.List
                         {
                             myList = myList.Where(x => x.Tax.ToString().Contains(filter)).ToList();
                         }
-                        ResetPaging(myList);
+            if (t.Name == "GridRewardPoints") {
+              myList = myList.Where(x => x.RewardPoints.ToString().Contains(filter)).ToList();
+            }
+            ResetPaging(myList);
                     }
                 }
             }

@@ -37,9 +37,11 @@ namespace EZYPOS
     /// </summary>
     public partial class MainWindowNewMenu : Window
     {
+    int purchaseLimit = 3;
         public MainWindowNewMenu()
         {
             InitializeComponent();
+      
             ActiveSession.DisplayuserControl += DisplayUserControl;
             ActiveSession.CloseDisplayuserControl += CloseDisplayUserControl;
             MenuItem mnuDeleteInvoice = new MenuItem();
@@ -59,24 +61,9 @@ namespace EZYPOS
            
         }
 
-        #region Misc
-        private void EditStatusCm_Click(object sender, RoutedEventArgs e)
-        {
-            MenuItem mi = sender as MenuItem;
-            if (mi != null)
-            {
-                ContextMenu cm = mi.CommandParameter as ContextMenu;
-                if (cm != null)
-                {
-                    Grid g = cm.PlacementTarget as Grid;
-                    if (g != null)
-                    {
-                        Console.WriteLine(g.Background); // Will print red
-                    }
-                }
-            }
-        }
-        private void LoadUserControl(string controlName)
+
+    #region Misc
+    private void LoadUserControl(string controlName)
         {
             Type ucType = null;
             UserControl uc = null;
@@ -103,7 +90,7 @@ namespace EZYPOS
         }
         public void CloseDisplayUserControl(object Usercontrol)
         {
-            this.chrometabs.RemoveTab(this.chrometabs.SelectedItem);
+            //this.chrometabs.RemoveTab(this.chrometabs.SelectedItem);
             if (Usercontrol != null)
             { DisplayUserControl(Usercontrol); }
         }
@@ -112,8 +99,12 @@ namespace EZYPOS
             // Add new user control to content area
             // contentArea.Children.Add(uc);
             UserControl uc = (UserControl)Usercontrol;
-            this.chrometabs.AddTab(this.GenerateNewItem(uc), true);
-        }       
+      //this.chrometabs.AddTab(this.GenerateNewItem(uc), true);
+      if (purchaseLimit > 0) {
+        purchaseLimit--;
+        chrometabs.SelectedIndex = chrometabs.Items.Add(GenerateNewItem(uc)); 
+      }
+    }       
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem mnu = (MenuItem)sender;
@@ -136,11 +127,6 @@ namespace EZYPOS
             }
         }
         private int newTabNumber;
-
-        private void HandleAddTab(object sender, RoutedEventArgs e)
-        {
-            this.chrometabs.AddTab(this.GenerateNewItem(), false);
-        }
         private object GenerateNewItem(UserControl UC=null)
         {
             object itemToAdd = null;
@@ -257,11 +243,6 @@ namespace EZYPOS
             ActiveSession.DisplayuserControlMethod(PurchaseItem);
         }
 
-        private void ReturnItem_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void CustomerReceipt_Click(object sender, RoutedEventArgs e)
         {
             ActiveSession.DisplayuserControlMethod(new UserControlCustomerReceiptList());
@@ -313,16 +294,6 @@ namespace EZYPOS
             ActiveSession.DisplayuserControlMethod(PurchaseOrder);
         }
 
-        private void ExpenceTransaction_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void StockTransfer_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void Shelf_Click(object sender, RoutedEventArgs e)
         {
             UserControlShelfList Shelf = new UserControlShelfList();
@@ -339,11 +310,6 @@ namespace EZYPOS
         {
             StockAdjustment stad = new StockAdjustment();
             ActiveSession.DisplayuserControlMethod(stad);
-        }
-        private void StockConversion_Click(object sender, RoutedEventArgs e)
-        {
-            StockConversion stcon = new StockConversion();
-            ActiveSession.DisplayuserControlMethod(stcon);
         }
 
         private void ProductWiseStockReport_Click(object sender, RoutedEventArgs e)
@@ -554,5 +520,9 @@ namespace EZYPOS
 
             //return data;
         }
+
+    private void chrometabs_GotFocus(object sender, RoutedEventArgs e) {
+      purchaseLimit++; 
     }
+  }
 }

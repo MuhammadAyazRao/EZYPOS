@@ -149,7 +149,8 @@ namespace EZYPOS.UserControls.Misc
             try
             {
                 String BarcodeFile = "Barcode" + DateTime.Now.ToString("MMddyyyyHHmmss") + ".jpg";
-                fileName = string.Format(AppDomain.CurrentDomain.BaseDirectory + "{0}", @"Barcode\" + BarcodeFile);
+                string dir = AppDomain.CurrentDomain.BaseDirectory + "/Barcode";
+                fileName = string.Format( dir+"/"+ BarcodeFile);
                 {
                    
                     System.Drawing.Image image;
@@ -167,7 +168,11 @@ namespace EZYPOS.UserControls.Misc
                     b.Width = 287;
 
                     image = b.Encode(BarcodeLib.TYPE.UPCA, txtBarcode.Text);//生成图片
+          if (!Directory.Exists(dir))
+            Directory.CreateDirectory(dir);
                     image.Save(fileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                   
+              
                     SetImage(fileName);
                     Print.IsEnabled = true;
                    

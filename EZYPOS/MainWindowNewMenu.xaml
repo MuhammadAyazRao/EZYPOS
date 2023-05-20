@@ -85,6 +85,25 @@
             <Setter Property="Background" Value="#0078D7" />
             <Setter Property="Height" Value="40px" />
         </Style>
+        <Style x:Key="ChromeTabControlStyle" TargetType="{x:Type my:ChromeTabControl}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type my:ChromeTabControl}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <my:ChromeTabPanel IsItemsHost="true">
+                            </my:ChromeTabPanel>
+                            <Grid Grid.Row="1">
+                                <ContentPresenter Content="{TemplateBinding SelectedContent}"/>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
     </Window.Resources>
 
@@ -203,39 +222,7 @@
             </Menu>            
         </StackPanel>
         <ScrollViewer  HorizontalScrollBarVisibility="Auto"  VerticalScrollBarVisibility="Auto" Grid.Row="2">
-            <!--<dragablz:TabablzControl Margin="8" ShowDefaultCloseButton="True" ShowDefaultAddButton="True">
-                <dragablz:TabablzControl.InterTabController>
-                    <dragablz:InterTabController />
-                </dragablz:TabablzControl.InterTabController>
-
-                <TabItem Header="HELLO" >
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Hello World</TextBlock>
-                </TabItem>
-                <TabItem Header="MATERIAL">
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Material Design</TextBlock>
-                </TabItem>
-                <TabItem Header="DESIGN" IsSelected="True">
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Looks Quite Nice</TextBlock>
-                </TabItem>
-                
-            </dragablz:TabablzControl>-->
-            <!--<StackPanel x:Name="contentArea" />-->
-            <my:ChromeTabControl Name="chrometabs">
-                
-                <!--<my:ChromeTabItem Header="One" Background="Orange">
-                    <Button>Uno</Button>
-                </my:ChromeTabItem>
-                <my:ChromeTabItem Header="Two" Background="Green">
-                    <Label>Dos</Label>
-                </my:ChromeTabItem>
-                <my:ChromeTabItem Header="Three" Background="Green">
-                    <Label>Tres</Label>
-                </my:ChromeTabItem>
-                <Button>Hello</Button>
-                <my:ChromeTabItem Header="Four" Background="Green">
-                    <Label>Quattro</Label>
-                </my:ChromeTabItem>-->
-            </my:ChromeTabControl>
+            <my:ChromeTabControl Style="{DynamicResource ChromeTabControlStyle}" Name="chrometabs" GotFocus="chrometabs_GotFocus"/>
         </ScrollViewer>
         <!--<Grid Grid.Row="3">
             <lvc:CartesianChart Series="{Binding SeriesCollection}" />
