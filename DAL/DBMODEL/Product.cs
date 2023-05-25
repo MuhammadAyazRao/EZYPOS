@@ -25,6 +25,7 @@ namespace DAL.DBMODEL
         public decimal RetailPrice { get; set; }
         public decimal? Wholesaleprice { get; set; }
         public decimal PurchasePrice { get; set; }
+        public decimal RewardPoints { get; set; }
         public DateTime? Lastupdated { get; set; }
         public int? Createdby { get; set; }
         public DateTime? Createdon { get; set; }
@@ -41,6 +42,5 @@ namespace DAL.DBMODEL
         public virtual ICollection<ProductStock> ProductStocks { get; set; }
         public virtual ICollection<StockLead> StockLeads { get; set; }
         public virtual ICollection<StockOderDetail> StockOderDetails { get; set; }
-    public decimal? RewardPoints { get; set; }
-  }
+    }
 }

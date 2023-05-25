@@ -20,6 +20,7 @@ namespace DAL.Repository
         public IRepository<StockLead> StockLead { get; }
         public IRepository<CustomerLead> CustomerLead { get; }
         public IRepository<CashBookLead> CashBookLead { get; }
+        public IRepository<Customer> Customers { get; }
         public SaleOrderRepository(EPOSDBContext context) : base(context)
         {
             _DbEntities = context;
@@ -28,6 +29,7 @@ namespace DAL.Repository
             StockLead = new Repository<StockLead>(context);
             CustomerLead = new Repository<CustomerLead>(context);
             CashBookLead = new Repository<CashBookLead>(context);
+            Customers = new Repository<Customer>(context);
         }
 
 
@@ -65,8 +67,16 @@ namespace DAL.Repository
                     NewOrder.ParentOrderId = CartOrderToProcess.ParenOrderId;
                     NewOrder.OrderStatus = CartOrderToProcess.OrderStatus;
                     Add(NewOrder);
-                    //var id = NewOrder.Id;
 
+                    //Customer Reward
+                    string WalkingCustomer = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.WalkingCustomer).FirstOrDefault().AppValue;
+                    if(Convert.ToInt32(WalkingCustomer) != CartOrderToProcess.CustId)
+                    {
+                        var customer = Customers.Get(CartOrderToProcess.CustId);
+                        decimal RP = Convert.ToDecimal(CartOrderToProcess.GetTotalRewardPoints());
+                        customer.RewardPoints = customer.RewardPoints + RP;
+                        Customers.Save();
+                    }
                     //Order Detail
                     foreach (var item in CartOrderToProcess?.OrdersDetails)
                     {

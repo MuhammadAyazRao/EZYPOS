@@ -1,5 +1,4 @@
 ﻿using System;
-using Common.Session;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -169,6 +168,8 @@ namespace DAL.DBMODEL
                 entity.ToTable("Customer");
 
                 entity.Property(e => e.Createdon).HasColumnType("datetime");
+
+                entity.Property(e => e.RewardPoints).HasColumnType("decimal(18, 3)");
 
                 entity.HasOne(d => d.CityNavigation)
                     .WithMany(p => p.Customers)
@@ -345,6 +346,8 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.PurchasePrice).HasColumnType("decimal(18, 3)");
 
                 entity.Property(e => e.RetailPrice).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.RewardPoints).HasColumnType("decimal(18, 3)");
 
                 entity.Property(e => e.Size).HasColumnType("decimal(18, 2)");
 

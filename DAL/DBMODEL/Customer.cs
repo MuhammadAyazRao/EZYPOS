@@ -21,6 +21,7 @@ namespace DAL.DBMODEL
         public int? City { get; set; }
         public string MobileNo { get; set; }
         public DateTime? Createdon { get; set; }
+        public decimal? RewardPoints { get; set; }
 
         public virtual City CityNavigation { get; set; }
         public virtual ICollection<CustomerDrnote> CustomerDrnotes { get; set; }

@@ -459,7 +459,7 @@ namespace EZYPOS.UserControls.Transaction
             //lblItems.Content = listBoxItemCart.Items.Count;
             lblTax.Content = Tax_Taxpercentage().Tax;
             lblTotal.Content = order.GetNetTotal()+ Tax_Taxpercentage().Tax;
-      lblRewardPoints.Content = order.GetTotalRewardPoints();
+            lblRewardPoints.Content = order.GetTotalRewardPoints();
             lblDeliveryCharges.Content = order.DeliverCharges;
             //ViewHelper.FindChild<Label>(expander, "lblItems").Content = listBoxItemCart.Items.Count;
             //ViewHelper.FindChild<Label>(expander, "lblDicAmt").Content = order.GetTotalDiscount();

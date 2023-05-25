@@ -222,6 +222,7 @@ namespace EZYPOS.UserControls
                     NewCustomer.Adress = txtAddress.Text;
                     NewCustomer.City = Convert.ToInt32(ddCity.SelectedValue);
                     NewCustomer.Createdon = DateTime.Now;
+                    NewCustomer.RewardPoints = 0;
                     DB.Customers.Add(NewCustomer);
                     DB.Customers.Save();
                     EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");

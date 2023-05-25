@@ -39,7 +39,7 @@ namespace EZYPOS.View
 
                 if (ScreenType == Common.ScreenType.Sale)
                 {
-                    DDCustomer.ItemsSource = Db.Customers.GetAll().OrderBy(x => x.Name).ToList().Select(x => new { Name = x.Name, Id = x.Id }).ToList();
+                    DDCustomer.ItemsSource = Db.Customers.GetAll().OrderBy(x => x.Name).ToList().Select(x => new { Name = x.Name, PhoneNumber = x.PhoneNo, Id = x.Id }).ToList();
                     //DDEmployee.ItemsSource = Db.Employee.GetAll().OrderBy(x => x.UserName).ToList().Select(x => new { Name = x.UserName, Id = x.Id }).ToList();
                     DDCustomer.Visibility = Visibility.Visible;
                     DDSupplier.Visibility = Visibility.Collapsed;
@@ -70,6 +70,8 @@ namespace EZYPOS.View
             lblTotal.Content = Order.GetNetTotal()+ Taxobj.Tax;
             lblDisc.Content = Order.GetTotalDiscount();
             lblDelivery.Content = Order.DeliverCharges;
+            lblRewardPoints.Content = Order.GetTotalRewardPoints();
+
         }
         public CheckOutForm(PurchaseOrderDTO odr)
         {
@@ -271,6 +273,49 @@ namespace EZYPOS.View
             this.DialogResult = false;
             this.Close();
 
+        }
+
+        private void DDCustomer_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                string searchText = DDCustomer.Text + e.Text.ToLower();
+
+                // Get the original list of customers
+                var customerList = Db.Customers.GetAll()
+                    .OrderBy(x => x.Name)
+                    .ToList();
+
+                // Apply the filter based on the search text
+                var filteredList = customerList
+                    .Where(x => x.Name.ToLower().Contains(searchText) || x.PhoneNo.Contains(searchText))
+                    .Select(x => new { Name = x.Name, Id = x.Id })
+                    .ToList();
+
+                // Update the ComboBox items source
+                DDCustomer.ItemsSource = filteredList;
+            }
+        }
+
+        private void DDCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
+            {
+                var selectedCustomer = Db.Customers.Get(Convert.ToInt32(DDCustomer.SelectedValue));
+                if(selectedCustomer != null)
+                {
+                    if(selectedCustomer.RewardPoints != 0)
+                    {
+                        btnRedeem.Visibility = Visibility.Visible;
+                        lblTotalRewardPoints.Content = "Selected Customer's Total Reward Points Are "+ selectedCustomer.RewardPoints.ToString();
+                    }
+                    else
+                    {
+                        btnRedeem.Visibility = Visibility.Collapsed;
+                        lblTotalRewardPoints.Content = "Selected Customer's Total Reward Points Are " + selectedCustomer.RewardPoints.ToString();
+                    }
+                }
+            }
         }
     }
 }
