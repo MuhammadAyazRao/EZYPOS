@@ -167,8 +167,9 @@
                     </MenuItem>                    
                 </MenuItem>
                 <MenuItem Header="_Reports" Template="{StaticResource VsMenuTop}" >
-                    <MenuItem Header="_General Report" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\GeneralReport.png">
+                    <MenuItem Header="_General Reports" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\GeneralReport.png">
                         <MenuItem Header="_General Report" Click="GeneralReport_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\GeneralReport.png" />
+                        <MenuItem Header="_Daily Order Report" Click="DailyOrderReport_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\credit-cards.png" />
                     </MenuItem>
                     <MenuItem Header="_Misc Reports" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\MiscReport.png">
                         <MenuItem Header="_SaleReport" Click="SaleReport_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Sales.png" />

@@ -37,17 +37,17 @@ namespace EZYPOS
     /// </summary>
     public partial class MainWindowNewMenu : Window
     {
-    int purchaseLimit = 3;
+        int purchaseLimit = 3;
         public MainWindowNewMenu()
         {
             InitializeComponent();
-      
+
             ActiveSession.DisplayuserControl += DisplayUserControl;
             ActiveSession.CloseDisplayuserControl += CloseDisplayUserControl;
             MenuItem mnuDeleteInvoice = new MenuItem();
 
-            mnuDeleteInvoice.Header = "Test Dynamic";        
-            mnuDeleteInvoice.Template =(ControlTemplate) FindResource("VsMenuSub");
+            mnuDeleteInvoice.Header = "Test Dynamic";
+            mnuDeleteInvoice.Template = (ControlTemplate)FindResource("VsMenuSub");
             mnuDeleteInvoice.Tag = "EZYPOS.UserControls.UserControlListCustomer";
             mnuDeleteInvoice.Click += MenuItem_Click;
             mnuDeleteInvoice.Height = 50;
@@ -58,12 +58,12 @@ namespace EZYPOS
             //mnuDeleteInvoice.Icon = new MaterialDesignThemes.Wpf.PackIcon { Kind = MaterialDesignThemes.Wpf.PackIconKind.Delete };
             VSOnline.Items.Add(mnuDeleteInvoice);
             Onload();
-           
+
         }
 
 
-    #region Misc
-    private void LoadUserControl(string controlName)
+        #region Misc
+        private void LoadUserControl(string controlName)
         {
             Type ucType = null;
             UserControl uc = null;
@@ -72,7 +72,7 @@ namespace EZYPOS
             ucType = Type.GetType(controlName);
             if (ucType == null)
             {
-                MessageBox.ShowCustom("The Control: " + controlName + " does not exist.","Invalid","OK");
+                MessageBox.ShowCustom("The Control: " + controlName + " does not exist.", "Invalid", "OK");
             }
             else
             {
@@ -94,17 +94,18 @@ namespace EZYPOS
             if (Usercontrol != null)
             { DisplayUserControl(Usercontrol); }
         }
-        public void DisplayUserControl(object Usercontrol)  
+        public void DisplayUserControl(object Usercontrol)
         {
             // Add new user control to content area
             // contentArea.Children.Add(uc);
             UserControl uc = (UserControl)Usercontrol;
-      //this.chrometabs.AddTab(this.GenerateNewItem(uc), true);
-      if (purchaseLimit > 0) {
-        purchaseLimit--;
-        chrometabs.SelectedIndex = chrometabs.Items.Add(GenerateNewItem(uc)); 
-      }
-    }       
+            //this.chrometabs.AddTab(this.GenerateNewItem(uc), true);
+            if (purchaseLimit > 0)
+            {
+                purchaseLimit--;
+                chrometabs.SelectedIndex = chrometabs.Items.Add(GenerateNewItem(uc));
+            }
+        }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             MenuItem mnu = (MenuItem)sender;
@@ -122,12 +123,12 @@ namespace EZYPOS
                 else
                 {
                     // Process special commands
-                   // ProcessMenuCommands(cmd);
+                    // ProcessMenuCommands(cmd);
                 }
             }
         }
         private int newTabNumber;
-        private object GenerateNewItem(UserControl UC=null)
+        private object GenerateNewItem(UserControl UC = null)
         {
             object itemToAdd = null;
             string ItemName = "Nil";
@@ -139,7 +140,7 @@ namespace EZYPOS
             {
                 itemToAdd = UC;
                 ItemName = ((UserControl)itemToAdd).Name;
-                
+
             }
             Interlocked.Increment(ref this.newTabNumber);
             //if (this.title.Text.Length > 0)
@@ -158,7 +159,7 @@ namespace EZYPOS
         {
             UserControlListCustomer Customer = new UserControlListCustomer();
             ActiveSession.DisplayuserControlMethod(Customer);
-               // DisplayUserControl(Customer);
+            // DisplayUserControl(Customer);
         }
 
         private void Cities_Click(object sender, RoutedEventArgs e)
@@ -188,7 +189,7 @@ namespace EZYPOS
         {
             UserControlListCategory Category = new UserControlListCategory();
             ActiveSession.DisplayuserControlMethod(Category);
-            
+
         }
 
         private void SubCategory_Click(object sender, RoutedEventArgs e)
@@ -204,7 +205,7 @@ namespace EZYPOS
         }
 
         #endregion
-       
+
         private void Onload()
         {
             DashBoard dashboard = new DashBoard();
@@ -234,7 +235,7 @@ namespace EZYPOS
             LoginScreen Login = new LoginScreen();
             Login.Show();
             this.Close();
-            
+
         }
 
         private void Purchase_Click(object sender, RoutedEventArgs e)
@@ -428,17 +429,22 @@ namespace EZYPOS
             UserControlGeneralReport GeneralReport = new UserControlGeneralReport();
             ActiveSession.DisplayuserControlMethod(GeneralReport);
         }
+        private void DailyOrderReport_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlDailyOrderReport dailyOrderReport = new UserControlDailyOrderReport();
+            ActiveSession.DisplayuserControlMethod(dailyOrderReport);
+        }
 
         public void Menu()
         {
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                var Allpages= DB.Pages.GetAll().ToList();
+                var Allpages = DB.Pages.GetAll().ToList();
                 var ParentPages = Allpages.Where(x => x.ParentId == 0).ToList();
                 //var childpages = Allpages.Where(x => x.ParentId> 0).ToList();
                 ChildPages(ParentPages, Allpages, null);
             }
-            
+
             //    MenuVM vm = new MenuVM();
             //string currentUserId = User.Identity.GetUserId();
 
@@ -464,7 +470,7 @@ namespace EZYPOS
 
             foreach (var page in ParentPages)
             {
-                if (page.Isclickable==true)
+                if (page.Isclickable == true)
                 {
                     MenuItem mnuDeleteInvoice = new MenuItem();
                     mnuDeleteInvoice.Header = page.PageName;
@@ -481,11 +487,11 @@ namespace EZYPOS
                     //mnuDeleteInvoice.Icon = new MaterialDesignThemes.Wpf.PackIcon { Kind = MaterialDesignThemes.Wpf.PackIconKind.Delete };
                     if (page.ParentId == 0)
                     {
-                        MainManu.Items.Add(mnuDeleteInvoice); 
+                        MainManu.Items.Add(mnuDeleteInvoice);
                     }
                     else
                     {
-                        
+
                         data.Items.Add(mnuDeleteInvoice);
                     }
                 }
@@ -496,8 +502,8 @@ namespace EZYPOS
                     mnuDeleteInvoice.Template = (ControlTemplate)FindResource(page.Template);
                     mnuDeleteInvoice.Tag = page.Tag;
                     //mnuDeleteInvoice.Name = "bnbn";
-                   // mnuDeleteInvoice.Click += MenuItem_Click;
-                   // mnuDeleteInvoice.Height = 50;
+                    // mnuDeleteInvoice.Click += MenuItem_Click;
+                    // mnuDeleteInvoice.Height = 50;
                     //mnuDeleteInvoice.Icon = new System.Windows.Controls.Image
                     //{
                     //    Source = new BitmapImage(new Uri("Assets//icons//icon_queries.png", UriKind.Relative))
@@ -513,7 +519,7 @@ namespace EZYPOS
                     }
                     var childPages = AllPages.Where(x => x.ParentId == page.Id).ToList();
                     ChildPages(childPages, AllPages, mnuDeleteInvoice);
-                    
+
 
                 }
             }
@@ -521,8 +527,11 @@ namespace EZYPOS
             //return data;
         }
 
-    private void chrometabs_GotFocus(object sender, RoutedEventArgs e) {
-      purchaseLimit++; 
+        private void chrometabs_GotFocus(object sender, RoutedEventArgs e)
+        {
+            purchaseLimit++;
+        }
+
+
     }
-  }
 }
