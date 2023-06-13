@@ -269,18 +269,30 @@ namespace EZYPOS
 
         private void PurchaseReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlPurchaseOrderReport PurchaseOrderReport = new UserControlPurchaseOrderReport();
-            ActiveSession.DisplayuserControlMethod(PurchaseOrderReport);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlPurchaseOrderReport PurchaseOrderReport = new UserControlPurchaseOrderReport();
+                ActiveSession.DisplayuserControlMethod(PurchaseOrderReport);
+            }
         }
         private void ExpenseReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlExpenseReport ExpenseReport = new UserControlExpenseReport();
-            ActiveSession.DisplayuserControlMethod(ExpenseReport);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlExpenseReport ExpenseReport = new UserControlExpenseReport();
+                ActiveSession.DisplayuserControlMethod(ExpenseReport);
+            }
         }
         private void CashSummaryReport_Click(object sender, RoutedEventArgs e)
         {
-            CashSummaryReport CashSummary = new CashSummaryReport();
-            ActiveSession.DisplayuserControlMethod(CashSummary);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                CashSummaryReport CashSummary = new CashSummaryReport();
+                ActiveSession.DisplayuserControlMethod(CashSummary);
+            }
         }
         private void Backup_Click(object sender, RoutedEventArgs e)
         {
@@ -315,101 +327,169 @@ namespace EZYPOS
 
         private void ProductWiseStockReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlProductWiseStockReport pwsr = new UserControlProductWiseStockReport();
-            ActiveSession.DisplayuserControlMethod(pwsr);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlProductWiseStockReport pwsr = new UserControlProductWiseStockReport();
+                ActiveSession.DisplayuserControlMethod(pwsr);
+            }
         }
 
         private void SaleReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlSaleOrderReport sor = new UserControlSaleOrderReport("Sale");
-            ActiveSession.DisplayuserControlMethod(sor);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlSaleOrderReport sor = new UserControlSaleOrderReport("Sale");
+                ActiveSession.DisplayuserControlMethod(sor);
+            }
         }
         private void RefundedOrderReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlSaleOrderReport sor = new UserControlSaleOrderReport(OrderStatus.Refunded.ToString());
-            ActiveSession.DisplayuserControlMethod(sor);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlSaleOrderReport sor = new UserControlSaleOrderReport(OrderStatus.Refunded.ToString());
+                ActiveSession.DisplayuserControlMethod(sor);
+            }
         }
 
         private void StockReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlStockExpiry UserControlStockExpiry = new UserControlStockExpiry();
-            ActiveSession.DisplayuserControlMethod(UserControlStockExpiry);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlStockExpiry UserControlStockExpiry = new UserControlStockExpiry();
+                ActiveSession.DisplayuserControlMethod(UserControlStockExpiry);
+            }
         }
         private void ExpiryInformation_Click(object sender, RoutedEventArgs e)
         {
-            UserControlExpiryInformationReport ExpiryInformation = new UserControlExpiryInformationReport();
-            ActiveSession.DisplayuserControlMethod(ExpiryInformation);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlExpiryInformationReport ExpiryInformation = new UserControlExpiryInformationReport();
+                ActiveSession.DisplayuserControlMethod(ExpiryInformation);
+            }
         }
 
         private void SupplierLedgerReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlSupplierLedgerReport SupplierLedgerReport = new UserControlSupplierLedgerReport();
-            ActiveSession.DisplayuserControlMethod(SupplierLedgerReport);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlSupplierLedgerReport SupplierLedgerReport = new UserControlSupplierLedgerReport();
+                ActiveSession.DisplayuserControlMethod(SupplierLedgerReport);
+            }
         }
 
         private void CustomerLedgerReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlCustomerLedgerReport CustomerLedgerReport = new UserControlCustomerLedgerReport();
-            ActiveSession.DisplayuserControlMethod(CustomerLedgerReport);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlCustomerLedgerReport CustomerLedgerReport = new UserControlCustomerLedgerReport();
+                ActiveSession.DisplayuserControlMethod(CustomerLedgerReport);
+            }
         }
 
         private void CashBookLedgerReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlCashBookLedgerReport CashBookLedgerReport = new UserControlCashBookLedgerReport();
-            ActiveSession.DisplayuserControlMethod(CashBookLedgerReport);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlCashBookLedgerReport CashBookLedgerReport = new UserControlCashBookLedgerReport();
+                ActiveSession.DisplayuserControlMethod(CashBookLedgerReport);
+            }
         }
 
         private void ProductLedgerReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlProductLedgerReport ProductLedgerReport = new UserControlProductLedgerReport();
-            ActiveSession.DisplayuserControlMethod(ProductLedgerReport);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlProductLedgerReport ProductLedgerReport = new UserControlProductLedgerReport();
+                ActiveSession.DisplayuserControlMethod(ProductLedgerReport);
+            }
         }
 
         private void CustomerBalance_Click(object sender, RoutedEventArgs e)
         {
-            UserControlCustomerBalanceReport CustomerBalance = new UserControlCustomerBalanceReport();
-            ActiveSession.DisplayuserControlMethod(CustomerBalance);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlCustomerBalanceReport CustomerBalance = new UserControlCustomerBalanceReport();
+                ActiveSession.DisplayuserControlMethod(CustomerBalance);
+            }
         }
 
         private void SupplierBalance_Click(object sender, RoutedEventArgs e)
         {
-            UserControlSupplierBalanceReport SupplierBalance = new UserControlSupplierBalanceReport();
-            ActiveSession.DisplayuserControlMethod(SupplierBalance);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlSupplierBalanceReport SupplierBalance = new UserControlSupplierBalanceReport();
+                ActiveSession.DisplayuserControlMethod(SupplierBalance);
+            }
         }
 
         private void ItemWiseSale_Click(object sender, RoutedEventArgs e)
         {
-            UserControlItemWiseSaleReport ItemWiseSale = new UserControlItemWiseSaleReport();
-            ActiveSession.DisplayuserControlMethod(ItemWiseSale);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlItemWiseSaleReport ItemWiseSale = new UserControlItemWiseSaleReport();
+                ActiveSession.DisplayuserControlMethod(ItemWiseSale);
+            }
         }
 
         private void EmployeeWiseSaleReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlEmployeeWiseSaleReport EmployeeWiseSale = new UserControlEmployeeWiseSaleReport();
-            ActiveSession.DisplayuserControlMethod(EmployeeWiseSale);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlEmployeeWiseSaleReport EmployeeWiseSale = new UserControlEmployeeWiseSaleReport();
+                ActiveSession.DisplayuserControlMethod(EmployeeWiseSale);
+            }
         }
         private void POSWiseSaleReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlPOSWiseSaleReport POSWiseSale = new UserControlPOSWiseSaleReport();
-            ActiveSession.DisplayuserControlMethod(POSWiseSale);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlPOSWiseSaleReport POSWiseSale = new UserControlPOSWiseSaleReport();
+                ActiveSession.DisplayuserControlMethod(POSWiseSale);
+            }
         }
 
         private void AdvanceSalary_Click(object sender, RoutedEventArgs e)
         {
-            UserControlListAdvanceSalary ListAdvanceSalary = new UserControlListAdvanceSalary();
-            ActiveSession.DisplayuserControlMethod(ListAdvanceSalary);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlListAdvanceSalary ListAdvanceSalary = new UserControlListAdvanceSalary();
+                ActiveSession.DisplayuserControlMethod(ListAdvanceSalary);
+            }
         }
 
         private void Setting_Click(object sender, RoutedEventArgs e)
         {
-            UserControlSettings Settings = new UserControlSettings();
-            ActiveSession.DisplayuserControlMethod(Settings);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlSettings Settings = new UserControlSettings();
+                ActiveSession.DisplayuserControlMethod(Settings);
+            }
         }
 
         private void AdvanceSalaryReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlAdvanceSalaryReport AdvanceSalaryReport = new UserControlAdvanceSalaryReport();
-            ActiveSession.DisplayuserControlMethod(AdvanceSalaryReport);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlAdvanceSalaryReport AdvanceSalaryReport = new UserControlAdvanceSalaryReport();
+                ActiveSession.DisplayuserControlMethod(AdvanceSalaryReport);
+            }
         }
 
         private void CustomerDRNote_Click(object sender, RoutedEventArgs e)
@@ -426,13 +506,21 @@ namespace EZYPOS
 
         private void GeneralReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlGeneralReport GeneralReport = new UserControlGeneralReport();
-            ActiveSession.DisplayuserControlMethod(GeneralReport);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlGeneralReport GeneralReport = new UserControlGeneralReport();
+                ActiveSession.DisplayuserControlMethod(GeneralReport);
+            }
         }
         private void DailyOrderReport_Click(object sender, RoutedEventArgs e)
         {
-            UserControlDailyOrderReport dailyOrderReport = new UserControlDailyOrderReport();
-            ActiveSession.DisplayuserControlMethod(dailyOrderReport);
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlDailyOrderReport dailyOrderReport = new UserControlDailyOrderReport();
+                ActiveSession.DisplayuserControlMethod(dailyOrderReport);
+            }
         }
 
         public void Menu()

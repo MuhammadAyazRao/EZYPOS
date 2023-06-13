@@ -39,6 +39,7 @@ namespace DAL.Repository
             ProductSubcategory = new Repository<ProductSubcategory>(_context);
             ProductGroup= new Repository<ProductGroup>(_context);
             Product= new Repository<Product>(_context);
+            shopSettings = new Repository<ShopSetting>(_context);
             Supplier= new Repository<Supplier>(_context);
             SaleOrder = new SaleOrderRepository(_context);
             Stock = new StockRepository(_context);
@@ -84,6 +85,7 @@ namespace DAL.Repository
         public IRepository<ProductSubcategory> ProductSubcategory { get; }
         public IRepository<ProductGroup> ProductGroup { get; }
         public IRepository<Product> Product { get; }
+        public IRepository<ShopSetting> shopSettings { get; }
         public IRepository<Supplier> Supplier { get; }
         public IStockRepository Stock { get; }
         public IRepository<SaleOrderDetail> SaleOrderDetail { get; }

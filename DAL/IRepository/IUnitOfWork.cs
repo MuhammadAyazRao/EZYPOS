@@ -33,6 +33,7 @@ namespace DAL.IRepository
         IRepository<ProductSubcategory> ProductSubcategory { get; }
         IRepository<ProductGroup> ProductGroup { get; }
         IRepository<Product> Product { get; }
+        IRepository<ShopSetting> shopSettings { get; }
         IRepository<SaleOrderDetail> SaleOrderDetail { get; }
         ISaleOrderRepository SaleOrder { get; }
         IStockRepository Stock { get; }

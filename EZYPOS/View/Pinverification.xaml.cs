@@ -1,4 +1,6 @@
-﻿using EZYPOS.DBModels;
+﻿using DAL.IRepository;
+using DAL.Repository;
+using EZYPOS.DBModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,14 +40,13 @@ namespace EZYPOS.View
         {  
             if (!string.IsNullOrEmpty(lblPin.Password))
             {
-                using (EPOSDBContext db = new EPOSDBContext())
+                using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
 
 
-                    var user = db.ShopSettings.FirstOrDefault(x => x.Pin == Convert.ToInt32(lblPin.Password));
+                    var user = DB.shopSettings.GetAll().Where(x => x.Pin == Convert.ToInt32(lblPin.Password)).FirstOrDefault();
                     if (user != null)
                     {
-
                         this.DialogResult = true;
                         Close();
                     }
