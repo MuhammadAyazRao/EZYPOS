@@ -474,8 +474,8 @@ namespace EZYPOS
 
         private void Setting_Click(object sender, RoutedEventArgs e)
         {
-            Pinverification verify = new Pinverification();
-            if (verify.ShowDialog() == true)
+            //Pinverification verify = new Pinverification();
+            //if (verify.ShowDialog() == true)
             {
                 UserControlSettings Settings = new UserControlSettings();
                 ActiveSession.DisplayuserControlMethod(Settings);

@@ -92,6 +92,7 @@ namespace Common
         {
             public static string CASH { get { return nameof(CASH); } }
             public static string CREDIT { get { return nameof(CREDIT); } }          
+            public static string CARD { get { return nameof(CARD); } }          
         }
         public static class status
         {

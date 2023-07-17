@@ -2,6 +2,7 @@
 using Common.Session;
 using DAL.Repository;
 using EZYPOS.Helper;
+using EZYPOS.View;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -364,6 +365,12 @@ namespace EZYPOS.UserControls.Misc
                 UserImage.Source = myImage;
                 ImageSelector.Content = UserName;
             }
+        }
+
+        private void btnSelfOrder_Click(object sender, RoutedEventArgs e)
+        {
+            SelfOrderDisplay selfOrder = new SelfOrderDisplay();
+            selfOrder.Show();
         }
     }
 }

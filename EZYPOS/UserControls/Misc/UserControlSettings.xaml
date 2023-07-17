@@ -212,6 +212,9 @@
                     <Label Name="lblMinimumTaxLimit" VerticalContentAlignment="Center" FontSize="15" Content="Minimum Tax Limit" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="4" Grid.Column="2" />
                     <TextBox Name="txtMinimumTaxLimit"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="45" Grid.Row="4" Grid.Column="3" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Minimum Tax Limit" PreviewTextInput="NumberOnly_PreviewTextInput" />
 
+                    <Label Name="lblSelfOrder" VerticalContentAlignment="Center" FontSize="15" Content="Self Order Screen" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="4" Grid.Column="0" />
+                    <Button Name="btnSelfOrder" Content="Self Order Screen"   Margin="5,5,5,5" Background="CornflowerBlue" Click="btnSelfOrder_Click"   VerticalAlignment="Top" Height="45" Grid.Row="4" Grid.Column="1" />
+
                 </Grid>
             </GroupBox>
         </Border>
