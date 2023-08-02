@@ -214,7 +214,9 @@
 
                     <Label Name="lblSelfOrder" VerticalContentAlignment="Center" FontSize="15" Content="Self Order Screen" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="4" Grid.Column="0" />
                     <Button Name="btnSelfOrder" Content="Self Order Screen"   Margin="5,5,5,5" Background="CornflowerBlue" Click="btnSelfOrder_Click"   VerticalAlignment="Top" Height="45" Grid.Row="4" Grid.Column="1" />
-
+ 
+                    <Label Name="lblRewardPoints" VerticalContentAlignment="Center" FontSize="15" Content="Reward Points Value" VerticalAlignment="Center"  HorizontalAlignment="Left" Grid.Row="5" Grid.Column="0" />
+                    <TextBox Name="txtRewardPoints"   Margin="5,5,5,5" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"  VerticalAlignment="Top" Height="45" Grid.Row="5" Grid.Column="1" TextWrapping="Wrap" materialDesign:HintAssist.Hint="Reward Points Value" PreviewTextInput="NumberOnly_PreviewTextInput" />
                 </Grid>
             </GroupBox>
         </Border>

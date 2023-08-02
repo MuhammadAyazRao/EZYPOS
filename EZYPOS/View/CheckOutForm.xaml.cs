@@ -7,6 +7,7 @@ using EZYPOS.DTO;
 using EZYPOS.Helper;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,8 @@ namespace EZYPOS.View
         PurchaseOrderDTO PurchaseOrder { get; set; }
         public string ScreenType { get; set; }
         public decimal CustPay { get; set; }
+        public decimal? RewardPoints { get; set; }
+        public decimal rewardPointsDiscount { get; set; }
         public void Refresh()
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
@@ -66,12 +69,15 @@ namespace EZYPOS.View
             Order = odr;
             UCNum.OnButtonPressed += UCNum_OnButtonPressed;
             UCSide.onButtonPress += UCSide_onButtonPress;
+            SetLabels();
+        }
+        public void SetLabels()
+        {
             var Taxobj = Tax_Taxpercentage();
-            lblTotal.Content = Order.GetNetTotal()+ Taxobj.Tax;
+            lblTotal.Content = Order.GetNetTotal() + Taxobj.Tax;
             lblDisc.Content = Order.GetTotalDiscount();
             lblDelivery.Content = Order.DeliverCharges;
             lblRewardPoints.Content = Order.GetTotalRewardPoints();
-
         }
         public CheckOutForm(PurchaseOrderDTO odr)
         {
@@ -270,6 +276,12 @@ namespace EZYPOS.View
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
+            if(Order.RewardRedeemed == true)
+            {
+                Order.Discount = Order.Discount - rewardPointsDiscount;
+                SetLabels();
+                Order.RewardRedeemed = false;
+            }
             this.DialogResult = false;
             this.Close();
 
@@ -299,23 +311,49 @@ namespace EZYPOS.View
 
         private void DDCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            string WalkingCustomer = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.WalkingCustomer).FirstOrDefault().AppValue;
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var selectedCustomer = Db.Customers.Get(Convert.ToInt32(DDCustomer.SelectedValue));
-                if(selectedCustomer != null)
+                if(Convert.ToInt32(WalkingCustomer) == selectedCustomer.Id)
                 {
-                    if(selectedCustomer.RewardPoints != 0)
+                    lblTotalRewardPoints.Content = "";
+                    btnRedeem.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    RewardPoints = selectedCustomer.RewardPoints + Convert.ToDecimal(Order.GetTotalRewardPoints());
+                    if (selectedCustomer != null)
                     {
-                        btnRedeem.Visibility = Visibility.Visible;
-                        lblTotalRewardPoints.Content = "Selected Customer's Total Reward Points Are "+ selectedCustomer.RewardPoints.ToString();
-                    }
-                    else
-                    {
-                        btnRedeem.Visibility = Visibility.Collapsed;
-                        lblTotalRewardPoints.Content = "Selected Customer's Total Reward Points Are " + selectedCustomer.RewardPoints.ToString();
+                        if (RewardPoints > 0)
+                        {
+                            btnRedeem.Visibility = Visibility.Visible;
+                            lblTotalRewardPoints.Content = "Selected Customer's Total Reward Points Are " + RewardPoints.ToString();
+                        }
+                        else
+                        {
+                            btnRedeem.Visibility = Visibility.Collapsed;
+                            lblTotalRewardPoints.Content = "Selected Customer's Total Reward Points Are " + RewardPoints.ToString();
+                        }
                     }
                 }
             }
+        }
+
+        private void btnRedeem_Click(object sender, RoutedEventArgs e)
+        {
+            string rewardPointsValue = ((List<Setting>)ActiveSession.Setting).Where(x => x.AppKey == SettingKey.RewardPointsValue).FirstOrDefault().AppValue;
+            rewardPointsDiscount = Convert.ToDecimal(RewardPoints / Convert.ToDecimal(rewardPointsValue));
+            var status = EZYPOS.View.MessageYesNo.ShowCustom("confirmation", "Total Discount will be "+ rewardPointsDiscount.ToString("C", CultureInfo.CreateSpecificCulture(HelperMethods.GetCurrency())) +"", "Proceed", "No");
+            if (status)
+            {
+                Order.Discount = Order.Discount + rewardPointsDiscount;
+                SetLabels();
+                Order.RewardRedeemed = true;
+                lblTotalRewardPoints.Content = "Reward Points Are Redeemed !";
+                btnRedeem.Visibility = Visibility.Collapsed;
+            }
+            
         }
     }
 }

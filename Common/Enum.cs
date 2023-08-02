@@ -75,6 +75,7 @@ namespace Common
         public static string TaxPercentage { get { return nameof(TaxPercentage); } }
         public static string MinimumTaxLimit { get { return nameof(MinimumTaxLimit); } }
         public static string ItemBaseTax { get { return nameof(ItemBaseTax); } }
+        public static string RewardPointsValue { get { return nameof(RewardPointsValue); } }
 
 
 

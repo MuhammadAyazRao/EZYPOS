@@ -73,8 +73,15 @@ namespace DAL.Repository
                     if(Convert.ToInt32(WalkingCustomer) != CartOrderToProcess.CustId)
                     {
                         var customer = Customers.Get(CartOrderToProcess.CustId);
-                        decimal RP = Convert.ToDecimal(CartOrderToProcess.GetTotalRewardPoints());
-                        customer.RewardPoints = customer.RewardPoints + RP;
+                        if (CartOrderToProcess.RewardRedeemed == true)
+                        {
+                            customer.RewardPoints = 0;
+                        }
+                        else
+                        {
+                            decimal RP = Convert.ToDecimal(CartOrderToProcess.GetTotalRewardPoints());
+                            customer.RewardPoints = customer.RewardPoints + RP;
+                        }
                         Customers.Save();
                     }
                     //Order Detail

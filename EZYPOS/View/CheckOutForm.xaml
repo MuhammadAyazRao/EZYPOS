@@ -81,7 +81,7 @@
             </StackPanel>
             <StackPanel Margin="0,430,0,0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
                 <Label x:Name="lblTotalRewardPoints" Style="{StaticResource lbl}" Content="" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28"/>
-                <Button x:Name="btnRedeem" Content="Redeem" Click="btnCheckout_Click"  Style="{DynamicResource btnPrimery}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="60" Height="30"/>
+                <Button x:Name="btnRedeem" Content="Redeem" Click="btnRedeem_Click"  Style="{DynamicResource btnPrimery}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="60" Height="30"/>
             </StackPanel>
             <StackPanel Margin="0,480,0,0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Center">
                 <!--<TextBox  materialDesign:HintAssist.Hint="Delivery Charge" Visibility="Collapsed" PreviewTextInput="NumberDecimal_PreviewTextInput" Name="txtDeliveryCharge"  Style="{StaticResource MaterialDesignFloatingHintTextBox}" Height="50" Margin="10,0,10,125" Width="100" TextWrapping="Wrap" VerticalAlignment="Bottom"/>-->

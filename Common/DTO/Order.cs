@@ -36,6 +36,7 @@ namespace Common.DTO
         public string? OrderStatus { get; set; }
         public int ParenOrderId { get; set; }
         public string POS { get; set; }
+        public bool RewardRedeemed { get; set; }
 
 
         public Order()

@@ -157,6 +157,7 @@ namespace EZYPOS.UserControls.Misc
                 txtExpiryAlertMonths.Text = SettingData.Where(x => x.AppKey == SettingKey.ExpiryAlertMonths).FirstOrDefault().AppValue;
                 txtTaxPercentage.Text = SettingData.Where(x => x.AppKey == SettingKey.TaxPercentage).FirstOrDefault().AppValue;
                 txtMinimumTaxLimit.Text = SettingData.Where(x => x.AppKey == SettingKey.MinimumTaxLimit).FirstOrDefault().AppValue;
+                txtRewardPoints.Text = SettingData.Where(x => x.AppKey == SettingKey.RewardPointsValue).FirstOrDefault().AppValue;
                 ddInvoicePrinter.SelectedItem = SettingData.Where(x => x.AppKey == SettingKey.InvoicePrinter).FirstOrDefault().AppValue;
                 ddReportPrinter.SelectedItem = SettingData.Where(x => x.AppKey == SettingKey.ReportPrinter).FirstOrDefault().AppValue;
                 ddCurrency.SelectedValue = SettingData.Where(x => x.AppKey == SettingKey.Currency).FirstOrDefault().AppValue;
@@ -265,6 +266,10 @@ namespace EZYPOS.UserControls.Misc
                 if (txtMinimumTaxLimit.Text != "")
                 {
                     Data.Where(x => x.AppKey == SettingKey.MinimumTaxLimit).FirstOrDefault().AppValue = txtMinimumTaxLimit.Text;
+                }
+                if (txtRewardPoints.Text != "")
+                {
+                    Data.Where(x => x.AppKey == SettingKey.RewardPointsValue).FirstOrDefault().AppValue = txtRewardPoints.Text;
                 }
                 if (ddInvoicePrinter.SelectedItem != null)
                 {
