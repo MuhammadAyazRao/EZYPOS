@@ -90,7 +90,7 @@ namespace EZYPOS
         }
         public void CloseDisplayUserControl(object Usercontrol)
         {
-            //this.chrometabs.RemoveTab(this.chrometabs.SelectedItem);
+            this.chrometabs.RemoveTab(this.chrometabs.SelectedItem);
             if (Usercontrol != null)
             { DisplayUserControl(Usercontrol); }
         }
