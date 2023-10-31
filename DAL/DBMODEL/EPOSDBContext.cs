@@ -32,6 +32,7 @@ namespace DAL.DBMODEL
         public virtual DbSet<ExpenceType> ExpenceTypes { get; set; }
         public virtual DbSet<Page> Pages { get; set; }
         public virtual DbSet<Po> Pos { get; set; }
+        public virtual DbSet<PriceRule> PriceRules { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<ProductGroup> ProductGroups { get; set; }
@@ -335,6 +336,29 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Name).HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<PriceRule>(entity =>
+            {
+                entity.Property(e => e.AddedOn).HasColumnType("date");
+
+                entity.Property(e => e.CoupanCode).HasMaxLength(100);
+
+                entity.Property(e => e.CoupanSpendAmount).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.EndDate).HasColumnType("date");
+
+                entity.Property(e => e.FixedOff).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.Name).HasMaxLength(500);
+
+                entity.Property(e => e.PercentOff).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.SpendAmount).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.StartDate).HasColumnType("date");
+
+                entity.Property(e => e.Type).HasMaxLength(50);
             });
 
             modelBuilder.Entity<Product>(entity =>

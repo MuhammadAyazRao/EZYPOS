@@ -43,6 +43,7 @@ namespace DAL.Repository
             Supplier= new Repository<Supplier>(_context);
             SaleOrder = new SaleOrderRepository(_context);
             Stock = new StockRepository(_context);
+            PriceRule = new Repository<PriceRule>(_context);
             SaleOrderDetail = new Repository<SaleOrderDetail>(_context);
             StockOderDetail= new Repository<StockOderDetail>(_context);
             PurchaseOrderDetail = new Repository<PurchaseOrderDetail>(_context);
@@ -87,6 +88,7 @@ namespace DAL.Repository
         public IRepository<Product> Product { get; }
         public IRepository<ShopSetting> shopSettings { get; }
         public IRepository<Supplier> Supplier { get; }
+        public IRepository<PriceRule> PriceRule { get; }
         public IStockRepository Stock { get; }
         public IRepository<SaleOrderDetail> SaleOrderDetail { get; }
         public IRepository<StockOderDetail> StockOderDetail { get; }

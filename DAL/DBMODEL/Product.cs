@@ -25,7 +25,6 @@ namespace DAL.DBMODEL
         public decimal RetailPrice { get; set; }
         public decimal? Wholesaleprice { get; set; }
         public decimal PurchasePrice { get; set; }
-        public decimal RewardPoints { get; set; }
         public DateTime? Lastupdated { get; set; }
         public int? Createdby { get; set; }
         public DateTime? Createdon { get; set; }
@@ -33,6 +32,7 @@ namespace DAL.DBMODEL
         public int? Unit { get; set; }
         public string TaxType { get; set; }
         public decimal? Tax { get; set; }
+        public decimal? RewardPoints { get; set; }
 
         public virtual ProductCategory Category { get; set; }
         public virtual ProductGroup Group { get; set; }

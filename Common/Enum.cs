@@ -38,6 +38,14 @@ namespace Common
         Canceled = 4,
         Edited = 5,
     }
+    public enum PriceRuleTypes
+    {
+        SimpleDiscount = 1,
+        AdvancedDiscount = 2,
+        BuyXGetYFree = 3,
+        BuyXGetDiscount = 4,
+        SpendXGetDiscount = 5,
+    }
     public enum SalaryType
     {
         Advance = 1,

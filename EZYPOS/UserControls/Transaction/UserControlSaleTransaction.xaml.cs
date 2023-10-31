@@ -177,6 +177,11 @@ namespace EZYPOS.UserControls.Transaction
                             if (orderDetails.Qty + 1 <= Db.Stock.GetProductQty(orderDetails.Item.id))
                             {
                                 orderDetails.Qty = orderDetails.Qty + 1;
+                                if (orderDetails.Item.price > 50)
+                                {
+                                    decimal ab = Convert.ToDecimal(20 / 100.0);
+                                    orderDetails.ItemDiscount = ab * orderDetails.Item.price * orderDetails.Qty;
+                                }
                                 int INDEX = listBoxItemCart.SelectedIndex;
                                 order.OrdersDetails.RemoveAt(INDEX);
                                 listBoxItemCart.Items.RemoveAt(INDEX);
@@ -195,6 +200,15 @@ namespace EZYPOS.UserControls.Transaction
                             if (orderDetails.Qty > 1)
                             {
                                 orderDetails.Qty--;
+                                if (orderDetails.Item.price > 50 && orderDetails.Qty > 1)
+                                {
+                                    decimal ab = Convert.ToDecimal(20 / 100.0);
+                                    orderDetails.ItemDiscount = ab * orderDetails.Item.price * orderDetails.Qty;
+                                }
+                                else
+                                {
+                                    orderDetails.ItemDiscount = 0;
+                                }
                                 int INDEX = listBoxItemCart.SelectedIndex;
                                 order.OrdersDetails.RemoveAt(INDEX);
                                 listBoxItemCart.Items.RemoveAt(INDEX);
@@ -849,7 +863,7 @@ namespace EZYPOS.UserControls.Transaction
         private void AddToCart(string Name, decimal Price, decimal PurchasePrice, string TaxType, decimal Tax, int ProductId, int Qty = 1, decimal Discount = 0,decimal RewardPoints=0m)
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
-            {                
+            {
 
                 if (order.OrdersDetails == null)
                     order.OrdersDetails = new List<OrderDetail>();
@@ -858,15 +872,20 @@ namespace EZYPOS.UserControls.Transaction
                 var CartProduct = order.OrdersDetails.Where(x => x.Item?.id == ProductId).FirstOrDefault();
                 if (CartProduct != null)
                 {
-                        //if (CartProduct.Qty + 1 <= Db.Stock.GetProductQty(ProductId))
-                        //  {
-                        CartProduct.Qty = CartProduct.Qty + 1;
-                        int INDEX = listBoxItemCart.SelectedIndex;
-                        order.OrdersDetails.RemoveAt(INDEX);
-                        listBoxItemCart.Items.RemoveAt(INDEX);
-                        order.OrdersDetails.Insert(INDEX, CartProduct);
-                        listBoxItemCart.Items.Insert(INDEX, CartProduct);
-                        listBoxItemCart.SelectedIndex = INDEX;
+                    //if (CartProduct.Qty + 1 <= Db.Stock.GetProductQty(ProductId))
+                    //  {
+                    CartProduct.Qty = CartProduct.Qty + 1;
+                    if (CartProduct.Item.price > 50)
+                    {
+                        decimal ab = Convert.ToDecimal (20 / 100.0);
+                        CartProduct.ItemDiscount = ab* CartProduct.Item.price * CartProduct.Qty;
+                    }
+                    int INDEX = listBoxItemCart.SelectedIndex;
+                    order.OrdersDetails.RemoveAt(INDEX);
+                    listBoxItemCart.Items.RemoveAt(INDEX);
+                    order.OrdersDetails.Insert(INDEX, CartProduct);
+                    listBoxItemCart.Items.Insert(INDEX, CartProduct);
+                    listBoxItemCart.SelectedIndex = INDEX;
                     //}
                     //else
                     //{
@@ -875,13 +894,13 @@ namespace EZYPOS.UserControls.Transaction
                 }
                 else
                 {
-          //if (Db.Stock.GetProductQty(ProductId) >= 1)
-          //{
-          var orderDetail = new OrderDetail { Qty = Qty, Item = new item { reward_points=RewardPoints, name = Name, price = Price, PurchasePrice = PurchasePrice, TaxType = TaxType, Tax = Tax, id = ProductId }, ItemDiscount = Discount };
-                        order.OrdersDetails.Insert(0, orderDetail);
-                        listBoxItemCart.Items.Insert(0, orderDetail);
-                        listBoxItemCart.SelectedIndex = 0;                        
-                   // }
+                    //if (Db.Stock.GetProductQty(ProductId) >= 1)
+                    //{
+                    var orderDetail = new OrderDetail { Qty = Qty, Item = new item { reward_points = RewardPoints, name = Name, price = Price, PurchasePrice = PurchasePrice, TaxType = TaxType, Tax = Tax, id = ProductId }, ItemDiscount = Discount };
+                    order.OrdersDetails.Insert(0, orderDetail);
+                    listBoxItemCart.Items.Insert(0, orderDetail);
+                    listBoxItemCart.SelectedIndex = 0;
+                    // }
                     //}
                     //else
                     //{

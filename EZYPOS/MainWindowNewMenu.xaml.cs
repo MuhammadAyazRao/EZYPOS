@@ -223,6 +223,11 @@ namespace EZYPOS
             UserControlListSupplier Supplier = new UserControlListSupplier();
             ActiveSession.DisplayuserControlMethod(Supplier);
         }
+        private void PriceRules_Click(object sender, RoutedEventArgs e)
+        {
+            UserControlListPriceRules priceRules = new UserControlListPriceRules();
+            ActiveSession.DisplayuserControlMethod(priceRules);
+        }
 
         private void SaleItem_Click(object sender, RoutedEventArgs e)
         {

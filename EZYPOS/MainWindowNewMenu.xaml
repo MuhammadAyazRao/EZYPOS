@@ -127,6 +127,7 @@
                     <MenuItem Header="_Customers" Name="Cutomers" Click="Cutomers_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Customer.png" />
                     <MenuItem Header="_Employee" Name="Employee" Click="Employee_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Employee.png" />
                     <MenuItem Header="_Supplier" Name="Supplier" Click="Supplier_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Supplier.png" />
+                    <MenuItem Header="_PriceRules" Name="PriceRules" Click="PriceRules_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Supplier.png" />
                     <Separator Template="{StaticResource VsMenuSep}" />
                     <MenuItem Header="_Product Attribute" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\PruductAttribute.png">
                         <MenuItem Header="_Category" Name="Category" Click="Category_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Category1.png" />
