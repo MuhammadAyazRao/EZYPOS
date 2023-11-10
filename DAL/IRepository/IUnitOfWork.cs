@@ -36,6 +36,7 @@ namespace DAL.IRepository
         IRepository<ShopSetting> shopSettings { get; }
         IRepository<SaleOrderDetail> SaleOrderDetail { get; }
         IRepository<PriceRule> PriceRule { get; }
+        IRepository<PriceRulePriceBreak> PriceRulePriceBreak { get; }
         ISaleOrderRepository SaleOrder { get; }
         IStockRepository Stock { get; }
         IRepository<StockOderDetail> StockOderDetail { get; }

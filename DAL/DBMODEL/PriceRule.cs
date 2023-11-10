@@ -7,6 +7,11 @@ namespace DAL.DBMODEL
 {
     public partial class PriceRule
     {
+        public PriceRule()
+        {
+            PriceRulePriceBreaks = new HashSet<PriceRulePriceBreak>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime? StartDate { get; set; }
@@ -27,5 +32,7 @@ namespace DAL.DBMODEL
         public decimal? CoupanSpendAmount { get; set; }
         public bool? MixAndMatch { get; set; }
         public bool? DisableLoyaltyForRules { get; set; }
+
+        public virtual ICollection<PriceRulePriceBreak> PriceRulePriceBreaks { get; set; }
     }
 }

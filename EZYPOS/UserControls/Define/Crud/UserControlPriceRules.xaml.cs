@@ -4,10 +4,13 @@ using DAL.DBMODEL;
 using DAL.Repository;
 using EZYPOS.DTO;
 using EZYPOS.UserControls.Define.List;
+using MaterialDesignThemes.Wpf;
 using Microsoft.CodeAnalysis.FlowAnalysis;
+using Microsoft.Reporting.Map.WebForms.BingMaps;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -108,6 +111,30 @@ namespace EZYPOS.UserControls.Define.Crud
                         ddPriceRuleType.SelectedValue = selectedValue;
                     }
                 }
+                if(priceRuleData?.Type == PriceRuleTypes.AdvancedDiscount.ToString())
+                {
+                    List<PriceRulePriceBreak> priceRulePriceBreaks = Db.PriceRulePriceBreak.GetAll().Where(x => x.RuleId == priceRuleData.Id).ToList();
+
+                    for(int i = 1; i< priceRulePriceBreaks.Count; i++)
+                    {
+                        PriceRuleRow newRow = new PriceRuleRow();
+                        newRow.btnRemove.Visibility = Visibility.Visible;
+                        newRow.RemoveRowClicked += RemoveRowClicked;
+                        stackPanel.Children.Insert(stackPanel.Children.Count, newRow);
+                    }
+                    int index = 0;
+                    foreach (var child in stackPanel.Children)
+                    {
+                        if (child is PriceRuleRow row)
+                        {
+                            row.QtyToBuy1 = priceRulePriceBreaks[index].ItemsToBuy.ToString();
+                            row.FixedOff1 = priceRulePriceBreaks[index].FixedOff.ToString();
+                            row.PercentOff1 = priceRulePriceBreaks[index].PercentOff.ToString();
+                            index++;
+                        }
+                    }
+
+                }
                 txtId.Text = priceRuleData.Id.ToString();
             }
 
@@ -190,6 +217,37 @@ namespace EZYPOS.UserControls.Define.Crud
                                 updatePriceRule.Description = txtDescription.Text;
                             }
                             Db.Complete();
+                            if (PriceRuleType == PriceRuleTypes.AdvancedDiscount.ToString())
+                            {
+                                var priceRulePriceBreaks = Db.PriceRulePriceBreak.GetAll().Where(x => x.RuleId == Convert.ToInt32(txtId.Text)).ToList();
+                                foreach(var priceBreak in priceRulePriceBreaks)
+                                {
+                                    Db.PriceRulePriceBreak.Delete(priceBreak.Id);
+                                    Db.PriceRulePriceBreak.Save();
+                                }
+                                foreach (var child in stackPanel.Children)
+                                {
+                                    if (child is PriceRuleRow row)
+                                    {
+                                        string qtyToBuy = row.QtyToBuy;
+                                        string fixedOff = row.FixedOff;
+                                        string percentOff = row.PercentOff;
+                                        PriceRulePriceBreak priceRulePriceBreak = new PriceRulePriceBreak();
+                                        priceRulePriceBreak.RuleId = Convert.ToInt32(txtId.Text);
+                                        priceRulePriceBreak.ItemsToBuy = Convert.ToInt32(qtyToBuy);
+                                        if (!string.IsNullOrEmpty(fixedOff))
+                                        {
+                                            priceRulePriceBreak.FixedOff = Convert.ToDecimal(fixedOff);
+                                        }
+                                        if (!string.IsNullOrEmpty(percentOff))
+                                        {
+                                            priceRulePriceBreak.PercentOff = Convert.ToDecimal(percentOff);
+                                        }
+                                        Db.PriceRulePriceBreak.Add(priceRulePriceBreak);
+                                        Db.PriceRulePriceBreak.Save();
+                                    }
+                                }
+                            }
                             EZYPOS.View.MessageBox.ShowCustom("Record Updated Successfully", "Status", "OK");
                             RefreshPage();
                             ActiveSession.NavigateToRefreshMenu("");
@@ -242,10 +300,35 @@ namespace EZYPOS.UserControls.Define.Crud
                     {
                         newPriceRule.Description = txtDescription.Text;
                     }
-
-
                     DB.PriceRule.Add(newPriceRule);
                     DB.PriceRule.Save();
+                    if (PriceRuleType == PriceRuleTypes.AdvancedDiscount.ToString())
+                    {
+                        foreach (var child in stackPanel.Children)
+                        {
+                            if (child is PriceRuleRow row)
+                            {
+                                string qtyToBuy = row.QtyToBuy;
+                                string fixedOff = row.FixedOff;
+                                string percentOff = row.PercentOff;
+                                PriceRulePriceBreak priceRulePriceBreak = new PriceRulePriceBreak();
+                                priceRulePriceBreak.RuleId = newPriceRule.Id;
+                                priceRulePriceBreak.ItemsToBuy = Convert.ToInt32(qtyToBuy);
+                                if (!string.IsNullOrEmpty(fixedOff))
+                                {
+                                    priceRulePriceBreak.FixedOff = Convert.ToDecimal(fixedOff);
+                                }
+                                if (!string.IsNullOrEmpty(percentOff))
+                                {
+                                    priceRulePriceBreak.PercentOff = Convert.ToDecimal(percentOff);
+                                }
+                                DB.PriceRulePriceBreak.Add(priceRulePriceBreak);
+                                DB.PriceRulePriceBreak.Save();
+                            }
+                        }
+                    }
+
+                    
                     EZYPOS.View.MessageBox.ShowCustom("Record Saved Successfully", "Status", "OK");
                     RefreshPage();
                     ActiveSession.NavigateToRefreshMenu("");
@@ -370,6 +453,7 @@ namespace EZYPOS.UserControls.Define.Crud
                     txtQtyToBuy.Visibility = Visibility.Collapsed;
                     txtQtyToGet.Visibility = Visibility.Collapsed;
                     txtSpendAmount.Visibility = Visibility.Collapsed;
+                    borderPriceRuleBreaks.Visibility = Visibility.Collapsed;
                 }
                 else if (PriceRuleType == PriceRuleTypes.BuyXGetYFree.ToString())
                 {
@@ -378,6 +462,7 @@ namespace EZYPOS.UserControls.Define.Crud
                     txtQtyToBuy.Visibility = Visibility.Visible;
                     txtQtyToGet.Visibility = Visibility.Visible;
                     txtSpendAmount.Visibility = Visibility.Collapsed;
+                    borderPriceRuleBreaks.Visibility = Visibility.Collapsed;
                 }
                 else if (PriceRuleType == PriceRuleTypes.BuyXGetDiscount.ToString())
                 {
@@ -386,6 +471,8 @@ namespace EZYPOS.UserControls.Define.Crud
                     txtQtyToBuy.Visibility = Visibility.Visible;
                     txtQtyToGet.Visibility = Visibility.Collapsed;
                     txtSpendAmount.Visibility = Visibility.Collapsed;
+                    borderPriceRuleBreaks.Visibility = Visibility.Collapsed;
+
                 }
                 else if (PriceRuleType == PriceRuleTypes.SpendXGetDiscount.ToString())
                 {
@@ -394,7 +481,32 @@ namespace EZYPOS.UserControls.Define.Crud
                     txtQtyToBuy.Visibility = Visibility.Collapsed;
                     txtQtyToGet.Visibility = Visibility.Collapsed;
                     txtSpendAmount.Visibility = Visibility.Visible;
+                    borderPriceRuleBreaks.Visibility = Visibility.Collapsed;
                 }
+                else if (PriceRuleType == PriceRuleTypes.AdvancedDiscount.ToString())
+                {
+                    txtFixedOff.Visibility = Visibility.Collapsed;
+                    txtPercentOff.Visibility = Visibility.Collapsed;
+                    txtQtyToBuy.Visibility = Visibility.Collapsed;
+                    txtQtyToGet.Visibility = Visibility.Collapsed;
+                    txtSpendAmount.Visibility = Visibility.Collapsed;
+                    borderPriceRuleBreaks.Visibility = Visibility.Visible;
+                }
+            }
+        }
+        private void AddRow_Click(object sender, RoutedEventArgs e)
+        {
+            PriceRuleRow newRow = new PriceRuleRow();
+            newRow.btnRemove.Visibility = Visibility.Visible;
+            newRow.RemoveRowClicked += RemoveRowClicked;
+            stackPanel.Children.Insert(stackPanel.Children.Count, newRow);
+        }
+
+        private void RemoveRowClicked(object sender, RoutedEventArgs e)
+        {
+            if (sender is PriceRuleRow row)
+            {
+                stackPanel.Children.Remove(row);
             }
         }
     }

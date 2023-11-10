@@ -33,6 +33,7 @@ namespace DAL.DBMODEL
         public virtual DbSet<Page> Pages { get; set; }
         public virtual DbSet<Po> Pos { get; set; }
         public virtual DbSet<PriceRule> PriceRules { get; set; }
+        public virtual DbSet<PriceRulePriceBreak> PriceRulePriceBreaks { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductCategory> ProductCategories { get; set; }
         public virtual DbSet<ProductGroup> ProductGroups { get; set; }
@@ -359,6 +360,19 @@ namespace DAL.DBMODEL
                 entity.Property(e => e.StartDate).HasColumnType("date");
 
                 entity.Property(e => e.Type).HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<PriceRulePriceBreak>(entity =>
+            {
+                entity.Property(e => e.FixedOff).HasColumnType("decimal(18, 3)");
+
+                entity.Property(e => e.PercentOff).HasColumnType("decimal(18, 3)");
+
+                entity.HasOne(d => d.Rule)
+                    .WithMany(p => p.PriceRulePriceBreaks)
+                    .HasForeignKey(d => d.RuleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PriceRulePriceBreaks_PriceRules");
             });
 
             modelBuilder.Entity<Product>(entity =>

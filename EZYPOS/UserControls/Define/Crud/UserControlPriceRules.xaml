@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EZYPOS.UserControls.Define.Crud" 
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:local1="clr-namespace:EZYPOS.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="1024" Name="AddPriceRule" d:DesignWidth="768">
+             d:DesignHeight="900" Name="AddPriceRule" d:DesignWidth="768">
     <UserControl.Resources>
         <Style x:Key="CheckBoxStyle1" TargetType="{x:Type CheckBox}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
@@ -117,11 +118,11 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <!--<RowDefinition Height="50"/>-->
-            <RowDefinition Height="590"/>
-            <RowDefinition Height="61"/>
+            <RowDefinition Height="350"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
-        <Border ScrollViewer.CanContentScroll="True" ScrollViewer.PanningMode="VerticalFirst" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="LightGray" BorderThickness="2" Margin="50,50,50,50" Grid.Row="0">
+        <Border ScrollViewer.CanContentScroll="True" ScrollViewer.PanningMode="VerticalFirst" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="LightGray" BorderThickness="2" Margin="50,50,50,0" Grid.Row="0">
             <Grid Margin="0,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60"></RowDefinition>
@@ -129,11 +130,6 @@
                     <RowDefinition Height="60"></RowDefinition>
                     <RowDefinition Height="60"></RowDefinition>
                     <RowDefinition Height="60"></RowDefinition>
-                    <RowDefinition Height="60"></RowDefinition>
-                    <RowDefinition Height="60"></RowDefinition>
-                    <RowDefinition Height="60"></RowDefinition>
-
-
 
                 </Grid.RowDefinitions>
 
@@ -163,21 +159,33 @@
                 <TextBox Name="txtId" Visibility="Collapsed" Padding="10" TextWrapping="Wrap" Text="Id" Foreground="Gray" Grid.Column="1" Template="{DynamicResource TextBoxBaseControlTemplate}" VerticalContentAlignment="Center"  Margin="20,10,20,10" Grid.Row="1" Height="Auto" Style="{Binding txtInput}"  />
                 <DatePicker Name="startDate" Margin="20,10,20,10" Grid.Row="3" Grid.Column="0" materialDesign:HintAssist.Hint="Start Date"   Style="{StaticResource MaterialDesignDatePicker}" />
                 <DatePicker Name="endDate" Margin="20,10,20,10" Grid.Row="4" Grid.Column="0" materialDesign:HintAssist.Hint="End Date"   Style="{StaticResource MaterialDesignDatePicker}" />
-                <Label Foreground="{DynamicResource black}" Style="{DynamicResource lblLazeTitle}" Content="Active" HorizontalAlignment="Right" Grid.Row="7" Grid.Column="1" Margin="0,13,150,0"/>
-                <CheckBox Name="ckIsActive" Style="{DynamicResource CheckBoxStyle1}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="45" Width="100" Grid.Row="7" Grid.Column="1" Margin="0,0,10,0"  />
-
+                <Label Foreground="{DynamicResource black}" Style="{DynamicResource lblLazeTitle}" Content="Active" HorizontalAlignment="Right" Grid.Row="4" Grid.Column="1" Margin="0,13,150,0"/>
+                <CheckBox Name="ckIsActive" Style="{DynamicResource CheckBoxStyle1}" HorizontalAlignment="Right" VerticalAlignment="Center" Height="45" Width="100" Grid.Row="4" Grid.Column="1" Margin="0,0,10,0"  />
+                
 
             </Grid>
 
 
         </Border>
+        <Border Name="borderPriceRuleBreaks" ScrollViewer.CanContentScroll="True" ScrollViewer.PanningMode="VerticalFirst" ScrollViewer.VerticalScrollBarVisibility="Visible" BorderBrush="LightGray" BorderThickness="2" Margin="50,5,50,10" Grid.Row="1">
+            <Grid Grid.Row="5" Grid.ColumnSpan="2">
+                <StackPanel Name="stackPanel" VerticalAlignment="Top">
+                    <!-- Add button -->
+                    <Button Content="Add Row" Margin="150,5,0,0" Click="AddRow_Click" HorizontalAlignment="Left"/>
 
-        <Button  Content="{materialDesign:PackIcon Kind=Refresh,Size=50}" Name="Refresh" Click="Refresh_Click"  Style="{DynamicResource btnTile}" Grid.Row="1" Margin="175,0,0,0" HorizontalAlignment="Left" Width="100" ToolTip="Refresh" />
-        <Button  Content="{materialDesign:PackIcon Kind=Pencil,Size=50}" Name="Update" Click="Update_Click" Style="{DynamicResource btnInfo}" HorizontalAlignment="Left" Grid.Row="1" Margin="430,0,0,0" Width="100"   ToolTip="Edit"  />
-        <Button  Content="{materialDesign:PackIcon Kind=Delete,Size=50}" Name="Delete" Click="Delete_Click" BorderThickness="0"  Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Grid.Row="1" Margin="300,0,0,0" Width="100"  ToolTip="Delete" />
-        <Button  Content="{materialDesign:PackIcon Kind=ContentSave,Size=50}" Name="Save" Click="Save_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left" Grid.Row="1" Margin="560,0,0,0" Width="100"  ToolTip="Save" />
-        <Button  Content="{materialDesign:PackIcon Kind=FormatListNumbers,Size=50}" Name="List" Click="List_Click" Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Left" Grid.Row="1" Margin="50,0,0,0" Width="100"  ToolTip="Back to List" />
-        <Label x:Name="label1" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Content="Price Rule Detail" HorizontalAlignment="Left" Margin="40,10,0,300"/>
+                    <!-- Initial row -->
+                    <local1:PriceRuleRow />
+
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Button  Content="{materialDesign:PackIcon Kind=Refresh,Size=50}" Name="Refresh" Click="Refresh_Click"  Style="{DynamicResource btnTile}" Grid.Row="2" Margin="175,0,0,5" HorizontalAlignment="Left" Width="100" ToolTip="Refresh" />
+        <Button  Content="{materialDesign:PackIcon Kind=Pencil,Size=50}" Name="Update" Click="Update_Click" Style="{DynamicResource btnInfo}" HorizontalAlignment="Left" Grid.Row="2" Margin="430,0,0,5" Width="100"   ToolTip="Edit"  />
+        <Button  Content="{materialDesign:PackIcon Kind=Delete,Size=50}" Name="Delete" Click="Delete_Click" BorderThickness="0"  Style="{DynamicResource btnDanger}" HorizontalAlignment="Left" Grid.Row="2" Margin="300,0,0,5" Width="100"  ToolTip="Delete" />
+        <Button  Content="{materialDesign:PackIcon Kind=ContentSave,Size=50}" Name="Save" Click="Save_Click" Style="{DynamicResource btnSuccess}"  HorizontalAlignment="Left" Grid.Row="2" Margin="560,0,0,5" Width="100"  ToolTip="Save" />
+        <Button  Content="{materialDesign:PackIcon Kind=FormatListNumbers,Size=50}" Name="List" Click="List_Click" Style="{DynamicResource btnPrimery}"  HorizontalAlignment="Left" Grid.Row="2" Margin="50,0,0,5" Width="100"  ToolTip="Back to List" />
+        <Label x:Name="label1" Foreground="{DynamicResource DarkBlue}" Style="{DynamicResource lblLazeTitle}" Content="Price Rule Detail" Height="60" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="40,10,0,5"/>
         <!--<Button x:Name="btnCloseTopBar" Click="btnClose_Click" Content="X" Style="{DynamicResource btnDanger}" Margin="0,5,10,0" HorizontalAlignment="Right" Width="50" Height="40" VerticalAlignment="Top"/>-->
 
 
