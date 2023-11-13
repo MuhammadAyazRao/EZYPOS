@@ -75,7 +75,7 @@ namespace EZYPOS.UserControls.Define.Crud
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
                 var priceRuleData = Db.PriceRule.GetAll().Where(x => x.Id == priceRule.Id).FirstOrDefault();
-
+                ckIsActive.IsChecked = priceRuleData.IsActive;
                 if (!string.IsNullOrEmpty(priceRuleData?.Name))
                 {
                     txtName.Text = priceRuleData?.Name;
@@ -87,6 +87,18 @@ namespace EZYPOS.UserControls.Define.Crud
                 if (!string.IsNullOrEmpty(priceRuleData?.PercentOff.ToString()))
                 {
                     txtPercentOff.Text = priceRuleData.PercentOff.ToString();
+                }
+                if (!string.IsNullOrEmpty(priceRuleData?.ItemsToBuy.ToString()))
+                {
+                    txtQtyToBuy.Text = priceRuleData.ItemsToBuy.ToString();
+                }
+                if (!string.IsNullOrEmpty(priceRuleData?.ItemToGet.ToString()))
+                {
+                    txtQtyToGet.Text = priceRuleData.ItemToGet.ToString();
+                }
+                if (!string.IsNullOrEmpty(priceRuleData?.SpendAmount.ToString()))
+                {
+                    txtSpendAmount.Text = priceRuleData.SpendAmount.ToString();
                 }
                 if (!string.IsNullOrEmpty(priceRuleData?.Description))
                 {
@@ -191,11 +203,13 @@ namespace EZYPOS.UserControls.Define.Crud
                         || PriceRuleType == PriceRuleTypes.BuyXGetDiscount.ToString()
                         || PriceRuleType == PriceRuleTypes.SpendXGetDiscount.ToString())
                             {
+                                updatePriceRule.FixedOff = null;
+                                updatePriceRule.PercentOff = null;
                                 if (!string.IsNullOrEmpty(txtFixedOff.Text))
                                 {
                                     updatePriceRule.FixedOff = Convert.ToDecimal(txtFixedOff.Text);
                                 }
-                                if (!string.IsNullOrEmpty(txtFixedOff.Text))
+                                if (!string.IsNullOrEmpty(txtPercentOff.Text))
                                 {
                                     updatePriceRule.PercentOff = Convert.ToDecimal(txtPercentOff.Text);
                                 }

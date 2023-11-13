@@ -41,7 +41,7 @@ namespace EZYPOS.UserControls.Define.List
 
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-                myList = DB.PriceRule.GetAll().Select(x => new PriceRuleDTO { Id = x.Id, Name = x.Name, RuleType = GetTypeDisplayText(x.Type), StartDate = x.StartDate, EndDate = x.EndDate, IsActive = x.IsActive }).ToList();
+                myList = DB.PriceRule.GetAll().Where(x=> x.IsDeleted == false ||  x.IsDeleted == null).Select(x => new PriceRuleDTO { Id = x.Id, Name = x.Name, RuleType = GetTypeDisplayText(x.Type), StartDate = x.StartDate, EndDate = x.EndDate, IsActive = x.IsActive }).ToList();
                 ResetPaging(myList);
             }
         }
@@ -92,7 +92,7 @@ namespace EZYPOS.UserControls.Define.List
                 string filter = t.Text;
                 using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
                 {
-                    myList = DB.PriceRule.GetAll().Select(x => new PriceRuleDTO { Id = x.Id, Name = x.Name, RuleType = GetTypeDisplayText(x.Type), StartDate = x.StartDate, EndDate = x.EndDate, IsActive = x.IsActive }).ToList();
+                    myList = DB.PriceRule.GetAll().Where(x=> x.IsDeleted == false || x.IsDeleted == null).Select(x => new PriceRuleDTO { Id = x.Id, Name = x.Name, RuleType = GetTypeDisplayText(x.Type), StartDate = x.StartDate, EndDate = x.EndDate, IsActive = x.IsActive }).ToList();
                     if (filter == "")
                     {
                     }

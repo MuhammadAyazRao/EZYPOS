@@ -15,12 +15,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
@@ -32,6 +34,7 @@ namespace EZYPOS.UserControls.Transaction
     /// </summary>
     public partial class UserControlSaleTransaction : UserControl
     {
+        public List<PriceRule> priceRules { get; set; }
         public UserControlSaleTransaction(Order EditOrder=null)
         {
             InitializeComponent();
@@ -42,6 +45,7 @@ namespace EZYPOS.UserControls.Transaction
             BusyIndicator.ShowBusy();
             using (UnitOfWork DB = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
+                priceRules = DB.PriceRule.GetAll().Where(x=> (x.IsDeleted == false || x.IsDeleted == null) && x.IsActive == true).ToList();
                 //List<DAL.DBMODEL.ProductCategory> CategoryList = DB.ProductCategory.GetAll().Select(x => new DAL.DBMODEL.ProductCategory { Name = x.Name, Id = x.Id }).ToList();
                 //DDCategory.ItemsSource = CategoryList;
 
@@ -143,11 +147,35 @@ namespace EZYPOS.UserControls.Transaction
         {
             try
             {
-
                 order.OrdersDetails.RemoveAt(listBoxItemCart.SelectedIndex);
                 listBoxItemCart.Items.RemoveAt(listBoxItemCart.SelectedIndex);
                 //listBoxItemCart.SelectedIndex = listBoxItemCart.Items.Count - 1;
                 listBoxItemCart.SelectedIndex = 0;
+                var spendXGetDiscount = priceRules.Where(x => x.Type == PriceRuleTypes.SpendXGetDiscount.ToString()).FirstOrDefault();
+                if (spendXGetDiscount != null)
+                {
+                    var total = order.GetTotal();
+                    if (spendXGetDiscount.SpendAmount <= total)
+                    {
+                        if (spendXGetDiscount.FixedOff > 0)
+                        {
+                            ActiveSession.order_Discount_percentage = 0;
+                            order.Discount = Convert.ToDecimal(spendXGetDiscount.FixedOff);
+                        }
+                        else if (spendXGetDiscount.PercentOff > 0)
+                        {
+                            decimal percetOff = Convert.ToDecimal(spendXGetDiscount.PercentOff);
+                            ActiveSession.order_Discount_percentage = percetOff;
+                            order.Discount = (percetOff / 100) * total;
+                        }
+                    }
+                    else
+                    {
+                        order.Discount = 0;
+                        ActiveSession.order_Discount_percentage = 0;
+                    }
+                }
+
                 if (listBoxItemCart.Items.Count == 0)
                 { CartVisibility(); }
 
@@ -171,23 +199,89 @@ namespace EZYPOS.UserControls.Transaction
                     if (button != null)
                     {
                         OrderDetail orderDetails = (OrderDetail)listBoxItemCart.SelectedItem;
-
+                        var buyXGetDiscount = priceRules.Where(x => x.Type == PriceRuleTypes.BuyXGetDiscount.ToString()).FirstOrDefault();
+                        var buyXGetYFree = priceRules.Where(x => x.Type == PriceRuleTypes.BuyXGetYFree.ToString()).FirstOrDefault();
+                        var spendXGetDiscount = priceRules.Where(x => x.Type == PriceRuleTypes.SpendXGetDiscount.ToString()).FirstOrDefault();
+                        var advancedDiscount = priceRules.Where(x => x.Type == PriceRuleTypes.AdvancedDiscount.ToString()).FirstOrDefault();
                         if (button.Content.ToString() == "+")
                         {
                             if (orderDetails.Qty + 1 <= Db.Stock.GetProductQty(orderDetails.Item.id))
                             {
                                 orderDetails.Qty = orderDetails.Qty + 1;
-                                if (orderDetails.Item.price > 50)
+                                #region deals & discounts
+                                if (buyXGetDiscount != null)
                                 {
-                                    decimal ab = Convert.ToDecimal(20 / 100.0);
-                                    orderDetails.ItemDiscount = ab * orderDetails.Item.price * orderDetails.Qty;
+                                    if (buyXGetDiscount.ItemsToBuy <= orderDetails.Qty)
+                                    {
+                                        if (buyXGetDiscount.PercentOff > 0)
+                                        {
+                                            decimal percentOff = Convert.ToDecimal(buyXGetDiscount.PercentOff);
+                                            orderDetails.ItemDiscount = (percentOff / 100) * orderDetails.Item.price * orderDetails.Qty;
+                                        }
+                                        else if (buyXGetDiscount.FixedOff > 0)
+                                        {
+                                            orderDetails.ItemDiscount = Convert.ToDecimal(buyXGetDiscount.FixedOff);
+                                        }
+
+                                    }
+
                                 }
+                                if (buyXGetYFree != null)
+                                {
+                                    if (buyXGetYFree.ItemsToBuy <= orderDetails.Qty)
+                                    {
+                                        orderDetails.ItemDiscount = orderDetails.Item.price;
+                                    }
+                                }
+                                if (spendXGetDiscount != null)
+                                {
+                                    if (spendXGetDiscount.SpendAmount <= order.GetTotal())
+                                    {
+                                        if (spendXGetDiscount.FixedOff > 0)
+                                        {
+                                            ActiveSession.order_Discount_percentage = 0;
+                                            order.Discount = Convert.ToDecimal(spendXGetDiscount.FixedOff);
+                                        }
+                                        else if (spendXGetDiscount.PercentOff > 0)
+                                        {
+                                            decimal percetOff = Convert.ToDecimal(spendXGetDiscount.PercentOff);
+                                            ActiveSession.order_Discount_percentage = percetOff;
+                                            order.Discount = (percetOff / 100) * order.GetTotal();
+                                        }
+                                    }
+                                }
+                                if (advancedDiscount != null)
+                                {
+                                    var priceBreaks = Db.PriceRulePriceBreak.GetAll().Where(x => x.RuleId == advancedDiscount.Id).OrderBy(x => x.ItemsToBuy).ToList();
+                                    if (priceBreaks.Count > 0)
+                                    {
+                                        foreach (var priceBreak in priceBreaks)
+                                        {
+                                            if (priceBreak.ItemsToBuy <= orderDetails.Qty)
+                                            {
+                                                if (priceBreak.FixedOff > 0)
+                                                {
+                                                    ActiveSession.order_Discount_percentage = 0;
+                                                    order.Discount = Convert.ToDecimal(priceBreak.FixedOff);
+                                                }
+                                                else if (priceBreak.PercentOff > 0)
+                                                {
+                                                    decimal percetOff = Convert.ToDecimal(priceBreak.PercentOff);
+                                                    ActiveSession.order_Discount_percentage = percetOff;
+                                                    order.Discount = (percetOff / 100) * orderDetails.Item.price * orderDetails.Qty;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                #endregion
                                 int INDEX = listBoxItemCart.SelectedIndex;
                                 order.OrdersDetails.RemoveAt(INDEX);
                                 listBoxItemCart.Items.RemoveAt(INDEX);
                                 order.OrdersDetails.Insert(INDEX, orderDetails);
                                 listBoxItemCart.Items.Insert(INDEX, orderDetails);
                                 listBoxItemCart.SelectedIndex = INDEX;
+                                
                             }
                             else
                             {
@@ -200,15 +294,87 @@ namespace EZYPOS.UserControls.Transaction
                             if (orderDetails.Qty > 1)
                             {
                                 orderDetails.Qty--;
-                                if (orderDetails.Item.price > 50 && orderDetails.Qty > 1)
+                                #region deals & discounts
+                                if (buyXGetDiscount != null)
                                 {
-                                    decimal ab = Convert.ToDecimal(20 / 100.0);
-                                    orderDetails.ItemDiscount = ab * orderDetails.Item.price * orderDetails.Qty;
+                                    if (buyXGetDiscount.ItemsToBuy <= orderDetails.Qty)
+                                    {
+                                        if (buyXGetDiscount.PercentOff > 0)
+                                        {
+                                            decimal percentOff = Convert.ToDecimal(buyXGetDiscount.PercentOff);
+                                            orderDetails.ItemDiscount = (percentOff / 100) * orderDetails.Item.price * orderDetails.Qty;
+                                        }
+                                        else if (buyXGetDiscount.FixedOff > 0)
+                                        {
+                                            orderDetails.ItemDiscount = Convert.ToDecimal(buyXGetDiscount.FixedOff);
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        orderDetails.ItemDiscount = 0;
+                                    }
+
                                 }
-                                else
+                                if (buyXGetYFree != null)
                                 {
-                                    orderDetails.ItemDiscount = 0;
+                                    if (buyXGetYFree.ItemsToBuy <= orderDetails.Qty)
+                                    {
+                                        orderDetails.ItemDiscount = orderDetails.Item.price;
+                                    }
+                                    else
+                                    {
+                                        orderDetails.ItemDiscount = 0;
+                                    }
                                 }
+                                if (spendXGetDiscount != null)
+                                {
+                                    var total = order.GetTotal();
+                                    if (spendXGetDiscount.SpendAmount <= total)
+                                    {
+                                        if (spendXGetDiscount.FixedOff > 0)
+                                        {
+                                            ActiveSession.order_Discount_percentage = 0;
+                                            order.Discount = Convert.ToDecimal(spendXGetDiscount.FixedOff);
+                                        }
+                                        else if (spendXGetDiscount.PercentOff > 0)
+                                        {
+                                            decimal percetOff = Convert.ToDecimal(spendXGetDiscount.PercentOff);
+                                            ActiveSession.order_Discount_percentage = percetOff;
+                                            order.Discount = (percetOff / 100) * total;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        order.Discount = 0;
+                                        ActiveSession.order_Discount_percentage = 0;
+                                    }
+                                }
+                                if (advancedDiscount != null)
+                                {
+                                    var priceBreaks = Db.PriceRulePriceBreak.GetAll().Where(x => x.RuleId == advancedDiscount.Id).OrderBy(x => x.ItemsToBuy).ToList();
+                                    if (priceBreaks.Count > 0)
+                                    {
+                                        foreach (var priceBreak in priceBreaks)
+                                        {
+                                            if (priceBreak.ItemsToBuy <= orderDetails.Qty)
+                                            {
+                                                if (priceBreak.FixedOff > 0)
+                                                {
+                                                    ActiveSession.order_Discount_percentage = 0;
+                                                    order.Discount = Convert.ToDecimal(priceBreak.FixedOff);
+                                                }
+                                                else if (priceBreak.PercentOff > 0)
+                                                {
+                                                    decimal percetOff = Convert.ToDecimal(priceBreak.PercentOff);
+                                                    ActiveSession.order_Discount_percentage = percetOff;
+                                                    order.Discount = (percetOff / 100) * orderDetails.Item.price * orderDetails.Qty;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                #endregion
                                 int INDEX = listBoxItemCart.SelectedIndex;
                                 order.OrdersDetails.RemoveAt(INDEX);
                                 listBoxItemCart.Items.RemoveAt(INDEX);
@@ -864,7 +1030,6 @@ namespace EZYPOS.UserControls.Transaction
         {
             using (UnitOfWork Db = new UnitOfWork(new DAL.DBMODEL.EPOSDBContext()))
             {
-
                 if (order.OrdersDetails == null)
                     order.OrdersDetails = new List<OrderDetail>();
 
@@ -875,11 +1040,6 @@ namespace EZYPOS.UserControls.Transaction
                     //if (CartProduct.Qty + 1 <= Db.Stock.GetProductQty(ProductId))
                     //  {
                     CartProduct.Qty = CartProduct.Qty + 1;
-                    if (CartProduct.Item.price > 50)
-                    {
-                        decimal ab = Convert.ToDecimal (20 / 100.0);
-                        CartProduct.ItemDiscount = ab* CartProduct.Item.price * CartProduct.Qty;
-                    }
                     int INDEX = listBoxItemCart.SelectedIndex;
                     order.OrdersDetails.RemoveAt(INDEX);
                     listBoxItemCart.Items.RemoveAt(INDEX);
@@ -906,10 +1066,98 @@ namespace EZYPOS.UserControls.Transaction
                     //{
                     //    EZYPOS.View.MessageBox.ShowCustom("Available Qty is " + Db.Stock.GetProductQty(ProductId), "QTY Exceeded", "Ok");
                     //}
+                    CartProduct = order.OrdersDetails.Where(x => x.Item?.id == ProductId).FirstOrDefault();
                 }
+                var buyXGetDiscount = priceRules.Where(x => x.Type == PriceRuleTypes.BuyXGetDiscount.ToString()).FirstOrDefault();
+                var buyXGetYFree = priceRules.Where(x => x.Type == PriceRuleTypes.BuyXGetYFree.ToString()).FirstOrDefault();
+                var advancedDiscount = priceRules.Where(x => x.Type == PriceRuleTypes.AdvancedDiscount.ToString()).FirstOrDefault();
 
+                if (buyXGetDiscount != null)
+                {
+                    if (buyXGetDiscount.ItemsToBuy <= CartProduct.Qty)
+                    {
+                        if (buyXGetDiscount.PercentOff > 0)
+                        {
+                            decimal percentOff = Convert.ToDecimal(buyXGetDiscount.PercentOff);
+                            CartProduct.ItemDiscount = (percentOff / 100) * CartProduct.Item.price * CartProduct.Qty;
+                        }
+                        else if (buyXGetDiscount.FixedOff > 0)
+                        {
+                            CartProduct.ItemDiscount = Convert.ToDecimal(buyXGetDiscount.FixedOff);
+                        }
 
+                    }
+
+                }
+                if (buyXGetYFree != null)
+                {
+                    if (buyXGetYFree.ItemsToBuy <= CartProduct.Qty)
+                    {
+                        CartProduct.ItemDiscount = CartProduct.Item.price;
+                    }
+                }
+                if (advancedDiscount != null)
+                {
+                    var priceBreaks = Db.PriceRulePriceBreak.GetAll().Where(x => x.RuleId == advancedDiscount.Id).OrderBy(x => x.ItemsToBuy).ToList();
+                    if (priceBreaks.Count > 0)
+                    {
+                        foreach (var priceBreak in priceBreaks)
+                        {
+                            if (priceBreak.ItemsToBuy <= CartProduct.Qty)
+                            {
+                                if (priceBreak.FixedOff > 0)
+                                {
+                                    ActiveSession.order_Discount_percentage = 0;
+                                    order.Discount = Convert.ToDecimal(priceBreak.FixedOff);
+                                }
+                                else if (priceBreak.PercentOff > 0)
+                                {
+                                    decimal percetOff = Convert.ToDecimal(priceBreak.PercentOff);
+                                    ActiveSession.order_Discount_percentage = percetOff;
+                                    order.Discount = (percetOff / 100) * CartProduct.Item.price * CartProduct.Qty;
+                                }
+                            }
+                        }
+                    }
+                }
                 CartVisibility();
+                #region Deals & Discount Work
+                var simpleDiscount = priceRules.Where(x => x.Type == PriceRuleTypes.SimpleDiscount.ToString()).FirstOrDefault();
+                var spendXGetDiscount = priceRules.Where(x => x.Type == PriceRuleTypes.SpendXGetDiscount.ToString()).FirstOrDefault();
+
+                if (simpleDiscount != null)
+                {
+                    if (simpleDiscount.FixedOff > 0)
+                    {
+                        ActiveSession.order_Discount_percentage = 0;
+                        order.Discount = Convert.ToDecimal(simpleDiscount.FixedOff);
+                    }
+                    else if (simpleDiscount.PercentOff > 0)
+                    {
+                        decimal percetOff = Convert.ToDecimal(simpleDiscount.PercentOff);
+                        ActiveSession.order_Discount_percentage = percetOff;
+                        order.Discount = (percetOff / 100) * order.GetTotal();
+                    }
+                }
+                if(spendXGetDiscount != null)
+                {
+                    if(spendXGetDiscount.SpendAmount <= order.GetTotal())
+                    {
+                        if (spendXGetDiscount.FixedOff > 0)
+                        {
+                            ActiveSession.order_Discount_percentage = 0;
+                            order.Discount = Convert.ToDecimal(spendXGetDiscount.FixedOff);
+                        }
+                        else if (spendXGetDiscount.PercentOff > 0)
+                        {
+                            decimal percetOff = Convert.ToDecimal(spendXGetDiscount.PercentOff);
+                            ActiveSession.order_Discount_percentage = percetOff;
+                            order.Discount = (percetOff / 100) * order.GetTotal();
+                        }
+                    }
+                }
+                
+                #endregion
                 UpdateBillSummary();
             }
         }
