@@ -447,6 +447,15 @@ namespace EZYPOS
                 ActiveSession.DisplayuserControlMethod(ItemWiseSale);
             }
         }
+        private void CategoryWiseSale_Click(object sender, RoutedEventArgs e)
+        {
+            Pinverification verify = new Pinverification();
+            if (verify.ShowDialog() == true)
+            {
+                UserControlCategoryWiseSaleReport ItemWiseSale = new UserControlCategoryWiseSaleReport();
+                ActiveSession.DisplayuserControlMethod(ItemWiseSale);
+            }
+        }
 
         private void EmployeeWiseSaleReport_Click(object sender, RoutedEventArgs e)
         {

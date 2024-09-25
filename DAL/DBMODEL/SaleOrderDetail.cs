@@ -34,6 +34,7 @@ namespace DAL.DBMODEL
         public string IsUpdated { get; set; }
         public bool IsDeleted { get; set; }
         public string Posid { get; set; }
+        public int? CategoryId { get; set; }
 
         public virtual SaleOrder Order { get; set; }
         public virtual ICollection<StockOderDetail> StockOderDetails { get; set; }

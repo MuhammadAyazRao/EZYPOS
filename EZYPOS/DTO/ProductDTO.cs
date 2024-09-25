@@ -13,6 +13,7 @@ namespace EZYPOS.DTO
         public string Unit { get; set; }
         public string Size { get; set; }
         public string Barcode { get; set; }
+        public int? CategoryId { get; set; }
         public string CategoryName{ get; set; }
         public string SubcategoryName{ get; set; }
         public bool? Isdeleted { get; set; }

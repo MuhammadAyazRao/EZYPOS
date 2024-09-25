@@ -62,7 +62,7 @@ namespace DAL.DBMODEL
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=DESKTOP-3RK0A90\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-IJKCIH0\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;");
             }
         }
 
@@ -341,29 +341,37 @@ namespace DAL.DBMODEL
 
             modelBuilder.Entity<PriceRule>(entity =>
             {
-                entity.Property(e => e.AddedOn).HasColumnType("date");
+                entity.ToTable("PriceRule");
+
+                entity.Property(e => e.AddedOn).HasColumnType("datetime");
 
                 entity.Property(e => e.CoupanCode).HasMaxLength(100);
 
                 entity.Property(e => e.CoupanSpendAmount).HasColumnType("decimal(18, 3)");
 
-                entity.Property(e => e.EndDate).HasColumnType("date");
+                entity.Property(e => e.Description).HasMaxLength(200);
+
+                entity.Property(e => e.EndDate).HasColumnType("datetime");
 
                 entity.Property(e => e.FixedOff).HasColumnType("decimal(18, 3)");
 
-                entity.Property(e => e.Name).HasMaxLength(500);
+                entity.Property(e => e.Name).IsRequired();
 
                 entity.Property(e => e.PercentOff).HasColumnType("decimal(18, 3)");
 
                 entity.Property(e => e.SpendAmount).HasColumnType("decimal(18, 3)");
 
-                entity.Property(e => e.StartDate).HasColumnType("date");
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Type).HasMaxLength(50);
+                entity.Property(e => e.Type)
+                    .IsRequired()
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<PriceRulePriceBreak>(entity =>
             {
+                entity.ToTable("PriceRulePriceBreak");
+
                 entity.Property(e => e.FixedOff).HasColumnType("decimal(18, 3)");
 
                 entity.Property(e => e.PercentOff).HasColumnType("decimal(18, 3)");
@@ -372,7 +380,7 @@ namespace DAL.DBMODEL
                     .WithMany(p => p.PriceRulePriceBreaks)
                     .HasForeignKey(d => d.RuleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PriceRulePriceBreaks_PriceRules");
+                    .HasConstraintName("FK_PriceRulePriceBreak_PriceRule");
             });
 
             modelBuilder.Entity<Product>(entity =>

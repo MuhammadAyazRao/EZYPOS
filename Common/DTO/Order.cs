@@ -356,12 +356,12 @@ namespace Common.DTO
         public string bg_color { get; set; }
         public string text_color { get; set; }
         public int sub_cat_id { get; set; }
+        public string CategoryName { get; set; }
+        public int? CategoryId { get; set; }
         public int addon_item_id { get; set; }
         public string kitchen_lines { get; set; }
         public string addon_display_inline { get; set; }
         public string status { get; set; }
-    public decimal reward_points { get; set; }
-    }
-
-    
+        public decimal reward_points { get; set; }
+    }  
 }

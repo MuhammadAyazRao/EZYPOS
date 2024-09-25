@@ -176,6 +176,7 @@
                         <MenuItem Header="_SaleReport" Click="SaleReport_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Sales.png" />
                         <MenuItem Header="_Refunded Order Report" Click="RefundedOrderReport_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Sales.png" />
                         <MenuItem Header="_ItemWiseSaleReport" Click="ItemWiseSale_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\ItemWiseSale.png" />
+                        <MenuItem Header="_CategoryWiseSaleReport" Click="CategoryWiseSale_Click" Template="{StaticResource VsMenuSub}" Icon="Assets\icons\ItemWiseSale.png" />
                         <MenuItem Header="_Employee Wise Sale Report" Click="EmployeeWiseSaleReport_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\EmployeeWiseSale.png" />
                         <MenuItem Header="_POS Wise Sale Report" Click="POSWiseSaleReport_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\EmployeeWiseSale.png" />
                         <MenuItem Header="_Purchase Order Report" Name="PurchaseReport" Click="PurchaseReport_Click"  Template="{StaticResource VsMenuSub}" Icon="Assets\icons\Purchase.png" />

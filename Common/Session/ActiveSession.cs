@@ -9,11 +9,11 @@ namespace Common.Session
   public static  class ActiveSession {
     #region DatabaseSettings
     //public static string Database = "Data Source=HAIER-PC\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=False;User ID=admin;Password=A722713yaz@";
-    //public static string CompleteConnection = "Data Source=DESKTOP-SF5UVV3;Database=EPOS-DB;Trusted_Connection=True;";
-    public static string CompleteConnection = "Data Source=ZULQAR\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=False;User ID=admin;Password=A722713yaz@";
+    public static string CompleteConnection = "Data Source=DESKTOP-IJKCIH0\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;";
+    //public static string CompleteConnection = "Data Source=DESKTOP-IJKCIH0\\SQLEXPRESS;Database=EPOS-DB;Trusted_Connection=True;User ID=admin;Password=A722713yaz@";
     //public static string DummyConnection = "Data Source=<<server>>;Database=<<database>>;Trusted_Connection=False;User ID=admin;Password=A722713yaz@";
     public static string DummyConnection = "Data Source=<<server>>;Database=<<database>>;Trusted_Connection=True";
-    public static string ServerName = "ZULQAR\\SQLEXPRESS";
+    public static string ServerName = "DESKTOP-IJKCIH0\\SQLEXPRESS";
         public static string UserName = "admin";
         public static string Password = "A722713yaz@";
         public static string DatabaseName = "EPOS-DB";

@@ -100,6 +100,8 @@ namespace DAL.Repository
                         NewOrderDetail.IsUpdated = "";
                         //NewOrderDetail.IsDeleted = "";
                         NewOrderDetail.KitchenLines = 1;
+                        NewOrderDetail.CategoryId = item?.Item.CategoryId;
+                        NewOrderDetail.CatName = item?.Item.CategoryName;
                         NewOrderDetail.ItemDiscount = item?.ItemDiscount;
                         NewOrderDetail.Posid = ActiveSession.POSId;
                         SaleOrderDetail.Add(NewOrderDetail);

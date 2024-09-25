@@ -84,9 +84,6 @@ namespace Common
         public static string MinimumTaxLimit { get { return nameof(MinimumTaxLimit); } }
         public static string ItemBaseTax { get { return nameof(ItemBaseTax); } }
         public static string RewardPointsValue { get { return nameof(RewardPointsValue); } }
-
-
-
     }
 
     public static class ScreenType
